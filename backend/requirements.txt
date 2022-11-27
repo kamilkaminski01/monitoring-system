@@ -1,0 +1,11 @@
+asgiref==3.5.2
+black==22.3.0
+channels==4.0.0
+channels-redis==4.0.0
+daphne==4.0.0
+Django==4.0.6
+django-stubs==v1.11.0
+flake8==4.0.1
+isort==5.10.1
+mypy==v0.931
+sqlparse==0.4.3
