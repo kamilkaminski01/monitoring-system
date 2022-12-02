@@ -111,7 +111,7 @@ const Board = () => {
             drawLine(data.x0 * w, data.y0 * h, data.x1 * w, data.y1 * h, data.color)
         }
 
-        socketRef.current = new WebSocket('ws://127.0.0.1:8000/')
+        socketRef.current = new WebSocket('ws://127.0.0.1:8000/whiteboard')
 
         socketRef.current.onopen = e =>{
             // console.log('open', e)

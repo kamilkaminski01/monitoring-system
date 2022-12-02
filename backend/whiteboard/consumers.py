@@ -1,8 +1,8 @@
+from channels.exceptions import StopConsumer
 from channels.consumer import AsyncConsumer
 
 
 class BoardConsumer(AsyncConsumer):
-
     async def websocket_connect(self, event):
         self.board_room = "boardroom"
 
@@ -34,3 +34,4 @@ class BoardConsumer(AsyncConsumer):
         await self.send({
             "type": "websocket.close"
         })
+        raise StopConsumer()
