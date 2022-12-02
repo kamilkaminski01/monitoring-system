@@ -27,7 +27,7 @@ class BoardConsumer(AsyncConsumer):
     async def board_message(self, event):
         await self.send({
             "type": "websocket.send",
-            "text": event["text0"]
+            "text": event["text"]
         })
 
     async def websocket_disconnect(self, event):
