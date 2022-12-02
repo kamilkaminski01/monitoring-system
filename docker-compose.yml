@@ -13,7 +13,6 @@ services:
       - "8000:8000"
     depends_on:
       - db
-      - redis
 
   db:
     restart: always
@@ -25,10 +24,14 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data/
 
-  redis:
-    image: redis:7.0.2-alpine
+  react:
+    build:
+      context: frontend
+      dockerfile: Dockerfile
     ports:
-      - "6379:6379"
+      - "3000:3000"
+    volumes:
+      - ./frontend:/app
 
 volumes:
   postgres_data:
