@@ -5,9 +5,9 @@ import './css/board.css'
 const Board = () => {
     const canvasRef = useRef(null);
     const colorsRef = useRef(null);
-    const socketRef = useRef();
+    const socketRef = useRef(null);
 
-    useEffect(()=>{
+    useEffect(() => {
         const canvas = canvasRef.current;
         const context = canvas.getContext('2d');
 
@@ -18,7 +18,7 @@ const Board = () => {
         let dataURL = ''
         let drawing = false
 
-        const onColorUpdate = (e) =>{
+        const onColorUpdate = (e) => {
             current.color = e.target.className.split(' ')[1]
         }
 
@@ -82,13 +82,13 @@ const Board = () => {
         canvas.addEventListener('mousedown', onMouseDown, false)
         canvas.addEventListener('mouseup', onMouseUp, false)
         canvas.addEventListener('mouseout', onMouseUp, false)
-        canvas.addEventListener('mousemove', throttle(onMouseMove, 10), false)
+        canvas.addEventListener('mousemove', throttle(onMouseMove, 5), false)
 
         canvas.addEventListener('touchstart', onMouseDown, false)
         canvas.addEventListener('touchend', onMouseUp, false)
         canvas.addEventListener('touchcancel', onMouseUp, false)
         canvas.addEventListener('touchmove', onMouseMove, false)
-        canvas.addEventListener('mousemove', throttle(onMouseMove, 10), false)
+        canvas.addEventListener('mousemove', throttle(onMouseMove, 5), false)
 
         for(let i=0; i<colors.length; i++){
             colors[i].addEventListener('click', onColorUpdate, false)
@@ -113,20 +113,18 @@ const Board = () => {
 
         socketRef.current = new WebSocket('ws://127.0.0.1:8000/whiteboard')
 
-        socketRef.current.onopen = e =>{
+        socketRef.current.onopen = (e) =>{
             // console.log('open', e)
         }
 
-        socketRef.current.onmessage = e => {
+        socketRef.current.onmessage = (e) => {
             // console.log(e)
             onDrawingEvent(JSON.parse(e.data))
         }
 
-        socketRef.current.onerror = e => {
+        socketRef.current.onerror = (e) => {
             // console.log('error', e)
         }
-
-
     }, []);
 
     return (
