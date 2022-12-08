@@ -1,4 +1,4 @@
 export const PATHS = {
-  home: "/",
-  whiteboard: "/whiteboard",
+  home: '/',
+  whiteboard: '/whiteboard'
 };

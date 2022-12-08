@@ -1,6 +1,6 @@
-import React from "react";
-import Card from "./Card";
-import "./css/App.css";
+import React from 'react';
+import Card from './Card';
+import './css/App.css';
 
 function Home() {
   return (

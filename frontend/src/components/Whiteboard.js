@@ -1,5 +1,5 @@
-import React, { useRef, useEffect } from "react";
-import "./css/board.css";
+import React, { useRef, useEffect } from 'react';
+import './css/board.css';
 
 const Whiteboard = () => {
   const canvasRef = useRef(null);
@@ -8,17 +8,17 @@ const Whiteboard = () => {
 
   useEffect(() => {
     const canvas = canvasRef.current;
-    const context = canvas.getContext("2d");
+    const context = canvas.getContext('2d');
 
-    const colors = document.getElementsByClassName("color");
+    const colors = document.getElementsByClassName('color');
     const current = {
-      color: "black",
+      color: 'black'
     };
-    let dataURL = "";
+    let dataURL = '';
     let drawing = false;
 
     const onColorUpdate = (e) => {
-      current.color = e.target.className.split(" ")[1];
+      current.color = e.target.className.split(' ')[1];
     };
 
     const onMouseDown = (e) => {
@@ -36,7 +36,7 @@ const Whiteboard = () => {
       context.stroke();
       context.closePath();
       context.save();
-      dataURL = canvasRef.current.toDataURL("image/png");
+      dataURL = canvasRef.current.toDataURL('image/png');
 
       if (!send) {
         return;
@@ -50,7 +50,7 @@ const Whiteboard = () => {
           y0: y0 / h,
           x1: x1 / w,
           y1: y1 / h,
-          color,
+          color
         })
       );
     };
@@ -95,30 +95,30 @@ const Whiteboard = () => {
       };
     };
 
-    canvas.addEventListener("mousedown", onMouseDown, false);
-    canvas.addEventListener("mouseup", onMouseUp, false);
-    canvas.addEventListener("mouseout", onMouseUp, false);
-    canvas.addEventListener("mousemove", throttle(onMouseMove, 5), false);
+    canvas.addEventListener('mousedown', onMouseDown, false);
+    canvas.addEventListener('mouseup', onMouseUp, false);
+    canvas.addEventListener('mouseout', onMouseUp, false);
+    canvas.addEventListener('mousemove', throttle(onMouseMove, 5), false);
 
-    canvas.addEventListener("touchstart", onMouseDown, false);
-    canvas.addEventListener("touchend", onMouseUp, false);
-    canvas.addEventListener("touchcancel", onMouseUp, false);
-    canvas.addEventListener("touchmove", onMouseMove, false);
-    canvas.addEventListener("mousemove", throttle(onMouseMove, 5), false);
+    canvas.addEventListener('touchstart', onMouseDown, false);
+    canvas.addEventListener('touchend', onMouseUp, false);
+    canvas.addEventListener('touchcancel', onMouseUp, false);
+    canvas.addEventListener('touchmove', onMouseMove, false);
+    canvas.addEventListener('mousemove', throttle(onMouseMove, 5), false);
 
     for (let i = 0; i < colors.length; i++) {
-      colors[i].addEventListener("click", onColorUpdate, false);
+      colors[i].addEventListener('click', onColorUpdate, false);
     }
 
     const onResize = () => {
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
-      let img = document.createElement("img");
+      const img = document.createElement('img');
       img.src = dataURL;
       context.drawImage(img, 0, 0);
       context.restore();
     };
-    window.addEventListener("resize", onResize, false);
+    window.addEventListener('resize', onResize, false);
     onResize();
 
     const onDrawingEvent = (data) => {
@@ -127,7 +127,7 @@ const Whiteboard = () => {
       drawLine(data.x0 * w, data.y0 * h, data.x1 * w, data.y1 * h, data.color);
     };
 
-    socketRef.current = new WebSocket("ws://127.0.0.1:8000/whiteboard");
+    socketRef.current = new WebSocket('ws://127.0.0.1:8000/whiteboard');
 
     socketRef.current.onopen = (e) => {
       // console.log('open', e)
