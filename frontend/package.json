@@ -20,6 +20,7 @@
     "eject": "react-scripts eject",
     "lint": "eslint \"**/*.{ts,tsx,jsx,js}\"",
     "lint --fix": "eslint --fix",
+    "check": "npm run lint",
     "format": "prettier --write './**/*.{js,jsx,ts,tsx,css,md,json}' --config ./.prettierrc",
     "prepare": "cd .. && husky install frontend/.husky"
   },
