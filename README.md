@@ -25,11 +25,20 @@ for reproducible builds and consistent local development environments.
 The default [`docker-compose.yml`](docker-compose.yml) file is set up
 to support local development with code reload and debug mode.
 
+The [`Makefile`](Makefile) contains common commands that can be used to
+build, run, and test the project. The most important commands include:
+- `build`: builds the project with Docker Compose.
+- `run`: runs the project with Docker Compose.
+- `check`: performs backend static code checks.
+- `frontcheck`: performs frontend static code checks.
+- `clear`: stops the currently running services and removes the volumes.
+
 If `build` doesn't run, uncheck "Use Docker Compose V2" in Docker Desktop settings.
 
 When using a local Python environment, [`pre-commit`](https://pre-commit.com/)
 should be installed and ran on staged files to ensure that the code
-quality standards are met.
+quality standards are met. During frontend development, Git hooks are handled
+by [`husky`](https://github.com/typicode/husky).
 
 #### Troubleshooting
 
@@ -39,6 +48,16 @@ Docker images:
 ```bash
 docker system prune --all
 docker-compose up --build
+```
+
+If `make` is not supported, the associated Docker Compose commands can be
+used directly in order to build and run the project:
+
+```bash
+git clone https://github.com/kamilkaminski01/monitoring-system
+cd monitoring-system
+docker-compose build
+docker-compose run
 ```
 
 ## Code quality standards
@@ -60,7 +79,7 @@ feature/add-user-model
 fix/missing-email-bug
 
 # Commit names:
-Add candidate model
+Add user model
 ```
 
 ### Backend
@@ -71,3 +90,8 @@ All backend code must be formatted and verified by the `black`, `flake8`,
 
 Custom functions and methods should use **type hints** to improve IDE code
 completions, prevent from type errors and extend code documentation.
+
+### Frontend
+
+All frontend code must be formatted and verified by the `prettier`
+and `eslint` tools. Pre-commit hooks can be set up with `husky`.
