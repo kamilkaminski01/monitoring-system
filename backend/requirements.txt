@@ -8,5 +8,4 @@ django-stubs==v1.11.0
 flake8==4.0.1
 isort==5.10.1
 mypy==v0.931
-psycopg2-binary==2.9.3
 sqlparse==0.4.3
