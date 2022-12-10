@@ -1,5 +1,5 @@
 import React, { useRef, useEffect } from 'react';
-import './css/board.css';
+import './Whiteboard.css';
 
 const Whiteboard = () => {
   const canvasRef = useRef(null);
@@ -32,7 +32,11 @@ const Whiteboard = () => {
       context.moveTo(x0, y0);
       context.lineTo(x1, y1);
       context.strokeStyle = color;
-      context.lineWidth = 2;
+      if (color === 'white') {
+        context.lineWidth = 50;
+      } else {
+        context.lineWidth = 2;
+      }
       context.stroke();
       context.closePath();
       context.save();
@@ -84,27 +88,27 @@ const Whiteboard = () => {
       );
     };
 
-    const throttle = (callback, delay) => {
-      let previousCall = new Date().getTime();
-      return function () {
-        const time = new Date().getTime();
-        if (time - previousCall >= delay) {
-          previousCall = time;
-          callback.apply(null, arguments);
-        }
-      };
-    };
+    // const throttle = (callback, delay) => {
+    //   let previousCall = new Date().getTime();
+    //   return function () {
+    //     const time = new Date().getTime();
+    //     if (time - previousCall >= delay) {
+    //       previousCall = time;
+    //       callback.apply(null, arguments);
+    //     }
+    //   };
+    // };
 
     canvas.addEventListener('mousedown', onMouseDown, false);
     canvas.addEventListener('mouseup', onMouseUp, false);
     canvas.addEventListener('mouseout', onMouseUp, false);
-    canvas.addEventListener('mousemove', throttle(onMouseMove, 5), false);
+    canvas.addEventListener('mousemove', onMouseMove, false);
 
     canvas.addEventListener('touchstart', onMouseDown, false);
     canvas.addEventListener('touchend', onMouseUp, false);
     canvas.addEventListener('touchcancel', onMouseUp, false);
     canvas.addEventListener('touchmove', onMouseMove, false);
-    canvas.addEventListener('mousemove', throttle(onMouseMove, 5), false);
+    canvas.addEventListener('mousemove', onMouseMove, false);
 
     for (let i = 0; i < colors.length; i++) {
       colors[i].addEventListener('click', onColorUpdate, false);
@@ -152,6 +156,10 @@ const Whiteboard = () => {
         <div className="color green" />
         <div className="color blue" />
         <div className="color yellow" />
+        <div className="color white" />
+        <button className="btn-home">
+          <a href="http://localhost:3000/">Home</a>
+        </button>
       </div>
     </div>
   );

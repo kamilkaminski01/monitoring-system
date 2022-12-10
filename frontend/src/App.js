@@ -1,9 +1,9 @@
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { PATHS } from './utils/consts';
-import Home from './components/Home';
-import Whiteboard from './components/Whiteboard';
-import './components/css/App.css';
+import Home from './components/Home/Home.js';
+import Whiteboard from './components/Whiteboard/Whiteboard.js';
+import './App.css';
 
 function App() {
   return (

@@ -17,6 +17,8 @@ body {
   display: inline-block;
   height: 48px;
   width: 48px;
+  border-style: solid;
+  border-width: 1px;
 }
 .color.black {
   background-color: black;
@@ -32,4 +34,19 @@ body {
 }
 .color.yellow {
   background-color: yellow;
+}
+.color.white {
+  background-color: white;
+}
+.btn-home{
+  background-color: white;
+  border: 1px solid #e7e7e7;
+  padding: 15px 32px;
+  transition-duration: 0.4s;
+  font-size: 16px;
+  margin-left: 2rem;
+  float: right;
+}
+.btn-home:hover{
+  background-color: #e7e7e7;
 }
