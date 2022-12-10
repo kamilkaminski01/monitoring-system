@@ -12,13 +12,14 @@ body {
 }
 .colors {
   position: fixed;
+  margin: 2px;
 }
 .color {
   display: inline-block;
   height: 48px;
   width: 48px;
-  border-style: solid;
-  border-width: 1px;
+  border: 1px solid #e7e7e7;
+  margin: 1px;
 }
 .color.black {
   background-color: black;
@@ -44,7 +45,7 @@ body {
   padding: 15px 32px;
   transition-duration: 0.4s;
   font-size: 16px;
-  margin-left: 2rem;
+  margin: 1px 2rem;
   float: right;
 }
 .btn-home:hover{

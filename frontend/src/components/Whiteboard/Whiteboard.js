@@ -88,27 +88,27 @@ const Whiteboard = () => {
       );
     };
 
-    // const throttle = (callback, delay) => {
-    //   let previousCall = new Date().getTime();
-    //   return function () {
-    //     const time = new Date().getTime();
-    //     if (time - previousCall >= delay) {
-    //       previousCall = time;
-    //       callback.apply(null, arguments);
-    //     }
-    //   };
-    // };
+    const throttle = (callback, delay) => {
+      let previousCall = new Date().getTime();
+      return function () {
+        const time = new Date().getTime();
+        if (time - previousCall >= delay) {
+          previousCall = time;
+          callback.apply(null, arguments);
+        }
+      };
+    };
 
     canvas.addEventListener('mousedown', onMouseDown, false);
     canvas.addEventListener('mouseup', onMouseUp, false);
     canvas.addEventListener('mouseout', onMouseUp, false);
-    canvas.addEventListener('mousemove', onMouseMove, false);
+    canvas.addEventListener('mousemove', throttle(onMouseMove, 5), false);
 
     canvas.addEventListener('touchstart', onMouseDown, false);
     canvas.addEventListener('touchend', onMouseUp, false);
     canvas.addEventListener('touchcancel', onMouseUp, false);
     canvas.addEventListener('touchmove', onMouseMove, false);
-    canvas.addEventListener('mousemove', onMouseMove, false);
+    canvas.addEventListener('mousemove', throttle(onMouseMove, 5), false);
 
     for (let i = 0; i < colors.length; i++) {
       colors[i].addEventListener('click', onColorUpdate, false);
