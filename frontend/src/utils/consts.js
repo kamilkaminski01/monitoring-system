@@ -1,4 +1,5 @@
 export const PATHS = {
   home: '/',
-  whiteboard: '/whiteboard'
+  whiteboard: '/whiteboard',
+  bingo: '/bingo'
 };
