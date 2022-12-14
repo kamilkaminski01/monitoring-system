@@ -2,64 +2,70 @@
 {% load static %}
 {% block content %}
 
-    <div class="container main">
-        <div class="sideme">
-            <div class=" w-100 d-flex justify-content-center">
-                <div>
-                    <strong class="my-3 text-white text-center">
-                        <p class="mt-3" id="userdiv"></p>
-                        <span class="my-3">Total User : <span id="user_num"></span></span><br>
-                        <div class="d-flex justify-content-between">
-                            <div><span id="userTurn"></span> Turn</div>
-                            <div id="lastStepDiv"></div>
-                        </div>
-                    </strong>
-                    <div class="grid">
-                        <span data-id="1"></span>
-                        <span data-id="2"></span>
-                        <span data-id="3"></span>
-                        <span data-id="4"></span>
-                        <span data-id="5"></span>
-                        <span data-id="6"></span>
-                        <span data-id="7"></span>
-                        <span data-id="8"></span>
-                        <span data-id="9"></span>
-                        <span data-id="10"></span>
-                        <span data-id="11"></span>
-                        <span data-id="12"></span>
-                        <span data-id="13"></span>
-                        <span data-id="14"></span>
-                        <span data-id="15"></span>
-                        <span data-id="16"></span>
-                        <span data-id="17"></span>
-                        <span data-id="18"></span>
-                        <span data-id="19"></span>
-                        <span data-id="20"></span>
-                        <span data-id="21"></span>
-                        <span data-id="22"></span>
-                        <span data-id="23"></span>
-                        <span data-id="24"></span>
-                        <span data-id="25"></span>
-                    </div>
-                    <div id="bingodiv"></div>
-                    <button class="btn btn-danger" onclick="refreshPage()">Restart</button>
-                </div>
-            </div>
-            <div class="side-info">
-                <div id="sidebar">
-                    <div class="text-white" id="infodiv">
-                        <h6>Room Activity</h6>
-                        <hr>
-                    </div>
-                </div>
-                <input id="chat-input" type="text" placeholder='send message' class="mt-1 form-control send-msg">
-            </div>
+<div class="container main">
+  <div class="sideme">
+    <div class="w-100 d-flex justify-content-center">
+      <div>
+        <strong class="my-3 text-white text-center">
+          <p class="mt-3" id="userdiv"></p>
+          <span class="my-3">Total User : <span id="user_num"></span></span
+          ><br />
+          <div class="d-flex justify-content-between">
+            <div><span id="userTurn"></span> Turn</div>
+            <div id="lastStepDiv"></div>
+          </div>
+        </strong>
+        <div class="grid">
+          <span data-id="1"></span>
+          <span data-id="2"></span>
+          <span data-id="3"></span>
+          <span data-id="4"></span>
+          <span data-id="5"></span>
+          <span data-id="6"></span>
+          <span data-id="7"></span>
+          <span data-id="8"></span>
+          <span data-id="9"></span>
+          <span data-id="10"></span>
+          <span data-id="11"></span>
+          <span data-id="12"></span>
+          <span data-id="13"></span>
+          <span data-id="14"></span>
+          <span data-id="15"></span>
+          <span data-id="16"></span>
+          <span data-id="17"></span>
+          <span data-id="18"></span>
+          <span data-id="19"></span>
+          <span data-id="20"></span>
+          <span data-id="21"></span>
+          <span data-id="22"></span>
+          <span data-id="23"></span>
+          <span data-id="24"></span>
+          <span data-id="25"></span>
         </div>
+        <div id="bingodiv"></div>
+        <button class="btn btn-danger" onclick="refreshPage()">Restart</button>
+      </div>
     </div>
+    <div class="side-info">
+      <div id="sidebar">
+        <div class="text-white" id="infodiv">
+          <h6>Room Activity</h6>
+          <hr />
+        </div>
+      </div>
+      <input
+        id="chat-input"
+        type="text"
+        placeholder="send message"
+        class="mt-1 form-control send-msg"
+      />
+    </div>
+  </div>
+</div>
 
 {% endblock content %}
 {% block script %}
-    <script src="{% static 'bingo/js/bingo_sec.js' %}"></script>
-    <script src="{% static 'bingo/js/bingo.js' %}"></script>
-    <script src="{% static 'bingo/js/bingo_socket.js' %}"></script>
+<script src="{% static 'bingo/js/bingo_sec.js' %}"></script>
+<script src="{% static 'bingo/js/bingo.js' %}"></script>
+<script src="{% static 'bingo/js/bingo_socket.js' %}"></script>
 {% endblock script %}
