@@ -9,6 +9,8 @@ in addition a third party admin can observe the taken actions of users.
 The code repository is hosted on
 [GitHub](https://github.com/kamilkaminski01/monitoring-system).
 
+WebSockets are handled by `django-channels` framework.
+
 ## Running from sources
 
 ### Docker Compose setup
@@ -16,8 +18,8 @@ The code repository is hosted on
 ```bash
 git clone https://github.com/kamilkaminski01/monitoring-system
 cd monitoring-system/
-docker-compose build
-docker-compose up
+make build
+make run
 ```
 
 [Docker Compose](https://docs.docker.com/compose/install/) is leveraged
