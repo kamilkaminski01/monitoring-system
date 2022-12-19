@@ -35,6 +35,7 @@ new_room.addEventListener('click', function () {
 create_room.addEventListener('click', async function () {
   try {
     const check_url = 'http://127.0.0.1:8000/bingo/';
+    // const check_url = 'https://bingoboi.herokuapp.com/'
     const res = await fetch(`${check_url}room/check_room/${room_name.value}/`, {
       method: 'GET'
     });
@@ -91,7 +92,7 @@ socket.onmessage = function (e) {
         `
     );
   }
-  if (data.command == 'room_deleted') {
+  if (data.command === 'room_deleted') {
     const del_id = data.room_name + '-' + data.room_id;
     const deleted_room = document.getElementById(del_id);
     onlinerooms.removeChild(deleted_room);

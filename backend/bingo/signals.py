@@ -10,7 +10,6 @@ channel_layer = get_channel_layer()
 
 @receiver(post_save, sender=BingoRoom)
 def create_room_signal(sender, instance: BingoRoom, created: bool, **kwargs) -> None:
-    print(instance.room_name, "was created")
     if created:
         async_to_sync(channel_layer.group_send)(
             "online_bingo_room",
@@ -25,7 +24,6 @@ def create_room_signal(sender, instance: BingoRoom, created: bool, **kwargs) -> 
 
 @receiver(post_delete, sender=BingoRoom)
 def delete_room_signal(sender, instance: BingoRoom, **kwargs) -> None:
-    print(instance.room_name, "was deleted")
     async_to_sync(channel_layer.group_send)(
         "online_bingo_room",
         {

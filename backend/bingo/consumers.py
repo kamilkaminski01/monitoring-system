@@ -1,3 +1,5 @@
+from typing import Any
+
 from channels.db import database_sync_to_async
 from channels.generic.websocket import AsyncJsonWebsocketConsumer
 
@@ -5,7 +7,7 @@ from .models import BingoRoom, TrackPlayers
 
 
 class BingoConsumer(AsyncJsonWebsocketConsumer):
-    async def connect(self):
+    async def connect(self) -> None:
         self.url_route = self.scope["url_route"]["kwargs"]["room_name"]
         await self.accept()
         self.room_name = f"bingo_room_{self.url_route}"
@@ -13,7 +15,7 @@ class BingoConsumer(AsyncJsonWebsocketConsumer):
         self.user_left = ""
         await self.channel_layer.group_add(self.room_name, self.channel_name)
 
-    async def receive_json(self, content, **kwargs):
+    async def receive_json(self, content: dict, **kwargs) -> None:
         command = content.get("command", None)
 
         if command == "clicked":
@@ -55,7 +57,7 @@ class BingoConsumer(AsyncJsonWebsocketConsumer):
                 },
             )
 
-    async def websocket_info(self, event):
+    async def websocket_info(self, event: dict) -> None:
         await self.send_json(
             (
                 {
@@ -67,7 +69,7 @@ class BingoConsumer(AsyncJsonWebsocketConsumer):
             )
         )
 
-    async def websocket_chat(self, event):
+    async def websocket_chat(self, event: dict) -> None:
         await self.send_json(
             (
                 {
@@ -78,7 +80,7 @@ class BingoConsumer(AsyncJsonWebsocketConsumer):
             )
         )
 
-    async def websocket_joined(self, event):
+    async def websocket_joined(self, event: dict) -> None:
         await self.players_count()
         await self.send_json(
             (
@@ -93,7 +95,7 @@ class BingoConsumer(AsyncJsonWebsocketConsumer):
             )
         )
 
-    async def websocket_leave(self, event):
+    async def websocket_leave(self, event: dict) -> None:
         await self.players_count()
         await self.send_json(
             (
@@ -106,7 +108,7 @@ class BingoConsumer(AsyncJsonWebsocketConsumer):
             )
         )
 
-    async def disconnect(self, close_code):
+    async def disconnect(self, close_code: Any) -> None:
         await self.channel_layer.group_send(
             self.room_name,
             {
@@ -121,22 +123,22 @@ class BingoConsumer(AsyncJsonWebsocketConsumer):
         )
 
     @database_sync_to_async
-    def create_room(self):
+    def create_room(self) -> None:
         self.bingo_room, _ = BingoRoom.objects.get_or_create(room_name=self.url_route)
 
     @database_sync_to_async
-    def create_players(self, name):
+    def create_players(self, name: str) -> None:
         TrackPlayers.objects.get_or_create(room=self.bingo_room, username=name)
 
     @database_sync_to_async
-    def players_count(self):
+    def players_count(self) -> None:
         self.all_players_for_room = [
             x.username for x in self.bingo_room.trackplayers_set.all()
         ]
         self.players_count_all = self.bingo_room.trackplayers_set.all().count()
 
     @database_sync_to_async
-    def delete_player(self):
+    def delete_player(self) -> None:
         TrackPlayers.objects.get(room=self.bingo_room, username=self.user_left).delete()
         players_count = self.bingo_room.trackplayers_set.all().count()
         if players_count == 0:
@@ -144,7 +146,7 @@ class BingoConsumer(AsyncJsonWebsocketConsumer):
 
 
 class OnlineRoomConsumer(AsyncJsonWebsocketConsumer):
-    async def connect(self):
+    async def connect(self) -> None:
         await self.accept()
         self.room_name = "online_bingo_room"
         await self.channel_layer.group_add(self.room_name, self.channel_name)
@@ -154,12 +156,12 @@ class OnlineRoomConsumer(AsyncJsonWebsocketConsumer):
             {"type": "websocket_rooms", "online_rooms": self.online_rooms},
         )
 
-    async def websocket_rooms(self, event):
+    async def websocket_rooms(self, event: dict) -> None:
         await self.send_json(
             ({"command": "online_rooms", "online_rooms": self.online_rooms})
         )
 
-    async def websocket_room_added(self, event):
+    async def websocket_room_added(self, event: dict) -> None:
         await self.send_json(
             (
                 {
@@ -170,7 +172,7 @@ class OnlineRoomConsumer(AsyncJsonWebsocketConsumer):
             )
         )
 
-    async def websocket_room_deleted(self, event):
+    async def websocket_room_deleted(self, event: dict) -> None:
         await self.send_json(
             (
                 {
@@ -181,14 +183,14 @@ class OnlineRoomConsumer(AsyncJsonWebsocketConsumer):
             )
         )
 
-    async def receive_json(self, content, **kwargs):
+    async def receive_json(self, content: dict, **kwargs) -> None:
         return await super().receive_json(content, **kwargs)
 
-    async def disconnect(self, code):
+    async def disconnect(self, code: Any) -> None:
         return await super().disconnect(code)
 
     @database_sync_to_async
-    def online_room(self):
+    def online_room(self) -> None:
         self.online_rooms = [
             {"room_name": x.room_name, "room_id": f"{x.room_name}-{x.id}"}
             for x in BingoRoom.objects.all()

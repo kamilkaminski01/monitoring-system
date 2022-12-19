@@ -7,6 +7,9 @@ run:
 superuser:
 	docker-compose run django python manage.py createsuperuser
 
+flush:
+	docker-compose run django python manage.py flush
+
 check:
 	docker-compose run --rm django isort --check-only .
 	docker-compose run --rm django black --check .
