@@ -1,6 +1,6 @@
-# Monitoring system for interactive web applications
+# Monitoring System for interactive web applications
 
-This project is used for monitoring web apps in real-time. 
+This project is used for monitoring web apps in real-time.
 It allows users to interact within a chosen web application and
 in addition a third party admin can observe the taken actions of users.
 
@@ -9,7 +9,7 @@ in addition a third party admin can observe the taken actions of users.
 The code repository is hosted on
 [GitHub](https://github.com/kamilkaminski01/monitoring-system).
 
-WebSockets are handled by `django-channels` framework.
+WebSockets are handled by the `django-channels` framework.
 
 ## Running from sources
 
@@ -22,6 +22,17 @@ make build
 make run
 ```
 
+Users can choose and interact within available web apps on `localhost:3000` which is
+the frontend domain.
+
+Backend is available at:
+- `0.0.0.0:8000`
+- `127.0.0.1:8000`
+- `localhost:8000`
+
+Admin panel can be accessed through freely chosen backend domain at `/admin`
+e.g. `0.0.0.0:8000/admin`.
+
 [Docker Compose](https://docs.docker.com/compose/install/) is leveraged
 for reproducible builds and consistent local development environments.
 The default [`docker-compose.yml`](docker-compose.yml) file is set up
@@ -31,6 +42,7 @@ The [`Makefile`](Makefile) contains common commands that can be used to
 build, run, and test the project. The most important commands include:
 - `build`: builds the project with Docker Compose.
 - `run`: runs the project with Docker Compose.
+- `flush`: flushes data from the database.
 - `check`: performs backend static code checks.
 - `frontcheck`: performs frontend static code checks.
 - `clear`: stops the currently running services and removes the volumes.
@@ -48,8 +60,8 @@ In case of errors with typing or missing dependencies, try to rebuild the
 Docker images:
 
 ```bash
-docker system prune --all
-docker-compose up --build
+make clear
+docker-compose up --build --force-recreate
 ```
 
 If `make` is not supported, the associated Docker Compose commands can be
@@ -57,7 +69,7 @@ used directly in order to build and run the project:
 
 ```bash
 git clone https://github.com/kamilkaminski01/monitoring-system
-cd monitoring-system
+cd monitoring-system/
 docker-compose build
 docker-compose run
 ```
@@ -65,10 +77,6 @@ docker-compose run
 ## Code quality standards
 
 The `master` is the stable branch used for releases.
-
-All features should be verified with automated unit tests, including
-the expected "happy paths" as well as edge cases that might cause issues
-or errors.
 
 Git branches should be named according to the
 [Git Flow](https://danielkummer.github.io/git-flow-cheatsheet/) methodology.
@@ -88,7 +96,8 @@ Add user model
 
 All backend code must be formatted and verified by the `black`, `flake8`,
 `mypy` and `isort` tools. Their configurations can be found in the
-[.pre-commit-config.yaml](.pre-commit-config.yaml) file.
+[.setup.cfg](backend/setup.cfg) file. Additionally, `pre-commit` [checks](.pre-commit-config.yaml)
+should be performed in order to verify whitespaces, credentials, etc.
 
 Custom functions and methods should use **type hints** to improve IDE code
 completions, prevent from type errors and extend code documentation.
