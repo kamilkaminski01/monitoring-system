@@ -3,7 +3,7 @@ const user_num = document.getElementById('user_num');
 const userTurn = document.getElementById('userTurn');
 const sidebar = document.getElementById('sidebar');
 const chatInput = document.getElementById('chat-input');
-const urls = 'ws://127.0.0.1:8000/ws/clicked' + window.location.pathname;
+const urls = 'ws://localhost:8000/ws/clicked' + window.location.pathname;
 // let lastStep = 0;
 
 let gamestate = 'ON';

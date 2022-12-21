@@ -2,13 +2,30 @@ const grid = document.querySelector('.grid');
 const items = [...document.querySelector('.grid').children];
 const bingodiv = document.querySelector('#bingodiv');
 
+const homeUrl = 'http://localhost:8000/bingo/';
+
+const bingoState = ['B', 'I', 'N', 'G', 'O'];
+let bingoIndex = 0;
 let keysArr = [];
 
 window.onload = () => {
   restart();
 };
 
-// all possible combination for bingo
+function restart() {
+  GetRandomArray();
+  fillGrid();
+}
+
+function refreshPage() {
+  window.location.reload();
+}
+
+function homePage() {
+  document.location.href=homeUrl;
+}
+
+// All possible combinations for bingo win
 const bingoItems = [
   [1, 2, 3, 4, 5],
   [6, 7, 8, 9, 10],
@@ -38,9 +55,6 @@ function GetRandomArray() {
 
 const includesAll = (arr, values) => values.every((v) => arr.includes(v));
 
-const bingoState = ['B', 'I', 'N', 'G', 'O'];
-let bingoIndex = 0;
-
 function fillGrid() {
   items.forEach((item, ind) => {
     item.innerHTML = keysArr[ind];
@@ -66,16 +80,6 @@ function fillGrid() {
       checkBingo(item);
     });
   });
-}
-
-function restart() {
-  GetRandomArray();
-  fillGrid();
-}
-
-// when we click restart just refresh page
-function refreshPage() {
-  window.location.reload();
 }
 
 function checkBingo(item) {

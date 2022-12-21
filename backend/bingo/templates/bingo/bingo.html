@@ -44,6 +44,7 @@
         </div>
         <div id="bingodiv"></div>
         <button class="btn btn-danger" onclick="refreshPage()">Restart</button>
+        <button class="btn btn-danger" onclick="homePage()">Home</button>
       </div>
     </div>
     <div class="side-info">
@@ -65,7 +66,7 @@
 
 {% endblock content %}
 {% block script %}
-<script src="{% static 'js/bingo/bingo_sec.js' %}"></script>
-<script src="{% static 'js/bingo/bingo.js' %}"></script>
-<script src="{% static 'js/bingo/bingo_socket.js' %}"></script>
+<script src="{% static 'js/bingo/BingoSec.js' %}"></script>
+<script src="{% static 'js/bingo/Bingo.js' %}"></script>
+<script src="{% static 'js/bingo/BingoSocket.js' %}"></script>
 {% endblock script %}

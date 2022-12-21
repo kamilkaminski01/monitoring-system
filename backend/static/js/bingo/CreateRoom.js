@@ -5,11 +5,16 @@ const join_room = document.querySelector('#join_room');
 const username = document.querySelector('#username');
 const join_room_btn = document.querySelector('#join_room_btn');
 
+const homeUrl = 'http://localhost:8000/bingo/';
+const socket_home_url = 'ws://localhost:8000/ws/online-rooms/bingo/';
+const onlinerooms = document.getElementById('onlinerooms');
+const socket = new ReconnectingWebSocket(socket_home_url);
+
 username.value = localStorage.getItem('username') || '';
 
 function getInRoom() {
   if (!/^[a-zA-Z0-9-_]+$/.test(room_name.value)) {
-    Swal.fire('Error', 'Pleas use  underscore and alphanumeric only ! ', 'error');
+    Swal.fire('Error', 'Pleas use underscore and alphanumeric only!', 'error');
   } else {
     if (username.value.length < 3) {
       Swal.fire('Error', 'Username must be larger than 3 letters', 'error');
@@ -20,28 +25,26 @@ function getInRoom() {
   }
 }
 
-join_room.addEventListener('click', function () {
-  room_name.classList.remove('d-none');
-  join_room.classList.add('d-none');
-  join_room_btn.classList.remove('d-none');
-});
-
-new_room.addEventListener('click', function () {
-  room_name.classList.remove('d-none');
-  new_room.classList.add('d-none');
-  create_room.classList.remove('d-none');
-});
+// join_room.addEventListener('click', function () {
+//   room_name.classList.remove('d-none');
+//   join_room.classList.add('d-none');
+//   join_room_btn.classList.remove('d-none');
+// });
+//
+// new_room.addEventListener('click', function () {
+//   room_name.classList.remove('d-none');
+//   new_room.classList.add('d-none');
+//   create_room.classList.remove('d-none');
+// });
 
 create_room.addEventListener('click', async function () {
   try {
-    const check_url = 'http://127.0.0.1:8000/bingo/';
-    // const check_url = 'https://bingoboi.herokuapp.com/'
-    const res = await fetch(`${check_url}room/check_room/${room_name.value}/`, {
+    const res = await fetch(`${homeUrl}room/check_room/${room_name.value}/`, {
       method: 'GET'
     });
     const r = await res.json();
     if (r.room_exist) {
-      Swal.fire('Room Name Taken', 'Please choose other or join this room ! ', 'error');
+      Swal.fire('Room Name Taken', 'Please choose other or join this room!', 'error');
     } else {
       getInRoom();
     }
@@ -52,11 +55,6 @@ create_room.addEventListener('click', async function () {
 });
 
 join_room_btn.addEventListener('click', getInRoom);
-
-
-const home_urls = 'ws://127.0.0.1:8000/ws/online-rooms/bingo/';
-const onlinerooms = document.getElementById('onlinerooms');
-const socket = new ReconnectingWebSocket(home_urls);
 
 socket.onmessage = function (e) {
   const data = JSON.parse(e.data);
