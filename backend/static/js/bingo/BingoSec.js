@@ -1,7 +1,7 @@
 const username = localStorage.getItem('username');
 
 if (!username) {
-  const name = prompt('Your Name ');
+  const name = prompt('Your Name');
   localStorage.setItem('username', name);
 }
 

@@ -25,7 +25,7 @@ ws.onopen = function (e) {
   ws.send(
     JSON.stringify({
       command: 'joined',
-      info: `${loc_username} just Joined `,
+      info: `${loc_username} just Joined`,
       user: loc_username
     })
   );
@@ -46,8 +46,8 @@ ws.onmessage = function (e) {
     user_num.textContent = data.users_count;
     if (notForMe(data)) {
       infodiv.innerHTML += `
-      <div class="side-text">
-      <p style="font-size:12px;">${data.info}</p>
+      <div class='side-text'>
+      <p style='font-size:12px;'>${data.info}</p>
       </div>
       `;
     }
@@ -92,7 +92,7 @@ function checkTurn() {
 }
 
 chatInput.addEventListener('keyup', (e) => {
-  if (e.key === "13" || e.key === 'Enter') {
+  if (e.key === '13' || e.key === 'Enter') {
     if (!chatInput.value.trim()) {
       return Swal.fire({
         icon: 'error',
