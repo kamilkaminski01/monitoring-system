@@ -3,13 +3,13 @@ const user_num = document.getElementById('user_num');
 const userTurn = document.getElementById('userTurn');
 const sidebar = document.getElementById('sidebar');
 const chatInput = document.getElementById('chat-input');
-const urls = 'ws://localhost:8000/ws/clicked' + window.location.pathname;
-// let lastStep = 0;
+
+const socketUrl = 'ws://localhost:8000/ws/clicked' + window.location.pathname;
+const ws = new ReconnectingWebSocket(socketUrl);
+const loc_username = localStorage.getItem('username');
 
 let gamestate = 'ON';
-const ws = new ReconnectingWebSocket(urls);
 const addmearr = [];
-const loc_username = localStorage.getItem('username');
 
 let allPlayers = [];
 let total_player;
@@ -25,11 +25,12 @@ ws.onopen = function (e) {
   ws.send(
     JSON.stringify({
       command: 'joined',
-      info: `${loc_username} just Joined`,
+      info: `${loc_username} just joined`,
       user: loc_username
     })
   );
 };
+
 function notForMe(data) {
   return data.user !== loc_username;
 }
@@ -85,6 +86,7 @@ ws.onmessage = function (e) {
     infodiv.scrollTop = infodiv.scrollHeight;
   }
 };
+
 function checkTurn() {
   playerTrack === total_player - 1 ? (playerTrack = 0) : playerTrack++;
   currPlayer = allPlayers[playerTrack];
@@ -97,7 +99,7 @@ chatInput.addEventListener('keyup', (e) => {
       return Swal.fire({
         icon: 'error',
         title: 'Oops...',
-        text: 'Your Message Cannot Be Empty !!',
+        text: 'Your message can not be empty!',
         toast: true,
         position: 'top-right'
       });

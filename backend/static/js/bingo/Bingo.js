@@ -2,7 +2,7 @@ const grid = document.querySelector('.grid');
 const items = [...document.querySelector('.grid').children];
 const bingodiv = document.querySelector('#bingodiv');
 
-const homeUrl = 'http://localhost:8000/bingo/';
+const bingoHomeUrl = 'http://localhost:8000/bingo/';
 
 const bingoState = ['B', 'I', 'N', 'G', 'O'];
 let bingoIndex = 0;
@@ -12,17 +12,8 @@ window.onload = () => {
   restart();
 };
 
-function restart() {
-  GetRandomArray();
-  fillGrid();
-}
-
-function refreshPage() {
-  window.location.reload();
-}
-
 function homePage() {
-  document.location.href=homeUrl;
+  window.location.href=bingoHomeUrl;
 }
 
 // All possible combinations for bingo win
@@ -65,14 +56,14 @@ function fillGrid() {
         return Swal.fire({
           icon: 'error',
           title: 'Oops...',
-          text: 'Game Finished ! Please Restart To Play Again !'
+          text: 'Game finished! Please restart to play again!'
         });
       }
       if (currPlayer !== loc_username) {
         return Swal.fire({
           icon: 'error',
           title: 'Oops...',
-          text: 'Not Your Turn!',
+          text: 'Not your turn!',
           toast: true,
           position: 'top-right'
         });
@@ -80,6 +71,15 @@ function fillGrid() {
       checkBingo(item);
     });
   });
+}
+
+function restart() {
+  GetRandomArray();
+  fillGrid();
+}
+
+function refreshPage() {
+  window.location.reload();
 }
 
 function checkBingo(item) {
@@ -90,7 +90,7 @@ function checkBingo(item) {
     return Swal.fire({
       icon: 'error',
       title: 'Oops...',
-      text: 'Already Selected',
+      text: 'Already selected',
       toast: true,
       position: 'top-right'
     });
@@ -125,13 +125,13 @@ function loopItemsAndCheck() {
       bingodiv.append(span);
       bingoIndex += 1;
       if (bingoIndex === 5) {
-        Swal.fire(loc_username, 'You won the Game ', 'success');
+        Swal.fire(loc_username, 'You won the game', 'success');
         ws.send(
           JSON.stringify({
             command: 'won',
             user: loc_username,
             bingoCount: bingoIndex,
-            info: `${loc_username} won the Game`
+            info: `${loc_username} won the game`
           })
         );
       }
