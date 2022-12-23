@@ -1,15 +1,21 @@
 const create_room = document.querySelector('#create_room');
-const new_room = document.querySelector('#new_room');
 const room_name = document.querySelector('#room_name');
 const join_room = document.querySelector('#join_room');
 const username = document.querySelector('#username');
-const join_room_btn = document.querySelector('#join_room_btn');
+
+const homeUrl = 'http://localhost:3000/';
+const bingoHomeUrl = 'http://localhost:8000/bingo/';
+const socketHomeUrl = 'ws://localhost:8000/ws/online-rooms/bingo/';
 
 username.value = localStorage.getItem('username') || '';
 
+function homePage() {
+  window.location.href=homeUrl;
+}
+
 function getInRoom() {
   if (!/^[a-zA-Z0-9-_]+$/.test(room_name.value)) {
-    Swal.fire('Error', 'Pleas use  underscore and alphanumeric only ! ', 'error');
+    Swal.fire('Error', 'Pleas use underscore and alphanumeric only!', 'error');
   } else {
     if (username.value.length < 3) {
       Swal.fire('Error', 'Username must be larger than 3 letters', 'error');
@@ -20,43 +26,25 @@ function getInRoom() {
   }
 }
 
-join_room.addEventListener('click', function () {
-  room_name.classList.remove('d-none');
-  join_room.classList.add('d-none');
-  join_room_btn.classList.remove('d-none');
-});
-
-new_room.addEventListener('click', function () {
-  room_name.classList.remove('d-none');
-  new_room.classList.add('d-none');
-  create_room.classList.remove('d-none');
-});
-
 create_room.addEventListener('click', async function () {
   try {
-    const check_url = 'http://127.0.0.1:8000/bingo/';
-    // const check_url = 'https://bingoboi.herokuapp.com/'
-    const res = await fetch(`${check_url}room/check_room/${room_name.value}/`, {
+    const res = await fetch(`${bingoHomeUrl}room/check_room/${room_name.value}/`, {
       method: 'GET'
     });
     const r = await res.json();
     if (r.room_exist) {
-      Swal.fire('Room Name Taken', 'Please choose other or join this room ! ', 'error');
+      Swal.fire('Room Name Taken', 'Please choose other or join this room!', 'error');
     } else {
       getInRoom();
     }
   } catch (error) {
     console.log(error);
   }
-  // getInRoom()
 });
 
-join_room_btn.addEventListener('click', getInRoom);
-
-
-const home_urls = 'ws://127.0.0.1:8000/ws/online-rooms/bingo/';
+join_room.addEventListener('click', getInRoom);
 const onlinerooms = document.getElementById('onlinerooms');
-const socket = new ReconnectingWebSocket(home_urls);
+const socket = new ReconnectingWebSocket(socketHomeUrl);
 
 socket.onmessage = function (e) {
   const data = JSON.parse(e.data);
@@ -66,7 +54,7 @@ socket.onmessage = function (e) {
     data.online_rooms.length > 0
       ? data.online_rooms.forEach((el) => {
           onlinerooms.innerHTML += `
-       <a id="${el.room_id}" class="room-link" href="/${el.room_name}">
+       <a id="${el.room_id}" class="room-link" href="/bingo/${el.room_name}">
        <div class="room-div">
        <strong>${el.room_name}</strong>
        </div>
@@ -84,7 +72,7 @@ socket.onmessage = function (e) {
       'afterbegin',
       `
         <a id="${data.room_name}-${data.room_id}"
-        class="animate__animated animate__fadeInLeft room-link" href="/${data.room_name}">
+        class="animate__animated animate__fadeInLeft room-link" href="/bingo/${data.room_name}">
         <div class="room-div">
         <strong>${data.room_name}</strong>
         </div>

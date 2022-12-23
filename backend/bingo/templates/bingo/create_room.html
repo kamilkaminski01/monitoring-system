@@ -11,37 +11,31 @@
         type="text"
         class="form-control"
         autocomplete="off"
-        placeholder="Your Name"
+        placeholder="Your Username"
       />
-      <div>
-        <button id="new_room" class="my-2 btn btn-success">Create Room</button>
-        <button id="join_room" class="my-2 btn btn-primary">Join Room</button>
-      </div>
       <input
         id="room_name"
         type="text"
-        class="d-none my-1 form-control"
+        class="my-1 form-control"
         autocomplete="off"
         placeholder="Room name"
       />
-      <button id="create_room" class="d-none my-2 btn btn-success">
-        Create Room
-      </button>
-      <button id="join_room_btn" class="d-none my-2 btn btn-success">
-        Join Room
-      </button>
+      <button id="create_room" class="my-2 btn btn-success">Create Room</button>
+      <button id="join_room" class="my-2 btn btn-success">Join Room</button>
+      <button class="btn btn-menu btn-primary" onclick="homePage()">Menu</button>
     </div>
     <div class="my-3">
-      <h5>Online Rooms :</h5>
+      <h5>Online Rooms:</h5>
       <div id="onlinerooms"></div>
     </div>
   </div>
 </div>
+
 {% endblock content %}
 {% block script %}
 <link
   rel="stylesheet"
   href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
 />
-<script src="{% static 'js/bingo/create_room.js' %}"></script>
+<script src="{% static 'js/bingo/CreateRoom.js' %}"></script>
 {% endblock script %}

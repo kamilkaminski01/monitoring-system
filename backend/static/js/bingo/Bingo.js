@@ -2,13 +2,21 @@ const grid = document.querySelector('.grid');
 const items = [...document.querySelector('.grid').children];
 const bingodiv = document.querySelector('#bingodiv');
 
+const bingoHomeUrl = 'http://localhost:8000/bingo/';
+
+const bingoState = ['B', 'I', 'N', 'G', 'O'];
+let bingoIndex = 0;
 let keysArr = [];
 
 window.onload = () => {
   restart();
 };
 
-// all possible combination for bingo
+function homePage() {
+  window.location.href=bingoHomeUrl;
+}
+
+// All possible combinations for bingo win
 const bingoItems = [
   [1, 2, 3, 4, 5],
   [6, 7, 8, 9, 10],
@@ -38,9 +46,6 @@ function GetRandomArray() {
 
 const includesAll = (arr, values) => values.every((v) => arr.includes(v));
 
-const bingoState = ['B', 'I', 'N', 'G', 'O'];
-let bingoIndex = 0;
-
 function fillGrid() {
   items.forEach((item, ind) => {
     item.innerHTML = keysArr[ind];
@@ -51,14 +56,14 @@ function fillGrid() {
         return Swal.fire({
           icon: 'error',
           title: 'Oops...',
-          text: 'Game Finished ! Please Restart To Play Again !'
+          text: 'Game finished! Please restart to play again!'
         });
       }
       if (currPlayer !== loc_username) {
         return Swal.fire({
           icon: 'error',
           title: 'Oops...',
-          text: 'Not Your Turn!',
+          text: 'Not your turn!',
           toast: true,
           position: 'top-right'
         });
@@ -73,7 +78,6 @@ function restart() {
   fillGrid();
 }
 
-// when we click restart just refresh page
 function refreshPage() {
   window.location.reload();
 }
@@ -86,7 +90,7 @@ function checkBingo(item) {
     return Swal.fire({
       icon: 'error',
       title: 'Oops...',
-      text: 'Already Selected',
+      text: 'Already selected',
       toast: true,
       position: 'top-right'
     });
@@ -121,13 +125,13 @@ function loopItemsAndCheck() {
       bingodiv.append(span);
       bingoIndex += 1;
       if (bingoIndex === 5) {
-        Swal.fire(loc_username, 'You won the Game ', 'success');
+        Swal.fire(loc_username, 'You won the game', 'success');
         ws.send(
           JSON.stringify({
             command: 'won',
             user: loc_username,
             bingoCount: bingoIndex,
-            info: `${loc_username} won the Game`
+            info: `${loc_username} won the game`
           })
         );
       }

@@ -39,7 +39,7 @@ body {
 .color.white {
   background-color: white;
 }
-.btn-home{
+.btn-home {
   background-color: white;
   border: 1px solid #e7e7e7;
   padding: 15px 32px;
@@ -48,6 +48,6 @@ body {
   margin: 1px 2rem;
   float: right;
 }
-.btn-home:hover{
+.btn-home:hover {
   background-color: #e7e7e7;
 }

@@ -3,13 +3,13 @@ const user_num = document.getElementById('user_num');
 const userTurn = document.getElementById('userTurn');
 const sidebar = document.getElementById('sidebar');
 const chatInput = document.getElementById('chat-input');
-const urls = 'ws://127.0.0.1:8000/ws/clicked' + window.location.pathname;
-// let lastStep = 0;
+
+const socketUrl = 'ws://localhost:8000/ws/clicked' + window.location.pathname;
+const ws = new ReconnectingWebSocket(socketUrl);
+const loc_username = localStorage.getItem('username');
 
 let gamestate = 'ON';
-const ws = new ReconnectingWebSocket(urls);
 const addmearr = [];
-const loc_username = localStorage.getItem('username');
 
 let allPlayers = [];
 let total_player;
@@ -25,11 +25,12 @@ ws.onopen = function (e) {
   ws.send(
     JSON.stringify({
       command: 'joined',
-      info: `${loc_username} just Joined `,
+      info: `${loc_username} just joined`,
       user: loc_username
     })
   );
 };
+
 function notForMe(data) {
   return data.user !== loc_username;
 }
@@ -46,8 +47,8 @@ ws.onmessage = function (e) {
     user_num.textContent = data.users_count;
     if (notForMe(data)) {
       infodiv.innerHTML += `
-      <div class="side-text">
-      <p style="font-size:12px;">${data.info}</p>
+      <div class='side-text'>
+      <p style='font-size:12px;'>${data.info}</p>
       </div>
       `;
     }
@@ -85,6 +86,7 @@ ws.onmessage = function (e) {
     infodiv.scrollTop = infodiv.scrollHeight;
   }
 };
+
 function checkTurn() {
   playerTrack === total_player - 1 ? (playerTrack = 0) : playerTrack++;
   currPlayer = allPlayers[playerTrack];
@@ -92,12 +94,12 @@ function checkTurn() {
 }
 
 chatInput.addEventListener('keyup', (e) => {
-  if (e.key === "13" || e.key === 'Enter') {
+  if (e.key === '13' || e.key === 'Enter') {
     if (!chatInput.value.trim()) {
       return Swal.fire({
         icon: 'error',
         title: 'Oops...',
-        text: 'Your Message Cannot Be Empty !!',
+        text: 'Your message can not be empty!',
         toast: true,
         position: 'top-right'
       });

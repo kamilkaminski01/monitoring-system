@@ -113,7 +113,7 @@ class BingoConsumer(AsyncJsonWebsocketConsumer):
             self.room_name,
             {
                 "type": "websocket_leave",
-                "info": f"{self.user_left} left room",
+                "info": f"{self.user_left} left the room",
             },
         )
         await self.delete_player()
@@ -124,7 +124,9 @@ class BingoConsumer(AsyncJsonWebsocketConsumer):
 
     @database_sync_to_async
     def create_room(self) -> None:
-        self.bingo_room, _ = BingoRoom.objects.get_or_create(room_name=self.url_route)
+        # fmt: off
+        self.bingo_room,_ = BingoRoom.objects.get_or_create(room_name=self.url_route)  # noqa
+        # fmt: on
 
     @database_sync_to_async
     def create_players(self, name: str) -> None:

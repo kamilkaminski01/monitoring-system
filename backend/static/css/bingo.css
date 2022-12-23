@@ -124,7 +124,9 @@ a {
 .room-div:hover {
   background-color: #363263;
 }
-
+.btn-menu {
+  margin-left: 10px;
+}
 @media screen and (max-width: 1000px) {
   .sideme {
     flex-direction: column;
