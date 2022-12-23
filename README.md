@@ -25,13 +25,9 @@ make run
 Users can choose and interact within available web apps on `localhost:3000` which is
 the frontend domain.
 
-Backend is available at:
-- `0.0.0.0:8000`
-- `127.0.0.1:8000`
-- `localhost:8000`
-
+Backend is available at `localhost:8000`.
 Admin panel can be accessed through freely chosen backend domain at `/admin`
-e.g. `0.0.0.0:8000/admin`.
+e.g. `localhost:8000/admin`.
 
 [Docker Compose](https://docs.docker.com/compose/install/) is leveraged
 for reproducible builds and consistent local development environments.
