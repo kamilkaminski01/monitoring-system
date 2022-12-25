@@ -1,0 +1,40 @@
+{% extends "tictactoe/base.html" %}
+{% load static %}
+{% block content %}
+
+<div class="container mt-5 pt-5">
+  <h3 class="text-center text-white">TIC TAC TOE</h3>
+  <div class="col-md-6 mx-auto mt-4">
+    {% if messages %}
+      {% for message in messages %}
+        <div class="alert alert-light">{{ message }}</div>
+      {% endfor %}
+    {% endif %}
+    <form method="post">
+      {% csrf_token %}
+      <div class="row">
+        <div class="col-md-12 form-group">
+          <label class="text-white">Enter username</label>
+          <input type="text" name="username" class="form-control" />
+        </div>
+
+        <div class="col-md-12 form-group">
+          <label class="text-white">Choose option</label>
+
+          <select class="form-control" name="option">
+            <option value="1">Join room</option>
+            <option value="2">Create room</option>
+          </select>
+        </div>
+
+        <div class="col-md-12 form-group">
+          <label class="text-white">Enter room name</label>
+          <input type="text" name="room" class="form-control" />
+        </div>
+      </div>
+      <button type="submit" class="btn btn-light">Start Game</button>
+    </form>
+  </div>
+</div>
+
+{% endblock content %}

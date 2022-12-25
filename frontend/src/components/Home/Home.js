@@ -21,6 +21,12 @@ function Home() {
           body="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
           link="http://localhost:8000/bingo"
         />
+        <Card
+          title="Tic Tac Toe"
+          imageUrl="https://picsum.photos/300"
+          body="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          link="http://localhost:8000/tictactoe"
+        />
       </div>
     </div>
   );

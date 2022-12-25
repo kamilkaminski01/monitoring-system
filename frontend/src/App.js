@@ -12,6 +12,7 @@ function App() {
         <Route path={PATHS.home} element={<Home />} />
         <Route path={PATHS.whiteboard} element={<Whiteboard />} />
         <Route path={PATHS.bingo} />
+        <Route path={PATHS.tictactoe} />
       </Routes>
     </div>
   );
