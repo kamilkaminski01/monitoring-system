@@ -1,0 +1,35 @@
+{% extends "tictactoe/base.html" %}
+{% load static %}
+{% block content %}
+
+<div class="full-page" id="full-page">
+  <div class="game flex-column">
+    <div class="scoreboard">
+      <div class="player1">Player 1: 0</div>
+      <div class="player2">Player 2: 0</div>
+    </div>
+    <div class="boardcontainer">
+      <div class="board">
+        <div data-cell-index="0" class="space"></div>
+        <div data-cell-index="1" class="space"></div>
+        <div data-cell-index="2" class="space"></div>
+        <div data-cell-index="3" class="space"></div>
+        <div data-cell-index="4" class="space"></div>
+        <div data-cell-index="5" class="space"></div>
+        <div data-cell-index="6" class="space"></div>
+        <div data-cell-index="7" class="space"></div>
+        <div data-cell-index="8" class="space"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock content %}
+{% block script %}
+  <script>
+    let room = '{{room}}';
+    let username = '{{username}}';
+  </script>
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+  <script src="{% static 'js/tictactoe/Play.js' %}"></script>
+{% endblock script %}
