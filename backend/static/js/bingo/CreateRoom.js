@@ -3,19 +3,14 @@ const room_name = document.querySelector('#room_name');
 const join_room = document.querySelector('#join_room');
 const username = document.querySelector('#username');
 
-const homeUrl = 'http://localhost:3000/';
 const bingoHomeUrl = 'http://localhost:8000/bingo/';
 const socketHomeUrl = 'ws://localhost:8000/ws/online-rooms/bingo/';
 
 username.value = localStorage.getItem('username') || '';
 
-function homePage() {
-  window.location.href=homeUrl;
-}
-
 function getInRoom() {
   if (!/^[a-zA-Z0-9-_]+$/.test(room_name.value)) {
-    Swal.fire('Error', 'Pleas use underscore and alphanumeric only!', 'error');
+    Swal.fire('Error', 'Please use underscore and alphanumeric only!', 'error');
   } else {
     if (username.value.length < 3) {
       Swal.fire('Error', 'Username must be larger than 3 letters', 'error');

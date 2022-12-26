@@ -65,7 +65,7 @@ function setText(index, value) {
     socket.send(JSON.stringify({data}));
     checkWon(value, player);
   } else {
-    alert('You cannot fill this space');
+    swal('Error', 'You cannot fill this space!', 'error');
   }
 }
 

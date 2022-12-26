@@ -2,8 +2,6 @@ const grid = document.querySelector('.grid');
 const items = [...document.querySelector('.grid').children];
 const bingodiv = document.querySelector('#bingodiv');
 
-const bingoHomeUrl = 'http://localhost:8000/bingo/';
-
 const bingoState = ['B', 'I', 'N', 'G', 'O'];
 let bingoIndex = 0;
 let keysArr = [];
@@ -11,10 +9,6 @@ let keysArr = [];
 window.onload = () => {
   restart();
 };
-
-function homePage() {
-  window.location.href=bingoHomeUrl;
-}
 
 // All possible combinations for bingo win
 const bingoItems = [
@@ -76,10 +70,6 @@ function fillGrid() {
 function restart() {
   GetRandomArray();
   fillGrid();
-}
-
-function refreshPage() {
-  window.location.reload();
 }
 
 function checkBingo(item) {

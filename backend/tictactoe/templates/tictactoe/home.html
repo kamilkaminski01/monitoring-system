@@ -34,7 +34,11 @@
       </div>
       <button type="submit" class="btn btn-light">Start Game</button>
     </form>
+    <button style="margin-top: 10px" class="btn btn-light" onclick="menuPage()">Menu</button>
   </div>
 </div>
 
 {% endblock content %}
+{% block script %}
+<script src="{% static 'js/Utils.js' %}"></script>
+{% endblock script %}
