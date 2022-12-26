@@ -1,7 +1,7 @@
 .App {
-  text-align: center;
-  min-height: 70vh;
   display: flex;
+  text-align: center;
+  min-height: 87vh;
   align-items: center;
   column-gap: 5em;
   justify-content: center;
