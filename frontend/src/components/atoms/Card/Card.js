@@ -17,7 +17,7 @@ function Card({ title, imageUrl, body, link }) {
       </div>
       <div className="btn">
         <button>
-          <a href={link}>open</a>
+          <a href={link}>OPEN</a>
         </button>
       </div>
     </div>
