@@ -1,4 +1,5 @@
 import React, { useRef, useEffect } from 'react';
+import { PATHS } from '../../utils/consts';
 import './Whiteboard.css';
 
 const Whiteboard = () => {
@@ -158,7 +159,7 @@ const Whiteboard = () => {
         <div className="color yellow" />
         <div className="color white" />
         <button className="btn-home">
-          <a href="http://localhost:3000/">Home</a>
+          <a href={PATHS.home}>HOME</a>
         </button>
       </div>
     </div>

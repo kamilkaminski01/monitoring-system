@@ -75,12 +75,12 @@ function setAnotherUserText(index, value) {
 }
 
 socket.onopen = function (e) {
-  console.log('Socket connected');
+  // console.log('Socket connected');
 };
 
 socket.onmessage = function (e) {
   let data = JSON.parse(e.data);
-  console.log(data);
+  // console.log(data);
   if (data.payLoad.type === 'end' && data.payLoad.player !== player) {
     swal('Sorry!', 'You lost', 'error');
   } else if (data.payLoad.type === 'over') {
@@ -91,5 +91,5 @@ socket.onmessage = function (e) {
 };
 
 socket.onclose = function (e) {
-  console.log('Socket closed');
+  // console.log('Socket closed');
 };

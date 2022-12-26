@@ -1,31 +1,28 @@
 import React from 'react';
-import Card from '../Card/Card.js';
-import '../../App.css';
+import Card from '../../components/atoms/Card/Card.js';
+import { PATHS } from '../../utils/consts';
 
 function Home() {
   return (
     <div>
-      <div className="title">
-        <h1>Monitoring system</h1>
-      </div>
       <div className="App">
         <Card
           title="Whiteboard"
           imageUrl="https://picsum.photos/300"
           body="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
-          link="http://localhost:3000/whiteboard"
+          link={PATHS.whiteboard}
         />
         <Card
           title="Bingo"
           imageUrl="https://picsum.photos/300"
           body="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
-          link="http://localhost:8000/bingo"
+          link={PATHS.bingo}
         />
         <Card
           title="Tic Tac Toe"
           imageUrl="https://picsum.photos/300"
           body="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
-          link="http://localhost:8000/tictactoe"
+          link={PATHS.tictactoe}
         />
       </div>
     </div>
