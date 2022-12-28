@@ -6,7 +6,7 @@ function menuPage() {
   window.location.href=menuPageURL;
 }
 
-function tictacetoeHomePage() {
+function tictactoeHomePage() {
   window.location.href=tictactoeHomeURL;
 }
 
@@ -16,4 +16,14 @@ function bingoHomePage() {
 
 function refreshPage() {
   window.location.reload();
+}
+
+function setBingoUsername(username) {
+  if (!username) {
+    const name = prompt('Please give a username:');
+    localStorage.setItem('username', name);
+  }
+
+  const userdiv = document.getElementById('userdiv');
+  userdiv.textContent = username;
 }

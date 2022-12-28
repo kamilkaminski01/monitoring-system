@@ -1,58 +1,57 @@
-const infodiv = document.getElementById('infodiv');
-const user_num = document.getElementById('user_num');
+const infoDiv = document.getElementById('infodiv');
+const userNum = document.getElementById('userNum');
 const userTurn = document.getElementById('userTurn');
-const sidebar = document.getElementById('sidebar');
-const chatInput = document.getElementById('chat-input');
+const chatInput = document.getElementById('chatInput');
 
-const socketUrl = 'ws://localhost:8000/ws/clicked' + window.location.pathname;
-const ws = new ReconnectingWebSocket(socketUrl);
-const loc_username = localStorage.getItem('username');
+const bingoSocketUrl = 'ws://localhost:8000/ws/clicked' + window.location.pathname;
+const bingoSocket = new WebSocket(bingoSocketUrl);
+const bingoUsername = localStorage.getItem('username');
 
 let gamestate = 'ON';
 const addmearr = [];
 
 let allPlayers = [];
-let total_player;
+let totalPlayers;
 let playerTrack = 0;
-let currPlayer;
+let currentPlayer;
 
 window.onbeforeunload = function (event) {
   if (gamestate !== 'ON') return;
   return 'Do you really want to refresh?';
 };
 
-ws.onopen = function (e) {
-  ws.send(
+bingoSocket.onopen = function (e) {
+  bingoSocket.send(
     JSON.stringify({
       command: 'joined',
-      info: `${loc_username} just joined`,
-      user: loc_username
+      info: `${bingoUsername} just joined`,
+      user: bingoUsername
     })
   );
 };
 
 function notForMe(data) {
-  return data.user !== loc_username;
+  return data.user !== bingoUsername;
 }
 
-ws.onmessage = function (e) {
+bingoSocket.onmessage = function (e) {
   const data = JSON.parse(e.data);
   const command = data.command;
 
   if (command === 'joined') {
     allPlayers = data.all_players;
-    total_player = data.users_count;
-    currPlayer = allPlayers[playerTrack];
-    userTurn.textContent = currPlayer === loc_username ? 'Your ' : `${currPlayer}'s`;
-    user_num.textContent = data.users_count;
+    totalPlayers = data.users_count;
+    currentPlayer = allPlayers[playerTrack];
+    userTurn.textContent = currentPlayer === bingoUsername ? 'Your ' : `${currentPlayer}'s`;
+    userNum.textContent = data.users_count;
     if (notForMe(data)) {
-      infodiv.innerHTML += `
+      infoDiv.innerHTML += `
       <div class='side-text'>
       <p style='font-size:12px;'>${data.info}</p>
       </div>
       `;
     }
-    infodiv.scrollTop = infodiv.scrollHeight;
+    infoDiv.scrollTop = infoDiv.scrollHeight;
   }
   if (command === 'clicked') {
     getLastStep(data.dataset);
@@ -77,20 +76,20 @@ ws.onmessage = function (e) {
   }
 
   if (command === 'chat') {
-    infodiv.innerHTML += `<div class="side-text">
+    infoDiv.innerHTML += `<div class="side-text">
         <p >${data.chat}
         <span class="float-right"> - ${data.user}</span>
         </p>
      </div>
     `;
-    infodiv.scrollTop = infodiv.scrollHeight;
+    infoDiv.scrollTop = infoDiv.scrollHeight;
   }
 };
 
 function checkTurn() {
-  playerTrack === total_player - 1 ? (playerTrack = 0) : playerTrack++;
-  currPlayer = allPlayers[playerTrack];
-  userTurn.textContent = currPlayer === loc_username ? 'Your ' : `${currPlayer}'s`;
+  playerTrack === totalPlayers - 1 ? (playerTrack = 0) : playerTrack++;
+  currentPlayer = allPlayers[playerTrack];
+  userTurn.textContent = currentPlayer === bingoUsername ? 'Your ' : `${currentPlayer}'s`;
 }
 
 chatInput.addEventListener('keyup', (e) => {
@@ -104,9 +103,9 @@ chatInput.addEventListener('keyup', (e) => {
         position: 'top-right'
       });
     }
-    ws.send(
+    bingoSocket.send(
       JSON.stringify({
-        user: loc_username,
+        user: bingoUsername,
         chat: chatInput.value,
         command: 'chat'
       })

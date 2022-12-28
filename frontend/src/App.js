@@ -4,7 +4,7 @@ import { PATHS } from './utils/consts';
 import Home from './pages/HomePage/Home.js';
 import SharedLayout from './components/atoms/SharedLayout/SharedLayout';
 import Whiteboard from './pages/Whiteboard/Whiteboard.js';
-import MonitoringPanel from './pages/MonitoringPanel/MonitoringPanel';
+import MonitoringPanel from './pages/MonitoringPanel/MonitoringPanel.js';
 import './App.css';
 
 function App() {
