@@ -1,3 +1,4 @@
+import json
 from typing import Any
 
 from channels.db import database_sync_to_async
@@ -159,9 +160,8 @@ class OnlineRoomConsumer(AsyncJsonWebsocketConsumer):
         )
 
     async def websocket_rooms(self, event: dict) -> None:
-        await self.send_json(
-            ({"command": "online_rooms", "online_rooms": self.online_rooms})
-        )
+        online_rooms = event["online_rooms"]
+        await self.send(text_data=json.dumps(online_rooms))
 
     async def websocket_room_added(self, event: dict) -> None:
         await self.send_json(

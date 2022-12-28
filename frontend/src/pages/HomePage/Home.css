@@ -1,7 +1,8 @@
-.App {
-  /*display: flex;*/
+.home {
+  display: flex;
   text-align: center;
-  align-items: center;
-  justify-content: center;
   min-height: 87vh;
+  align-items: center;
+  column-gap: 4em;
+  justify-content: center;
 }
