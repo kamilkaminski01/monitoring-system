@@ -1,5 +1,3 @@
-from typing import Any
-
 from channels.db import database_sync_to_async
 from channels.generic.websocket import AsyncJsonWebsocketConsumer
 
@@ -90,7 +88,7 @@ class BingoConsumer(AsyncJsonWebsocketConsumer):
                     "user": event["user"],
                     "bingoCount": event.get("bingoCount"),
                     "users_count": self.players_count_all,
-                    "all_players": self.all_players_for_room,
+                    "all_players": self.all_players_in_room,
                 }
             )
         )
@@ -103,12 +101,12 @@ class BingoConsumer(AsyncJsonWebsocketConsumer):
                     "command": "joined",
                     "info": event["info"],
                     "users_count": self.players_count_all,
-                    "all_players": self.all_players_for_room,
+                    "all_players": self.all_players_in_room,
                 }
             )
         )
 
-    async def disconnect(self, close_code: Any) -> None:
+    async def disconnect(self, close_code: int) -> None:
         await self.channel_layer.group_send(
             self.room_name,
             {
@@ -124,17 +122,15 @@ class BingoConsumer(AsyncJsonWebsocketConsumer):
 
     @database_sync_to_async
     def create_room(self) -> None:
-        # fmt: off
-        self.bingo_room,_ = BingoRoom.objects.get_or_create(room_name=self.url_route)  # noqa
-        # fmt: on
+        self.bingo_room, _ = BingoRoom.objects.get_or_create(room_name=self.url_route)
 
     @database_sync_to_async
-    def create_players(self, name: str) -> None:
-        TrackPlayers.objects.get_or_create(room=self.bingo_room, username=name)
+    def create_players(self, username: str) -> None:
+        TrackPlayers.objects.get_or_create(room=self.bingo_room, username=username)
 
     @database_sync_to_async
     def players_count(self) -> None:
-        self.all_players_for_room = [
+        self.all_players_in_room = [
             x.username for x in self.bingo_room.trackplayers_set.all()
         ]
         self.players_count_all = self.bingo_room.trackplayers_set.all().count()
@@ -147,7 +143,7 @@ class BingoConsumer(AsyncJsonWebsocketConsumer):
             self.bingo_room.delete()
 
 
-class OnlineRoomConsumer(AsyncJsonWebsocketConsumer):
+class BingoOnlineRoomConsumer(AsyncJsonWebsocketConsumer):
     async def connect(self) -> None:
         await self.accept()
         self.room_name = "online_bingo_room"
@@ -188,7 +184,7 @@ class OnlineRoomConsumer(AsyncJsonWebsocketConsumer):
     async def receive_json(self, content: dict, **kwargs) -> None:
         return await super().receive_json(content, **kwargs)
 
-    async def disconnect(self, code: Any) -> None:
+    async def disconnect(self, code: int) -> None:
         return await super().disconnect(code)
 
     @database_sync_to_async

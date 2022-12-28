@@ -1,8 +1,10 @@
 from django.urls import path
 
-from .consumers import BingoConsumer, OnlineRoomConsumer
+from .consumers import BingoConsumer, BingoOnlineRoomConsumer
 
 websocket_urlpatterns = [
     path("ws/clicked/bingo/<room_name>/", BingoConsumer.as_asgi(), name="clicked"),
-    path("ws/online-rooms/bingo/", OnlineRoomConsumer.as_asgi(), name="online_rooms"),
+    path(
+        "ws/online-rooms/bingo/", BingoOnlineRoomConsumer.as_asgi(), name="online_rooms"
+    ),
 ]
