@@ -2,43 +2,42 @@
 {% load static %}
 {% block content %}
 
-<div class="container mt-5 pt-5">
-  <h3 class="text-center text-white">TIC TAC TOE</h3>
-  <div class="col-md-6 mx-auto mt-4">
-    {% if messages %}
-      {% for message in messages %}
-        <div class="alert alert-light">{{ message }}</div>
-      {% endfor %}
-    {% endif %}
-    <form method="post">
-      {% csrf_token %}
-      <div class="row">
-        <div class="col-md-12 form-group">
-          <label class="text-white">Enter username</label>
-          <input type="text" name="username" class="form-control" />
-        </div>
-
-        <div class="col-md-12 form-group">
-          <label class="text-white">Choose option</label>
-
-          <select class="form-control" name="option">
-            <option value="1">Join room</option>
-            <option value="2">Create room</option>
-          </select>
-        </div>
-
-        <div class="col-md-12 form-group">
-          <label class="text-white">Enter room name</label>
-          <input type="text" name="room" class="form-control" />
-        </div>
-      </div>
-      <button type="submit" class="btn btn-light">Start Game</button>
-    </form>
-    <button style="margin-top: 10px" class="btn btn-light" onclick="menuPage()">Menu</button>
+<div class="home-container">
+  <div class="col-lg-6 col-sm-8">
+    <h3 class="text-white">TIC TAC TOE</h3>
+    <div class="my-3">
+      <input
+        id="username"
+        type="text"
+        class="my-1 form-control"
+        autocomplete="off"
+        placeholder="Your username"
+      />
+      <input
+        id="room_name"
+        type="text"
+        class="my-1 form-control my-form"
+        autocomplete="off"
+        placeholder="Room name"
+      />
+      <button id="create_room" class="my-2 btn btn-light">Create Room</button>
+      <button id="join_room" class="my-2 btn btn-light">Join Room</button>
+      <button class="btn btn-light" onclick="menuPage()">Menu</button>
+    </div>
+    <div class="my-3">
+      <h3 class="text-left text-white">Online Rooms:</h3>
+      <div id="onlinerooms"></div>
+    </div>
   </div>
 </div>
 
 {% endblock content %}
 {% block script %}
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+/>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script src="{% static 'js/tictactoe/TicTacToeHome.js' %}"></script>
 <script src="{% static 'js/utils.js' %}"></script>
 {% endblock script %}

@@ -1,35 +1,24 @@
-from django.contrib import messages
-from django.http import HttpRequest, HttpResponse
-from django.shortcuts import redirect, render
+import re
 
-from .models import Game
+from django.http import HttpRequest, HttpResponse, JsonResponse
+from django.shortcuts import render
+from django.views.decorators.csrf import csrf_exempt
+
+from .models import TicTacToeRoom
 
 
-def home(request: HttpRequest) -> HttpResponse:
-    if request.method == "POST":
-        username = request.POST.get("username")
-        room = request.POST.get("room")
-        option = request.POST.get("option")
-        if option == "1":
-            game = Game.objects.filter(room=room).first()
-            if game is None:
-                messages.success(request, "Room not found")
-                return redirect("/tictactoe")
-            if game.is_over:
-                messages.success(request, "Game is over")
-                return redirect("/tictactoe")
-            game.opponent = username
-            game.save()
-            return redirect(f"play/{room}?username={username}")
-        else:
-            if username and room:
-                game = Game(host=username, room=room)
-                game.save()
-                return redirect(f"play/{room}?username={username}")
+def create_room_view(request: HttpRequest) -> HttpResponse:
     return render(request, "tictactoe/home.html")
 
 
-def play(request: HttpRequest, room: str) -> HttpResponse:
-    username = request.GET.get("username")
-    context = {"room": room, "username": username}
-    return render(request, "tictactoe/play.html", context)
+def tictactoe_view(request: HttpRequest, room_name: str) -> HttpResponse:
+    if not re.match(r"^[\w-]*$", room_name):
+        return render(request, "tictactoe/error.html")
+    return render(request, "tictactoe/tictactoe.html")
+
+
+@csrf_exempt
+def room_exist(request: HttpRequest, room_name: str) -> JsonResponse:
+    return JsonResponse(
+        {"room_exist": TicTacToeRoom.objects.filter(room_name=room_name).exists()}
+    )

@@ -1,11 +1,12 @@
 import React from 'react';
 import Card from '../../components/atoms/Card/Card.js';
 import { PATHS } from '../../utils/consts';
+import './Home.css';
 
 function Home() {
   return (
     <div>
-      <div className="App">
+      <div className="home">
         <Card
           title="Whiteboard"
           imageUrl="https://picsum.photos/300"

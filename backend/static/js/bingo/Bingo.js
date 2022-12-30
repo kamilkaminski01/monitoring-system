@@ -26,7 +26,7 @@ const bingoItems = [
   [5, 9, 13, 17, 21]
 ];
 
-function GetRandomArray() {
+function getRandomArray() {
   keysArr = [];
   for (let i = 1; i < 26; i++) {
     b = Math.ceil(Math.random() * 25);
@@ -53,7 +53,7 @@ function fillGrid() {
           text: 'Game finished! Please restart to play again!'
         });
       }
-      if (currPlayer !== loc_username) {
+      if (currentPlayer !== bingoUsername) {
         return Swal.fire({
           icon: 'error',
           title: 'Oops...',
@@ -68,7 +68,7 @@ function fillGrid() {
 }
 
 function restart() {
-  GetRandomArray();
+  getRandomArray();
   fillGrid();
 }
 
@@ -87,12 +87,12 @@ function checkBingo(item) {
   }
   addmearr.push(dataint);
   item.classList.add('clicked');
-  ws.send(
+  bingoSocket.send(
     JSON.stringify({
       command: 'clicked',
       dataset: innernum,
       dataid: dataid,
-      user: loc_username
+      user: bingoUsername
     })
   );
   loopItemsAndCheck();
@@ -115,13 +115,13 @@ function loopItemsAndCheck() {
       bingodiv.append(span);
       bingoIndex += 1;
       if (bingoIndex === 5) {
-        Swal.fire(loc_username, 'You won the game', 'success');
-        ws.send(
+        Swal.fire(bingoUsername, 'You won the game', 'success');
+        bingoSocket.send(
           JSON.stringify({
             command: 'won',
-            user: loc_username,
+            user: bingoUsername,
             bingoCount: bingoIndex,
-            info: `${loc_username} won the game`
+            info: `${bingoUsername} won the game`
           })
         );
       }

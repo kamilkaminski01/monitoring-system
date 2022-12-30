@@ -8,7 +8,7 @@ from .models import BingoRoom
 
 
 def create_room_view(request: HttpRequest) -> HttpResponse:
-    return render(request, "bingo/create_room.html")
+    return render(request, "bingo/home.html")
 
 
 def bingo_view(request: HttpRequest, room_name: str) -> HttpResponse:
