@@ -2,7 +2,7 @@
 {% load static %}
 {% block content %}
 
-<button class="btn btn-light btn-game" onclick="tictacetoeHomePage()">Home</button>
+<button class="btn btn-light btn-game" onclick="tictactoeHomePage()">Home</button>
 <button class="btn btn-light btn-game" onclick="refreshPage()">Restart</button>
 <div class="full-page" id="full-page">
   <div class="game flex-column">
@@ -24,15 +24,30 @@
       </div>
     </div>
   </div>
+  <div class="side-info">
+    <div id="sidebar">
+      <div class="text-white" id="infodiv">
+        <h6>Room Activity</h6>
+        <hr />
+      </div>
+    </div>
+    <input
+      id="chatInput"
+      type="text"
+      placeholder="send a message"
+      class="mt-1 form-control send-msg"
+    />
+  </div>
 </div>
 
 {% endblock content %}
 {% block script %}
-  <script>
-    let room = '{{room}}';
-    let username = '{{username}}';
-  </script>
   <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-  <script src="{% static 'js/tictactoe/Play.js' %}"></script>
+  <script src="{% static 'js/utils.js' %}"></script>
+  <script>
+    const username = localStorage.getItem('username');
+    setUsername(username)
+  </script>
+  <script src="{% static 'js/tictactoe/TicTacToe.js' %}"></script>
   <script src="{% static 'js/utils.js' %}"></script>
 {% endblock script %}

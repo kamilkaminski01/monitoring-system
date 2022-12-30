@@ -18,7 +18,7 @@ function refreshPage() {
   window.location.reload();
 }
 
-function setBingoUsername(username) {
+function setUsername(username) {
   if (!username) {
     const name = prompt('Please give a username:');
     localStorage.setItem('username', name);

@@ -1,8 +1,13 @@
 from django.db import models
 
 
-class Game(models.Model):
-    room = models.CharField(max_length=100)
-    host = models.CharField(max_length=100)
-    opponent = models.CharField(max_length=100, blank=True, null=True)
-    is_over = models.BooleanField(default=False)
+class TicTacToeRoom(models.Model):
+    room_name = models.CharField(max_length=50)
+
+    def __str__(self) -> str:
+        return self.room_name
+
+
+class TrackPlayers(models.Model):
+    username = models.CharField(max_length=50)
+    room = models.ForeignKey(TicTacToeRoom, on_delete=models.CASCADE)
