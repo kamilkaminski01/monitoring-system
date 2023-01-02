@@ -15,7 +15,6 @@ class TicTacToeConsumer(AsyncJsonWebsocketConsumer):
 
     async def receive_json(self, content: dict, **kwargs) -> None:
         command = content.get("command", None)
-        print(f"RECEIVE_JSON: {content}")
         await self.channel_layer.group_send(
             self.room_name,
             {
@@ -50,11 +49,9 @@ class TicTacToeConsumer(AsyncJsonWebsocketConsumer):
             )
 
     async def run_game(self, event: dict) -> None:
-        print(f"RUNGAME: {event}")
         await self.send_json({"payLoad": event["payLoad"]})
 
     async def websocket_chat(self, event: dict) -> None:
-        print(f"WEBSOCKET_CHAT: {event}")
         await self.send_json(
             (
                 {
@@ -66,7 +63,6 @@ class TicTacToeConsumer(AsyncJsonWebsocketConsumer):
         )
 
     async def websocket_joined(self, event: dict) -> None:
-        print(f"WEBSOCKET_JOINED: {event}")
         await self.players_count()
         await self.send_json(
             (
@@ -82,7 +78,6 @@ class TicTacToeConsumer(AsyncJsonWebsocketConsumer):
         )
 
     async def websocket_leave(self, event: dict) -> None:
-        print(f"WEBSOCKET_LEAVE: {event}")
         await self.players_count()
         await self.send_json(
             (
@@ -96,7 +91,6 @@ class TicTacToeConsumer(AsyncJsonWebsocketConsumer):
         )
 
     async def disconnect(self, close_code: int) -> None:
-        print("DISCONNECT")
         await self.channel_layer.group_send(
             self.room_name,
             {
