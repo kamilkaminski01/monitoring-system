@@ -6,10 +6,11 @@
 <button class="btn btn-light btn-game" onclick="refreshPage()">Restart</button>
 <div class="full-page" id="full-page">
   <div class="game flex-column">
-{#    <div class="scoreboard">#}
-{#      <div class="player1">Player 1: 0</div>#}
-{#      <div class="player2">Player 2: 0</div>#}
-{#    </div>#}
+    <div class="scoreboard">
+      <div>Total users:<span style="margin-left: 3px" id="userNum"></span></div>
+      <div id="userdiv"></div>
+      <div><span id="userTurn"></span>'s turn</div>
+    </div>
     <div class="boardcontainer">
       <div class="board">
         <div data-cell-index="0" class="space"></div>
@@ -49,5 +50,4 @@
     setUsername(username)
   </script>
   <script src="{% static 'js/tictactoe/TicTacToe.js' %}"></script>
-  <script src="{% static 'js/utils.js' %}"></script>
 {% endblock script %}

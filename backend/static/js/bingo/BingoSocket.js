@@ -42,14 +42,15 @@ bingoSocket.onmessage = function (e) {
     allPlayers = data.all_players;
     totalPlayers = data.users_count;
     currentPlayer = allPlayers[playerTrack];
-    userTurn.textContent = currentPlayer === bingoUsername ? 'Your ' : `${currentPlayer}'s`;
+    userTurn.textContent = currentPlayer
     userNum.textContent = data.users_count;
     if (notForMe(data)) {
-      infoDiv.innerHTML += `
-      <div class='side-text'>
-      <p style='font-size:12px;'>${data.info}</p>
-      </div>
-      `;
+      infoDiv.innerHTML +=
+        `
+          <div class='side-text'>
+            <p style='font-size:12px;'>${data.info}</p>
+          </div>
+        `;
     }
     infoDiv.scrollTop = infoDiv.scrollHeight;
   }
@@ -76,12 +77,14 @@ bingoSocket.onmessage = function (e) {
   }
 
   if (command === 'chat') {
-    infoDiv.innerHTML += `<div class="side-text">
-        <p >${data.chat}
-        <span class="float-right"> - ${data.user}</span>
-        </p>
-     </div>
-    `;
+    infoDiv.innerHTML +=
+      `
+        <div class="side-text">
+          <p >${data.chat}
+            <span class="float-right"> - ${data.user}</span>
+          </p>
+        </div>
+      `;
     infoDiv.scrollTop = infoDiv.scrollHeight;
   }
 };
@@ -89,11 +92,11 @@ bingoSocket.onmessage = function (e) {
 function checkTurn() {
   playerTrack === totalPlayers - 1 ? (playerTrack = 0) : playerTrack++;
   currentPlayer = allPlayers[playerTrack];
-  userTurn.textContent = currentPlayer === bingoUsername ? 'Your ' : `${currentPlayer}'s`;
+  userTurn.textContent = currentPlayer
 }
 
 chatInput.addEventListener('keyup', (e) => {
-  if (e.key === '13' || e.key === 'Enter') {
+  if (e.key === 'Enter') {
     if (!chatInput.value.trim()) {
       return Swal.fire({
         icon: 'error',

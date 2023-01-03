@@ -1,30 +1,43 @@
 const infoDiv = document.getElementById('infodiv');
+const userNum = document.getElementById('userNum');
+const userTurn = document.getElementById('userTurn');
 const chatInput = document.getElementById('chatInput');
 let elementArray = document.querySelectorAll('.space');
 
-const socketUrl = 'ws://localhost:8000/ws/clicked' + window.location.pathname;
-const socket = new WebSocket(socketUrl);
+const tictactoeSocketUrl = 'ws://localhost:8000/ws/clicked' + window.location.pathname;
+const tictactoeSocket = new WebSocket(tictactoeSocketUrl);
 
 const tictactoeUsername = localStorage.getItem('username');
 const player = tictactoeUsername[0]
-let gameState = ['', '', '', '', '', '', '', '', ''];
+let boardState = ['', '', '', '', '', '', '', '', ''];
+let gameState = 'ON';
 
+let allPlayers = [];
+let totalPlayers;
+let playerTrack = 0;
+let currentPlayer;
 
 elementArray.forEach(function (elem) {
   elem.addEventListener('click', function (event) {
-    setText(event.path[0].getAttribute('data-cell-index'), player);
+    if (currentPlayer === tictactoeUsername && gameState === 'ON') {
+      setText(event.path[0].getAttribute('data-cell-index'), player);
+    } else if (gameState === 'OFF'){
+      swal('Game Ended', 'Restart the game', 'error');
+    } else {
+      swal('Oops...', 'Not your turn!', 'warning');
+    }
   });
 });
 
 function checkGameEnd() {
   let count = 0;
-  gameState.map((game) => {
+  boardState.map((game) => {
     if (game !== '') {
       count++;
     }
   });
   if (count >= 9) {
-    socket.send(
+    tictactoeSocket.send(
       JSON.stringify({
         "type": "over"
       })
@@ -35,26 +48,27 @@ function checkGameEnd() {
 
 function checkWon(value, player) {
   let won = false;
-  if (gameState[0] === value && gameState[1] === value && gameState[2] === value) {
+  if (boardState[0] === value && boardState[1] === value && boardState[2] === value) {
     won = true;
-  } else if (gameState[3] === value && gameState[4] === value && gameState[5] === value) {
+  } else if (boardState[3] === value && boardState[4] === value && boardState[5] === value) {
     won = true;
-  } else if (gameState[6] === value && gameState[7] === value && gameState[8] === value) {
+  } else if (boardState[6] === value && boardState[7] === value && boardState[8] === value) {
     won = true;
-  } else if (gameState[0] === value && gameState[3] === value && gameState[6] === value) {
+  } else if (boardState[0] === value && boardState[3] === value && boardState[6] === value) {
     won = true;
-  } else if (gameState[1] === value && gameState[4] === value && gameState[7] === value) {
+  } else if (boardState[1] === value && boardState[4] === value && boardState[7] === value) {
     won = true;
-  } else if (gameState[2] === value && gameState[5] === value && gameState[8] === value) {
+  } else if (boardState[2] === value && boardState[5] === value && boardState[8] === value) {
     won = true;
-  } else if (gameState[0] === value && gameState[4] === value && gameState[8] === value) {
+  } else if (boardState[0] === value && boardState[4] === value && boardState[8] === value) {
     won = true;
-  } else if (gameState[2] === value && gameState[4] === value && gameState[6] === value) {
+  } else if (boardState[2] === value && boardState[4] === value && boardState[6] === value) {
     won = true;
   }
 
   if (won) {
-    socket.send(
+    gameState = 'OFF';
+    tictactoeSocket.send(
       JSON.stringify({
         "type": "won",
         "player": player
@@ -65,12 +79,18 @@ function checkWon(value, player) {
   checkGameEnd();
 }
 
-function setText(index, value) {
-  if (gameState[parseInt(index)] === '') {
-    gameState[parseInt(index)] = value;
-    elementArray[parseInt(index)].innerHTML = value;
+function checkTurn() {
+  playerTrack === totalPlayers - 1 ? (playerTrack = 0) : playerTrack++;
+  currentPlayer = allPlayers[playerTrack];
+  userTurn.textContent = currentPlayer
+}
 
-    socket.send(
+function setText(index, value) {
+  if (boardState[parseInt(index)] === '') {
+    checkTurn()
+    boardState[parseInt(index)] = value;
+    elementArray[parseInt(index)].innerHTML = value;
+    tictactoeSocket.send(
       JSON.stringify({
         "player": player,
         "index": index,
@@ -84,7 +104,8 @@ function setText(index, value) {
 }
 
 function setAnotherUserText(index, value) {
-  gameState[parseInt(index)] = value;
+  checkTurn()
+  boardState[parseInt(index)] = value;
   elementArray[parseInt(index)].innerHTML = value;
 }
 
@@ -92,8 +113,8 @@ function notForMe(data) {
   return data.user !== tictactoeUsername;
 }
 
-socket.onopen = function (e) {
-    socket.send(
+tictactoeSocket.onopen = function (e) {
+    tictactoeSocket.send(
     JSON.stringify({
       command: 'joined',
       info: `${tictactoeUsername} just joined`,
@@ -102,16 +123,20 @@ socket.onopen = function (e) {
   );
 };
 
-socket.onmessage = function (e) {
+tictactoeSocket.onmessage = function (e) {
   const data = JSON.parse(e.data);
-  // console.log(data);
-
   if (data.command === 'joined'){
+    allPlayers = data.all_players;
+    totalPlayers = data.users_count;
+    currentPlayer = allPlayers[playerTrack];
+    userTurn.textContent = currentPlayer
+    userNum.textContent = data.users_count;
     if (notForMe(data)){
-      infoDiv.innerHTML += `
-      <div class='side-text'>
-      <p style='font-size:15px;'>${data.info}</p>
-      </div>
+      infoDiv.innerHTML +=
+      `
+        <div class='side-text'>
+          <p style='font-size:15px;'>${data.info}</p>
+        </div>
       `;
     }
     infoDiv.scrollTop = infoDiv.scrollHeight;
@@ -121,15 +146,16 @@ socket.onmessage = function (e) {
     infoDiv.innerHTML +=
     `
       <div class="side-text">
-        <p >${data.chat}
-        <span class="float-right"> - ${data.user}</span>
+        <p>${data.chat}
+          <span class="float-right"> - ${data.user}</span>
         </p>
-     </div>
+      </div>
     `;
     infoDiv.scrollTop = infoDiv.scrollHeight;
   }
 
   if (data.payLoad.type === 'won' && data.payLoad.player !== player) {
+    gameState = 'OFF';
     swal('Sorry!', 'You lost', 'error');
   } else if (data.payLoad.type === 'over') {
     swal('Game over!', 'Game ended no one won', 'warning');
@@ -138,16 +164,16 @@ socket.onmessage = function (e) {
   }
 };
 
-socket.onclose = function (e) {
+tictactoeSocket.onclose = function (e) {
   // console.log('Socket closed');
 };
 
 chatInput.addEventListener('keyup', (e) => {
-  if (e.key === '13' || e.key === 'Enter') {
+  if (e.key === 'Enter') {
     if (!chatInput.value.trim()) {
       return swal('Oops...', 'Your message can not be empty!', 'error');
     }
-    socket.send(
+    tictactoeSocket.send(
       JSON.stringify({
         user: tictactoeUsername,
         chat: chatInput.value,
