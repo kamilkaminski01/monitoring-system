@@ -33,7 +33,7 @@ a {
   display: grid;
   grid-template-columns: repeat(5, auto);
   gap: 10px;
-  margin-bottom: 5%;
+  margin-bottom: 2%;
 }
 
 .grid span {
@@ -51,6 +51,7 @@ a {
 #bingodiv {
   color: white;
   letter-spacing: 4px;
+  padding: 5px;
 }
 .grid span.clicked {
   background: #3a3a3c;

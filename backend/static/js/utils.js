@@ -25,5 +25,5 @@ function setUsername(username) {
   }
 
   const userdiv = document.getElementById('userdiv');
-  userdiv.textContent = username;
+  userdiv.textContent = localStorage.getItem('username');
 }
