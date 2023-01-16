@@ -1,49 +1,53 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import './MonitoringPanel.css';
 
 const MonitoringPanel = () => {
   const [bingoRooms, setBingoRooms] = useState([]);
   const [tictactoeRooms, setTicTacToeRooms] = useState([]);
+  const bingoSocketRef = useRef(null);
+  const tictactoeSocketRef = useRef(null);
 
   useEffect(() => {
-    const bingoOnlineRoomsUrl = 'ws://localhost:8000/ws/online-rooms/bingo/';
-    const bingoOnlineRoomsSocket = new WebSocket(bingoOnlineRoomsUrl);
-
-    bingoOnlineRoomsSocket.onmessage = (event) => {
+    bingoSocketRef.current = new WebSocket('ws://localhost:8000/ws/online-rooms/bingo/');
+    bingoSocketRef.current.onmessage = (event) => {
       const data = JSON.parse(event.data);
       if (data.command === 'online_rooms') {
         setBingoRooms(data.online_rooms);
       }
       if (data.command === 'room_added') {
-        setBingoRooms([...bingoRooms, { room_id: data.room_id, room_name: data.room_name }]);
+        setBingoRooms((prevState) => [
+          ...prevState,
+          { room_id: data.room_id, room_name: data.room_name }
+        ]);
       }
       if (data.command === 'room_deleted') {
-        setBingoRooms(bingoRooms.filter((room) => room.room_id !== data.room_id));
+        setBingoRooms((prevState) => prevState.filter((room) => room.room_id !== data.room_id));
       }
     };
-    // eslint-disable-next-line
-  }, []);
 
-  useEffect(() => {
-    const tictactoeOnlineRoomsUrl = 'ws://localhost:8000/ws/online-rooms/tictactoe/';
-    const tictactoeOnlineRoomsSocket = new WebSocket(tictactoeOnlineRoomsUrl);
-
-    tictactoeOnlineRoomsSocket.onmessage = (event) => {
+    tictactoeSocketRef.current = new WebSocket('ws://localhost:8000/ws/online-rooms/tictactoe/');
+    tictactoeSocketRef.current.onmessage = (event) => {
       const data = JSON.parse(event.data);
       if (data.command === 'online_rooms') {
         setTicTacToeRooms(data.online_rooms);
       }
       if (data.command === 'room_added') {
-        setTicTacToeRooms([
-          ...tictactoeRooms,
+        setTicTacToeRooms((prevState) => [
+          ...prevState,
           { room_id: data.room_id, room_name: data.room_name }
         ]);
       }
       if (data.command === 'room_deleted') {
-        setTicTacToeRooms(tictactoeRooms.filter((room) => room.room_id !== data.room_id));
+        setTicTacToeRooms((prevState) => prevState.filter((room) => room.room_id !== data.room_id));
       }
     };
-    // eslint-disable-next-line
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      bingoSocketRef.current.close();
+      tictactoeSocketRef.current.close();
+    };
   }, []);
 
   return (
