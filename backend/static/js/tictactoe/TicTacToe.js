@@ -20,7 +20,7 @@ let currentPlayer;
 elementArray.forEach(function (elem) {
   elem.addEventListener('click', function (event) {
     if (currentPlayer === tictactoeUsername && gameState === 'ON') {
-      setText(event.path[0].getAttribute('data-cell-index'), player);
+      setText(event.currentTarget.getAttribute('data-cell-index'), player);
     } else if (gameState === 'OFF'){
       swal('Game Ended', 'Restart the game', 'error');
     } else {

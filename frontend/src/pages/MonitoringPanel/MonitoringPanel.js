@@ -52,28 +52,42 @@ const MonitoringPanel = () => {
 
   return (
     <div className="container">
-      <h2>Online bingo rooms:</h2>
-      {bingoRooms.map((room) => (
-        <a
-          key={room.room_id}
-          id={room.room_id}
-          href={`http://localhost:8000/bingo/${room.room_name}`}>
-          <div>
-            <p>{room.room_name}</p>
-          </div>
-        </a>
-      ))}
-      <h2>Online tic tac toe rooms:</h2>
-      {tictactoeRooms.map((room) => (
-        <a
-          key={room.room_id}
-          id={room.room_id}
-          href={`http://localhost:8000/tictactoe/${room.room_name}`}>
-          <div>
-            <p>{room.room_name}</p>
-          </div>
-        </a>
-      ))}
+      <div className="rooms-container">
+        <h2>Online Bingo Rooms</h2>
+        {bingoRooms.length ? (
+          bingoRooms.map((room) => (
+            <a
+              key={room.room_id}
+              id={room.room_id}
+              className="online-room"
+              href={`http://localhost:8000/bingo/${room.room_name}`}>
+              <div>
+                <p>{room.room_name}</p>
+              </div>
+            </a>
+          ))
+        ) : (
+          <p className="no-rooms">No online bingo rooms</p>
+        )}
+      </div>
+      <div className="rooms-container">
+        <h2>Online Tic Tac Toe Rooms</h2>
+        {tictactoeRooms.length ? (
+          tictactoeRooms.map((room) => (
+            <a
+              key={room.room_id}
+              id={room.room_id}
+              className="online-room"
+              href={`http://localhost:8000/tictactoe/${room.room_name}`}>
+              <div>
+                <p>{room.room_name}</p>
+              </div>
+            </a>
+          ))
+        ) : (
+          <p className="no-rooms">No online tic tac toe rooms</p>
+        )}
+      </div>
     </div>
   );
 };

@@ -56,7 +56,7 @@ a {
 .grid span.clicked {
   background: #3a3a3c;
 }
-.create_room {
+.container {
   width: 100%;
   height: 100vh;
   display: flex;

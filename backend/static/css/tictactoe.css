@@ -87,6 +87,10 @@ a {
   padding: 10px;
   margin: 10px 1px 0 10px;
 }
+#onlinerooms {
+  display: flex;
+  flex-wrap: wrap;
+}
 .room-div {
   padding: 10px;
   background-color: #C0C0C0;
@@ -100,7 +104,6 @@ a {
   width: 15rem;
   color: white;
 }
-
 #infodiv {
   padding: 20px;
   background-color: #bbbbbb;
@@ -120,4 +123,25 @@ a {
   border-bottom: 1px solid #363263;
   margin-top: 13px;
   font-size: 15px;
+}
+
+@media screen and (max-width: 1000px) {
+  .sideme {
+    flex-direction: column;
+  }
+  .side-info {
+    width: 50%;
+    align-self: center;
+    margin-top: 20px;
+    justify-content: center;
+    margin-bottom: 40px;
+  }
+  .game {
+    width: 100%;
+  }
+}
+@media screen and (max-width: 380px) {
+  .side-info {
+    width: 100%;
+  }
 }
