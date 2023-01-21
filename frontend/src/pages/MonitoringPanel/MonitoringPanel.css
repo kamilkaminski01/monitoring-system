@@ -1,15 +1,13 @@
 .container {
-  min-height: 77.5vh;
+  min-height: 77.18vh;
   margin: 4rem auto;
 }
-
 .rooms-container {
   font-size: 15px;
   padding: 1.5rem;
   margin-bottom: 25px;
   text-align: center;
 }
-
 .online-room {
   display: flex;
   align-items: center;
@@ -22,7 +20,6 @@
   color: #333;
   width: 40%;
 }
-
 .no-rooms {
   text-align: center;
   font-size: 1.2em;

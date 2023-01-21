@@ -17,7 +17,7 @@ a {
 }
 .full-page {
   box-sizing: border-box;
-  height: 95vh;
+  height: 90vh;
   width: 100%;
   display: flex;
   justify-content: center;
@@ -124,6 +124,9 @@ a {
   margin-top: 13px;
   font-size: 15px;
 }
+.btn-menu {
+  margin-left: 10px;
+}
 
 @media screen and (max-width: 1000px) {
   .sideme {
@@ -132,16 +135,16 @@ a {
   .side-info {
     width: 50%;
     align-self: center;
-    margin-top: 20px;
+    margin-top: 15px;
     justify-content: center;
     margin-bottom: 40px;
   }
   .game {
     width: 100%;
+    margin-top: 15rem;
+    margin-bottom: 10px;
   }
-}
-@media screen and (max-width: 380px) {
-  .side-info {
-    width: 100%;
+  .side-info{
+    padding: 20px;
   }
 }

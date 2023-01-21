@@ -60,7 +60,14 @@ const MonitoringPanel = () => {
               key={room.room_id}
               id={room.room_id}
               className="online-room"
-              href={`http://localhost:8000/bingo/${room.room_name}`}>
+              href=""
+              onClick={() =>
+                window.open(
+                  `http://localhost:8000/bingo/${room.room_name}`,
+                  '_blank',
+                  'height=1000,width=1300'
+                )
+              }>
               <div>
                 <p>{room.room_name}</p>
               </div>
@@ -78,7 +85,14 @@ const MonitoringPanel = () => {
               key={room.room_id}
               id={room.room_id}
               className="online-room"
-              href={`http://localhost:8000/tictactoe/${room.room_name}`}>
+              href=""
+              onClick={() =>
+                window.open(
+                  `http://localhost:8000/tictactoe/${room.room_name}`,
+                  '_blank',
+                  'height=1000,width=1300'
+                )
+              }>
               <div>
                 <p>{room.room_name}</p>
               </div>

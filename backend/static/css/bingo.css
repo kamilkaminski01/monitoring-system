@@ -133,7 +133,7 @@ a {
     flex-direction: column;
   }
   .side-info {
-    width: 80%;
+    width: 60%;
     align-self: center;
     margin-top: 20px;
     justify-content: center;

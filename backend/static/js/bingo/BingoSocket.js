@@ -15,10 +15,6 @@ let totalPlayers;
 let playerTrack = 0;
 let currentPlayer;
 
-window.onbeforeunload = function (event) {
-  if (gamestate !== 'ON') return;
-  return 'Do you really want to refresh?';
-};
 
 bingoSocket.onopen = function (e) {
   bingoSocket.send(

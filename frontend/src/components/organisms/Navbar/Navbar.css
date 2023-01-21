@@ -1,11 +1,9 @@
 * {
   box-sizing: border-box;
 }
-
 body {
   margin: 0;
 }
-
 .nav {
   background-color: #333333;
   color: white;
@@ -15,7 +13,6 @@ body {
   gap: 2rem;
   padding: 0.5rem 1rem;
 }
-
 .nav a {
   color: inherit;
   text-decoration: none;
@@ -24,15 +21,12 @@ body {
   align-items: center;
   padding: 0.25rem;
 }
-
 .nav li:hover {
   background-color: #777777;
 }
-
 .site-title {
   font-size: 2rem;
 }
-
 .nav ul {
   padding: 0;
   margin: 0;
