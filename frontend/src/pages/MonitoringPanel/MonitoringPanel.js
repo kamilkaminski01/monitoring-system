@@ -65,7 +65,7 @@ const MonitoringPanel = () => {
                 window.open(
                   `http://localhost:8000/bingo/${room.room_name}`,
                   '_blank',
-                  'height=1000,width=1300'
+                  'height=700,width=1050'
                 )
               }>
               <div>
@@ -90,7 +90,7 @@ const MonitoringPanel = () => {
                 window.open(
                   `http://localhost:8000/tictactoe/${room.room_name}`,
                   '_blank',
-                  'height=1000,width=1300'
+                  'height=700,width=1050'
                 )
               }>
               <div>

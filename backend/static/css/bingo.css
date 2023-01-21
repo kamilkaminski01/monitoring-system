@@ -1,11 +1,8 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins&display=swap");
 * {
-  margin: 0;
-  padding: 0;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
   color: white;
-  /* overflow-x: hidden; */
 }
 body {
   background-color: #121213;
@@ -15,19 +12,17 @@ body {
 a {
   text-decoration: none !important;
 }
-.main {
-  display: -ms-grid;
-  display: grid;
-  place-items: center;
-  height: 100vh;
-  width: 100%;
+.home-container {
+  height: 90vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 .sideme {
-  width: 100%;
+  width: 75%;
   display: flex;
   justify-content: space-between;
 }
-
 .grid {
   display: -ms-grid;
   display: grid;
@@ -35,7 +30,6 @@ a {
   gap: 10px;
   margin-bottom: 2%;
 }
-
 .grid span {
   width: 4rem;
   cursor: pointer;
@@ -56,15 +50,8 @@ a {
 .grid span.clicked {
   background: #3a3a3c;
 }
-.container {
-  width: 100%;
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
 .side-info {
-  width: 30%;
+  width: 40%;
   color: white;
 }
 .bingoSuccess {
@@ -128,12 +115,20 @@ a {
 .btn-menu {
   margin-left: 10px;
 }
+.btn-game {
+  padding: 10px;
+  margin: 10px 1px 0 10px;
+}
+
 @media screen and (max-width: 1000px) {
   .sideme {
+    width: 100%;
+    margin-top: 20rem;
+    margin-bottom: 10px;
     flex-direction: column;
   }
   .side-info {
-    width: 60%;
+    width: 50%;
     align-self: center;
     margin-top: 20px;
     justify-content: center;

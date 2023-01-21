@@ -83,10 +83,6 @@ a {
 .space:active {
   background-color: #aaa;
 }
-.btn-game {
-  padding: 10px;
-  margin: 10px 1px 0 10px;
-}
 #onlinerooms {
   display: flex;
   flex-wrap: wrap;
@@ -124,6 +120,10 @@ a {
   margin-top: 13px;
   font-size: 15px;
 }
+.btn-game {
+  padding: 10px;
+  margin: 10px 1px 0 10px;
+}
 .btn-menu {
   margin-left: 10px;
 }
@@ -141,7 +141,7 @@ a {
   }
   .game {
     width: 100%;
-    margin-top: 15rem;
+    margin-top: 20rem;
     margin-bottom: 10px;
   }
   .side-info{

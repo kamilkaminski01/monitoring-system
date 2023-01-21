@@ -2,7 +2,9 @@
 {% load static %}
 {% block content %}
 
-<div class="container main">
+<button class="btn btn-danger btn-game" onclick="bingoHomePage()">Home</button>
+<button class="btn btn-danger btn-game" onclick="refreshPage()">Restart</button>
+<div class="home-container">
   <div class="sideme">
     <div class="w-100 d-flex justify-content-center">
       <div>
@@ -43,8 +45,6 @@
           <span data-id="25"></span>
         </div>
         <div id="bingodiv"></div>
-        <button class="btn btn-danger" onclick="refreshPage()">Restart</button>
-        <button class="btn btn-danger" onclick="bingoHomePage()">Home</button>
       </div>
     </div>
     <div class="side-info">
