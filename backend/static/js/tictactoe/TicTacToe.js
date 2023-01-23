@@ -1,16 +1,16 @@
-const infoDiv = document.getElementById('infodiv');
-const userNum = document.getElementById('userNum');
-const userTurn = document.getElementById('userTurn');
-const chatInput = document.getElementById('chatInput');
-let elementArray = document.querySelectorAll('.space');
+const infoDiv = document.getElementById("infodiv");
+const userNum = document.getElementById("userNum");
+const userTurn = document.getElementById("userTurn");
+const chatInput = document.getElementById("chatInput");
+let elementArray = document.querySelectorAll(".space");
 
-const tictactoeSocketUrl = 'ws://localhost:8000/ws/clicked' + window.location.pathname;
+const tictactoeSocketUrl = "ws://localhost:8000/ws/clicked" + window.location.pathname;
 const tictactoeSocket = new WebSocket(tictactoeSocketUrl);
 
-const tictactoeUsername = localStorage.getItem('username');
-const player = tictactoeUsername[0]
-let boardState = ['', '', '', '', '', '', '', '', ''];
-let gameState = 'ON';
+const tictactoeUsername = localStorage.getItem("username");
+const player = tictactoeUsername[0];
+let boardState = ["", "", "", "", "", "", "", "", ""];
+let gameState = "ON";
 
 let allPlayers = [];
 let totalPlayers;
@@ -18,13 +18,13 @@ let playerTrack = 0;
 let currentPlayer;
 
 elementArray.forEach(function (elem) {
-  elem.addEventListener('click', function (event) {
-    if (currentPlayer === tictactoeUsername && gameState === 'ON') {
-      setText(event.currentTarget.getAttribute('data-cell-index'), player);
-    } else if (gameState === 'OFF'){
-      swal('Game Ended', 'Restart the game', 'error');
+  elem.addEventListener("click", function (event) {
+    if (currentPlayer === tictactoeUsername && gameState === "ON") {
+      setText(event.currentTarget.getAttribute("data-cell-index"), player);
+    } else if (gameState === "OFF") {
+      Swal.fire("Game ended", "Restart the game!", "error");
     } else {
-      swal('Oops...', 'Not your turn!', 'warning');
+      Swal.fire("Oops...", "Not your turn!", "warning");
     }
   });
 });
@@ -32,17 +32,17 @@ elementArray.forEach(function (elem) {
 function checkGameEnd() {
   let count = 0;
   boardState.map((game) => {
-    if (game !== '') {
+    if (game !== "") {
       count++;
     }
   });
   if (count >= 9) {
     tictactoeSocket.send(
       JSON.stringify({
-        "type": "over"
+        type: "over"
       })
     );
-    swal('Game over!', 'Game ended no one won', 'warning');
+    Swal.fire("Game over", "Game ended no one won", "warning");
   }
 }
 
@@ -67,119 +67,65 @@ function checkWon(value, player) {
   }
 
   if (won) {
-    gameState = 'OFF';
+    gameState = "OFF";
     tictactoeSocket.send(
       JSON.stringify({
-        "type": "won",
-        "player": player
+        type: "won",
+        player: player
       })
     );
-    swal('Good job!', 'You won', 'success');
+    Swal.fire("Good job", "You won!", "success");
   }
   checkGameEnd();
 }
 
-function checkTurn() {
-  playerTrack === totalPlayers - 1 ? (playerTrack = 0) : playerTrack++;
-  currentPlayer = allPlayers[playerTrack];
-  userTurn.textContent = currentPlayer
-}
-
 function setText(index, value) {
-  if (boardState[parseInt(index)] === '') {
-    checkTurn()
+  if (boardState[parseInt(index)] === "") {
+    checkTurn();
     boardState[parseInt(index)] = value;
     elementArray[parseInt(index)].innerHTML = value;
     tictactoeSocket.send(
       JSON.stringify({
-        "player": player,
-        "index": index,
-        "type": 'running'
+        player: player,
+        index: index,
+        type: "running"
       })
     );
     checkWon(value, player);
   } else {
-    swal('Error', 'You cannot fill this space!', 'error');
+    Swal.fire("Oops...", "You cannot fill this space!", "error");
   }
 }
 
 function setAnotherUserText(index, value) {
-  checkTurn()
+  checkTurn();
   boardState[parseInt(index)] = value;
   elementArray[parseInt(index)].innerHTML = value;
 }
 
-function notForMe(data) {
-  return data.user !== tictactoeUsername;
-}
+chatInput.addEventListener("keyup", (e) => {
+  chatContent(e, tictactoeSocket, tictactoeUsername);
+});
 
 tictactoeSocket.onopen = function (e) {
-    tictactoeSocket.send(
-    JSON.stringify({
-      command: 'joined',
-      info: `${tictactoeUsername} just joined`,
-      user: tictactoeUsername
-    })
-  );
+  onOpen(tictactoeSocket, tictactoeUsername);
 };
 
 tictactoeSocket.onmessage = function (e) {
   const data = JSON.parse(e.data);
-  if (data.command === 'joined'){
-    allPlayers = data.all_players;
-    totalPlayers = data.users_count;
-    currentPlayer = allPlayers[playerTrack];
-    userTurn.textContent = currentPlayer
-    userNum.textContent = data.users_count;
-    if (notForMe(data)){
-      infoDiv.innerHTML +=
-      `
-        <div class='side-text'>
-          <p style='font-size:15px;'>${data.info}</p>
-        </div>
-      `;
+  onJoined(data, tictactoeUsername);
+  chatData(data);
+
+  try {
+    if (data.payLoad.type === "won" && data.payLoad.player !== player) {
+      gameState = "OFF";
+      Swal.fire("Sorry", "You lost!", "error");
+    } else if (data.payLoad.type === "over") {
+      Swal.fire("Game over", "Game ended, no one won", "warning");
+    } else if (data.payLoad.type === "running" && data.payLoad.player !== player) {
+      setAnotherUserText(data.payLoad.index, data.payLoad.player);
     }
-    infoDiv.scrollTop = infoDiv.scrollHeight;
-  }
-
-  if (data.command === 'chat') {
-    infoDiv.innerHTML +=
-    `
-      <div class="side-text">
-        <p>${data.chat}
-          <span class="float-right"> - ${data.user}</span>
-        </p>
-      </div>
-    `;
-    infoDiv.scrollTop = infoDiv.scrollHeight;
-  }
-
-  if (data.payLoad.type === 'won' && data.payLoad.player !== player) {
-    gameState = 'OFF';
-    swal('Sorry!', 'You lost', 'error');
-  } else if (data.payLoad.type === 'over') {
-    swal('Game over!', 'Game ended no one won', 'warning');
-  } else if (data.payLoad.type === 'running' && data.payLoad.player !== player) {
-    setAnotherUserText(data.payLoad.index, data.payLoad.player);
+  } catch (error) {
+    console.log(error);
   }
 };
-
-tictactoeSocket.onclose = function (e) {
-  // console.log('Socket closed');
-};
-
-chatInput.addEventListener('keyup', (e) => {
-  if (e.key === 'Enter') {
-    if (!chatInput.value.trim()) {
-      return swal('Oops...', 'Your message can not be empty!', 'error');
-    }
-    tictactoeSocket.send(
-      JSON.stringify({
-        user: tictactoeUsername,
-        chat: chatInput.value,
-        command: 'chat'
-      })
-    );
-    chatInput.value = '';
-  }
-});

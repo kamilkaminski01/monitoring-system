@@ -88,6 +88,7 @@ a {
   flex-wrap: wrap;
 }
 .room-div {
+  color: white;
   padding: 10px;
   background-color: #C0C0C0;
   width: fit-content;
@@ -118,7 +119,7 @@ a {
 .side-text {
   border-bottom: 1px solid #363263;
   margin-top: 13px;
-  font-size: 15px;
+  font-size: 12px;
 }
 .btn-game {
   padding: 10px;

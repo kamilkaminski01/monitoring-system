@@ -43,8 +43,9 @@
 
 {% endblock content %}
 {% block script %}
-  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
   <script src="{% static 'js/utils.js' %}"></script>
+  <script src="{% static 'js/websocketChatUtils.js' %}"></script>
+  <script src="{% static 'js/websocketUtils.js' %}"></script>
   <script>
     const username = localStorage.getItem('username');
     setUsername(username)

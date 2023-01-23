@@ -1,8 +1,8 @@
-const grid = document.querySelector('.grid');
-const items = [...document.querySelector('.grid').children];
-const bingodiv = document.querySelector('#bingodiv');
+const grid = document.querySelector(".grid");
+const items = [...document.querySelector(".grid").children];
+const bingodiv = document.querySelector("#bingodiv");
 
-const bingoState = ['B', 'I', 'N', 'G', 'O'];
+const bingoState = ["B", "I", "N", "G", "O"];
 let bingoIndex = 0;
 let keysArr = [];
 
@@ -45,22 +45,12 @@ function fillGrid() {
     item.innerHTML = keysArr[ind];
     item.dataset.innernum = keysArr[ind];
 
-    item.addEventListener('click', (e) => {
-      if (gamestate !== 'ON') {
-        return Swal.fire({
-          icon: 'error',
-          title: 'Oops...',
-          text: 'Game finished! Please restart to play again!'
-        });
+    item.addEventListener("click", (e) => {
+      if (gamestate !== "ON") {
+        return Swal.fire("Oops..", "Game finished. Restart to play again!", "error");
       }
       if (currentPlayer !== bingoUsername) {
-        return Swal.fire({
-          icon: 'error',
-          title: 'Oops...',
-          text: 'Not your turn!',
-          toast: true,
-          position: 'top-right'
-        });
+        return Swal.fire("Oops..", "Not your turn!", "error");
       }
       checkBingo(item);
     });
@@ -77,19 +67,13 @@ function checkBingo(item) {
   const innernum = item.dataset.innernum;
   const dataint = parseInt(dataid);
   if (addmearr.includes(dataint)) {
-    return Swal.fire({
-      icon: 'error',
-      title: 'Oops...',
-      text: 'Already selected',
-      toast: true,
-      position: 'top-right'
-    });
+    return Swal.fire("Oops..", "Already selected", "error");
   }
   addmearr.push(dataint);
-  item.classList.add('clicked');
+  item.classList.add("clicked");
   bingoSocket.send(
     JSON.stringify({
-      command: 'clicked',
+      command: "clicked",
       dataset: innernum,
       dataid: dataid,
       user: bingoUsername
@@ -109,16 +93,16 @@ function loopItemsAndCheck() {
       if (index > -1) {
         bingoItems.splice(index, 1);
       }
-      let span = document.createElement('span');
-      span.classList.add('bingState');
+      let span = document.createElement("span");
+      span.classList.add("bingState");
       span.append(bingoState[bingoIndex]);
       bingodiv.append(span);
       bingoIndex += 1;
       if (bingoIndex === 5) {
-        Swal.fire(bingoUsername, 'You won the game', 'success');
+        Swal.fire("Good job", "You won!", "success");
         bingoSocket.send(
           JSON.stringify({
-            command: 'won',
+            command: "won",
             user: bingoUsername,
             bingoCount: bingoIndex,
             info: `${bingoUsername} won the game`
@@ -132,7 +116,7 @@ function loopItemsAndCheck() {
 function successGrid(ind, li) {
   setTimeout(() => {
     const doneBingoDiv = document.querySelector(`[data-id='${li}']`);
-    doneBingoDiv.classList.remove('clicked');
-    doneBingoDiv.classList.add('bingoSuccess');
+    doneBingoDiv.classList.remove("clicked");
+    doneBingoDiv.classList.add("bingoSuccess");
   }, ind * 50);
 }
