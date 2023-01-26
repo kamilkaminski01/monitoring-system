@@ -7,7 +7,7 @@ from django.views.decorators.csrf import csrf_exempt
 from .models import BingoRoom
 
 
-def create_room_view(request: HttpRequest) -> HttpResponse:
+def create_bingo_room_view(request: HttpRequest) -> HttpResponse:
     return render(request, "bingo/home.html")
 
 
@@ -18,7 +18,7 @@ def bingo_view(request: HttpRequest, room_name: str) -> HttpResponse:
 
 
 @csrf_exempt
-def room_exist(request: HttpRequest, room_name: str) -> JsonResponse:
+def bingo_room_exist(request: HttpRequest, room_name: str) -> JsonResponse:
     return JsonResponse(
         {"room_exist": BingoRoom.objects.filter(room_name=room_name).exists()}
     )

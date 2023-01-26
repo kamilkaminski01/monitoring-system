@@ -1,58 +1,40 @@
-@import url("https://fonts.googleapis.com/css2?family=Poppins&display=swap");
-* {
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-  color: white;
-}
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu&display=swap');
+
 body {
   background-color: #121213;
-  font-family: "Poppins", sans-serif;
+  font-family: 'Ubuntu', sans-serif;
   overflow-x: hidden;
 }
-a {
-  text-decoration: none !important;
+
+/*ONLINE ROOMS*/
+/*-----------------------------------*/
+.room-div {
+  background-color: #262350;
 }
-.home-container {
+.room-div:hover {
+  background-color: #363263;
+}
+/*-----------------------------------*/
+
+/*GAME PAGE*/
+/*-----------------------------------*/
+.bingo-container {
   height: 90vh;
   display: flex;
   justify-content: center;
   align-items: center;
 }
-.sideme {
-  width: 75%;
-  display: flex;
-  justify-content: space-between;
+.bingo {
+  margin: 8rem;
 }
-.grid {
-  display: -ms-grid;
-  display: grid;
-  grid-template-columns: repeat(5, auto);
-  gap: 10px;
-  margin-bottom: 2%;
-}
-.grid span {
-  width: 4rem;
-  cursor: pointer;
-  height: 4rem;
-  color: white;
-  border: 2px solid #3a3a3c;
-  display: -ms-grid;
-  display: grid;
-  place-items: center;
-  font-size: 1.3em;
+.prevStep {
   font-weight: bolder;
+  font-size: 1.1rem;
+  color: #bbb8d8 !important;
 }
-#bingodiv {
-  color: white;
-  letter-spacing: 4px;
-  padding: 5px;
-}
-.grid span.clicked {
-  background: #3a3a3c;
-}
-.side-info {
-  width: 40%;
-  color: white;
+.lastStep {
+  background: #6d5baf !important;
+  border: none !important;
 }
 .bingoSuccess {
   background: #5baf5b !important;
@@ -62,84 +44,78 @@ a {
   font-size: 30px;
   font-weight: bolder;
   color: #cfd2ce;
+  padding: 0.2rem;
+}
+/*-----------------------------------*/
+
+/*GAME BOARD*/
+/*-----------------------------------*/
+.grid {
+  display: -ms-grid;
+  display: grid;
+  grid-template-columns: repeat(5, auto);
+  gap: 10px;
+  margin-bottom: 2%;
+}
+.grid span {
+  cursor: pointer;
+  display: -ms-grid;
+  display: grid;
+  place-items: center;
+  width: 4rem;
+  height: 4rem;
+  color: white;
+  border: 2px solid #3a3a3c;
+  font-size: 1.3em;
+  font-weight: bolder;
+}
+.grid span.clicked {
+  background: #3a3a3c;
+}
+/*-----------------------------------*/
+
+/*CHAT*/
+/*-----------------------------------*/
+.chat-container {
+  width: 18rem;
+}
+.chat-text {
+  border-bottom: 1px solid #5f5c85;
+  margin-top: 0.35rem;
+  font-size: 12px;
 }
 #infodiv {
-  padding: 20px;
+  padding: 1rem;
   background-color: #1b1b21;
   min-height: 450px;
   max-height: 450px;
   overflow-y: auto;
   scroll-behavior: smooth;
 }
+.send-msg::placeholder {
+  color: white;
+}
 .send-msg {
   background: #1b1b21;
   border: none;
-  color: white;
   font-size: 13px;
-  outline: 0 !important;
-}
-.prevStep {
-  font-weight: bolder;
-  font-size: 1.3em;
-  color: #bbb8d8 !important;
 }
 .send-msg:focus {
   background: #282831 !important;
   color: white;
 }
-.lastStep {
-  background: #6d5baf !important;
-  border: none !important;
-}
-.send-msg::placeholder {
-  color: white;
-}
-.side-text {
-  border-bottom: 1px solid #5f5c85;
-  margin-top: 13px;
-  font-size: 12px;
-}
-#onlinerooms {
-  display: flex;
-  flex-wrap: wrap;
-}
-.room-div {
-  padding: 10px;
-  background-color: #262350;
-  width: fit-content;
-  margin: 4px;
-}
-.room-div:hover {
-  background-color: #363263;
-}
-.btn-menu {
-  margin-left: 10px;
-}
-.btn-game {
-  padding: 10px;
-  margin: 10px 1px 0 10px;
-}
+/*-----------------------------------*/
 
 @media screen and (max-width: 1000px) {
-  .sideme {
-    width: 100%;
-    margin-top: 20rem;
-    margin-bottom: 10px;
+  .bingo-container {
     flex-direction: column;
   }
-  .side-info {
-    width: 50%;
-    align-self: center;
-    margin-top: 20px;
-    justify-content: center;
-    margin-bottom: 40px;
+  .bingo {
+    margin: 4rem;
   }
-}
-@media screen and (max-width: 380px) {
-  .grid {
-    gap: 3px;
-  }
-  .side-info {
-    width: 100%;
+  .chat-container {
+    width: 20rem;
+    margin-bottom: 3rem;
+    padding: 0.7rem;
   }
 }

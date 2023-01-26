@@ -3,29 +3,27 @@
 {% block content %}
 
 <div class="home-container">
-  <div class="col-lg-6 col-sm-8">
-    <h5 class="text-white">BINGO GAME</h5>
-    <div class="my-3">
+  <div>
+    <div>
+      <h2>BINGO</h2>
       <input
         id="username"
         type="text"
-        class="form-control"
+        class="form-control home-form"
         autocomplete="off"
-        placeholder="Your Username"
-      />
+        placeholder="Your username" />
       <input
         id="roomName"
         type="text"
-        class="my-1 form-control"
+        class="form-control my-1 home-form"
         autocomplete="off"
-        placeholder="Room name"
-      />
-      <button id="createRoom" class="my-2 btn btn-success">Create Room</button>
-      <button id="joinRoom" class="my-2 btn btn-success">Join Room</button>
-      <button class="btn btn-primary btn-menu" onclick="menuPage()">Menu</button>
+        placeholder="Room name" />
+      <button id="createRoom" class="my-2 btn btn-success btn-home">Create Room</button>
+      <button id="joinRoom" class="my-2 btn btn-success btn-home">Join Room</button>
+      <button class="btn btn-primary btn-home btn-menu" onclick="menuPage()">Menu</button>
     </div>
     <div class="my-3">
-      <h5>Online Rooms:</h5>
+      <h4>Online Rooms:</h4>
       <div id="onlinerooms"></div>
     </div>
   </div>
@@ -35,8 +33,7 @@
 {% block script %}
 <link
   rel="stylesheet"
-  href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
-/>
+  href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
 <script src="{% static 'js/utils.js' %}"></script>
 <script src="{% static 'js/websocketRoomsUtils.js' %}"></script>
 <script src="{% static 'js/bingo/BingoHome.js' %}"></script>

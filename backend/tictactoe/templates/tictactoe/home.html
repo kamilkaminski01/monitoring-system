@@ -3,29 +3,27 @@
 {% block content %}
 
 <div class="home-container">
-  <div class="col-lg-6 col-sm-8">
-    <h3 class="text-white">TIC TAC TOE</h3>
-    <div class="my-3">
+  <div>
+    <div>
+      <h1>Tic Tac Toe</h1>
       <input
         id="username"
         type="text"
-        class="my-1 form-control"
+        class="form-control home-form"
         autocomplete="off"
-        placeholder="Your username"
-      />
+        placeholder="Your username" />
       <input
         id="room_name"
         type="text"
-        class="my-1 form-control my-form"
+        class="form-control home-form my-1"
         autocomplete="off"
-        placeholder="Room name"
-      />
-      <button id="create_room" class="my-2 btn btn-light">Create Room</button>
-      <button id="join_room" class="my-2 btn btn-light">Join Room</button>
-      <button class="btn btn-light btn-menu" onclick="menuPage()">Menu</button>
+        placeholder="Room name" />
+      <button id="create_room" class="my-2 btn btn-light btn-home">Create Room</button>
+      <button id="join_room" class="my-2 btn btn-light btn-home">Join Room</button>
+      <button class="btn btn-light btn-home btn-menu" onclick="menuPage()">Menu</button>
     </div>
-    <div class="my-3">
-      <h3 class="text-left text-white">Online Rooms:</h3>
+    <div>
+      <h3 class="online-rooms">Online Rooms:</h3>
       <div id="onlinerooms"></div>
     </div>
   </div>

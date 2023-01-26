@@ -23,7 +23,7 @@ function chatContent(e, socket, username) {
 function chatData(data) {
   if (data.command === "chat") {
     infoDiv.innerHTML += `
-      <div class="side-text">
+      <div class="chat-text">
         <p>${data.chat}<span class="float-right"> - ${data.user}</span></p>
       </div>
     `;

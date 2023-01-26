@@ -1,0 +1,63 @@
+a {
+  text-decoration: none !important;
+}
+h1, h2, h3, h4 {
+  color: white;
+}
+
+/*ERROR PAGE*/
+/*-----------------------------------*/
+.error-container {
+  height: 80vh;
+  display: grid;
+  place-items: center
+}
+.error {
+  font-size: 50px;
+  font-weight: bold;
+}
+/*-----------------------------------*/
+
+/*HOME PAGE*/
+/*-----------------------------------*/
+.home-container {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 120%;
+}
+.home-form {
+  font-size: 1em;
+  width: 140%;
+}
+.btn-home {
+  font-size: 1em;
+  padding: 0.25em 0.5em;
+}
+.btn-menu {
+  margin-left: 10px;
+}
+/*-----------------------------------*/
+
+/*ONLINE ROOMS*/
+/*-----------------------------------*/
+#onlinerooms {
+  display: flex;
+  flex-wrap: wrap;
+}
+.room-div {
+  color: white;
+  width: fit-content;
+  padding: 0.65rem;
+  margin: 0.25rem;
+}
+/*-----------------------------------*/
+
+/*GAME PAGE*/
+/*-----------------------------------*/
+.btn-game {
+  padding: 0.7rem;
+  margin: 0.6rem 0.2rem 0 0.6rem;
+}
+/*-----------------------------------*/

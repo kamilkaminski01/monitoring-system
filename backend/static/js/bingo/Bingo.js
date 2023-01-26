@@ -2,7 +2,7 @@ const grid = document.querySelector(".grid");
 const items = [...document.querySelector(".grid").children];
 const bingodiv = document.querySelector("#bingodiv");
 
-const bingoState = ["B", "I", "N", "G", "O"];
+const bingoState = ["B", "I", "N", "G", "O", ""];
 let bingoIndex = 0;
 let keysArr = [];
 
@@ -29,7 +29,7 @@ const bingoItems = [
 function getRandomArray() {
   keysArr = [];
   for (let i = 1; i < 26; i++) {
-    b = Math.ceil(Math.random() * 25);
+    let b = Math.ceil(Math.random() * 25);
     if (!keysArr.includes(b)) {
       keysArr.push(b);
     } else {
@@ -47,7 +47,7 @@ function fillGrid() {
 
     item.addEventListener("click", (e) => {
       if (gamestate !== "ON") {
-        return Swal.fire("Oops..", "Game finished. Restart to play again!", "error");
+        return Swal.fire("Game finished", "Restart to play again!", "error");
       }
       if (currentPlayer !== bingoUsername) {
         return Swal.fire("Oops..", "Not your turn!", "error");
@@ -60,6 +60,14 @@ function fillGrid() {
 function restart() {
   getRandomArray();
   fillGrid();
+}
+
+function successGrid(ind, li) {
+  setTimeout(() => {
+    const doneBingoDiv = document.querySelector(`[data-id='${li}']`);
+    doneBingoDiv.classList.remove("clicked");
+    doneBingoDiv.classList.add("bingoSuccess");
+  }, ind * 50);
 }
 
 function checkBingo(item) {
@@ -88,7 +96,6 @@ function loopItemsAndCheck() {
       for (let [ind, li] of j.entries()) {
         successGrid(ind, li);
       }
-
       const index = bingoItems.indexOf(j);
       if (index > -1) {
         bingoItems.splice(index, 1);
@@ -99,7 +106,6 @@ function loopItemsAndCheck() {
       bingodiv.append(span);
       bingoIndex += 1;
       if (bingoIndex === 5) {
-        Swal.fire("Good job", "You won!", "success");
         bingoSocket.send(
           JSON.stringify({
             command: "won",
@@ -108,15 +114,8 @@ function loopItemsAndCheck() {
             info: `${bingoUsername} won the game`
           })
         );
+        Swal.fire("Good job", "You won!", "success");
       }
     }
   }
-}
-
-function successGrid(ind, li) {
-  setTimeout(() => {
-    const doneBingoDiv = document.querySelector(`[data-id='${li}']`);
-    doneBingoDiv.classList.remove("clicked");
-    doneBingoDiv.classList.add("bingoSuccess");
-  }, ind * 50);
 }

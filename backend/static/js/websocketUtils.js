@@ -21,7 +21,7 @@ function onJoined(data, username) {
     userNum.textContent = data.users_count;
     if (notForMeData(data, username)) {
       infoDiv.innerHTML += `
-        <div class="side-text">
+        <div class="chat-text">
         <p>${data.info}</p>
         </div>
         `;

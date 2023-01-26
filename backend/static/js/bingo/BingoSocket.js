@@ -53,5 +53,6 @@ bingoSocket.onmessage = function (e) {
     if (notForMeData(data, bingoUsername)) {
       Swal.fire("You lost", data.info, "error");
     }
+    // Swal.fire("You drew with another user", data.info, "warning");
   }
 };

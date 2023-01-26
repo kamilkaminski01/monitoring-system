@@ -4,14 +4,14 @@
 
 <button class="btn btn-light btn-game" onclick="tictactoeHomePage()">Home</button>
 <button class="btn btn-light btn-game" onclick="refreshPage()">Restart</button>
-<div class="full-page sideme" id="full-page">
-  <div class="game flex-column">
+<div class="tictactoe-container">
+  <div class="tictactoe">
     <div class="scoreboard">
-      <div>Total users:<span style="margin-left: 3px" id="userNum"></span></div>
+      <div class="my-1">Total users:<span id="userNum"></span></div>
       <div id="userdiv"></div>
       <div><span id="userTurn"></span>'s turn</div>
     </div>
-    <div class="boardcontainer">
+    <div class="board-container">
       <div class="board">
         <div data-cell-index="0" class="space"></div>
         <div data-cell-index="1" class="space"></div>
@@ -25,7 +25,7 @@
       </div>
     </div>
   </div>
-  <div class="side-info">
+  <div class="chat-container">
     <div id="sidebar">
       <div class="text-white" id="infodiv">
         <h6>Room Activity</h6>
@@ -36,8 +36,7 @@
       id="chatInput"
       type="text"
       placeholder="send a message"
-      class="mt-1 form-control send-msg"
-    />
+      class="mt-1 form-control" />
   </div>
 </div>
 
