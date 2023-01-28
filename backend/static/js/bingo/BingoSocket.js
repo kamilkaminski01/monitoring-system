@@ -28,6 +28,11 @@ bingoSocket.onopen = function (e) {
   onOpen(bingoSocket, bingoUsername);
 };
 
+// socket.onclose doesn't work, this eventListener gets triggered when a user refreshes or exits the page
+window.addEventListener("beforeunload", function(e){
+  onLeave(bingoSocket, bingoUsername);
+});
+
 bingoSocket.onmessage = function (e) {
   const data = JSON.parse(e.data);
   onJoinedOrLeave(data, bingoUsername);
@@ -48,11 +53,12 @@ bingoSocket.onmessage = function (e) {
     clickedDiv.classList.add("clicked");
   }
 
-  if (data.command === "won") {
+  if (data.command === "win"){
     gamestate = "OFF";
-    if (notForMeData(data, bingoUsername)) {
-      Swal.fire("You lost", data.info, "error");
-    }
-    // Swal.fire("You drew with another user", data.info, "warning");
+    if (data.winners.includes(bingoUsername))
+      Swal.fire("Good job", "You won!", "success");
+    else
+      Swal.fire("Sorry", "You lost!", "error");
+    sendChatMessage(data, bingoUsername)
   }
 };

@@ -2,7 +2,7 @@ function notForMeData(data, username) {
   return data.user !== username;
 }
 
-function sendChatMessage(data, username){
+function sendChatMessage(data){
   if (notForMeData(data, username)) {
       infoDiv.innerHTML +=
         `

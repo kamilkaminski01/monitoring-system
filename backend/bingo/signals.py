@@ -9,17 +9,16 @@ channel_layer = get_channel_layer()
 
 
 @receiver(post_save, sender=BingoRoom)
-def create_room_signal(sender, instance: BingoRoom, created: bool, **kwargs) -> None:
-    if created:
-        async_to_sync(channel_layer.group_send)(
-            "online_bingo_room",
-            {
-                "type": "websocket_room_added",
-                "command": "room_added",
-                "room_name": instance.room_name,
-                "room_id": instance.id,
-            },
-        )
+def create_room_signal(sender, instance: BingoRoom, **kwargs) -> None:
+    async_to_sync(channel_layer.group_send)(
+        "online_bingo_room",
+        {
+            "type": "websocket_room_added",
+            "command": "room_added",
+            "room_name": instance.room_name,
+            "room_id": instance.id,
+        },
+    )
 
 
 @receiver(post_delete, sender=BingoRoom)

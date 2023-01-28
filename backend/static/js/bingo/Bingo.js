@@ -71,20 +71,20 @@ function successGrid(ind, li) {
 }
 
 function checkBingo(item) {
-  const dataid = item.dataset.id;
-  const innernum = item.dataset.innernum;
-  const dataint = parseInt(dataid);
-  if (addmearr.includes(dataint)) {
+  const dataID = item.dataset.id;
+  const innernum = item.dataset.innernum
+  const dataNumber = parseInt(dataID);
+  if (addmearr.includes(dataNumber)) {
     return Swal.fire("Oops..", "Already selected", "error");
   }
-  addmearr.push(dataint);
+  addmearr.push(dataNumber);
   item.classList.add("clicked");
   bingoSocket.send(
     JSON.stringify({
       command: "clicked",
+      user: bingoUsername,
+      dataID: dataID,
       dataset: innernum,
-      dataid: dataid,
-      user: bingoUsername
     })
   );
   loopItemsAndCheck();
@@ -108,13 +108,11 @@ function loopItemsAndCheck() {
       if (bingoIndex === 5) {
         bingoSocket.send(
           JSON.stringify({
-            command: "won",
+            command: "win",
             user: bingoUsername,
-            bingoCount: bingoIndex, // this sends the 5 index that wins the game
-            info: `${bingoUsername} won the game`
+            info: `${bingoUsername} won the game`,
           })
         );
-        Swal.fire("Good job", "You won!", "success");
       }
     }
   }

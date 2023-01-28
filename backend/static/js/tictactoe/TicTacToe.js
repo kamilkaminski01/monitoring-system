@@ -126,6 +126,7 @@ tictactoeSocket.onmessage = function (e) {
       gameState = "OFF";
       Swal.fire("Sorry", "You lost!", "error");
     } else if (data.payload.type === "over") {
+      gameState = "OFF";
       Swal.fire("Game over", "Game ended, no one won", "warning");
     } else if (data.payload.type === "running" && data.payload.player !== player) {
       setAnotherUserText(data.payload.index, data.payload.player);

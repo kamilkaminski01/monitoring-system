@@ -10,4 +10,5 @@ class BingoRoom(models.Model):
 
 class TrackPlayers(models.Model):
     username = models.CharField(max_length=50)
+    is_winner = models.BooleanField(default=False)
     room = models.ForeignKey(BingoRoom, on_delete=models.CASCADE)
