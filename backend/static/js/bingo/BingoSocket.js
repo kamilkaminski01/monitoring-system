@@ -30,7 +30,7 @@ bingoSocket.onopen = function (e) {
 
 bingoSocket.onmessage = function (e) {
   const data = JSON.parse(e.data);
-  onJoined(data, bingoUsername);
+  onJoinedOrLeave(data, bingoUsername);
   chatData(data);
 
   if (data.command === "clicked") {

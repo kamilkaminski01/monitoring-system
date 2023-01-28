@@ -30,7 +30,6 @@ class BingoConsumer(AsyncJsonWebsocketConsumer):
         if command == "joined" or command == "won":
             info = content.get("info", None)
             user = content.get("user", None)
-
             await self.create_players(user)
 
             self.user_left = content.get("user", None)
@@ -87,8 +86,8 @@ class BingoConsumer(AsyncJsonWebsocketConsumer):
                     "info": event["info"],
                     "user": event["user"],
                     "bingoCount": event.get("bingoCount"),
-                    "users_count": self.players_count_all,
-                    "all_players": self.all_players_in_room,
+                    "players_number_count": self.players_number_count,
+                    "players_username_count": self.players_username_count,
                 }
             )
         )
@@ -100,8 +99,8 @@ class BingoConsumer(AsyncJsonWebsocketConsumer):
                 {
                     "command": "joined",
                     "info": event["info"],
-                    "users_count": self.players_count_all,
-                    "all_players": self.all_players_in_room,
+                    "players_number_count": self.players_number_count,
+                    "players_username_count": self.players_username_count,
                 }
             )
         )
@@ -130,10 +129,10 @@ class BingoConsumer(AsyncJsonWebsocketConsumer):
 
     @database_sync_to_async
     def players_count(self) -> None:
-        self.all_players_in_room = [
+        self.players_number_count = self.bingo_room.trackplayers_set.all().count()
+        self.players_username_count = [
             x.username for x in self.bingo_room.trackplayers_set.all()
         ]
-        self.players_count_all = self.bingo_room.trackplayers_set.all().count()
 
     @database_sync_to_async
     def delete_player(self) -> None:

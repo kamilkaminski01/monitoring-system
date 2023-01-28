@@ -110,7 +110,7 @@ function loopItemsAndCheck() {
           JSON.stringify({
             command: "won",
             user: bingoUsername,
-            bingoCount: bingoIndex,
+            bingoCount: bingoIndex, // this sends the 5 index that wins the game
             info: `${bingoUsername} won the game`
           })
         );

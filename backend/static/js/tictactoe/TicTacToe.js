@@ -86,9 +86,9 @@ function setText(index, value) {
     elementArray[parseInt(index)].innerHTML = value;
     tictactoeSocket.send(
       JSON.stringify({
+        type: "running",
         player: player,
         index: index,
-        type: "running"
       })
     );
     checkWon(value, player);
@@ -111,21 +111,26 @@ tictactoeSocket.onopen = function (e) {
   onOpen(tictactoeSocket, tictactoeUsername);
 };
 
+// socket.onclose doesn't work, this eventListener gets triggered when a user refreshes or exits the page
+window.addEventListener("beforeunload", function(e){
+  onLeave(tictactoeSocket, tictactoeUsername);
+});
+
 tictactoeSocket.onmessage = function (e) {
   const data = JSON.parse(e.data);
-  onJoined(data, tictactoeUsername);
+  onJoinedOrLeave(data, tictactoeUsername);
   chatData(data);
 
   try {
-    if (data.payLoad.type === "won" && data.payLoad.player !== player) {
+    if (data.payload.type === "won" && data.payload.player !== player) {
       gameState = "OFF";
       Swal.fire("Sorry", "You lost!", "error");
-    } else if (data.payLoad.type === "over") {
+    } else if (data.payload.type === "over") {
       Swal.fire("Game over", "Game ended, no one won", "warning");
-    } else if (data.payLoad.type === "running" && data.payLoad.player !== player) {
-      setAnotherUserText(data.payLoad.index, data.payLoad.player);
+    } else if (data.payload.type === "running" && data.payload.player !== player) {
+      setAnotherUserText(data.payload.index, data.payload.player);
     }
   } catch (error) {
-    console.log(error);
+    // console.log(error);
   }
 };
