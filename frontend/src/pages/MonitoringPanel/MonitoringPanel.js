@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { PATHS } from '../../utils/consts';
 import './MonitoringPanel.css';
 
 const MonitoringPanel = () => {
@@ -8,7 +9,7 @@ const MonitoringPanel = () => {
   const tictactoeSocketRef = useRef(null);
 
   useEffect(() => {
-    bingoSocketRef.current = new WebSocket('ws://localhost:8000/ws/online-rooms/bingo/');
+    bingoSocketRef.current = new WebSocket(PATHS.websocketBingoOnlineRooms);
     bingoSocketRef.current.onmessage = (event) => {
       const data = JSON.parse(event.data);
       if (data.command === 'online_rooms') {
@@ -25,7 +26,7 @@ const MonitoringPanel = () => {
       }
     };
 
-    tictactoeSocketRef.current = new WebSocket('ws://localhost:8000/ws/online-rooms/tictactoe/');
+    tictactoeSocketRef.current = new WebSocket(PATHS.websocketTicTacToeOnlineRooms);
     tictactoeSocketRef.current.onmessage = (event) => {
       const data = JSON.parse(event.data);
       if (data.command === 'online_rooms') {
@@ -63,7 +64,7 @@ const MonitoringPanel = () => {
               href=""
               onClick={() =>
                 window.open(
-                  `http://localhost:8000/bingo/${room.room_name}`,
+                  `${PATHS.bingoBackendHome}/${room.room_name}`,
                   '_blank',
                   'height=700,width=1050'
                 )
@@ -88,7 +89,7 @@ const MonitoringPanel = () => {
               href=""
               onClick={() =>
                 window.open(
-                  `http://localhost:8000/tictactoe/${room.room_name}`,
+                  `${PATHS.tictactoeBackendHome}/${room.room_name}`,
                   '_blank',
                   'height=700,width=1050'
                 )
