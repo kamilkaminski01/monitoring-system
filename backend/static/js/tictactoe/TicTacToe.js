@@ -37,12 +37,13 @@ function checkGameEnd() {
     }
   });
   if (count >= 9) {
+    gameState = "OFF";
     tictactoeSocket.send(
       JSON.stringify({
-        type: "over"
+        command: "run",
+        game_state: "over"
       })
     );
-    Swal.fire("Game over", "Game ended no one won", "warning");
   }
 }
 
@@ -65,12 +66,12 @@ function checkWon(value, player) {
   } else if (boardState[2] === value && boardState[4] === value && boardState[6] === value) {
     won = true;
   }
-
   if (won) {
     gameState = "OFF";
     tictactoeSocket.send(
       JSON.stringify({
-        type: "won",
+        command: "run",
+        game_state: "won",
         player: player
       })
     );
@@ -80,15 +81,17 @@ function checkWon(value, player) {
 }
 
 function setText(index, value) {
-  if (boardState[parseInt(index)] === "") {
-    checkTurn();
+  if (boardState[parseInt(index)] === "" && totalPlayers > 1) {
+    checkTurnBetweenTwoPlayers();
     boardState[parseInt(index)] = value;
     elementArray[parseInt(index)].innerHTML = value;
     tictactoeSocket.send(
       JSON.stringify({
-        type: "running",
+        command: "run",
+        game_state: "running",
         player: player,
         index: index,
+        boardState: boardState,
       })
     );
     checkWon(value, player);
@@ -98,9 +101,14 @@ function setText(index, value) {
 }
 
 function setAnotherUserText(index, value) {
-  checkTurn();
+  checkTurnBetweenTwoPlayers();
   boardState[parseInt(index)] = value;
   elementArray[parseInt(index)].innerHTML = value;
+}
+
+function initializeBoard(data){
+  for(let i = 0; i < boardState.length; i++)
+    elementArray[i].innerHTML = data.boardState[i];
 }
 
 chatInput.addEventListener("keyup", (e) => {
@@ -120,18 +128,12 @@ tictactoeSocket.onmessage = function (e) {
   const data = JSON.parse(e.data);
   onJoinedOrLeave(data, tictactoeUsername);
   chatData(data);
-
-  try {
-    if (data.payload.type === "won" && data.payload.player !== player) {
-      gameState = "OFF";
-      Swal.fire("Sorry", "You lost!", "error");
-    } else if (data.payload.type === "over") {
-      gameState = "OFF";
-      Swal.fire("Game over", "Game ended, no one won", "warning");
-    } else if (data.payload.type === "running" && data.payload.player !== player) {
-      setAnotherUserText(data.payload.index, data.payload.player);
-    }
-  } catch (error) {
-    // console.log(error);
-  }
+  if (data.command === "joined")
+    initializeBoard(data)
+  if (data.game_state === "won" && data.player !== player)
+    Swal.fire("Sorry", "You lost!", "error");
+  if (data.game_state === "over")
+    Swal.fire("Game over", "No one won", "warning");
+  if (data.game_state === "running" && data.player !== player)
+    setAnotherUserText(data.index, data.player);
 };

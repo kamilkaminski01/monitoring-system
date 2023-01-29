@@ -22,9 +22,10 @@ function chatContent(e, socket, username) {
 
 function chatData(data) {
   if (data.command === "chat") {
-    infoDiv.innerHTML += `
+    infoDiv.innerHTML +=
+      `
       <div class="chat-text">
-        <p>${data.chat}<span class="float-right"> - ${data.user}</span></p>
+      <p>${data.chat}<span class="float-right"> - ${data.user}</span></p>
       </div>
     `;
     infoDiv.scrollTop = infoDiv.scrollHeight;

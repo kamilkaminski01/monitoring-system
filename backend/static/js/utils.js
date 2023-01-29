@@ -61,3 +61,9 @@ function checkTurn() {
   currentPlayer = allPlayers[playerTrack];
   userTurn.textContent = currentPlayer;
 }
+
+function checkTurnBetweenTwoPlayers() {
+  playerTrack = playerTrack === 0 ? 1 : 0;
+  currentPlayer = allPlayers[playerTrack];
+  userTurn.textContent = currentPlayer;
+}
