@@ -37,7 +37,6 @@ function checkGameEnd() {
     }
   });
   if (count >= 9) {
-    gameState = "OFF";
     tictactoeSocket.send(
       JSON.stringify({
         command: "run",
@@ -130,10 +129,14 @@ tictactoeSocket.onmessage = function (e) {
   chatData(data);
   if (data.command === "joined")
     initializeBoard(data)
-  if (data.game_state === "won" && data.player !== player)
+  if (data.game_state === "won" && data.player !== player) {
+    gameState = "OFF";
     Swal.fire("Sorry", "You lost!", "error");
-  if (data.game_state === "over")
+  }
+  if (data.game_state === "over") {
+    gameState = "OFF";
     Swal.fire("Game over", "No one won", "warning");
+  }
   if (data.game_state === "running" && data.player !== player)
     setAnotherUserText(data.index, data.player);
 };

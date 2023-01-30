@@ -15,6 +15,6 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name="tictactoeroom",
             name="board_state",
-            field=models.JSONField(default=tictactoe.models.default_game_state),
+            field=models.JSONField(default=tictactoe.models.default_board_state),
         ),
     ]

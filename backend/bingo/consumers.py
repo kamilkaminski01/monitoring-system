@@ -16,7 +16,6 @@ class BingoConsumer(AsyncJsonWebsocketConsumer):
         self.data_id = None
         self.data_set = None
         self.winners = None
-        self.bingo_count = None
         self.players_number_count = None
         self.players_username_count = None
 
@@ -36,6 +35,11 @@ class BingoConsumer(AsyncJsonWebsocketConsumer):
         self.user = content.get("user", None)
         self.data_id = content.get("dataID", None)
         self.data_set = content.get("dataset", None)
+        if players_limit := content.get("players_limit"):
+            self.players_limit = players_limit
+
+        if self.command == "room_created":
+            await self.set_players_limit()
 
         if self.command == "clicked":
             await self.channel_layer.group_send(
@@ -131,13 +135,14 @@ class BingoConsumer(AsyncJsonWebsocketConsumer):
 
     async def websocket_joined(self, event: dict) -> None:
         await self.players_count()
+        await self.get_players_limit()
         await self.send_json(
             (
                 {
                     "command": event["command"],
                     "user": event["user"],
                     "info": event["info"],
-                    "bingoCount": event.get("bingoCount"),
+                    "players_limit": self.players_limit,
                     "players_number_count": self.players_number_count,
                     "players_username_count": self.players_username_count,
                 }
@@ -157,6 +162,19 @@ class BingoConsumer(AsyncJsonWebsocketConsumer):
                 }
             )
         )
+
+    @database_sync_to_async
+    def get_players_limit(self) -> None:
+        self.players_limit = BingoRoom.objects.get(
+            room_name=self.url_route
+        ).players_limit
+
+    @database_sync_to_async
+    def set_players_limit(self) -> None:
+        BingoRoom.objects.filter(room_name=self.url_route).update(
+            players_limit=self.players_limit
+        )
+        self.get_players_limit()
 
     @database_sync_to_async
     def create_room(self) -> None:

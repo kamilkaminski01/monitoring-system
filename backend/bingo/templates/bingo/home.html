@@ -5,7 +5,7 @@
 <div class="home-container">
   <div>
     <div>
-      <h2>BINGO</h2>
+      <h2>Bingo</h2>
       <input
         id="username"
         type="text"
@@ -18,7 +18,7 @@
         class="form-control my-1 home-form"
         autocomplete="off"
         placeholder="Room name" />
-      <button id="createRoom" class="my-2 btn btn-success btn-home">Create Room</button>
+      <button id="show-createRoom" class="my-2 btn btn-success btn-home">Create Room</button>
       <button id="joinRoom" class="my-2 btn btn-success btn-home">Join Room</button>
       <button class="btn btn-primary btn-home btn-menu" onclick="menuPage()">Menu</button>
     </div>
@@ -28,12 +28,52 @@
     </div>
   </div>
 </div>
+<div class="popup">
+  <div class="close-btn">&times;</div>
+  <div class="form">
+    <h2>Players Limit</h2>
+    <div class="checkbox-wrapper">
+      <label>
+        <input id="playerLimit2" type="checkbox" />
+        <span class="checkbox"></span>
+        2
+      </label>
+    </div>
+    <div class="checkbox-wrapper">
+      <label>
+        <input id="playerLimit3" type="checkbox" />
+        <span class="checkbox"></span>
+        3
+      </label>
+    </div>
+    <div class="checkbox-wrapper">
+      <label>
+        <input id="playerLimit4" type="checkbox" />
+        <span class="checkbox"></span>
+        4
+      </label>
+    </div>
+    <button id="createRoom">Confirm</button>
+  </div>
+</div>
 
 {% endblock content %}
 {% block script %}
 <link
   rel="stylesheet"
   href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+<script>
+const checkboxes = [playerLimit2, playerLimit3, playerLimit4];
+for (const checkbox of checkboxes) {
+  checkbox.addEventListener("change", function() {
+    for (const otherCheckbox of checkboxes) {
+      if (otherCheckbox !== this) {
+        otherCheckbox.checked = false;
+      }
+    }
+  });
+}
+</script>
 <script src="{% static 'js/utils.js' %}"></script>
 <script src="{% static 'js/websocketRoomsUtils.js' %}"></script>
 <script src="{% static 'js/bingo/BingoHome.js' %}"></script>

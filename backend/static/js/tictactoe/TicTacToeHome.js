@@ -11,11 +11,11 @@ const tictactoeOnlineRoomsSocket = new WebSocket(tictactoeOnlineRoomsSocketUrl);
 tictactoeUsername.value = localStorage.getItem("username") || "";
 
 createRoom.addEventListener("click", async function () {
-  await makeRoom(tictactoeHomeUrl, roomName, tictactoeUsername);
+  await makeRoom(tictactoeHomeUrl, roomName);
 });
 
-joinRoom.addEventListener("click", function () {
-  getInRoom(roomName, tictactoeUsername);
+joinRoom.addEventListener("click", async function() {
+  await getInRoom(tictactoeHomeUrl, roomName);
 });
 
 // Functions are imported from websocketRoomsUtils.js

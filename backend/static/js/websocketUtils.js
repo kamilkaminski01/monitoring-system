@@ -2,16 +2,16 @@ function notForMeData(data, username) {
   return data.user !== username;
 }
 
-function sendChatMessage(data){
+function sendChatMessage(data) {
   if (notForMeData(data, username)) {
-      infoDiv.innerHTML +=
+    infoDiv.innerHTML +=
         `
         <div class="chat-text">
         <p>${data.info}</p>
         </div>
         `;
-    }
-    infoDiv.scrollTop = infoDiv.scrollHeight;
+  }
+  infoDiv.scrollTop = infoDiv.scrollHeight;
 }
 
 function onOpen(socket, username) {
@@ -42,6 +42,10 @@ function onJoinedOrLeave(data, username) {
     currentPlayer = allPlayers[playerTrack];
     userTurn.textContent = currentPlayer;
     userNum.textContent = data.players_number_count;
-    sendChatMessage(data, username)
+    if (data.command === "joined" && data.players_limit) {
+      playersLimit.textContent = data.players_limit;
+      playersLimitNumber = data.players_limit;
+    }
+    sendChatMessage(data, username);
   }
 }

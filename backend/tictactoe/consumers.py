@@ -34,9 +34,9 @@ class TicTacToeConsumer(AsyncJsonWebsocketConsumer):
         self.game_state = content.get("game_state", None)
         if board_state := content.get("boardState"):
             self.board_state = board_state
-            await self.get_board_state()
-        else:
             await self.set_board_state()
+        else:
+            await self.get_board_state()
 
         if self.command == "joined":
             await self.create_players(self.user)
@@ -136,17 +136,17 @@ class TicTacToeConsumer(AsyncJsonWebsocketConsumer):
         )
 
     @database_sync_to_async
-    def set_board_state(self) -> None:
+    def get_board_state(self) -> None:
         self.board_state = TicTacToeRoom.objects.get(
             room_name=self.url_route
         ).board_state
 
     @database_sync_to_async
-    def get_board_state(self) -> None:
+    def set_board_state(self) -> None:
         TicTacToeRoom.objects.filter(room_name=self.url_route).update(
             board_state=self.board_state
         )
-        self.set_board_state()
+        self.get_board_state()
 
     @database_sync_to_async
     def create_room(self) -> None:

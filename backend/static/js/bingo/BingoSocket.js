@@ -3,18 +3,20 @@ const userNum = document.getElementById("userNum");
 const userTurn = document.getElementById("userTurn");
 const chatInput = document.getElementById("chatInput");
 const lastStepDiv = document.getElementById("lastStepDiv");
+const playersLimit = document.getElementById("playersLimit");
 
 const bingoSocketUrl = "ws://localhost:8000/ws/clicked" + window.location.pathname;
 const bingoSocket = new WebSocket(bingoSocketUrl);
 const bingoUsername = localStorage.getItem("username");
 
 let gamestate = "ON";
-const addmearr = [];
+const datasetArr = [];
 
 let allPlayers = [];
 let totalPlayers;
 let playerTrack = 0;
 let currentPlayer;
+let playersLimitNumber;
 
 function getLastStep(data) {
   lastStepDiv.innerHTML = `<span>Last step: <span class="prevStep">${data}</span></span>`;
@@ -40,19 +42,18 @@ bingoSocket.onmessage = function (e) {
 
   if (data.command === "clicked") {
     getLastStep(data.dataset);
-    checkTurn();
+    checkTurnWithLimit(playersLimitNumber);
     const clickedDiv = document.querySelector(`[data-innernum='${data.dataset}']`);
 
     if (notForMeData(data, bingoUsername)) {
       const myDataSetId = parseInt(clickedDiv.dataset.id);
-      if (!addmearr.includes(myDataSetId)) {
-        addmearr.push(myDataSetId);
+      if (!datasetArr.includes(myDataSetId)) {
+        datasetArr.push(myDataSetId);
         loopItemsAndCheck();
       }
     }
     clickedDiv.classList.add("clicked");
   }
-
   if (data.command === "win"){
     gamestate = "OFF";
     if (data.winners.includes(bingoUsername))

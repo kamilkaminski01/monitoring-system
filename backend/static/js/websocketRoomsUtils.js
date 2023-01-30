@@ -3,13 +3,14 @@ function checkOnlineRooms(data, app) {
     onlinerooms.innerHTML = "";
     if (data.online_rooms.length > 0) {
       data.online_rooms.forEach((el) => {
-        onlinerooms.innerHTML += `
+        onlinerooms.innerHTML +=
+          `
           <a id="${el.room_id}" href="/${app}/${el.room_name}">
           <div class="room-div text-white">
           <strong>${el.room_name}</strong>
           </div>
           </a>
-      `;
+          `;
       });
     } else if (onlinerooms.childElementCount === 0) {
       onlinerooms.innerHTML =

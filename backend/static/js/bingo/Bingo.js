@@ -7,11 +7,12 @@ let bingoIndex = 0;
 let keysArr = [];
 
 window.onload = () => {
-  restart();
+  getRandomArray();
+  fillGrid();
 };
 
 // All possible combinations for bingo win
-const bingoItems = [
+const bingoWinRows = [
   [1, 2, 3, 4, 5],
   [6, 7, 8, 9, 10],
   [11, 12, 13, 14, 15],
@@ -38,46 +39,13 @@ function getRandomArray() {
   }
 }
 
-const includesAll = (arr, values) => values.every((v) => arr.includes(v));
-
-function fillGrid() {
-  items.forEach((item, ind) => {
-    item.innerHTML = keysArr[ind];
-    item.dataset.innernum = keysArr[ind];
-
-    item.addEventListener("click", (e) => {
-      if (gamestate !== "ON") {
-        return Swal.fire("Game finished", "Restart to play again!", "error");
-      }
-      if (currentPlayer !== bingoUsername) {
-        return Swal.fire("Oops..", "Not your turn!", "error");
-      }
-      checkBingo(item);
-    });
-  });
-}
-
-function restart() {
-  getRandomArray();
-  fillGrid();
-}
-
-function successGrid(ind, li) {
-  setTimeout(() => {
-    const doneBingoDiv = document.querySelector(`[data-id='${li}']`);
-    doneBingoDiv.classList.remove("clicked");
-    doneBingoDiv.classList.add("bingoSuccess");
-  }, ind * 50);
-}
-
 function checkBingo(item) {
   const dataID = item.dataset.id;
   const innernum = item.dataset.innernum
   const dataNumber = parseInt(dataID);
-  if (addmearr.includes(dataNumber)) {
+  if (datasetArr.includes(dataNumber))
     return Swal.fire("Oops..", "Already selected", "error");
-  }
-  addmearr.push(dataNumber);
+  datasetArr.push(dataNumber);
   item.classList.add("clicked");
   bingoSocket.send(
     JSON.stringify({
@@ -90,16 +58,40 @@ function checkBingo(item) {
   loopItemsAndCheck();
 }
 
+function fillGrid() {
+  items.forEach((item, index) => {
+    item.innerHTML = keysArr[index];
+    item.dataset.innernum = keysArr[index];
+    item.addEventListener("click", (e) => {
+      if (gamestate !== "ON")
+        return Swal.fire("Game finished", "Restart to play again!", "error");
+      if (currentPlayer !== bingoUsername)
+        return Swal.fire("Oops..", "Not your turn!", "error");
+      checkBingo(item);
+    });
+  });
+}
+
+const includesAll = (arr, values) => values.every((v) => arr.includes(v));
+
+function successGrid(index, li) {
+  setTimeout(() => {
+    const doneBingoDiv = document.querySelector(`[data-id='${li}']`);
+    doneBingoDiv.classList.remove("clicked");
+    doneBingoDiv.classList.add("bingoSuccess");
+  }, index * 80);
+}
+
 function loopItemsAndCheck() {
-  for (const j of bingoItems) {
-    if (includesAll(addmearr, j)) {
-      for (let [ind, li] of j.entries()) {
-        successGrid(ind, li);
-      }
-      const index = bingoItems.indexOf(j);
-      if (index > -1) {
-        bingoItems.splice(index, 1);
-      }
+  for (const j of bingoWinRows) {
+    if (includesAll(datasetArr, j)) {
+      for (let [index, li] of j.entries())
+        successGrid(index, li);
+
+      const index = bingoWinRows.indexOf(j);
+      if (index > -1)
+        bingoWinRows.splice(index, 1);
+
       let span = document.createElement("span");
       span.classList.add("bingState");
       span.append(bingoState[bingoIndex]);
