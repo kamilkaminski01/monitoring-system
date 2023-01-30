@@ -1,5 +1,5 @@
 import React, { useRef, useEffect } from 'react';
-import { PATHS } from '../../utils/consts';
+import { PATHS } from 'utils/consts';
 import './Whiteboard.css';
 
 const Whiteboard = () => {
