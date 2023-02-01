@@ -5,7 +5,7 @@ import { AuthContext } from 'providers/AuthContextProvider';
 import { useContext } from 'react';
 
 export default function Navbar() {
-  const { isAuthenticated } = useContext(AuthContext);
+  const { isLogged, logout } = useContext(AuthContext);
 
   return (
     <nav className="nav">
@@ -13,13 +13,20 @@ export default function Navbar() {
         Monitoring System
       </Link>
       <ul>
-        <li>
-          {isAuthenticated ? (
-            <Link to={PATHS.monitoring}>Monitoring Panel</Link>
-          ) : (
+        {isLogged ? (
+          <>
+            <li>
+              <Link to={PATHS.monitoring}>Monitoring Panel</Link>
+            </li>
+            <li>
+              <Link onClick={logout}>Logout</Link>
+            </li>
+          </>
+        ) : (
+          <li>
             <Link to={PATHS.login}>Login</Link>
-          )}
-        </li>
+          </li>
+        )}
       </ul>
     </nav>
   );

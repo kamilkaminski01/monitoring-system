@@ -19,7 +19,9 @@ function App() {
         </Route>
         <Route path={PATHS.whiteboard} element={<Whiteboard />} />
         <Route element={<ProtectedRoutes />}>
-          <Route path={PATHS.monitoring} element={<MonitoringPanel />} />
+          <Route element={<SharedLayout />}>
+            <Route path={PATHS.monitoring} element={<MonitoringPanel />} />
+          </Route>
         </Route>
       </Routes>
     </div>

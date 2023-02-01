@@ -92,3 +92,6 @@ input[type='submit']:hover {
 .back a:hover {
   text-decoration: underline;
 }
+.error-message {
+  color: #f04e4e;
+}

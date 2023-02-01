@@ -39,7 +39,7 @@ const Login = () => {
         </div>
         <input type="submit" value="Confirm" />
       </form>
-      {error && <p className="error-message">{error}</p>}
+      {error && <p className="error-message">Incorrect email or password. Please try again.</p>}
       <div className="back">
         <a href={PATHS.home}>Home</a>
       </div>

@@ -5,7 +5,7 @@ import axiosAuth from 'setup/axios/authInstance';
 import { ENDPOINTS, LOCAL_STORAGE, PATHS } from 'utils/consts';
 
 const useAuth = () => {
-  const { login: loginContext, logout: logoutContext } = useContext(AuthContext);
+  const { login: loginContext } = useContext(AuthContext);
   const navigate = useNavigate();
   const [error, setError] = useState('');
 
@@ -24,16 +24,8 @@ const useAuth = () => {
       });
   };
 
-  const logout = () => {
-    localStorage.removeItem(LOCAL_STORAGE.accessToken);
-    localStorage.removeItem(LOCAL_STORAGE.refreshToken);
-    logoutContext();
-    navigate(PATHS.home);
-  };
-
   return {
     login,
-    logout,
     error
   };
 };
