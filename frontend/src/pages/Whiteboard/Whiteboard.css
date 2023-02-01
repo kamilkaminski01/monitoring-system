@@ -16,6 +16,7 @@ body {
 }
 .color {
   display: inline-block;
+  border-radius: 5px;
   height: 48px;
   width: 48px;
   border: 1px solid #e7e7e7;
@@ -39,15 +40,24 @@ body {
 .color.white {
   background-color: white;
 }
-.btn-home {
+.whiteboard-container btn {
+  display: flex;
+  justify-content: center;
+}
+.whiteboard-container button {
   background-color: white;
+  color: #1b9cfc;
+  font-weight: 700;
   border: 1px solid #e7e7e7;
+  border-radius: 10px;
   padding: 15px 32px;
   transition-duration: 0.4s;
   font-size: 16px;
   margin: 1px 2rem;
   float: right;
 }
-.btn-home:hover {
-  background-color: #e7e7e7;
+.whiteboard-container button:hover {
+  background: rgba(27, 156, 252, 0.1);
+  transform: scale(1.1);
+  cursor: pointer;
 }

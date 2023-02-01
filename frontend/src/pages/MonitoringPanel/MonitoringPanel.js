@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { PATHS } from '../../utils/consts';
+import { PATHS } from 'utils/consts';
 import './MonitoringPanel.css';
 
 const MonitoringPanel = () => {

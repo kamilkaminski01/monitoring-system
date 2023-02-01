@@ -1,6 +1,6 @@
 import React from 'react';
-import Card from '../../components/atoms/Card/Card.js';
-import { PATHS } from '../../utils/consts';
+import Card from 'components/atoms/Card/Card';
+import { PATHS } from 'utils/consts';
 import './Home.css';
 
 function Home() {

@@ -1,5 +1,5 @@
-import Footer from '../../organisms/Footer/Footer.js';
-import Navbar from '../../organisms/Navbar/Navbar.js';
+import Footer from 'components/organisms/Footer/Footer';
+import Navbar from 'components/organisms/Navbar/Navbar';
 import { Outlet } from 'react-router-dom';
 
 const SharedLayout = () => {
