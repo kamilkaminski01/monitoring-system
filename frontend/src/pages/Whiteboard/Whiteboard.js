@@ -8,6 +8,7 @@ const Whiteboard = () => {
   const socketRef = useRef(null);
 
   useEffect(() => {
+    socketRef.current = new WebSocket(PATHS.websocketWhiteboard);
     const canvas = canvasRef.current;
     const context = canvas.getContext('2d');
 
@@ -132,24 +133,13 @@ const Whiteboard = () => {
       drawLine(data.x0 * w, data.y0 * h, data.x1 * w, data.y1 * h, data.color);
     };
 
-    socketRef.current = new WebSocket('ws://localhost:8000/whiteboard');
-
-    socketRef.current.onopen = (e) => {
-      // console.log('open', e)
-    };
-
     socketRef.current.onmessage = (e) => {
-      // console.log(e)
       onDrawingEvent(JSON.parse(e.data));
-    };
-
-    socketRef.current.onerror = (e) => {
-      // console.log('error', e)
     };
   }, []);
 
   return (
-    <div>
+    <div className="whiteboard-container">
       <canvas ref={canvasRef} className="whiteboard" />
       <div ref={colorsRef} className="colors">
         <div className="color black" />
@@ -158,8 +148,8 @@ const Whiteboard = () => {
         <div className="color blue" />
         <div className="color yellow" />
         <div className="color white" />
-        <button className="btn-home">
-          <a href={PATHS.home}>HOME</a>
+        <button className="btn" onClick={() => (window.location.href = PATHS.home)}>
+          MENU
         </button>
       </div>
     </div>

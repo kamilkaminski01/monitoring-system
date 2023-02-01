@@ -23,6 +23,7 @@ body {
 }
 .nav li:hover {
   background-color: #777777;
+  border-radius: 4px;
 }
 .site-title {
   font-size: 2rem;
