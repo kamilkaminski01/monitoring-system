@@ -15,7 +15,7 @@ function Card({ title, imageUrl, body, link }) {
           <p>{body}</p>
         </div>
       </div>
-      <button className="btn" onClick={() => (window.location.href = link)}>
+      <button className="btn-open" onClick={() => (window.location.href = link)}>
         OPEN
       </button>
     </div>

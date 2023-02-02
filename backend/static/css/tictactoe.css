@@ -28,9 +28,8 @@ body {
   align-items: center;
 }
 .tictactoe {
-  flex: 1 1 auto;
+  width: 100%;
   max-width: 400px;
-  border: 1px solid #ccc;
   margin: 8rem;
 }
 .scoreboard {
@@ -44,6 +43,9 @@ body {
   flex: 1 1 auto;
   display: flex;
   justify-content: center;
+}
+#userNum {
+  margin-left: 3px;
 }
 .board-container {
   padding-top: 100%;
@@ -103,14 +105,17 @@ body {
 @media screen and (max-width: 1000px) {
   .tictactoe-container {
     flex-direction: column;
+    align-items: center;
+    min-height: 130vh;
   }
   .tictactoe {
-    width: 100%;
-    margin-top: 15rem;
+    flex: none;
+    width: 80%;
+    margin: 3rem;
   }
   .chat-container {
-    width: 25rem;
-    margin-bottom: 3rem;
+    width: 80%;
+    max-width: 25rem;
     padding: 0.7rem;
   }
 }

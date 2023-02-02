@@ -1,8 +1,13 @@
 .home {
   display: flex;
-  text-align: center;
-  min-height: 88.8vh;
-  align-items: center;
-  column-gap: 4em;
   justify-content: center;
+  align-items: center;
+  text-align: center;
+  min-height: 100vh;
+  column-gap: 4em;
+}
+@media screen and (max-width: 750px) {
+  .home{
+    flex-direction: column;
+  }
 }

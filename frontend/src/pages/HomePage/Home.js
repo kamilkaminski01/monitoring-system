@@ -9,19 +9,19 @@ function Home() {
       <div className="home">
         <Card
           title="Whiteboard"
-          imageUrl="https://picsum.photos/300"
+          imageUrl="https://picsum.photos/900/500"
           body="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
           link={PATHS.whiteboard}
         />
         <Card
           title="Bingo"
-          imageUrl="https://picsum.photos/300"
+          imageUrl="https://picsum.photos/900/500"
           body="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
           link={PATHS.bingo}
         />
         <Card
           title="Tic Tac Toe"
-          imageUrl="https://picsum.photos/300"
+          imageUrl="https://picsum.photos/900/500"
           body="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
           link={PATHS.tictactoe}
         />

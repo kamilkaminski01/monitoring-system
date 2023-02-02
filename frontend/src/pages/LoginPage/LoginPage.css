@@ -1,9 +1,3 @@
-body {
-  margin: 0;
-  padding: 0;
-  height: 100vh;
-  overflow: hidden;
-}
 .login-container {
   position: absolute;
   top: 50%;
@@ -94,4 +88,11 @@ input[type='submit']:hover {
 }
 .error-message {
   color: #f04e4e;
+}
+
+@media screen and (max-width: 1000px) {
+  .login-container{
+    width: 70%;;
+    max-width: 30rem;
+  }
 }
