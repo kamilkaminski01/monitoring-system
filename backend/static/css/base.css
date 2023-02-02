@@ -21,7 +21,7 @@ h1, h2, h3, h4 {
 /*HOME PAGE*/
 /*-----------------------------------*/
 .home-container {
-  height: 100vh;
+  height: 95vh;
   display: flex;
   justify-content: center;
   align-items: center;

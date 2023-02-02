@@ -37,6 +37,7 @@ function checkGameEnd() {
     }
   });
   if (count >= 9) {
+    count = 0;
     tictactoeSocket.send(
       JSON.stringify({
         command: "run",
@@ -106,8 +107,19 @@ function setAnotherUserText(index, value) {
 }
 
 function initializeBoard(data){
+  boardState = data.boardState;
   for(let i = 0; i < boardState.length; i++)
     elementArray[i].innerHTML = data.boardState[i];
+}
+
+function restartTicTacToeBoardState() {
+  tictactoeSocket.send(
+    JSON.stringify({
+      command: "restart",
+      info: `${tictactoeUsername} restarted the game`,
+      user: tictactoeUsername
+    })
+  );
 }
 
 chatInput.addEventListener("keyup", (e) => {
@@ -127,8 +139,13 @@ tictactoeSocket.onmessage = function (e) {
   const data = JSON.parse(e.data);
   onJoinedOrLeave(data, tictactoeUsername);
   chatData(data);
-  if (data.command === "joined")
+  if (data.command === "joined" || data.command === "restart") {
+    if (data.command === "restart"){
+      gameState = "ON";
+      sendChatMessage(data)
+    }
     initializeBoard(data)
+  }
   if (data.game_state === "won" && data.player !== player) {
     gameState = "OFF";
     Swal.fire("Sorry", "You lost!", "error");

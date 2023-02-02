@@ -82,6 +82,29 @@ class TicTacToeConsumer(AsyncJsonWebsocketConsumer):
                     "user": content.get("user", None),
                 },
             )
+        if self.command == "restart":
+            self.board_state = [""] * 9
+            await self.set_board_state()
+            await self.channel_layer.group_send(
+                self.room_name,
+                {
+                    "type": "websocket_restart",
+                    "command": self.command,
+                    "info": self.info,
+                    "user": self.user,
+                    "boardState": self.board_state,
+                },
+            )
+
+    async def websocket_restart(self, event: dict) -> None:
+        await self.send_json(
+            {
+                "command": event["command"],
+                "info": event["info"],
+                "user": event["user"],
+                "boardState": event["boardState"],
+            }
+        )
 
     async def websocket_run(self, event: dict) -> None:
         await self.send_json(
@@ -137,9 +160,12 @@ class TicTacToeConsumer(AsyncJsonWebsocketConsumer):
 
     @database_sync_to_async
     def get_board_state(self) -> None:
-        self.board_state = TicTacToeRoom.objects.get(
-            room_name=self.url_route
-        ).board_state
+        try:
+            self.board_state = TicTacToeRoom.objects.get(
+                room_name=self.url_route
+            ).board_state
+        except TicTacToeRoom.DoesNotExist:
+            pass
 
     @database_sync_to_async
     def set_board_state(self) -> None:
@@ -167,7 +193,12 @@ class TicTacToeConsumer(AsyncJsonWebsocketConsumer):
 
     @database_sync_to_async
     def delete_player(self) -> None:
-        TrackPlayers.objects.get(room=self.tictactoe_room, username=self.user).delete()
+        try:
+            TrackPlayers.objects.get(
+                room=self.tictactoe_room, username=self.user
+            ).delete()
+        except TrackPlayers.DoesNotExist:
+            pass
         players_count = self.tictactoe_room.trackplayers_set.all().count()
         if players_count == 0:
             self.tictactoe_room.delete()

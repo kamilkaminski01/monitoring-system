@@ -3,7 +3,7 @@
 {% block content %}
 
 <button class="btn btn-light btn-game" onclick="tictactoeHomePage()">Home</button>
-<button class="btn btn-light btn-game" onclick="refreshPage()">Restart</button>
+<button class="btn btn-light btn-game" onclick="restartTicTacToeBoardState()">Restart</button>
 <div class="tictactoe-container">
   <div class="tictactoe">
     <div class="scoreboard">
@@ -48,7 +48,6 @@
   <script>
     const username = localStorage.getItem('username');
     setUsername(username)
-
   </script>
   <script src="{% static 'js/tictactoe/TicTacToe.js' %}"></script>
 {% endblock script %}

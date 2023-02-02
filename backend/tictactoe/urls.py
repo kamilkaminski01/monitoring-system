@@ -1,13 +1,13 @@
 from django.urls import path
 
-from .views import create_tictactoe_room_view, tictactoe_room_exist, tictactoe_view
+from .views import CreateTicTacToeRoomView, TicTacToeRoomExist, TicTacToeView
 
 urlpatterns = [
-    path("", create_tictactoe_room_view, name="create_tictactoe_room"),
-    path("<str:room_name>/", tictactoe_view, name="tictactoe"),
+    path("", CreateTicTacToeRoomView.as_view(), name="create_tictactoe_room"),
+    path("<str:room_name>/", TicTacToeView.as_view(), name="tictactoe"),
     path(
-        "room/check_room/<room_name>/",
-        tictactoe_room_exist,
+        "room/check_room/<str:room_name>/",
+        TicTacToeRoomExist.as_view(),
         name="check_tictactoe_room",
     ),
 ]

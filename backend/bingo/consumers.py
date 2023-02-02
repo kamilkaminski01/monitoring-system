@@ -193,7 +193,10 @@ class BingoConsumer(AsyncJsonWebsocketConsumer):
 
     @database_sync_to_async
     def delete_player(self) -> None:
-        TrackPlayers.objects.get(room=self.bingo_room, username=self.user).delete()
+        try:
+            TrackPlayers.objects.get(room=self.bingo_room, username=self.user).delete()
+        except TrackPlayers.DoesNotExist:
+            pass
         players_count = self.bingo_room.trackplayers_set.all().count()
         if players_count == 0:
             self.bingo_room.delete()
