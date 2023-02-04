@@ -57,7 +57,7 @@ createRoom.addEventListener("click", async function () {
 });
 
 joinRoom.addEventListener("click", async function () {
-  await getInRoom(bingoHomeUrl, roomName);
+  await getInRoom(bingoHomeUrl, roomName, bingoUsername);
 });
 
 // Functions are imported from websocketRoomsUtils.js

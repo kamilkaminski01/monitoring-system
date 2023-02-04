@@ -3,7 +3,7 @@ function notForMeData(data, username) {
 }
 
 function sendChatMessage(data) {
-  if (notForMeData(data, username)) {
+  if (notForMeData(data)) {
     infoDiv.innerHTML +=
         `
         <div class="chat-text">

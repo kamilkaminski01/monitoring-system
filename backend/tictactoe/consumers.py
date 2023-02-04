@@ -1,7 +1,7 @@
 from channels.db import database_sync_to_async
 from channels.generic.websocket import AsyncJsonWebsocketConsumer
 
-from .models import TicTacToeRoom, TrackPlayers
+from .models import TicTacToePlayer, TicTacToeRoom
 
 
 class TicTacToeConsumer(AsyncJsonWebsocketConsumer):
@@ -71,7 +71,6 @@ class TicTacToeConsumer(AsyncJsonWebsocketConsumer):
                     "index": content.get("index", None),
                 },
             )
-
         if self.command == "chat":
             await self.channel_layer.group_send(
                 self.room_name,
@@ -182,24 +181,28 @@ class TicTacToeConsumer(AsyncJsonWebsocketConsumer):
 
     @database_sync_to_async
     def create_players(self, username: str) -> None:
-        TrackPlayers.objects.get_or_create(room=self.tictactoe_room, username=username)
+        TicTacToePlayer.objects.get_or_create(
+            room=self.tictactoe_room, username=username
+        )
 
     @database_sync_to_async
     def players_count(self) -> None:
-        self.players_number_count = self.tictactoe_room.trackplayers_set.all().count()
+        self.players_number_count = (
+            self.tictactoe_room.tictactoeplayer_set.all().count()
+        )
         self.players_username_count = [
-            x.username for x in self.tictactoe_room.trackplayers_set.all()
+            x.username for x in self.tictactoe_room.tictactoeplayer_set.all()
         ]
 
     @database_sync_to_async
     def delete_player(self) -> None:
         try:
-            TrackPlayers.objects.get(
+            TicTacToePlayer.objects.get(
                 room=self.tictactoe_room, username=self.user
             ).delete()
-        except TrackPlayers.DoesNotExist:
+        except TicTacToePlayer.DoesNotExist:
             pass
-        players_count = self.tictactoe_room.trackplayers_set.all().count()
+        players_count = self.tictactoe_room.tictactoeplayer_set.all().count()
         if players_count == 0:
             self.tictactoe_room.delete()
 

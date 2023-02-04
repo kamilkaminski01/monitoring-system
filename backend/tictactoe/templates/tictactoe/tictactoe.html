@@ -43,11 +43,10 @@
 {% endblock content %}
 {% block script %}
   <script src="{% static 'js/utils.js' %}"></script>
+  <script>
+    setUsername()
+  </script>
   <script src="{% static 'js/websocketChatUtils.js' %}"></script>
   <script src="{% static 'js/websocketUtils.js' %}"></script>
-  <script>
-    const username = localStorage.getItem('username');
-    setUsername(username)
-  </script>
   <script src="{% static 'js/tictactoe/TicTacToe.js' %}"></script>
 {% endblock script %}

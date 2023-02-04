@@ -16,8 +16,6 @@ export const PATHS = {
   whiteboard: '/whiteboard/',
   bingo: `${backendHome}/bingo/`,
   tictactoe: `${backendHome}/tictactoe/`,
-  bingoBackendHome: `${backendHome}/bingo`,
-  tictactoeBackendHome: `${backendHome}/tictactoe`,
   websocketWhiteboard: `ws://localhost:8000/whiteboard`,
   websocketBingoOnlineRooms: `ws://localhost:8000/ws/online-rooms/bingo/`,
   websocketTicTacToeOnlineRooms: `ws://localhost:8000/ws/online-rooms/tictactoe/`

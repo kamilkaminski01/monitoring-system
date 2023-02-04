@@ -1,7 +1,7 @@
 from channels.db import database_sync_to_async
 from channels.generic.websocket import AsyncJsonWebsocketConsumer
 
-from .models import BingoRoom, TrackPlayers
+from .models import BingoPlayer, BingoRoom
 
 
 class BingoConsumer(AsyncJsonWebsocketConsumer):
@@ -74,7 +74,6 @@ class BingoConsumer(AsyncJsonWebsocketConsumer):
                     "info": self.info,
                 },
             )
-
         if self.command == "leave":
             await self.delete_player()
             await self.channel_layer.group_send(
@@ -86,7 +85,6 @@ class BingoConsumer(AsyncJsonWebsocketConsumer):
                     "info": self.info,
                 },
             )
-
         if self.command == "chat":
             await self.channel_layer.group_send(
                 self.room_name,
@@ -165,9 +163,12 @@ class BingoConsumer(AsyncJsonWebsocketConsumer):
 
     @database_sync_to_async
     def get_players_limit(self) -> None:
-        self.players_limit = BingoRoom.objects.get(
-            room_name=self.url_route
-        ).players_limit
+        try:
+            self.players_limit = BingoRoom.objects.get(
+                room_name=self.url_route
+            ).players_limit
+        except BingoRoom.DoesNotExist:
+            pass
 
     @database_sync_to_async
     def set_players_limit(self) -> None:
@@ -182,29 +183,29 @@ class BingoConsumer(AsyncJsonWebsocketConsumer):
 
     @database_sync_to_async
     def create_players(self, username: str) -> None:
-        TrackPlayers.objects.get_or_create(room=self.bingo_room, username=username)
+        BingoPlayer.objects.get_or_create(room=self.bingo_room, username=username)
 
     @database_sync_to_async
     def players_count(self) -> None:
-        self.players_number_count = self.bingo_room.trackplayers_set.all().count()
+        self.players_number_count = self.bingo_room.bingoplayer_set.all().count()
         self.players_username_count = [
-            x.username for x in self.bingo_room.trackplayers_set.all()
+            x.username for x in self.bingo_room.bingoplayer_set.all()
         ]
 
     @database_sync_to_async
     def delete_player(self) -> None:
         try:
-            TrackPlayers.objects.get(room=self.bingo_room, username=self.user).delete()
-        except TrackPlayers.DoesNotExist:
+            BingoPlayer.objects.get(room=self.bingo_room, username=self.user).delete()
+        except BingoPlayer.DoesNotExist:
             pass
-        players_count = self.bingo_room.trackplayers_set.all().count()
+        players_count = self.bingo_room.bingoplayer_set.all().count()
         if players_count == 0:
             self.bingo_room.delete()
 
     @database_sync_to_async
     def get_winners(self) -> None:
-        TrackPlayers.objects.filter(username=self.user).update(is_winner=True)
-        self.winners = [x.username for x in TrackPlayers.objects.filter(is_winner=True)]
+        BingoPlayer.objects.filter(username=self.user).update(is_winner=True)
+        self.winners = [x.username for x in BingoPlayer.objects.filter(is_winner=True)]
 
 
 class BingoOnlineRoomConsumer(AsyncJsonWebsocketConsumer):

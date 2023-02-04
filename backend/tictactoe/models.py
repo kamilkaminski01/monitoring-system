@@ -15,6 +15,6 @@ class TicTacToeRoom(models.Model):
         return self.room_name
 
 
-class TrackPlayers(models.Model):
-    username = models.CharField(max_length=50)
+class TicTacToePlayer(models.Model):
     room = models.ForeignKey(TicTacToeRoom, on_delete=models.CASCADE)
+    username = models.CharField(max_length=50)

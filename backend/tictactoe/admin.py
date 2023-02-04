@@ -1,10 +1,10 @@
 from django.contrib import admin
 
-from .models import TicTacToeRoom, TrackPlayers
+from .models import TicTacToePlayer, TicTacToeRoom
 
 
 class TrackPlayersAdmin(admin.TabularInline):
-    model = TrackPlayers
+    model = TicTacToePlayer
 
 
 class RoomAdmin(admin.ModelAdmin):

@@ -5,7 +5,7 @@ from django.shortcuts import render
 from django.views import View
 from django.views.decorators.csrf import csrf_exempt
 
-from .models import TicTacToeRoom
+from .models import TicTacToePlayer, TicTacToeRoom
 
 
 class CreateTicTacToeRoomView(View):
@@ -26,3 +26,12 @@ class TicTacToeRoomExist(View):
         return JsonResponse(
             {"room_exist": TicTacToeRoom.objects.filter(room_name=room_name).exists()}
         )
+
+
+class TicTacToePlayersView(View):
+    @csrf_exempt
+    def get(self, request: HttpRequest, room_name: str) -> JsonResponse:
+        tictactoe_room = TicTacToeRoom.objects.get(room_name=room_name)
+        players = TicTacToePlayer.objects.filter(room=tictactoe_room)
+        player_list = [player.username for player in players]
+        return JsonResponse({"players": player_list})

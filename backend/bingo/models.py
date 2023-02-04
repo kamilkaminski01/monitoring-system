@@ -15,8 +15,8 @@ class BingoRoom(models.Model):
         return self.room_name
 
 
-class TrackPlayers(models.Model):
+class BingoPlayer(models.Model):
+    room = models.ForeignKey(BingoRoom, on_delete=models.CASCADE)
     username = models.CharField(max_length=50)
     is_winner = models.BooleanField(default=False)
     # bingo_state = models.JSONField(default=default_bingo_state)
-    room = models.ForeignKey(BingoRoom, on_delete=models.CASCADE)

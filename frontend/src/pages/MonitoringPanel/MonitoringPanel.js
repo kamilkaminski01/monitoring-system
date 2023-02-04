@@ -63,11 +63,7 @@ const MonitoringPanel = () => {
               className="online-room"
               href=""
               onClick={() =>
-                window.open(
-                  `${PATHS.bingoBackendHome}/${room.room_name}`,
-                  '_blank',
-                  'height=700,width=1050'
-                )
+                window.open(`${PATHS.bingo}${room.room_name}`, '_blank', 'height=700,width=1050')
               }>
               <div>
                 <p>{room.room_name}</p>
@@ -89,7 +85,7 @@ const MonitoringPanel = () => {
               href=""
               onClick={() =>
                 window.open(
-                  `${PATHS.tictactoeBackendHome}/${room.room_name}`,
+                  `${PATHS.tictactoe}${room.room_name}`,
                   '_blank',
                   'height=700,width=1050'
                 )

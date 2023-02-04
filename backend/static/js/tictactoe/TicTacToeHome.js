@@ -15,7 +15,7 @@ createRoom.addEventListener("click", async function () {
 });
 
 joinRoom.addEventListener("click", async function() {
-  await getInRoom(tictactoeHomeUrl, roomName);
+  await getInRoom(tictactoeHomeUrl, roomName, tictactoeUsername);
 });
 
 // Functions are imported from websocketRoomsUtils.js

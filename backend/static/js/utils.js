@@ -19,13 +19,57 @@ function refreshPage() {
   window.location.reload();
 }
 
-function setUsername(username) {
-  if (!username) {
-    const name = prompt("Please give a username:");
-    localStorage.setItem("username", name);
+function setUsername() {
+  const username = localStorage.getItem("username");
+  const url = window.location;
+  if (url.pathname.includes("bingo")) {
+    if (!username) {
+      localStorage.setItem(
+        "message",
+        "Provide a username before connecting or your username is taken."
+      );
+      window.location.href = bingoHomeURL;
+      return;
+    }
+  }
+  if (url.pathname.includes("tictactoe")) {
+    if (!username) {
+      localStorage.setItem(
+        "message",
+        "Provide a username before connecting or your username is taken."
+      );
+      window.location.href = tictactoeHomeURL;
+      return;
+    }
   }
   const userdiv = document.getElementById("userdiv");
   userdiv.textContent = localStorage.getItem("username");
+}
+
+window.addEventListener("load", function () {
+  const message = localStorage.getItem("message");
+  if (message) {
+    Swal.fire("Error", message, "error");
+    localStorage.removeItem("message");
+  }
+});
+
+async function checkUsername(url, roomname, username) {
+  const response = await fetch(`${url}players/${roomname.value}/`, {
+    method: "GET"
+  });
+  const players = await response.json();
+  if (players.players.includes(username.value) || username.value.length > 10) {
+    Swal.fire({
+      icon: "error",
+      title: "Error",
+      text: "Username taken or its length is bigger than 10",
+      toast: true,
+      position: "top-right"
+    });
+    return false;
+  }
+  return true;
 }
 
 function sendPlayersLimit(bingoTotalPlayersLimit, roomname) {
@@ -48,14 +92,14 @@ function redirectToRoom(roomname) {
 }
 
 async function checkRoom(url, roomname) {
-  const response = await fetch(`${url}room/check_room/${roomname.value}/`, {
+  const response = await fetch(`${url}check_room/${roomname.value}/`, {
     method: "GET"
   });
   const answer = await response.json();
   return answer.room_exist;
 }
 
-async function getInRoom(url, roomname) {
+async function getInRoom(url, roomname, username) {
   const roomExists = await checkRoom(url, roomname);
   if (!roomExists) {
     Swal.fire({
@@ -66,7 +110,7 @@ async function getInRoom(url, roomname) {
       position: "top-right"
     });
   } else {
-    redirectToRoom(roomname);
+    if (await checkUsername(url, roomname, username)) redirectToRoom(roomname);
   }
 }
 

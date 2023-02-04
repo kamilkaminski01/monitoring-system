@@ -67,6 +67,8 @@ function fillGrid() {
         return Swal.fire("Game finished", "Restart to play again!", "error");
       if (currentPlayer !== bingoUsername)
         return Swal.fire("Oops..", "Not your turn!", "error");
+      if (totalPlayers !== playersLimitNumber)
+        return Swal.fire("Oops...", "Wait for the rest of the players", "error");
       checkBingo(item);
     });
   });
@@ -87,11 +89,9 @@ function loopItemsAndCheck() {
     if (includesAll(datasetArr, j)) {
       for (let [index, li] of j.entries())
         successGrid(index, li);
-
       const index = bingoWinRows.indexOf(j);
       if (index > -1)
         bingoWinRows.splice(index, 1);
-
       let span = document.createElement("span");
       span.classList.add("bingState");
       span.append(bingoState[bingoIndex]);
