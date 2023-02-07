@@ -1,3 +1,4 @@
+from autobahn.exception import Disconnected
 from channels.db import database_sync_to_async
 from channels.generic.websocket import AsyncJsonWebsocketConsumer
 
@@ -5,18 +6,6 @@ from .models import TicTacToePlayer, TicTacToeRoom
 
 
 class TicTacToeConsumer(AsyncJsonWebsocketConsumer):
-    def __init__(self, *args, **kwargs):
-        super(TicTacToeConsumer, self).__init__(args, kwargs)
-        self.tictactoe_room = None
-        self.url_route = None
-        self.room_name = None
-        self.game_state = None
-        self.command = None
-        self.info = None
-        self.user = None
-        self.players_number_count = None
-        self.players_username_count = None
-
     async def connect(self) -> None:
         self.url_route = self.scope["url_route"]["kwargs"]["room_name"]
         self.room_name = f"tictactoe_room_{self.url_route}"
@@ -145,17 +134,20 @@ class TicTacToeConsumer(AsyncJsonWebsocketConsumer):
 
     async def websocket_leave(self, event: dict) -> None:
         await self.players_count()
-        await self.send_json(
-            (
-                {
-                    "command": event["command"],
-                    "info": event["info"],
-                    "user": event["user"],
-                    "players_number_count": self.players_number_count,
-                    "players_username_count": self.players_username_count,
-                }
+        try:
+            await self.send_json(
+                (
+                    {
+                        "command": event["command"],
+                        "info": event["info"],
+                        "user": event["user"],
+                        "players_number_count": self.players_number_count,
+                        "players_username_count": self.players_username_count,
+                    }
+                )
             )
-        )
+        except Disconnected:
+            pass
 
     @database_sync_to_async
     def get_board_state(self) -> None:
@@ -208,11 +200,6 @@ class TicTacToeConsumer(AsyncJsonWebsocketConsumer):
 
 
 class TicTacToeOnlineRoomConsumer(AsyncJsonWebsocketConsumer):
-    def __init__(self, *args, **kwargs):
-        super(TicTacToeOnlineRoomConsumer, self).__init__(args, kwargs)
-        self.room_name = None
-        self.online_rooms = None
-
     async def connect(self) -> None:
         await self.accept()
         self.room_name = "online_tictactoe_room"

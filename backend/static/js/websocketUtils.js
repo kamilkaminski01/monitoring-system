@@ -2,18 +2,6 @@ function notForMeData(data, username) {
   return data.user !== username;
 }
 
-function sendChatMessage(data) {
-  if (notForMeData(data)) {
-    infoDiv.innerHTML +=
-        `
-        <div class="chat-text">
-        <p>${data.info}</p>
-        </div>
-        `;
-  }
-  infoDiv.scrollTop = infoDiv.scrollHeight;
-}
-
 function onOpen(socket, username) {
   socket.send(
     JSON.stringify({
@@ -42,6 +30,7 @@ function onJoinedOrLeave(data, username) {
     currentPlayer = allPlayers[playerTrack];
     userTurn.textContent = currentPlayer;
     userNum.textContent = data.players_number_count;
+    // This if statement is for bingo game
     if (data.command === "joined" && data.players_limit) {
       playersLimit.textContent = data.players_limit;
       playersLimitNumber = data.players_limit;

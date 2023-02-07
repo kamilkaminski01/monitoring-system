@@ -33,5 +33,15 @@ class BingoPlayersView(View):
     def get(self, request: HttpRequest, room_name: str) -> JsonResponse:
         bingo_room = BingoRoom.objects.get(room_name=room_name)
         players = BingoPlayer.objects.filter(room=bingo_room)
-        player_list = [player.username for player in players]
-        return JsonResponse({"players": player_list})
+        player_data = []
+        for player in players:
+            player_data.append(
+                {
+                    "username": player.username,
+                    "initial_board_state": player.initial_board_state,
+                    "bingo_state": player.bingo_state,
+                }
+            )
+        return JsonResponse(
+            {"players": player_data, "board_state": bingo_room.board_state}
+        )

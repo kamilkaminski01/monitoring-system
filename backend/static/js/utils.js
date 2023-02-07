@@ -19,25 +19,26 @@ function refreshPage() {
   window.location.reload();
 }
 
+async function getPlayersInRoom(url, roomname){
+    const response = await fetch(`${url}players/${roomname}/`, {
+    method: "GET"
+  });
+  return await response.json()
+}
+
 function setUsername() {
   const username = localStorage.getItem("username");
   const url = window.location;
   if (url.pathname.includes("bingo")) {
     if (!username) {
-      localStorage.setItem(
-        "message",
-        "Provide a username before connecting or your username is taken."
-      );
+      localStorage.setItem("message", "Provide a username before connecting.");
       window.location.href = bingoHomeURL;
       return;
     }
   }
   if (url.pathname.includes("tictactoe")) {
     if (!username) {
-      localStorage.setItem(
-        "message",
-        "Provide a username before connecting or your username is taken."
-      );
+      localStorage.setItem("message", "Provide a username before connecting.");
       window.location.href = tictactoeHomeURL;
       return;
     }
@@ -55,15 +56,13 @@ window.addEventListener("load", function () {
 });
 
 async function checkUsername(url, roomname, username) {
-  const response = await fetch(`${url}players/${roomname.value}/`, {
-    method: "GET"
-  });
-  const players = await response.json();
-  if (players.players.includes(username.value) || username.value.length > 10) {
+  const players = await getPlayersInRoom(url, roomname)
+  const invalidUsername = !/^[a-zA-Z0-9-_]+$/.test(username.value);
+  if (players.players.includes(username.value) || username.value.length > 10 || invalidUsername) {
     Swal.fire({
       icon: "error",
       title: "Error",
-      text: "Username taken or its length is bigger than 10",
+      text: "Username taken or its invalid",
       toast: true,
       position: "top-right"
     });
@@ -105,12 +104,12 @@ async function getInRoom(url, roomname, username) {
     Swal.fire({
       icon: "error",
       title: "Room error",
-      text: "Room doesn't exist, create it",
+      text: "Room doesn't exist",
       toast: true,
       position: "top-right"
     });
   } else {
-    if (await checkUsername(url, roomname, username)) redirectToRoom(roomname);
+    if (await checkUsername(url, roomname.value, username)) redirectToRoom(roomname);
   }
 }
 

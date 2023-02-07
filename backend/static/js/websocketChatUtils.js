@@ -31,3 +31,15 @@ function chatData(data) {
     infoDiv.scrollTop = infoDiv.scrollHeight;
   }
 }
+
+function sendChatMessage(data) {
+  if (notForMeData(data)) {
+    infoDiv.innerHTML +=
+        `
+        <div class="chat-text">
+        <p>${data.info}</p>
+        </div>
+        `;
+  }
+  infoDiv.scrollTop = infoDiv.scrollHeight;
+}

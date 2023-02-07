@@ -1,15 +1,28 @@
 const grid = document.querySelector(".grid");
 const items = [...document.querySelector(".grid").children];
 const bingodiv = document.querySelector("#bingodiv");
+const infoDiv = document.getElementById("infodiv");
+const userNum = document.getElementById("userNum");
+const userTurn = document.getElementById("userTurn");
+const chatInput = document.getElementById("chatInput");
+const lastStepDiv = document.getElementById("lastStepDiv");
+const playersLimit = document.getElementById("playersLimit");
+
+const bingoSocketUrl = "ws://localhost:8000/ws/clicked" + window.location.pathname;
+const bingoSocket = new WebSocket(bingoSocketUrl);
+const bingoUsername = localStorage.getItem("username");
 
 const bingoState = ["B", "I", "N", "G", "O", ""];
-let bingoIndex = 0;
+let gamestate = "ON";
+let playersBingoState = [];
 let keysArr = [];
+const datasetArr = [];
 
-window.onload = () => {
-  getRandomArray();
-  fillGrid();
-};
+let allPlayers = [];
+let totalPlayers;
+let playerTrack = 0;
+let currentPlayer;
+let playersLimitNumber;
 
 // All possible combinations for bingo win
 const bingoWinRows = [
@@ -27,21 +40,23 @@ const bingoWinRows = [
   [5, 9, 13, 17, 21]
 ];
 
-function getRandomArray() {
-  keysArr = [];
+function initializeBoard() {
   for (let i = 1; i < 26; i++) {
     let b = Math.ceil(Math.random() * 25);
-    if (!keysArr.includes(b)) {
+    if (!keysArr.includes(b))
       keysArr.push(b);
-    } else {
+    else
       i--;
-    }
   }
+  items.forEach((item, index) => {
+    item.innerHTML = keysArr[index];
+    item.dataset.innernum = keysArr[index];
+  });
 }
 
 function checkBingo(item) {
   const dataID = item.dataset.id;
-  const innernum = item.dataset.innernum
+  const innernum = item.dataset.innernum;
   const dataNumber = parseInt(dataID);
   if (datasetArr.includes(dataNumber))
     return Swal.fire("Oops..", "Already selected", "error");
@@ -52,27 +67,28 @@ function checkBingo(item) {
       command: "clicked",
       user: bingoUsername,
       dataID: dataID,
-      dataset: innernum,
+      dataset: innernum
     })
   );
   loopItemsAndCheck();
 }
 
-function fillGrid() {
-  items.forEach((item, index) => {
-    item.innerHTML = keysArr[index];
-    item.dataset.innernum = keysArr[index];
-    item.addEventListener("click", (e) => {
-      if (gamestate !== "ON")
-        return Swal.fire("Game finished", "Restart to play again!", "error");
-      if (currentPlayer !== bingoUsername)
-        return Swal.fire("Oops..", "Not your turn!", "error");
-      if (totalPlayers !== playersLimitNumber)
-        return Swal.fire("Oops...", "Wait for the rest of the players", "error");
-      checkBingo(item);
-    });
-  });
-}
+const handleClick = (e) => {
+  if (gamestate === "OFF") {
+    return Swal.fire("Game finished", "Restart to play again!", "error");
+  }
+  if (currentPlayer !== bingoUsername) {
+    return Swal.fire("Oops..", "Not your turn!", "error");
+  }
+  if (totalPlayers < playersLimitNumber) {
+    return Swal.fire("Oops...", "Wait for the rest of the players", "error");
+  }
+  checkBingo(e.currentTarget);
+};
+
+items.forEach((item) => {
+  item.addEventListener("click", handleClick);
+});
 
 const includesAll = (arr, values) => values.every((v) => arr.includes(v));
 
@@ -87,25 +103,104 @@ function successGrid(index, li) {
 function loopItemsAndCheck() {
   for (const j of bingoWinRows) {
     if (includesAll(datasetArr, j)) {
-      for (let [index, li] of j.entries())
-        successGrid(index, li);
+      for (let [index, li] of j.entries()) successGrid(index, li);
       const index = bingoWinRows.indexOf(j);
-      if (index > -1)
-        bingoWinRows.splice(index, 1);
+      if (index > -1) bingoWinRows.splice(index, 1);
       let span = document.createElement("span");
-      span.classList.add("bingState");
-      span.append(bingoState[bingoIndex]);
+      span.classList.add("bingoState");
+      span.append(bingoState[playersBingoState.length]);
       bingodiv.append(span);
-      bingoIndex += 1;
-      if (bingoIndex === 5) {
+      playersBingoState.push(span.textContent);
+      bingoSocket.send(
+        JSON.stringify({
+          command: "update_bingo_state",
+          user: bingoUsername,
+          players_bingo_state: playersBingoState
+        })
+      );
+      if (playersBingoState.length === 5) {
         bingoSocket.send(
           JSON.stringify({
             command: "win",
             user: bingoUsername,
-            info: `${bingoUsername} won the game`,
+            info: `${bingoUsername} won the game`
           })
         );
       }
     }
   }
 }
+
+function getLastStep(data) {
+  lastStepDiv.innerHTML = `<span>Last step: <span class="prevStep">${data}</span></span>`;
+}
+
+function getBoardState(player, boardState) {
+  items.forEach((item, index) => {
+    item.innerHTML = player.initial_board_state[index];
+    item.dataset.innernum = player.initial_board_state[index];
+    if (boardState.includes(player.initial_board_state[index].toString())) {
+      item.classList.add("clicked");
+      datasetArr.push(parseInt(item.dataset.id));
+      loopItemsAndCheck();
+    }
+  });
+}
+
+chatInput.addEventListener("keyup", (e) => {
+  chatContent(e, bingoSocket, bingoUsername);
+});
+
+bingoSocket.onopen = function (e) {
+  onOpen(bingoSocket, bingoUsername);
+  const url = window.location;
+  const roomName = url.pathname.split("/")[2];
+  getPlayersInRoom(`${url.origin}/bingo/`, roomName).then((players) => {
+    const player = players.players.find((p) => p.username === bingoUsername);
+    const boardState = players.board_state;
+    if (!player) {
+      initializeBoard();
+      bingoSocket.send(
+        JSON.stringify({
+          command: "initialize_board",
+          user: bingoUsername,
+          initial_board_state: keysArr
+        })
+      );
+    } else {
+      getBoardState(player, boardState);
+    }
+  });
+};
+
+// socket.onclose doesn't work, this eventListener gets triggered when a user refreshes or exits the page
+window.addEventListener("beforeunload", function (e) {
+  onLeave(bingoSocket, bingoUsername);
+});
+
+bingoSocket.onmessage = function (e) {
+  const data = JSON.parse(e.data);
+  onJoinedOrLeave(data, bingoUsername);
+  chatData(data);
+  if (data.command === "clicked") {
+    getLastStep(data.dataset);
+    checkTurnWithLimit(playersLimitNumber);
+    const clickedDiv = document.querySelector(`[data-innernum='${data.dataset}']`);
+    if (notForMeData(data, bingoUsername)) {
+      const myDataSetId = parseInt(clickedDiv.dataset.id);
+      if (!datasetArr.includes(myDataSetId)) {
+        datasetArr.push(myDataSetId);
+        loopItemsAndCheck();
+      }
+    }
+    clickedDiv.classList.add("clicked");
+  }
+  if (data.command === "win") {
+    gamestate = "OFF";
+    if (data.winners.includes(bingoUsername))
+      Swal.fire("Good job", "You won!", "success");
+    else
+      Swal.fire("Sorry", "You lost!", "error");
+    sendChatMessage(data, bingoUsername);
+  }
+};
