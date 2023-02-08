@@ -143,6 +143,13 @@ tictactoeSocket.onmessage = function (e) {
     if (data.command === "restart"){
       gameState = "ON";
       sendChatMessage(data)
+      Swal.fire({
+        icon: "success",
+        title: "Restart",
+        text: "The game has restarted",
+        toast: true,
+        position: "top-right"
+      });
     }
     initializeBoard(data)
   }

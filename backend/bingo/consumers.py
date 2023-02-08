@@ -36,10 +36,10 @@ class BingoConsumer(AsyncJsonWebsocketConsumer):
             await self.set_initial_board()
 
         if self.command == "update_bingo_state":
-            await self.update_players_bingo_state()
+            await self.update_or_restart_players_bingo_state()
 
         if self.command == "clicked":
-            await self.update_board_state()
+            await self.update_or_restart_board_state()
             await self.channel_layer.group_send(
                 self.room_name,
                 {
@@ -67,7 +67,7 @@ class BingoConsumer(AsyncJsonWebsocketConsumer):
                 },
             )
         if self.command == "win":
-            await self.get_winners()
+            await self.get_or_restart_winners()
             await self.channel_layer.group_send(
                 self.room_name,
                 {
@@ -102,6 +102,30 @@ class BingoConsumer(AsyncJsonWebsocketConsumer):
                     "user": content.get("user", None),
                 },
             )
+        if self.command == "restart":
+            await self.update_or_restart_players_bingo_state(True)
+            await self.update_or_restart_board_state(True)
+            await self.get_or_restart_winners(True)
+            await self.channel_layer.group_send(
+                self.room_name,
+                {
+                    "type": "websocket_restart",
+                    "command": self.command,
+                    "info": self.info,
+                    "user": self.user,
+                },
+            )
+
+    async def websocket_restart(self, event: dict) -> None:
+        await self.send_json(
+            (
+                {
+                    "command": event["command"],
+                    "info": event["info"],
+                    "user": event["user"],
+                }
+            )
+        )
 
     async def websocket_info(self, event: dict) -> None:
         await self.send_json(
@@ -175,18 +199,27 @@ class BingoConsumer(AsyncJsonWebsocketConsumer):
         bingo_player.save()
 
     @database_sync_to_async
-    def update_board_state(self) -> None:
+    def update_or_restart_board_state(self, restart: bool = None) -> None:
         room = BingoRoom.objects.get(room_name=self.url_route)
-        if self.data_set not in room.board_state and self.data_set is not None:
-            BingoRoom.objects.filter(room_name=self.url_route).update(
-                board_state=room.board_state + [self.data_set]
-            )
+        if restart:
+            BingoRoom.objects.filter(room_name=self.url_route).update(board_state=[])
+        else:
+            if self.data_set not in room.board_state and self.data_set is not None:
+                BingoRoom.objects.filter(room_name=self.url_route).update(
+                    board_state=room.board_state + [self.data_set]
+                )
 
     @database_sync_to_async
-    def update_players_bingo_state(self) -> None:
-        player = self.bingo_room.bingoplayer_set.get(username=self.user)
-        player.bingo_state = self.players_bingo_state
-        player.save()
+    def update_or_restart_players_bingo_state(self, restart: bool = None) -> None:
+        if restart:
+            players = self.bingo_room.bingoplayer_set.all()
+            for player in players:
+                player.bingo_state = []
+                player.save()
+        else:
+            player = self.bingo_room.bingoplayer_set.get(username=self.user)
+            player.bingo_state = self.players_bingo_state
+            player.save()
 
     @database_sync_to_async
     def get_players_limit(self) -> None:
@@ -230,13 +263,20 @@ class BingoConsumer(AsyncJsonWebsocketConsumer):
             pass
 
     @database_sync_to_async
-    def get_winners(self) -> None:
-        bingo_player = self.bingo_room.bingoplayer_set.get(username=self.user)
-        bingo_player.is_winner = True
-        bingo_player.save()
-        self.winners = [
-            x.username for x in self.bingo_room.bingoplayer_set.filter(is_winner=True)
-        ]
+    def get_or_restart_winners(self, restart: bool = None) -> None:
+        if restart:
+            players = self.bingo_room.bingoplayer_set.all()
+            for player in players:
+                player.is_winner = False
+                player.save()
+        else:
+            bingo_player = self.bingo_room.bingoplayer_set.get(username=self.user)
+            bingo_player.is_winner = True
+            bingo_player.save()
+            self.winners = [
+                x.username
+                for x in self.bingo_room.bingoplayer_set.filter(is_winner=True)
+            ]
 
 
 class BingoOnlineRoomConsumer(AsyncJsonWebsocketConsumer):
