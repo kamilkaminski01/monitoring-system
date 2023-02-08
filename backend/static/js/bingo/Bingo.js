@@ -16,7 +16,7 @@ const bingoState = ["B", "I", "N", "G", "O", ""];
 let gamestate = "ON";
 let playersBingoState = [];
 let keysArr = [];
-const datasetArr = [];
+let datasetArr = [];
 
 let allPlayers = [];
 let totalPlayers;
@@ -25,7 +25,7 @@ let currentPlayer;
 let playersLimitNumber;
 
 // All possible combinations for bingo win
-const bingoWinRows = [
+let bingoWinRows = [
   [1, 2, 3, 4, 5],
   [6, 7, 8, 9, 10],
   [11, 12, 13, 14, 15],
@@ -39,6 +39,7 @@ const bingoWinRows = [
   [5, 10, 15, 20, 25],
   [5, 9, 13, 17, 21]
 ];
+const originalBingoWinRows = [...bingoWinRows];
 
 function initializeBoard() {
   for (let i = 1; i < 26; i++) {
@@ -49,6 +50,7 @@ function initializeBoard() {
       i--;
   }
   items.forEach((item, index) => {
+    item.removeAttribute("class");
     item.innerHTML = keysArr[index];
     item.dataset.innernum = keysArr[index];
   });
@@ -132,7 +134,11 @@ function loopItemsAndCheck() {
 }
 
 function getLastStep(data) {
-  lastStepDiv.innerHTML = `<span>Last step: <span class="prevStep">${data}</span></span>`;
+  if (data) {
+    lastStepDiv.innerHTML = `<span>Last step: <span class="prevStep">${data}</span></span>`;
+  } else {
+    lastStepDiv.innerHTML = `<span>Last step</span>`;
+  }
 }
 
 function getBoardState(player, boardState) {
@@ -145,6 +151,16 @@ function getBoardState(player, boardState) {
       loopItemsAndCheck();
     }
   });
+}
+
+function restartBingoBoardState() {
+  bingoSocket.send(
+    JSON.stringify({
+      command: "restart",
+      info: `${bingoUsername} restarted the game`,
+      user: bingoUsername
+    })
+  );
 }
 
 chatInput.addEventListener("keyup", (e) => {
@@ -194,6 +210,33 @@ bingoSocket.onmessage = function (e) {
       }
     }
     clickedDiv.classList.add("clicked");
+  }
+  if (data.command === "restart") {
+    gamestate = "ON";
+    datasetArr.splice(0, datasetArr.length);
+    playersBingoState.splice(0, playersBingoState.length);
+    keysArr.splice(0, keysArr.length);
+    initializeBoard();
+    bingoSocket.send(
+      JSON.stringify({
+        command: "initialize_board",
+        user: bingoUsername,
+        initial_board_state: keysArr
+      })
+    );
+    while (bingodiv.firstChild) {
+      bingodiv.removeChild(bingodiv.firstChild);
+    }
+    bingoWinRows = [...originalBingoWinRows];
+    getLastStep();
+    sendChatMessage(data);
+    Swal.fire({
+      icon: "success",
+      title: "Restart",
+      text: "The game has restarted",
+      toast: true,
+      position: "top-right"
+    });
   }
   if (data.command === "win") {
     gamestate = "OFF";
