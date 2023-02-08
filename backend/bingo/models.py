@@ -17,3 +17,6 @@ class BingoPlayer(models.Model):
     is_winner = models.BooleanField(default=False)
     initial_board_state = models.JSONField(default=list)
     bingo_state = models.JSONField(default=list)
+
+    def __str__(self) -> str:
+        return self.username

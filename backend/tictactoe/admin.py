@@ -1,14 +1,27 @@
 from django.contrib import admin
+from django.http import HttpRequest
 
 from .models import TicTacToePlayer, TicTacToeRoom
 
 
-class TrackPlayersAdmin(admin.TabularInline):
+class TicTacToePlayersAdmin(admin.TabularInline):
     model = TicTacToePlayer
 
+    def get_readonly_fields(self, request: HttpRequest, obj=None):
+        return (
+            "room",
+            "username",
+        )
 
-class RoomAdmin(admin.ModelAdmin):
-    inlines = [TrackPlayersAdmin]
+    def has_add_permission(self, request: HttpRequest, obj=None):
+        return False
 
 
-admin.site.register(TicTacToeRoom, RoomAdmin)
+class TicTacToeRoomAdmin(admin.ModelAdmin):
+    inlines = [TicTacToePlayersAdmin]
+
+    def get_readonly_fields(self, request: HttpRequest, obj=None):
+        return "room_name", "board_state"
+
+
+admin.site.register(TicTacToeRoom, TicTacToeRoomAdmin)
