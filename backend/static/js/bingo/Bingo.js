@@ -18,9 +18,7 @@ let playersBingoState = [];
 let keysArr = [];
 let datasetArr = [];
 
-let allPlayers = [];
 let totalPlayers;
-let playerTrack = 0;
 let currentPlayer;
 let playersLimitNumber;
 
@@ -171,8 +169,10 @@ bingoSocket.onopen = function (e) {
   onOpen(bingoSocket, bingoUsername);
   const url = window.location;
   const roomName = url.pathname.split("/")[2];
-  getRoomDetails(`${url.origin}/bingo`, roomName).then((room) => {
-    const player = room.players.find((p) => p.username === bingoUsername);
+  getRoomDetails(`${url.origin}/bingo`, roomName).then((response) => {
+    const players = response.players;
+    const room = response.room;
+    const player = players.find((p) => p.username === bingoUsername);
     const boardState = room.board_state;
     if (!player) {
       initializeBoard();
@@ -186,8 +186,11 @@ bingoSocket.onopen = function (e) {
     } else {
       getBoardState(player, boardState);
     }
+    playersLimit.textContent = room.players_limit;
+    playersLimitNumber = room.players_limit;
   });
 };
+
 
 // socket.onclose doesn't work, this eventListener gets triggered when a user refreshes or exits the page
 window.addEventListener("beforeunload", function (e) {
@@ -198,9 +201,9 @@ bingoSocket.onmessage = function (e) {
   const data = JSON.parse(e.data);
   onJoinedOrLeave(data, bingoUsername);
   chatData(data);
+  checkTurnBetweenPlayers()
   if (data.command === "clicked") {
     getLastStep(data.dataset);
-    checkTurnWithLimit(playersLimitNumber);
     const clickedDiv = document.querySelector(`[data-innernum='${data.dataset}']`);
     if (notForMeData(data, bingoUsername)) {
       const myDataSetId = parseInt(clickedDiv.dataset.id);

@@ -22,13 +22,12 @@ class BingoConsumer(AsyncJsonWebsocketConsumer):
         self.user = content.get("user", None)
         self.data_id = content.get("dataID", None)
         self.data_set = content.get("dataset", None)
-        if players_limit := content.get("players_limit"):
-            self.players_limit = players_limit
         if players_bingo_state := content.get("players_bingo_state"):
             self.players_bingo_state = players_bingo_state
 
         if self.command == "room_created":
-            await self.set_players_limit()
+            players_limit = content.get("players_limit")
+            await self.set_players_limit(players_limit)
 
         if self.command == "initialize_board":
             if initial_board_state := content.get("initial_board_state"):
@@ -40,6 +39,7 @@ class BingoConsumer(AsyncJsonWebsocketConsumer):
 
         if self.command == "clicked":
             await self.update_or_restart_board_state()
+            await self.set_or_change_turn()
             await self.channel_layer.group_send(
                 self.room_name,
                 {
@@ -50,10 +50,13 @@ class BingoConsumer(AsyncJsonWebsocketConsumer):
                 },
             )
         if self.command == "joined":
-            await self.get_players_limit()
             await self.set_player_inactive_or_active(True)
             await self.create_players()
             await self.players_count()
+            await self.set_user_as_player()
+            await self.get_players_in_room()
+            if self.players < 2:
+                await self.set_or_change_turn()
             await self.channel_layer.group_send(
                 self.room_name,
                 {
@@ -61,7 +64,6 @@ class BingoConsumer(AsyncJsonWebsocketConsumer):
                     "command": self.command,
                     "user": self.user,
                     "info": self.info,
-                    "players_limit": self.players_limit,
                     "players_number_count": self.players_number_count,
                     "players_username_count": self.players_username_count,
                 },
@@ -169,7 +171,6 @@ class BingoConsumer(AsyncJsonWebsocketConsumer):
                     "command": event["command"],
                     "user": event["user"],
                     "info": event["info"],
-                    "players_limit": event["players_limit"],
                     "players_number_count": event["players_number_count"],
                     "players_username_count": event["players_username_count"],
                 }
@@ -191,6 +192,32 @@ class BingoConsumer(AsyncJsonWebsocketConsumer):
             )
         except Disconnected:
             pass
+
+    @database_sync_to_async
+    def set_players_limit(self, players_limit) -> None:
+        BingoRoom.objects.filter(room_name=self.url_route).update(
+            players_limit=players_limit
+        )
+
+    @database_sync_to_async
+    def get_players_in_room(self) -> None:
+        self.players = BingoRoom.objects.get(room_name=self.url_route).players.count()
+
+    @database_sync_to_async
+    def set_or_change_turn(self) -> None:
+        room = BingoRoom.objects.get(room_name=self.url_route)
+        players = list(room.players.all().order_by("id"))
+        if len(players) == 2 and room.players_turn:
+            current_turn_player_index = players.index(room.players_turn)
+            next_turn_player_index = (current_turn_player_index + 1) % len(players)
+            next_turn_player = players[next_turn_player_index]
+            BingoRoom.objects.filter(room_name=self.url_route).update(
+                players_turn=next_turn_player
+            )
+        else:
+            BingoRoom.objects.filter(room_name=self.url_route).update(
+                players_turn=room.players.first()
+            )
 
     @database_sync_to_async
     def set_initial_board(self) -> None:
@@ -222,28 +249,21 @@ class BingoConsumer(AsyncJsonWebsocketConsumer):
             player.save()
 
     @database_sync_to_async
-    def get_players_limit(self) -> None:
-        try:
-            self.players_limit = BingoRoom.objects.get(
-                room_name=self.url_route
-            ).players_limit
-        except BingoRoom.DoesNotExist:
-            pass
-
-    @database_sync_to_async
-    def set_players_limit(self) -> None:
-        BingoRoom.objects.filter(room_name=self.url_route).update(
-            players_limit=self.players_limit
-        )
-        self.get_players_limit()
-
-    @database_sync_to_async
     def create_room(self) -> None:
         self.bingo_room, _ = BingoRoom.objects.get_or_create(room_name=self.url_route)
 
     @database_sync_to_async
     def create_players(self) -> None:
         BingoPlayer.objects.get_or_create(room=self.bingo_room, username=self.user)
+
+    @database_sync_to_async
+    def set_user_as_player(self) -> None:
+        room = BingoRoom.objects.get(room_name=self.url_route)
+        if self.players_number_count <= room.players_limit:
+            player = self.bingo_room.bingoplayer_set.get(username=self.user)
+            player.is_player = True
+            player.save()
+            self.bingo_room.players.add(player)
 
     @database_sync_to_async
     def players_count(self) -> None:

@@ -9,7 +9,7 @@ const onlinerooms = document.getElementById("onlinerooms");
 
 bingoUsername.value = localStorage.getItem("username");
 const bingoOnlineRoomsSocket = new WebSocket(bingoOnlineRoomsUrl);
-let bingoTotalPlayersLimit = 0
+let playersLimit;
 
 document.querySelector("#show-createRoom").addEventListener("click", function () {
   document.querySelector(".popup").classList.add("active");
@@ -24,16 +24,16 @@ createRoom.addEventListener("click", async function () {
     if (roomName.value) {
       switch (selectedCheckbox.id) {
         case "playerLimit2":
-          bingoTotalPlayersLimit = parseInt(playerLimit2, 10);
+          playersLimit = parseInt(playerLimit2);
           break;
         case "playerLimit3":
-          bingoTotalPlayersLimit = parseInt(playerLimit3, 10);
+          playersLimit = parseInt(playerLimit3);
           break;
         case "playerLimit4":
-          bingoTotalPlayersLimit = parseInt(playerLimit4, 10);
+          playersLimit = parseInt(playerLimit4);
           break;
       }
-      await makeRoom(bingoHomeUrl, roomName, bingoTotalPlayersLimit);
+      await makeRoom(bingoHomeUrl, roomName.value, playersLimit);
     } else {
       Swal.fire({
         icon: "error",
@@ -55,7 +55,7 @@ createRoom.addEventListener("click", async function () {
 });
 
 joinRoom.addEventListener("click", async function () {
-  await getInRoom(bingoHomeUrl, roomName, bingoUsername);
+  await getInRoom(bingoHomeUrl, roomName.value, bingoUsername.value);
 });
 
 // Functions are imported from websocketRoomsUtils.js

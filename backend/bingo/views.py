@@ -3,9 +3,8 @@ import re
 from django.http import HttpRequest, HttpResponse, JsonResponse
 from django.shortcuts import render
 from django.views import View
-from django.views.decorators.csrf import csrf_exempt
 
-from .models import BingoPlayer, BingoRoom
+from .models import BingoRoom
 
 
 class CreateBingoRoomView(View):
@@ -21,7 +20,6 @@ class BingoView(View):
 
 
 class BingoRoomExist(View):
-    @csrf_exempt
     def get(self, request: HttpRequest, room_name: str) -> JsonResponse:
         return JsonResponse(
             {"room_exist": BingoRoom.objects.filter(room_name=room_name).exists()}
@@ -29,19 +27,36 @@ class BingoRoomExist(View):
 
 
 class BingoRoomDetails(View):
-    @csrf_exempt
     def get(self, request: HttpRequest, room_name: str) -> JsonResponse:
-        bingo_room = BingoRoom.objects.get(room_name=room_name)
-        players = BingoPlayer.objects.filter(room=bingo_room)
-        player_data = []
-        for player in players:
-            player_data.append(
+        try:
+            bingo_room = BingoRoom.objects.get(room_name=room_name)
+            players = bingo_room.players.all()
+            players_data = []
+            for player in players:
+                players_data.append(
+                    {
+                        "username": player.username,
+                        "initial_board_state": player.initial_board_state,
+                        "bingo_state": player.bingo_state,
+                    }
+                )
+            if players_turn := bingo_room.players_turn:
+                players_turn_data = {
+                    "username": players_turn.username,
+                    "is_active": players_turn.is_active,
+                }
+            else:
+                players_turn_data = None
+            room_data = {
+                "board_state": bingo_room.board_state,
+                "players_limit": bingo_room.players_limit,
+            }
+            return JsonResponse(
                 {
-                    "username": player.username,
-                    "initial_board_state": player.initial_board_state,
-                    "bingo_state": player.bingo_state,
+                    "players": players_data,
+                    "players_turn": players_turn_data,
+                    "room": room_data,
                 }
             )
-        return JsonResponse(
-            {"players": player_data, "board_state": bingo_room.board_state}
-        )
+        except BingoRoom.DoesNotExist:
+            return JsonResponse({"error": "BingoRoom does not exist."}, status=404)

@@ -3,7 +3,6 @@ import re
 from django.http import HttpRequest, HttpResponse, JsonResponse
 from django.shortcuts import render
 from django.views import View
-from django.views.decorators.csrf import csrf_exempt
 
 from .models import TicTacToePlayer, TicTacToeRoom
 
@@ -21,7 +20,6 @@ class TicTacToeView(View):
 
 
 class TicTacToeRoomExist(View):
-    @csrf_exempt
     def get(self, request: HttpRequest, room_name: str) -> JsonResponse:
         return JsonResponse(
             {"room_exist": TicTacToeRoom.objects.filter(room_name=room_name).exists()}
@@ -29,17 +27,13 @@ class TicTacToeRoomExist(View):
 
 
 class TicTacToeRoomDetails(View):
-    @csrf_exempt
     def get(self, request: HttpRequest, room_name: str) -> JsonResponse:
         try:
             tictactoe_room = TicTacToeRoom.objects.get(room_name=room_name)
             users = TicTacToePlayer.objects.filter(room=tictactoe_room)
             users_list = [user.username for user in users]
             players = tictactoe_room.players.all()
-            player_list = [
-                {"username": player.username, "is_active": player.is_active}
-                for player in players
-            ]
+            player_list = [{"username": player.username} for player in players]
             if players_turn := tictactoe_room.players_turn:
                 players_turn_data = {
                     "username": players_turn.username,
