@@ -8,9 +8,9 @@ const tictactoeSocketUrl = socketUrl + window.location.pathname;
 const tictactoeSocket = new WebSocket(tictactoeSocketUrl);
 const tictactoeUsername = localStorage.getItem("username");
 
-const player = tictactoeUsername[0];
 let boardState = ["", "", "", "", "", "", "", "", ""];
 let gameState = "ON";
+let player
 
 let totalPlayers;
 let currentPlayer;
@@ -65,7 +65,6 @@ function checkWon(value, player) {
     won = true;
   }
   if (won) {
-    gameState = "OFF";
     tictactoeSocket.send(
       JSON.stringify({
         command: "run",
@@ -73,9 +72,9 @@ function checkWon(value, player) {
         player: player
       })
     );
-    Swal.fire("Good job", "You won!", "success");
+  } else {
+    checkGameEnd();
   }
-  checkGameEnd();
 }
 
 function setText(index, value) {
@@ -148,11 +147,23 @@ tictactoeSocket.onmessage = function (e) {
         position: "top-right"
       });
     }
+    const url = window.location;
+    const roomName = url.pathname.split("/")[2];
+    getRoomDetails(`${url.origin}/tictactoe`, roomName).then((response) => {
+      if (tictactoeUsername === response.players[0].username){
+        player = "O"
+      } else {
+        player = "X"
+      }
+    });
     initializeBoard(data)
   }
-  if (data.game_state === "won" && data.player !== player) {
+  if (data.game_state === "won") {
     gameState = "OFF";
-    Swal.fire("Sorry", "You lost!", "error");
+    if (data.player === player)
+      Swal.fire("Good job", "You won!", "success");
+    else
+      Swal.fire("Sorry", "You lost!", "error");
   }
   if (data.game_state === "over") {
     gameState = "OFF";
