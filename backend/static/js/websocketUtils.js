@@ -25,10 +25,6 @@ function onLeave(socket, username) {
 function onJoinedOrLeave(data, username) {
   // console.log(`data from onJoinedOrLeave ${JSON.stringify(data, null, 4)}`)
   if (data.command === "joined" || data.command === "leave") {
-    allPlayers = data.players_username_count;
-    totalPlayers = data.players_number_count;
-    currentPlayer = allPlayers[playerTrack];
-    userTurn.textContent = currentPlayer;
     userNum.textContent = data.players_number_count;
     // This if statement is for bingo game
     if (data.command === "joined" && data.players_limit) {

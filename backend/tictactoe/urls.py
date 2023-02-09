@@ -2,7 +2,7 @@ from django.urls import path
 
 from .views import (
     CreateTicTacToeRoomView,
-    TicTacToePlayersView,
+    TicTacToeRoomDetails,
     TicTacToeRoomExist,
     TicTacToeView,
 )
@@ -16,8 +16,8 @@ urlpatterns = [
         name="check_tictactoe_room",
     ),
     path(
-        "players/<str:room_name>/",
-        TicTacToePlayersView.as_view(),
-        name="get_tictactoe_players",
+        "details/<str:room_name>/",
+        TicTacToeRoomDetails.as_view(),
+        name="details_tictactoe_room",
     ),
 ]

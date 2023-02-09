@@ -28,7 +28,13 @@ class TicTacToeConsumer(AsyncJsonWebsocketConsumer):
             await self.get_board_state()
 
         if self.command == "joined":
-            await self.create_players(self.user)
+            await self.set_player_inactive_or_active(True)
+            await self.create_players()
+            await self.players_count()
+            await self.set_user_as_player()
+            await self.get_players_in_room()
+            if self.players < 2:
+                await self.set_or_change_turn()
             await self.channel_layer.group_send(
                 self.room_name,
                 {
@@ -40,7 +46,8 @@ class TicTacToeConsumer(AsyncJsonWebsocketConsumer):
                 },
             )
         if self.command == "leave":
-            await self.delete_player()
+            await self.set_player_inactive_or_active(False)
+            await self.players_count()
             await self.channel_layer.group_send(
                 self.room_name,
                 {
@@ -48,9 +55,12 @@ class TicTacToeConsumer(AsyncJsonWebsocketConsumer):
                     "command": self.command,
                     "info": self.info,
                     "user": self.user,
+                    "players_number_count": self.players_number_count,
+                    "players_username_count": self.players_username_count,
                 },
             )
         if self.command == "run":
+            await self.set_or_change_turn()
             await self.channel_layer.group_send(
                 self.room_name,
                 {
@@ -133,7 +143,6 @@ class TicTacToeConsumer(AsyncJsonWebsocketConsumer):
         )
 
     async def websocket_leave(self, event: dict) -> None:
-        await self.players_count()
         try:
             await self.send_json(
                 (
@@ -141,13 +150,35 @@ class TicTacToeConsumer(AsyncJsonWebsocketConsumer):
                         "command": event["command"],
                         "info": event["info"],
                         "user": event["user"],
-                        "players_number_count": self.players_number_count,
-                        "players_username_count": self.players_username_count,
+                        "players_number_count": event["players_number_count"],
+                        "players_username_count": event["players_username_count"],
                     }
                 )
             )
         except Disconnected:
             pass
+
+    @database_sync_to_async
+    def get_players_in_room(self) -> None:
+        self.players = TicTacToeRoom.objects.get(
+            room_name=self.url_route
+        ).players.count()
+
+    @database_sync_to_async
+    def set_or_change_turn(self) -> None:
+        room = TicTacToeRoom.objects.get(room_name=self.url_route)
+        players = list(room.players.all().order_by("id"))
+        if len(players) == 2 and room.players_turn:
+            current_turn_player_index = players.index(room.players_turn)
+            next_turn_player_index = (current_turn_player_index + 1) % len(players)
+            next_turn_player = players[next_turn_player_index]
+            TicTacToeRoom.objects.filter(room_name=self.url_route).update(
+                players_turn=next_turn_player
+            )
+        else:
+            TicTacToeRoom.objects.filter(room_name=self.url_route).update(
+                players_turn=room.players.first()
+            )
 
     @database_sync_to_async
     def get_board_state(self) -> None:
@@ -172,31 +203,35 @@ class TicTacToeConsumer(AsyncJsonWebsocketConsumer):
         )
 
     @database_sync_to_async
-    def create_players(self, username: str) -> None:
+    def create_players(self) -> None:
         TicTacToePlayer.objects.get_or_create(
-            room=self.tictactoe_room, username=username
+            room=self.tictactoe_room, username=self.user
         )
+
+    @database_sync_to_async
+    def set_user_as_player(self) -> None:
+        if self.players_number_count <= 2:
+            player = self.tictactoe_room.tictactoeplayer_set.get(username=self.user)
+            player.is_player = True
+            player.save()
+            self.tictactoe_room.players.add(player)
 
     @database_sync_to_async
     def players_count(self) -> None:
-        self.players_number_count = (
-            self.tictactoe_room.tictactoeplayer_set.all().count()
-        )
-        self.players_username_count = [
-            x.username for x in self.tictactoe_room.tictactoeplayer_set.all()
-        ]
+        active_players = self.tictactoe_room.tictactoeplayer_set.filter(is_active=True)
+        self.players_number_count = active_players.count()
+        self.players_username_count = [x.username for x in active_players]
+        if self.players_number_count == 0:
+            self.tictactoe_room.delete()
 
     @database_sync_to_async
-    def delete_player(self) -> None:
+    def set_player_inactive_or_active(self, status: bool) -> None:
         try:
-            TicTacToePlayer.objects.get(
-                room=self.tictactoe_room, username=self.user
-            ).delete()
+            player = self.tictactoe_room.tictactoeplayer_set.get(username=self.user)
+            player.is_active = status
+            player.save()
         except TicTacToePlayer.DoesNotExist:
             pass
-        players_count = self.tictactoe_room.tictactoeplayer_set.all().count()
-        if players_count == 0:
-            self.tictactoe_room.delete()
 
 
 class TicTacToeOnlineRoomConsumer(AsyncJsonWebsocketConsumer):

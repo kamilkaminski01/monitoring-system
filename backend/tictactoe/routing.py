@@ -4,7 +4,7 @@ from .consumers import TicTacToeConsumer, TicTacToeOnlineRoomConsumer
 
 websocket_urlpatterns = [
     path(
-        "ws/clicked/tictactoe/<room_name>/",
+        "ws/tictactoe/<str:room_name>/",
         TicTacToeConsumer.as_asgi(),
         name="tictactoe",
     ),

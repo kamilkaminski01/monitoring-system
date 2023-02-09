@@ -8,7 +8,7 @@ const chatInput = document.getElementById("chatInput");
 const lastStepDiv = document.getElementById("lastStepDiv");
 const playersLimit = document.getElementById("playersLimit");
 
-const bingoSocketUrl = "ws://localhost:8000/ws/clicked" + window.location.pathname;
+const bingoSocketUrl = socketUrl + window.location.pathname;
 const bingoSocket = new WebSocket(bingoSocketUrl);
 const bingoUsername = localStorage.getItem("username");
 
@@ -171,9 +171,9 @@ bingoSocket.onopen = function (e) {
   onOpen(bingoSocket, bingoUsername);
   const url = window.location;
   const roomName = url.pathname.split("/")[2];
-  getPlayersInRoom(`${url.origin}/bingo/`, roomName).then((players) => {
-    const player = players.players.find((p) => p.username === bingoUsername);
-    const boardState = players.board_state;
+  getRoomDetails(`${url.origin}/bingo`, roomName).then((room) => {
+    const player = room.players.find((p) => p.username === bingoUsername);
+    const boardState = room.board_state;
     if (!player) {
       initializeBoard();
       bingoSocket.send(

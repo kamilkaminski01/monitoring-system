@@ -4,17 +4,15 @@ const userTurn = document.getElementById("userTurn");
 const chatInput = document.getElementById("chatInput");
 let elementArray = document.querySelectorAll(".space");
 
-const tictactoeSocketUrl = "ws://localhost:8000/ws/clicked" + window.location.pathname;
+const tictactoeSocketUrl = socketUrl + window.location.pathname;
 const tictactoeSocket = new WebSocket(tictactoeSocketUrl);
-
 const tictactoeUsername = localStorage.getItem("username");
+
 const player = tictactoeUsername[0];
 let boardState = ["", "", "", "", "", "", "", "", ""];
 let gameState = "ON";
 
-let allPlayers = [];
 let totalPlayers;
-let playerTrack = 0;
 let currentPlayer;
 
 elementArray.forEach(function (elem) {
@@ -82,7 +80,6 @@ function checkWon(value, player) {
 
 function setText(index, value) {
   if (boardState[parseInt(index)] === "" && totalPlayers > 1) {
-    checkTurnBetweenTwoPlayers();
     boardState[parseInt(index)] = value;
     elementArray[parseInt(index)].innerHTML = value;
     tictactoeSocket.send(
@@ -101,7 +98,6 @@ function setText(index, value) {
 }
 
 function setAnotherUserText(index, value) {
-  checkTurnBetweenTwoPlayers();
   boardState[parseInt(index)] = value;
   elementArray[parseInt(index)].innerHTML = value;
 }
@@ -139,6 +135,7 @@ tictactoeSocket.onmessage = function (e) {
   const data = JSON.parse(e.data);
   onJoinedOrLeave(data, tictactoeUsername);
   chatData(data);
+  checkTurnBetweenPlayers()
   if (data.command === "joined" || data.command === "restart") {
     if (data.command === "restart"){
       gameState = "ON";
@@ -161,6 +158,7 @@ tictactoeSocket.onmessage = function (e) {
     gameState = "OFF";
     Swal.fire("Game over", "No one won", "warning");
   }
-  if (data.game_state === "running" && data.player !== player)
+  if (data.game_state === "running" && data.player !== player) {
     setAnotherUserText(data.index, data.player);
+  }
 };

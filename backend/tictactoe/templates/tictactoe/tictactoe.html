@@ -7,9 +7,9 @@
 <div class="tictactoe-container">
   <div class="tictactoe">
     <div class="scoreboard">
-      <div class="my-1">Total users:<span id="userNum"></span></div>
+      <div>Total users:<span id="userNum"></span></div>
       <div id="userdiv"></div>
-      <div><span id="userTurn"></span>'s turn</div>
+      <div id="userTurn"></div>
     </div>
     <div class="board-container">
       <div class="board">
@@ -42,6 +42,7 @@
 
 {% endblock content %}
 {% block script %}
+  <script src="{% static 'js/consts.js' %}"></script>
   <script src="{% static 'js/utils.js' %}"></script>
   <script>
     setUsername()

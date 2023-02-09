@@ -1,6 +1,6 @@
 from django.urls import path
 
-from .views import BingoPlayersView, BingoRoomExist, BingoView, CreateBingoRoomView
+from .views import BingoRoomDetails, BingoRoomExist, BingoView, CreateBingoRoomView
 
 urlpatterns = [
     path("", CreateBingoRoomView.as_view(), name="create_bingo_room"),
@@ -11,6 +11,8 @@ urlpatterns = [
         name="check_bingo_room",
     ),
     path(
-        "players/<str:room_name>/", BingoPlayersView.as_view(), name="get_bingo_players"
+        "details/<str:room_name>/",
+        BingoRoomDetails.as_view(),
+        name="details_bingo_room",
     ),
 ]

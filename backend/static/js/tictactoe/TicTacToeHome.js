@@ -2,10 +2,8 @@ const createRoom = document.querySelector("#create_room");
 const joinRoom = document.querySelector("#join_room");
 const roomName = document.querySelector("#room_name");
 const tictactoeUsername = document.querySelector("#username");
-
 const onlinerooms = document.getElementById("onlinerooms");
-const tictactoeHomeUrl = "http://localhost:8000/tictactoe/";
-const tictactoeOnlineRoomsSocketUrl = "ws://localhost:8000/ws/online-rooms/tictactoe/";
+
 const tictactoeOnlineRoomsSocket = new WebSocket(tictactoeOnlineRoomsSocketUrl);
 
 tictactoeUsername.value = localStorage.getItem("username") || "";

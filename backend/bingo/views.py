@@ -28,7 +28,7 @@ class BingoRoomExist(View):
         )
 
 
-class BingoPlayersView(View):
+class BingoRoomDetails(View):
     @csrf_exempt
     def get(self, request: HttpRequest, room_name: str) -> JsonResponse:
         bingo_room = BingoRoom.objects.get(room_name=room_name)

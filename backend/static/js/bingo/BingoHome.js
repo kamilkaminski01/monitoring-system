@@ -7,10 +7,8 @@ const playerLimit3 = document.querySelector("#playerLimit3").parentNode.textCont
 const playerLimit4 = document.querySelector("#playerLimit4").parentNode.textContent.trim();
 const onlinerooms = document.getElementById("onlinerooms");
 
-const bingoHomeUrl = "http://localhost:8000/bingo/";
-const bingoOnlineRoomsUrl = "ws://localhost:8000/ws/online-rooms/bingo/";
+bingoUsername.value = localStorage.getItem("username");
 const bingoOnlineRoomsSocket = new WebSocket(bingoOnlineRoomsUrl);
-bingoUsername.value = localStorage.getItem("username") || "";
 let bingoTotalPlayersLimit = 0
 
 document.querySelector("#show-createRoom").addEventListener("click", function () {

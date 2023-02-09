@@ -28,10 +28,31 @@ class TicTacToeRoomExist(View):
         )
 
 
-class TicTacToePlayersView(View):
+class TicTacToeRoomDetails(View):
     @csrf_exempt
     def get(self, request: HttpRequest, room_name: str) -> JsonResponse:
-        tictactoe_room = TicTacToeRoom.objects.get(room_name=room_name)
-        players = TicTacToePlayer.objects.filter(room=tictactoe_room)
-        player_list = [player.username for player in players]
-        return JsonResponse({"players": player_list})
+        try:
+            tictactoe_room = TicTacToeRoom.objects.get(room_name=room_name)
+            users = TicTacToePlayer.objects.filter(room=tictactoe_room)
+            users_list = [user.username for user in users]
+            players = tictactoe_room.players.all()
+            player_list = [
+                {"username": player.username, "is_active": player.is_active}
+                for player in players
+            ]
+            if players_turn := tictactoe_room.players_turn:
+                players_turn_data = {
+                    "username": players_turn.username,
+                    "is_active": players_turn.is_active,
+                }
+            else:
+                players_turn_data = None
+            return JsonResponse(
+                {
+                    "users": users_list,
+                    "players": player_list,
+                    "players_turn": players_turn_data,
+                }
+            )
+        except TicTacToeRoom.DoesNotExist:
+            return JsonResponse({"error": "TicTacToeRoom does not exist."}, status=404)

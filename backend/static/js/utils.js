@@ -1,28 +1,23 @@
-const menuPageURL = "http://localhost:3000/";
-const tictactoeHomeURL = "http://localhost:8000/tictactoe/";
-const bingoHomeURL = "http://localhost:8000/bingo/";
-let bingoSocketURL = "ws://localhost:8000/ws/clicked/bingo";
-
 function menuPage() {
-  window.location.href = menuPageURL;
+  window.location.href = menuPageUrl;
 }
 
 function tictactoeHomePage() {
-  window.location.href = tictactoeHomeURL;
+  window.location.href = tictactoeHomeUrl;
 }
 
 function bingoHomePage() {
-  window.location.href = bingoHomeURL;
+  window.location.href = bingoHomeUrl;
 }
 
-function refreshPage() {
-  window.location.reload();
+async function checkRoom(url, roomname) {
+  const response = await fetch(`${url}/check_room/${roomname.value}/`, {method: "GET"});
+  const answer = await response.json();
+  return answer.room_exist;
 }
 
-async function getPlayersInRoom(url, roomname){
-    const response = await fetch(`${url}players/${roomname}/`, {
-    method: "GET"
-  });
+async function getRoomDetails(url, roomname){
+  const response = await fetch(`${url}/details/${roomname}/`, {method: "GET"});
   return await response.json()
 }
 
@@ -32,14 +27,14 @@ function setUsername() {
   if (url.pathname.includes("bingo")) {
     if (!username) {
       localStorage.setItem("message", "Provide a username before connecting.");
-      window.location.href = bingoHomeURL;
+      window.location.href = bingoHomeUrl;
       return;
     }
   }
   if (url.pathname.includes("tictactoe")) {
     if (!username) {
       localStorage.setItem("message", "Provide a username before connecting.");
-      window.location.href = tictactoeHomeURL;
+      window.location.href = tictactoeHomeUrl;
       return;
     }
   }
@@ -56,9 +51,9 @@ window.addEventListener("load", function () {
 });
 
 async function checkUsername(url, roomname, username) {
-  const players = await getPlayersInRoom(url, roomname)
+  const room = await getRoomDetails(url, roomname)
   const invalidUsername = !/^[a-zA-Z0-9-_]+$/.test(username.value);
-  if (players.players.includes(username.value) || username.value.length > 10 || invalidUsername) {
+  if (room.players.includes(username.value) || username.value.length > 10 || invalidUsername) {
     Swal.fire({
       icon: "error",
       title: "Error",
@@ -72,8 +67,8 @@ async function checkUsername(url, roomname, username) {
 }
 
 function sendPlayersLimit(bingoTotalPlayersLimit, roomname) {
-  bingoSocketURL = `${bingoSocketURL}/${roomname.value}/`;
-  let bingoHomeSocket = new WebSocket(bingoSocketURL);
+  let bingoSocketUrl = `${socketUrl}/bingo/${roomname.value}/`;
+  let bingoHomeSocket = new WebSocket(bingoSocketUrl);
   bingoHomeSocket.addEventListener("open", function (event) {
     bingoHomeSocket.send(
       JSON.stringify({
@@ -90,14 +85,6 @@ function redirectToRoom(roomname) {
   window.location.href = window.location.href + roomname.value;
 }
 
-async function checkRoom(url, roomname) {
-  const response = await fetch(`${url}check_room/${roomname.value}/`, {
-    method: "GET"
-  });
-  const answer = await response.json();
-  return answer.room_exist;
-}
-
 async function getInRoom(url, roomname, username) {
   const roomExists = await checkRoom(url, roomname);
   if (!roomExists) {
@@ -109,7 +96,9 @@ async function getInRoom(url, roomname, username) {
       position: "top-right"
     });
   } else {
-    if (await checkUsername(url, roomname.value, username)) redirectToRoom(roomname);
+    if (await checkUsername(url, roomname.value, username)){
+      redirectToRoom(roomname);
+    }
   }
 }
 
@@ -138,8 +127,19 @@ function checkTurnWithLimit(playersLimitNumber) {
   userTurn.textContent = currentPlayer;
 }
 
-function checkTurnBetweenTwoPlayers() {
-  playerTrack = playerTrack === 0 ? 1 : 0;
-  currentPlayer = allPlayers[playerTrack];
-  userTurn.textContent = currentPlayer;
+function checkTurnBetweenPlayers() {
+  const url = window.location;
+  const splitUrl = url.pathname.split("/");
+  const app = splitUrl[1];
+  const roomName = splitUrl[2];
+  getRoomDetails(`${url.origin}/${app}`, roomName).then(({players, players_turn}) => {
+    if (players.length >= 2 && players_turn.is_active !== false){
+      totalPlayers = players.length
+      currentPlayer = players_turn.username
+      userTurn.textContent = `${currentPlayer}'s turn`;
+    } else {
+      totalPlayers = players.length
+      userTurn.textContent = "Not enough players";
+    }
+  });
 }

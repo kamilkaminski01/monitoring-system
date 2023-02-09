@@ -52,7 +52,7 @@ class BingoConsumer(AsyncJsonWebsocketConsumer):
         if self.command == "joined":
             await self.get_players_limit()
             await self.set_player_inactive_or_active(True)
-            await self.create_players(self.user)
+            await self.create_players()
             await self.players_count()
             await self.channel_layer.group_send(
                 self.room_name,
@@ -181,7 +181,7 @@ class BingoConsumer(AsyncJsonWebsocketConsumer):
             await self.send_json(
                 (
                     {
-                        "command": "joined",
+                        "command": event["command"],
                         "user": event["user"],
                         "info": event["info"],
                         "players_number_count": event["players_number_count"],
@@ -242,8 +242,8 @@ class BingoConsumer(AsyncJsonWebsocketConsumer):
         self.bingo_room, _ = BingoRoom.objects.get_or_create(room_name=self.url_route)
 
     @database_sync_to_async
-    def create_players(self, username: str) -> None:
-        BingoPlayer.objects.get_or_create(room=self.bingo_room, username=username)
+    def create_players(self) -> None:
+        BingoPlayer.objects.get_or_create(room=self.bingo_room, username=self.user)
 
     @database_sync_to_async
     def players_count(self) -> None:
