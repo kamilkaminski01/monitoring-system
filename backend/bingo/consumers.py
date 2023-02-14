@@ -207,7 +207,7 @@ class BingoConsumer(AsyncJsonWebsocketConsumer):
     def set_or_change_turn(self) -> None:
         room = BingoRoom.objects.get(room_name=self.url_route)
         players = list(room.players.all().order_by("id"))
-        if len(players) == 2 and room.players_turn:
+        if len(players) == room.players_limit and room.players_turn:
             current_turn_player_index = players.index(room.players_turn)
             next_turn_player_index = (current_turn_player_index + 1) % len(players)
             next_turn_player = players[next_turn_player_index]
@@ -271,7 +271,8 @@ class BingoConsumer(AsyncJsonWebsocketConsumer):
         self.players_number_count = active_players.count()
         self.players_username_count = [x.username for x in active_players]
         if self.players_number_count == 0:
-            self.bingo_room.delete()
+            if self.bingo_room is not None:
+                self.bingo_room.delete()
 
     @database_sync_to_async
     def set_player_inactive_or_active(self, status: bool) -> None:

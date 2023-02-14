@@ -2,10 +2,9 @@ const grid = document.querySelector(".grid");
 const items = [...document.querySelector(".grid").children];
 const bingodiv = document.querySelector("#bingodiv");
 const infoDiv = document.getElementById("infodiv");
-const userNum = document.getElementById("userNum");
+const playersNumber = document.getElementById("playersNumber");
 const userTurn = document.getElementById("userTurn");
 const chatInput = document.getElementById("chatInput");
-const lastStepDiv = document.getElementById("lastStepDiv");
 const playersLimit = document.getElementById("playersLimit");
 
 const bingoSocketUrl = socketUrl + window.location.pathname;
@@ -59,7 +58,7 @@ function checkBingo(item) {
   const innernum = item.dataset.innernum;
   const dataNumber = parseInt(dataID);
   if (datasetArr.includes(dataNumber))
-    return Swal.fire("Oops..", "Already selected", "error");
+    return Swal.fire("Oops..", "Already selected", "warning");
   datasetArr.push(dataNumber);
   item.classList.add("clicked");
   bingoSocket.send(
@@ -75,13 +74,13 @@ function checkBingo(item) {
 
 const handleClick = (e) => {
   if (gamestate === "OFF") {
-    return Swal.fire("Game finished", "Restart to play again!", "error");
-  }
-  if (currentPlayer !== bingoUsername) {
-    return Swal.fire("Oops..", "Not your turn!", "error");
+    return Swal.fire("Game finished", "Restart to play again!", "warning");
   }
   if (totalPlayers < playersLimitNumber) {
-    return Swal.fire("Oops...", "Wait for the rest of the players", "error");
+    return Swal.fire("Oops...", "Wait for the rest of the players", "warning");
+  }
+  if (currentPlayer !== bingoUsername) {
+    return Swal.fire("Oops..", "Not your turn!", "warning");
   }
   checkBingo(e.currentTarget);
 };
@@ -128,14 +127,6 @@ function loopItemsAndCheck() {
         );
       }
     }
-  }
-}
-
-function getLastStep(data) {
-  if (data) {
-    lastStepDiv.innerHTML = `<span>Last step: <span class="prevStep">${data}</span></span>`;
-  } else {
-    lastStepDiv.innerHTML = `<span>Last step</span>`;
   }
 }
 
@@ -201,9 +192,8 @@ bingoSocket.onmessage = function (e) {
   const data = JSON.parse(e.data);
   onJoinedOrLeave(data, bingoUsername);
   chatData(data);
-  checkTurnBetweenPlayers()
+  checkTurnBetweenPlayers();
   if (data.command === "clicked") {
-    getLastStep(data.dataset);
     const clickedDiv = document.querySelector(`[data-innernum='${data.dataset}']`);
     if (notForMeData(data, bingoUsername)) {
       const myDataSetId = parseInt(clickedDiv.dataset.id);
@@ -231,7 +221,6 @@ bingoSocket.onmessage = function (e) {
       bingodiv.removeChild(bingodiv.firstChild);
     }
     bingoWinRows = [...originalBingoWinRows];
-    getLastStep();
     sendChatMessage(data);
     Swal.fire({
       icon: "success",

@@ -75,18 +75,31 @@ window.addEventListener("load", function () {
   }
 });
 
-async function checkUsername(url, roomname, username) {
-  const room = await getRoomDetails(url, roomname)
+async function checkUsername(url, roomname, username, makeRoomBool) {
   const invalidUsername = !/^[a-zA-Z0-9-_]+$/.test(username);
-  if (room.players.includes(username) || username.length > 10 || invalidUsername) {
-    Swal.fire({
-      icon: "error",
-      title: "Error",
-      text: "Username taken or its invalid",
-      toast: true,
-      position: "top-right"
-    });
-    return false;
+  if (makeRoomBool) {
+    if (username.length > 10 || invalidUsername) {
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Username is invalid",
+        toast: true,
+        position: "top-right"
+      });
+      return false;
+    }
+  } else {
+    const room = await getRoomDetails(url, roomname)
+    if (room.players.includes(username)) {
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Username is taken",
+        toast: true,
+        position: "top-right"
+      });
+      return false;
+    }
   }
   return true;
 }
@@ -97,6 +110,15 @@ function redirectToRoom(roomname) {
 }
 
 async function getInRoom(url, roomname, username) {
+  if (!roomname) {
+    return Swal.fire({
+      icon: "error",
+      title: "Room error",
+      text: "Insert a room name",
+      toast: true,
+      position: "top-right"
+    });
+  }
   const roomExists = await getCheckRoom(url, roomname);
   if (!roomExists) {
     Swal.fire({
@@ -113,21 +135,23 @@ async function getInRoom(url, roomname, username) {
   }
 }
 
-async function makeRoom(url, roomname, playersLimit) {
+async function makeRoom(url, roomname, username, playersLimit) {
   const roomExists = await getCheckRoom(url, roomname);
   const invalidRoomName = !/^[a-zA-Z0-9-_]+$/.test(roomname);
   if (roomExists || invalidRoomName) {
     Swal.fire({
       icon: "error",
       title: "Room error",
-      text: "Room name taken or its invalid!",
+      text: "Room name taken or its invalid",
       toast: true,
       position: "top-right"
     });
   } else {
-    redirectToRoom(roomname);
-    if (playersLimit) {
-      sendPlayersLimit(playersLimit, roomname);
+    if (await checkUsername(url, roomname, username, makeRoomBool=true)) {
+      redirectToRoom(roomname);
+      if (playersLimit) {
+        sendPlayersLimit(playersLimit, roomname);
+      }
     }
   }
 }
@@ -137,14 +161,16 @@ function checkTurnBetweenPlayers() {
   const splitUrl = url.pathname.split("/");
   const app = splitUrl[1];
   const roomName = splitUrl[2];
-  getRoomDetails(`${url.origin}/${app}`, roomName).then(({players, players_turn}) => {
-    if (players.length >= 2 && players_turn.is_active !== false){
-      totalPlayers = players.length
-      currentPlayer = players_turn.username
+  getRoomDetails(`${url.origin}/${app}`, roomName).then(({ players_turn }) => {
+    playersLimitNumber = typeof playersLimitNumber !== 'undefined' ? playersLimitNumber : 2;
+    const enoughPlayers = totalPlayers >= playersLimitNumber;
+    if (enoughPlayers) {
+      currentPlayer = players_turn.username;
       userTurn.textContent = `${currentPlayer}'s turn`;
+      userTurn.classList.remove("not-enough-players");
     } else {
-      totalPlayers = players.length
       userTurn.textContent = "not enough players";
+      userTurn.classList.add("not-enough-players");
     }
   });
 }

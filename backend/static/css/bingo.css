@@ -119,15 +119,6 @@ body {
 .bingo {
   margin: 8rem;
 }
-.prevStep {
-  font-weight: bolder;
-  font-size: 1.1rem;
-  color: #bbb8d8 !important;
-}
-.lastStep {
-  background: #6d5baf !important;
-  border: none !important;
-}
 .bingoSuccess {
   background: #5baf5b !important;
   border: none !important;

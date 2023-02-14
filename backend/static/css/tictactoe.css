@@ -44,7 +44,7 @@ body {
   display: flex;
   justify-content: center;
 }
-#userNum {
+#playersNumber {
   margin-left: 3px;
 }
 .board-container {

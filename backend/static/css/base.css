@@ -61,6 +61,9 @@ h1, h2, h3, h4 {
   padding: 0.7rem;
   margin: 0.6rem 0.2rem 0.6rem 0.6rem;
 }
+.not-enough-players {
+  color: #dc3545;
+}
 /*-----------------------------------*/
 
 @media screen and (max-width: 1000px) {

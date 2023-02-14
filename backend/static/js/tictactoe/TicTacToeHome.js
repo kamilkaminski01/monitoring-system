@@ -9,7 +9,7 @@ const tictactoeOnlineRoomsSocket = new WebSocket(tictactoeOnlineRoomsSocketUrl);
 tictactoeUsername.value = localStorage.getItem("username") || "";
 
 createRoom.addEventListener("click", async function () {
-  await makeRoom(tictactoeHomeUrl, roomName.value);
+  await makeRoom(tictactoeHomeUrl, roomName.value, tictactoeUsername.value);
 });
 
 joinRoom.addEventListener("click", async function() {

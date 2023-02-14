@@ -33,7 +33,7 @@ createRoom.addEventListener("click", async function () {
           playersLimit = parseInt(playerLimit4);
           break;
       }
-      await makeRoom(bingoHomeUrl, roomName.value, playersLimit);
+      await makeRoom(bingoHomeUrl, roomName.value, bingoUsername.value, playersLimit);
     } else {
       Swal.fire({
         icon: "error",

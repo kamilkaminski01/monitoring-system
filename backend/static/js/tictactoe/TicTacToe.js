@@ -1,5 +1,5 @@
 const infoDiv = document.getElementById("infodiv");
-const userNum = document.getElementById("userNum");
+const playersNumber = document.getElementById("playersNumber");
 const userTurn = document.getElementById("userTurn");
 const chatInput = document.getElementById("chatInput");
 let elementArray = document.querySelectorAll(".space");
@@ -17,12 +17,16 @@ let currentPlayer;
 
 elementArray.forEach(function (elem) {
   elem.addEventListener("click", function (event) {
-    if (currentPlayer === tictactoeUsername && gameState === "ON") {
-      setText(event.currentTarget.getAttribute("data-cell-index"), player);
-    } else if (gameState === "OFF") {
-      Swal.fire("Game ended", "Restart the game!", "error");
+    if (totalPlayers !== 2) {
+      Swal.fire("Oops...", "Wait for the second player", "warning");
     } else {
-      Swal.fire("Oops...", "Not your turn!", "warning");
+      if (currentPlayer === tictactoeUsername && gameState === "ON") {
+        setText(event.currentTarget.getAttribute("data-cell-index"), player);
+      } else if (gameState === "OFF") {
+        Swal.fire("Game ended", "Restart the game", "warning");
+      } else {
+        Swal.fire("Oops...", "Not your turn", "warning");
+      }
     }
   });
 });
@@ -78,7 +82,7 @@ function checkWon(value, player) {
 }
 
 function setText(index, value) {
-  if (boardState[parseInt(index)] === "" && totalPlayers > 1) {
+  if (boardState[parseInt(index)] === "") {
     boardState[parseInt(index)] = value;
     elementArray[parseInt(index)].innerHTML = value;
     tictactoeSocket.send(
@@ -92,7 +96,7 @@ function setText(index, value) {
     );
     checkWon(value, player);
   } else {
-    Swal.fire("Oops...", "You cannot fill this space!", "error");
+    Swal.fire("Oops...", "You cannot fill this space", "warning");
   }
 }
 
@@ -134,7 +138,7 @@ tictactoeSocket.onmessage = function (e) {
   const data = JSON.parse(e.data);
   onJoinedOrLeave(data, tictactoeUsername);
   chatData(data);
-  checkTurnBetweenPlayers()
+  checkTurnBetweenPlayers();
   if (data.command === "joined" || data.command === "restart") {
     if (data.command === "restart"){
       gameState = "ON";
@@ -151,19 +155,19 @@ tictactoeSocket.onmessage = function (e) {
     const roomName = url.pathname.split("/")[2];
     getRoomDetails(`${url.origin}/tictactoe`, roomName).then((response) => {
       if (tictactoeUsername === response.players[0].username){
-        player = "O"
+        player = "O";
       } else {
-        player = "X"
+        player = "X";
       }
     });
-    initializeBoard(data)
+    initializeBoard(data);
   }
   if (data.game_state === "won") {
     gameState = "OFF";
     if (data.player === player)
-      Swal.fire("Good job", "You won!", "success");
+      Swal.fire("Good job", "You won", "success");
     else
-      Swal.fire("Sorry", "You lost!", "error");
+      Swal.fire("Sorry", "You lost", "error");
   }
   if (data.game_state === "over") {
     gameState = "OFF";
