@@ -4,7 +4,7 @@ from django.http import HttpRequest, HttpResponse, JsonResponse
 from django.shortcuts import render
 from django.views import View
 
-from .models import TicTacToePlayer, TicTacToeRoom
+from .models import TicTacToeRoom
 
 
 class CreateTicTacToeRoomView(View):
@@ -30,8 +30,6 @@ class TicTacToeRoomDetails(View):
     def get(self, request: HttpRequest, room_name: str) -> JsonResponse:
         try:
             tictactoe_room = TicTacToeRoom.objects.get(room_name=room_name)
-            users = TicTacToePlayer.objects.filter(room=tictactoe_room)
-            users_list = [user.username for user in users]
             players = tictactoe_room.players.all()
             player_list = [
                 {"username": player.username, "is_active": player.is_active}
@@ -43,7 +41,6 @@ class TicTacToeRoomDetails(View):
                 players_turn_data = None
             return JsonResponse(
                 {
-                    "users": users_list,
                     "players": player_list,
                     "players_turn": players_turn_data,
                 }

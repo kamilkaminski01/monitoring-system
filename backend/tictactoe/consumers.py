@@ -29,9 +29,8 @@ class TicTacToeConsumer(AsyncJsonWebsocketConsumer):
 
         if self.command == "joined":
             await self.set_player_inactive_or_active(True)
-            await self.create_players()
-            await self.players_count()
-            await self.set_user_as_player()
+            await self.create_player()
+            await self.get_active_players_count()
             await self.get_players_in_room()
             if self.players < 2:
                 await self.set_or_change_turn()
@@ -43,12 +42,12 @@ class TicTacToeConsumer(AsyncJsonWebsocketConsumer):
                     "user": self.user,
                     "info": self.info,
                     "boardState": self.board_state,
-                    "players_number_count": self.players_number_count,
+                    "active_players_count": self.active_players_count,
                 },
             )
         if self.command == "leave":
             await self.set_player_inactive_or_active(False)
-            await self.players_count()
+            await self.get_active_players_count()
             await self.channel_layer.group_send(
                 self.room_name,
                 {
@@ -56,7 +55,7 @@ class TicTacToeConsumer(AsyncJsonWebsocketConsumer):
                     "command": self.command,
                     "info": self.info,
                     "user": self.user,
-                    "players_number_count": self.players_number_count,
+                    "active_players_count": self.active_players_count,
                 },
             )
         if self.command == "run":
@@ -135,7 +134,7 @@ class TicTacToeConsumer(AsyncJsonWebsocketConsumer):
                     "info": event["info"],
                     "user": event["user"],
                     "boardState": event["boardState"],
-                    "players_number_count": event["players_number_count"],
+                    "active_players_count": event["active_players_count"],
                 }
             )
         )
@@ -148,7 +147,7 @@ class TicTacToeConsumer(AsyncJsonWebsocketConsumer):
                         "command": event["command"],
                         "info": event["info"],
                         "user": event["user"],
-                        "players_number_count": event["players_number_count"],
+                        "active_players_count": event["active_players_count"],
                     }
                 )
             )
@@ -200,24 +199,20 @@ class TicTacToeConsumer(AsyncJsonWebsocketConsumer):
         )
 
     @database_sync_to_async
-    def create_players(self) -> None:
-        TicTacToePlayer.objects.get_or_create(
-            room=self.tictactoe_room, username=self.user
-        )
-
-    @database_sync_to_async
-    def set_user_as_player(self) -> None:
-        if self.players_number_count <= 2:
-            player = self.tictactoe_room.tictactoeplayer_set.get(username=self.user)
-            player.is_player = True
+    def create_player(self) -> None:
+        room = TicTacToeRoom.objects.get(room_name=self.url_route)
+        if room.players.count() < 2:
+            player = TicTacToePlayer.objects.create(
+                room=self.tictactoe_room, username=self.user, is_player=True
+            )
             player.save()
             self.tictactoe_room.players.add(player)
 
     @database_sync_to_async
-    def players_count(self) -> None:
+    def get_active_players_count(self) -> None:
         active_players = self.tictactoe_room.tictactoeplayer_set.filter(is_active=True)
-        self.players_number_count = active_players.count()
-        if self.players_number_count == 0:
+        self.active_players_count = active_players.count()
+        if self.active_players_count == 0:
             if self.tictactoe_room is not None:
                 self.tictactoe_room.delete()
 
@@ -270,12 +265,6 @@ class TicTacToeOnlineRoomConsumer(AsyncJsonWebsocketConsumer):
                 }
             )
         )
-
-    async def receive_json(self, content: dict, **kwargs) -> None:
-        return await super().receive_json(content, **kwargs)
-
-    async def disconnect(self, code: int) -> None:
-        return await super().disconnect(code)
 
     @database_sync_to_async
     def get_rooms(self) -> None:

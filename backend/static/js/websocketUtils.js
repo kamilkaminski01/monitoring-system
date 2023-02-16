@@ -24,8 +24,8 @@ function onLeave(socket, username) {
 
 function onJoinedOrLeave(data, username) {
   if (data.command === "joined" || data.command === "leave") {
-    playersNumber.textContent = data.players_number_count;
-    totalPlayers = data.players_number_count;
+    playersNumber.textContent = data.active_players_count;
+    totalPlayers = data.active_players_count;
     sendChatMessage(data, username);
   }
 }

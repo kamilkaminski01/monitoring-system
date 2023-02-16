@@ -22,12 +22,26 @@ window.addEventListener("load", function () {
 function setUsername() {
   const username = localStorage.getItem("username");
   if (!username) {
-    localStorage.setItem("message", "Provide a username before connecting.");
+    localStorage.setItem("message", "Provide a username before connecting");
     window.location.href = homeUrl;
     return;
   }
   const usernameDiv = document.getElementById("username");
   usernameDiv.textContent = localStorage.getItem("username");
+}
+
+function checkRoomPlayers() {
+  getRoomDetails(appRoomName).then((response) => {
+    const username = localStorage.getItem("username");
+    const players = response.players;
+    const playersAmount = players.length;
+    const isPlayer = players.find((p) => p.username === username);
+    const maxPlayers = response.room ? response.room.players_limit : 2;
+    if (playersAmount >= maxPlayers && !isPlayer) {
+      localStorage.setItem("message", "Room is full");
+      window.location.href = homeUrl;
+    }
+  });
 }
 
 async function getCheckRoom(roomname) {
@@ -117,6 +131,18 @@ async function getInRoom(roomname, username) {
     });
   } else {
     if (await checkUsername(roomname, username)) {
+      const { players, room } = await getRoomDetails(roomname);
+      const playersAmount = players.length;
+      const maxPlayers = room ? room.players_limit : 2;
+      if (playersAmount >= maxPlayers) {
+        return Swal.fire({
+          icon: "error",
+          title: "Room error",
+          text: "Room is full",
+          toast: true,
+          position: "top-right"
+        });
+      }
       redirectToRoom(roomname);
     }
   }
@@ -145,10 +171,10 @@ async function makeRoom(roomname, username, playersLimit) {
 
 function checkTurnBetweenPlayers() {
   getRoomDetails(appRoomName).then((response) => {
-    playersLimitNumber = typeof playersLimitNumber !== 'undefined' ? playersLimitNumber : 2;
+    playersLimitNumber = typeof playersLimitNumber !== "undefined" ? playersLimitNumber : 2;
     const enoughPlayers = totalPlayers >= playersLimitNumber;
     const players = response.players;
-    const allPlayersActive = players.every(player => player.is_active);
+    const allPlayersActive = players.every((player) => player.is_active);
     if (allPlayersActive && enoughPlayers) {
       currentPlayer = response.players_turn;
       userTurn.textContent = `${currentPlayer}'s turn`;

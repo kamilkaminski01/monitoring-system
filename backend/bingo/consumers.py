@@ -51,9 +51,8 @@ class BingoConsumer(AsyncJsonWebsocketConsumer):
             )
         if self.command == "joined":
             await self.set_player_inactive_or_active(True)
-            await self.create_players()
-            await self.players_count()
-            await self.set_user_as_player()
+            await self.create_player()
+            await self.get_active_players_count()
             await self.get_players_in_room()
             if self.players < 2:
                 await self.set_or_change_turn()
@@ -64,7 +63,7 @@ class BingoConsumer(AsyncJsonWebsocketConsumer):
                     "command": self.command,
                     "user": self.user,
                     "info": self.info,
-                    "players_number_count": self.players_number_count,
+                    "active_players_count": self.active_players_count,
                 },
             )
         if self.command == "win":
@@ -81,7 +80,7 @@ class BingoConsumer(AsyncJsonWebsocketConsumer):
             )
         if self.command == "leave":
             await self.set_player_inactive_or_active(False)
-            await self.players_count()
+            await self.get_active_players_count()
             await self.channel_layer.group_send(
                 self.room_name,
                 {
@@ -89,7 +88,7 @@ class BingoConsumer(AsyncJsonWebsocketConsumer):
                     "command": self.command,
                     "user": self.user,
                     "info": self.info,
-                    "players_number_count": self.players_number_count,
+                    "active_players_count": self.active_players_count,
                 },
             )
         if self.command == "chat":
@@ -169,7 +168,7 @@ class BingoConsumer(AsyncJsonWebsocketConsumer):
                     "command": event["command"],
                     "user": event["user"],
                     "info": event["info"],
-                    "players_number_count": event["players_number_count"],
+                    "active_players_count": event["active_players_count"],
                 }
             )
         )
@@ -182,7 +181,7 @@ class BingoConsumer(AsyncJsonWebsocketConsumer):
                         "command": event["command"],
                         "user": event["user"],
                         "info": event["info"],
-                        "players_number_count": event["players_number_count"],
+                        "active_players_count": event["active_players_count"],
                     }
                 )
             )
@@ -217,9 +216,12 @@ class BingoConsumer(AsyncJsonWebsocketConsumer):
 
     @database_sync_to_async
     def set_initial_board(self) -> None:
-        bingo_player = self.bingo_room.bingoplayer_set.get(username=self.user)
-        bingo_player.initial_board_state = self.initial_board_state
-        bingo_player.save()
+        try:
+            bingo_player = self.bingo_room.bingoplayer_set.get(username=self.user)
+            bingo_player.initial_board_state = self.initial_board_state
+            bingo_player.save()
+        except BingoPlayer.DoesNotExist:
+            pass
 
     @database_sync_to_async
     def update_or_restart_board_state(self, restart: bool = None) -> None:
@@ -249,23 +251,20 @@ class BingoConsumer(AsyncJsonWebsocketConsumer):
         self.bingo_room, _ = BingoRoom.objects.get_or_create(room_name=self.url_route)
 
     @database_sync_to_async
-    def create_players(self) -> None:
-        BingoPlayer.objects.get_or_create(room=self.bingo_room, username=self.user)
-
-    @database_sync_to_async
-    def set_user_as_player(self) -> None:
+    def create_player(self) -> None:
         room = BingoRoom.objects.get(room_name=self.url_route)
-        if self.players_number_count <= room.players_limit:
-            player = self.bingo_room.bingoplayer_set.get(username=self.user)
-            player.is_player = True
+        if room.players.count() < room.players_limit:
+            player = BingoPlayer.objects.create(
+                room=self.bingo_room, username=self.user, is_player=True
+            )
             player.save()
             self.bingo_room.players.add(player)
 
     @database_sync_to_async
-    def players_count(self) -> None:
+    def get_active_players_count(self) -> None:
         active_players = self.bingo_room.bingoplayer_set.filter(is_active=True)
-        self.players_number_count = active_players.count()
-        if self.players_number_count == 0:
+        self.active_players_count = active_players.count()
+        if self.active_players_count == 0:
             if self.bingo_room is not None:
                 self.bingo_room.delete()
 
