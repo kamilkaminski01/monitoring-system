@@ -1,10 +1,9 @@
-function checkOnlineRooms(data, app) {
+function checkOnlineRooms(data) {
   if (data.command === "online_rooms") {
     onlinerooms.innerHTML = "";
     if (data.online_rooms.length > 0) {
       data.online_rooms.forEach((el) => {
-        onlinerooms.innerHTML +=
-          `
+        onlinerooms.innerHTML += `
           <a id="${el.room_id}" href="/${app}/${el.room_name}">
           <div class="room-div text-white">
           <strong>${el.room_name}</strong>
@@ -12,14 +11,13 @@ function checkOnlineRooms(data, app) {
           </a>
           `;
       });
-    } else if (onlinerooms.childElementCount === 0) {
-      onlinerooms.innerHTML =
-        '<p id="no_room" class="room-div">No Online Rooms Currently</p>';
+    } else {
+      onlinerooms.innerHTML = '<p id="no_room" class="room-div">No Online Rooms Currently</p>';
     }
   }
 }
 
-function roomAdded(data, app) {
+function roomAdded(data) {
   if (data.command === "room_added") {
     const no_room = document.getElementById("no_room");
     if (no_room) {
@@ -28,7 +26,7 @@ function roomAdded(data, app) {
     onlinerooms.insertAdjacentHTML(
       "afterbegin",
       `
-        <a id="${data.room_name}-${data.room_id}"
+        <a id="${data.room_id}"
         class="animate__animated animate__fadeInLeft" href="/${app}/${data.room_name}">
         <div class="room-div">
         <strong>${data.room_name}</strong>
@@ -41,9 +39,10 @@ function roomAdded(data, app) {
 
 function roomDeleted(data) {
   if (data.command === "room_deleted") {
-    const deletedRoomId = data.room_name + "-" + data.room_id;
-    const deletedRoom = document.getElementById(deletedRoomId);
-    onlinerooms.removeChild(deletedRoom);
+    const deletedRoom = document.getElementById(data.room_id);
+    if (deletedRoom) {
+      onlinerooms.removeChild(deletedRoom);
+    }
     if (onlinerooms.childElementCount === 0) {
       onlinerooms.innerHTML =
         '<p id="no_room" class="room-div text-white">No Online Rooms Currently</p>';

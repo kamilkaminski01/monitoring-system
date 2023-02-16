@@ -7,8 +7,7 @@ const userTurn = document.getElementById("userTurn");
 const chatInput = document.getElementById("chatInput");
 const playersLimit = document.getElementById("playersLimit");
 
-const bingoSocketUrl = socketUrl + window.location.pathname;
-const bingoSocket = new WebSocket(bingoSocketUrl);
+const bingoSocket = new WebSocket(socketAppUrl);
 const bingoUsername = localStorage.getItem("username");
 
 const bingoState = ["B", "I", "N", "G", "O", ""];
@@ -158,9 +157,7 @@ chatInput.addEventListener("keyup", (e) => {
 
 bingoSocket.onopen = function (e) {
   onOpen(bingoSocket, bingoUsername);
-  const url = window.location;
-  const roomName = url.pathname.split("/")[2];
-  getRoomDetails(`${url.origin}/bingo`, roomName).then((response) => {
+  getRoomDetails(appRoomName).then((response) => {
     const players = response.players;
     const room = response.room;
     const player = players.find((p) => p.username === bingoUsername);
@@ -181,7 +178,6 @@ bingoSocket.onopen = function (e) {
     playersLimitNumber = room.players_limit;
   });
 };
-
 
 // socket.onclose doesn't work, this eventListener gets triggered when a user refreshes or exits the page
 window.addEventListener("beforeunload", function (e) {

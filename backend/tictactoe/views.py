@@ -33,12 +33,12 @@ class TicTacToeRoomDetails(View):
             users = TicTacToePlayer.objects.filter(room=tictactoe_room)
             users_list = [user.username for user in users]
             players = tictactoe_room.players.all()
-            player_list = [{"username": player.username} for player in players]
+            player_list = [
+                {"username": player.username, "is_active": player.is_active}
+                for player in players
+            ]
             if players_turn := tictactoe_room.players_turn:
-                players_turn_data = {
-                    "username": players_turn.username,
-                    "is_active": players_turn.is_active,
-                }
+                players_turn_data = players_turn.username
             else:
                 players_turn_data = None
             return JsonResponse(

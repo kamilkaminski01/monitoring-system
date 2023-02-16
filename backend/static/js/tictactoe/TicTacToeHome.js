@@ -4,22 +4,22 @@ const roomName = document.querySelector("#room_name");
 const tictactoeUsername = document.querySelector("#username");
 const onlinerooms = document.getElementById("onlinerooms");
 
-const tictactoeOnlineRoomsSocket = new WebSocket(tictactoeOnlineRoomsSocketUrl);
+const tictactoeOnlineRoomsSocket = new WebSocket(socketRoomsUrl);
 
 tictactoeUsername.value = localStorage.getItem("username") || "";
 
 createRoom.addEventListener("click", async function () {
-  await makeRoom(tictactoeHomeUrl, roomName.value, tictactoeUsername.value);
+  await makeRoom(roomName.value, tictactoeUsername.value);
 });
 
-joinRoom.addEventListener("click", async function() {
-  await getInRoom(tictactoeHomeUrl, roomName.value, tictactoeUsername.value);
+joinRoom.addEventListener("click", async function () {
+  await getInRoom(roomName.value, tictactoeUsername.value);
 });
 
 // Functions are imported from websocketRoomsUtils.js
 tictactoeOnlineRoomsSocket.onmessage = function (e) {
   const data = JSON.parse(e.data);
-  checkOnlineRooms(data, "tictactoe");
-  roomAdded(data, "tictactoe");
+  roomAdded(data);
   roomDeleted(data);
+  checkOnlineRooms(data);
 };

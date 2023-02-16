@@ -8,7 +8,7 @@ const playerLimit4 = document.querySelector("#playerLimit4").parentNode.textCont
 const onlinerooms = document.getElementById("onlinerooms");
 
 bingoUsername.value = localStorage.getItem("username");
-const bingoOnlineRoomsSocket = new WebSocket(bingoOnlineRoomsUrl);
+const bingoOnlineRoomsSocket = new WebSocket(socketRoomsUrl);
 let playersLimit;
 
 document.querySelector("#show-createRoom").addEventListener("click", function () {
@@ -33,7 +33,7 @@ createRoom.addEventListener("click", async function () {
           playersLimit = parseInt(playerLimit4);
           break;
       }
-      await makeRoom(bingoHomeUrl, roomName.value, bingoUsername.value, playersLimit);
+      await makeRoom(roomName.value, bingoUsername.value, playersLimit);
     } else {
       Swal.fire({
         icon: "error",
@@ -55,13 +55,13 @@ createRoom.addEventListener("click", async function () {
 });
 
 joinRoom.addEventListener("click", async function () {
-  await getInRoom(bingoHomeUrl, roomName.value, bingoUsername.value);
+  await getInRoom(roomName.value, bingoUsername.value);
 });
 
 // Functions are imported from websocketRoomsUtils.js
 bingoOnlineRoomsSocket.onmessage = function (e) {
   const data = JSON.parse(e.data);
-  checkOnlineRooms(data, "bingo");
-  roomAdded(data, "bingo");
+  roomAdded(data);
   roomDeleted(data);
+  checkOnlineRooms(data);
 };

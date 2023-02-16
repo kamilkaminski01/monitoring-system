@@ -1,8 +1,15 @@
+const url = window.location;
+const splitUrl = url.pathname.split("/");
+const app = splitUrl[1];
+const appRoomName = splitUrl[2];
+
+const homeUrl =
+  url.port !== "" ? `${url.protocol}//${url.hostname}:8000/${app}` : `${url.origin}/${app}`;
+
+const socketUrl =
+  `${url.protocol === "https:" ? "wss" : "ws"}://${url.hostname}${url.port ? `:8000` : ""}/ws`;
+
+const socketAppUrl = `${socketUrl}/${app}/${appRoomName}/`;
+const socketRoomsUrl = `${socketUrl}/online-rooms/${app}/`;
+
 const menuPageUrl = "http://localhost:3000/";
-const tictactoeHomeUrl = "http://localhost:8000/tictactoe";
-const bingoHomeUrl = "http://localhost:8000/bingo";
-
-const tictactoeOnlineRoomsSocketUrl = "ws://localhost:8000/ws/online-rooms/tictactoe/";
-const bingoOnlineRoomsUrl = "ws://localhost:8000/ws/online-rooms/bingo/";
-
-const socketUrl = "ws://localhost:8000/ws";

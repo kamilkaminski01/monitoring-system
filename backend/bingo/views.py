@@ -36,15 +36,13 @@ class BingoRoomDetails(View):
                 players_data.append(
                     {
                         "username": player.username,
+                        "is_active": player.is_active,
                         "initial_board_state": player.initial_board_state,
                         "bingo_state": player.bingo_state,
                     }
                 )
             if players_turn := bingo_room.players_turn:
-                players_turn_data = {
-                    "username": players_turn.username,
-                    "is_active": players_turn.is_active,
-                }
+                players_turn_data = players_turn.username
             else:
                 players_turn_data = None
             room_data = {

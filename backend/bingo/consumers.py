@@ -65,7 +65,6 @@ class BingoConsumer(AsyncJsonWebsocketConsumer):
                     "user": self.user,
                     "info": self.info,
                     "players_number_count": self.players_number_count,
-                    "players_username_count": self.players_username_count,
                 },
             )
         if self.command == "win":
@@ -91,7 +90,6 @@ class BingoConsumer(AsyncJsonWebsocketConsumer):
                     "user": self.user,
                     "info": self.info,
                     "players_number_count": self.players_number_count,
-                    "players_username_count": self.players_username_count,
                 },
             )
         if self.command == "chat":
@@ -172,7 +170,6 @@ class BingoConsumer(AsyncJsonWebsocketConsumer):
                     "user": event["user"],
                     "info": event["info"],
                     "players_number_count": event["players_number_count"],
-                    "players_username_count": event["players_username_count"],
                 }
             )
         )
@@ -186,7 +183,6 @@ class BingoConsumer(AsyncJsonWebsocketConsumer):
                         "user": event["user"],
                         "info": event["info"],
                         "players_number_count": event["players_number_count"],
-                        "players_username_count": event["players_username_count"],
                     }
                 )
             )
@@ -269,7 +265,6 @@ class BingoConsumer(AsyncJsonWebsocketConsumer):
     def players_count(self) -> None:
         active_players = self.bingo_room.bingoplayer_set.filter(is_active=True)
         self.players_number_count = active_players.count()
-        self.players_username_count = [x.username for x in active_players]
         if self.players_number_count == 0:
             if self.bingo_room is not None:
                 self.bingo_room.delete()
@@ -305,7 +300,7 @@ class BingoOnlineRoomConsumer(AsyncJsonWebsocketConsumer):
         await self.accept()
         self.room_name = "online_bingo_room"
         await self.channel_layer.group_add(self.room_name, self.channel_name)
-        await self.online_room()
+        await self.get_rooms()
         await self.channel_layer.group_send(
             self.room_name,
             {"type": "websocket_rooms", "online_rooms": self.online_rooms},
@@ -313,11 +308,11 @@ class BingoOnlineRoomConsumer(AsyncJsonWebsocketConsumer):
 
     async def websocket_rooms(self, event: dict) -> None:
         await self.send_json(
-            ({"command": "online_rooms", "online_rooms": self.online_rooms})
+            ({"command": "online_rooms", "online_rooms": event["online_rooms"]})
         )
 
     async def websocket_room_added(self, event: dict) -> None:
-        await self.online_room()
+        await self.get_rooms()
         await self.send_json(
             (
                 {
@@ -329,7 +324,7 @@ class BingoOnlineRoomConsumer(AsyncJsonWebsocketConsumer):
         )
 
     async def websocket_room_deleted(self, event: dict) -> None:
-        await self.online_room()
+        await self.get_rooms()
         await self.send_json(
             (
                 {
@@ -340,15 +335,9 @@ class BingoOnlineRoomConsumer(AsyncJsonWebsocketConsumer):
             )
         )
 
-    async def receive_json(self, content: dict, **kwargs) -> None:
-        return await super().receive_json(content, **kwargs)
-
-    async def disconnect(self, code: int) -> None:
-        return await super().disconnect(code)
-
     @database_sync_to_async
-    def online_room(self) -> None:
+    def get_rooms(self) -> None:
         self.online_rooms = [
-            {"room_name": x.room_name, "room_id": f"{x.room_name}-{x.id}"}
-            for x in BingoRoom.objects.all()
+            {"room_name": room.room_name, "room_id": room.id}
+            for room in BingoRoom.objects.all()
         ]

@@ -43,6 +43,7 @@ class TicTacToeConsumer(AsyncJsonWebsocketConsumer):
                     "user": self.user,
                     "info": self.info,
                     "boardState": self.board_state,
+                    "players_number_count": self.players_number_count,
                 },
             )
         if self.command == "leave":
@@ -56,7 +57,6 @@ class TicTacToeConsumer(AsyncJsonWebsocketConsumer):
                     "info": self.info,
                     "user": self.user,
                     "players_number_count": self.players_number_count,
-                    "players_username_count": self.players_username_count,
                 },
             )
         if self.command == "run":
@@ -128,7 +128,6 @@ class TicTacToeConsumer(AsyncJsonWebsocketConsumer):
         )
 
     async def websocket_joined(self, event: dict) -> None:
-        await self.players_count()
         await self.send_json(
             (
                 {
@@ -136,8 +135,7 @@ class TicTacToeConsumer(AsyncJsonWebsocketConsumer):
                     "info": event["info"],
                     "user": event["user"],
                     "boardState": event["boardState"],
-                    "players_number_count": self.players_number_count,
-                    "players_username_count": self.players_username_count,
+                    "players_number_count": event["players_number_count"],
                 }
             )
         )
@@ -151,7 +149,6 @@ class TicTacToeConsumer(AsyncJsonWebsocketConsumer):
                         "info": event["info"],
                         "user": event["user"],
                         "players_number_count": event["players_number_count"],
-                        "players_username_count": event["players_username_count"],
                     }
                 )
             )
@@ -220,9 +217,9 @@ class TicTacToeConsumer(AsyncJsonWebsocketConsumer):
     def players_count(self) -> None:
         active_players = self.tictactoe_room.tictactoeplayer_set.filter(is_active=True)
         self.players_number_count = active_players.count()
-        self.players_username_count = [x.username for x in active_players]
         if self.players_number_count == 0:
-            self.tictactoe_room.delete()
+            if self.tictactoe_room is not None:
+                self.tictactoe_room.delete()
 
     @database_sync_to_async
     def set_player_inactive_or_active(self, status: bool) -> None:
@@ -239,7 +236,7 @@ class TicTacToeOnlineRoomConsumer(AsyncJsonWebsocketConsumer):
         await self.accept()
         self.room_name = "online_tictactoe_room"
         await self.channel_layer.group_add(self.room_name, self.channel_name)
-        await self.online_room()
+        await self.get_rooms()
         await self.channel_layer.group_send(
             self.room_name,
             {"type": "websocket_rooms", "online_rooms": self.online_rooms},
@@ -247,11 +244,11 @@ class TicTacToeOnlineRoomConsumer(AsyncJsonWebsocketConsumer):
 
     async def websocket_rooms(self, event: dict) -> None:
         await self.send_json(
-            ({"command": "online_rooms", "online_rooms": self.online_rooms})
+            ({"command": "online_rooms", "online_rooms": event["online_rooms"]})
         )
 
     async def websocket_room_added(self, event: dict) -> None:
-        await self.online_room()
+        await self.get_rooms()
         await self.send_json(
             (
                 {
@@ -263,7 +260,7 @@ class TicTacToeOnlineRoomConsumer(AsyncJsonWebsocketConsumer):
         )
 
     async def websocket_room_deleted(self, event: dict) -> None:
-        await self.online_room()
+        await self.get_rooms()
         await self.send_json(
             (
                 {
@@ -281,8 +278,8 @@ class TicTacToeOnlineRoomConsumer(AsyncJsonWebsocketConsumer):
         return await super().disconnect(code)
 
     @database_sync_to_async
-    def online_room(self) -> None:
+    def get_rooms(self) -> None:
         self.online_rooms = [
-            {"room_name": x.room_name, "room_id": f"{x.room_name}-{x.id}"}
-            for x in TicTacToeRoom.objects.all()
+            {"room_name": room.room_name, "room_id": room.id}
+            for room in TicTacToeRoom.objects.all()
         ]

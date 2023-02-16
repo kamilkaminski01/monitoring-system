@@ -2,13 +2,13 @@
 {% load static %}
 {% block content %}
 
-<button class="btn btn-light btn-game" onclick="tictactoeHomePage()">Home</button>
+<button class="btn btn-light btn-game" onclick="homePage()">Home</button>
 <button class="btn btn-light btn-game" onclick="restartTicTacToeBoardState()">Restart</button>
 <div class="tictactoe-container">
   <div class="tictactoe">
     <div class="scoreboard">
       <div>Total players:<span id="playersNumber"></span></div>
-      <div id="userdiv"></div>
+      <div id="username"></div>
       <div id="userTurn"></div>
     </div>
     <div class="board-container">

@@ -1,28 +1,21 @@
 import os
 from pathlib import Path
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
+from environs import Env
+
+env = Env()
+env.read_env()
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+SECRET_KEY = os.getenv("DJANGO_SECRET_KEY")
+DEBUG = env.bool("DEBUG")
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-qt81c6_za#qaf!#l0z8)gu&_*3s&ks2^#9t9-#nbx==5zy3@57"
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-ALLOWED_HOSTS = ["*"]
-
-
-# Application definition
+ALLOWED_HOSTS = ["." + host.strip() for host in env.list("ALLOWED_HOSTS")]
 
 INSTALLED_APPS = [
     "channels",
     "daphne",
-    "corsheaders",
     "rest_framework",
     "django.contrib.admin",
     "django.contrib.auth",
@@ -37,7 +30,6 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
-    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
@@ -47,6 +39,13 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
+
+CSRF_TRUSTED_ORIGINS = env.list("CSRF_TRUSTED_ORIGINS")
+
+if DEBUG:
+    INSTALLED_APPS.insert(0, "corsheaders")
+    MIDDLEWARE.insert(0, "corsheaders.middleware.CorsMiddleware")
+    CORS_ORIGIN_ALLOW_ALL = True
 
 ROOT_URLCONF = "backend.urls"
 
@@ -69,9 +68,6 @@ TEMPLATES = [
 ASGI_APPLICATION = "backend.asgi.application"
 WSGI_APPLICATION = "backend.wsgi.application"
 
-# Database
-# https://docs.djangoproject.com/en/4.1/ref/settings/#databases
-
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
@@ -79,19 +75,25 @@ DATABASES = {
     }
 }
 
-CHANNEL_LAYERS = {"default": {"BACKEND": "channels.layers.InMemoryChannelLayer"}}
+USE_REDIS = env.bool("USE_REDIS")
 
-# CHANNEL_LAYERS = {
-#     "default": {
-#         "BACKEND": "channels_redis.core.RedisChannelLayer",
-#         "CONFIG": {
-#             "hosts": [("redis", 6379)],
-#         },
-#     },
-# }
+if USE_REDIS:
+    CHANNEL_LAYERS = {
+        "default": {
+            "BACKEND": "channels_redis.core.RedisChannelLayer",
+            "CONFIG": {
+                "hosts": [
+                    (
+                        os.getenv("REDIS_HOST", "redis"),
+                        int(os.getenv("REDIS_PORT", "6379")),
+                    )
+                ],
+            },
+        },
+    }
+else:
+    CHANNEL_LAYERS = {"default": {"BACKEND": "channels.layers.InMemoryChannelLayer"}}
 
-# Password validation
-# https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -132,5 +134,3 @@ REST_FRAMEWORK = {
 
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
-
-CORS_ORIGIN_ALLOW_ALL = True

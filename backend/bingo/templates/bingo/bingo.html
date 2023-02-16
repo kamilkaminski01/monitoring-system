@@ -2,12 +2,12 @@
 {% load static %}
 {% block content %}
 
-<button class="btn btn-danger btn-game" onclick="bingoHomePage()">Home</button>
+<button class="btn btn-danger btn-game" onclick="homePage()">Home</button>
 <button class="btn btn-danger btn-game" onclick="restartBingoBoardState()">Restart</button>
 <div class="bingo-container">
   <div class="bingo">
     <strong class="my-3 text-white text-center">
-      <p class="mt-3" id="userdiv"></p>
+      <p class="mt-3" id="username"></p>
       <span class="my-3">Total players: <span id="playersNumber"></span></span><br />
       <div class="d-flex justify-content-between">
         <div><span class="my-3">Players limit: <span id="playersLimit"></span></span></div>

@@ -2,69 +2,13 @@ function menuPage() {
   window.location.href = menuPageUrl;
 }
 
-function tictactoeHomePage() {
-  window.location.href = tictactoeHomeUrl;
+function homePage() {
+  window.location.href = homeUrl;
 }
 
-function bingoHomePage() {
-  window.location.href = bingoHomeUrl;
-}
-
-async function getCheckRoom(url, roomname) {
-  const endpoint = `${url}/check_room/${roomname}/`;
-  const response = await fetch(endpoint, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json"
-    },
-  });
-  const answer = await response.json();
-  return answer.room_exist;
-}
-
-async function getRoomDetails(url, roomname){
-  const endpoint = `${url}/details/${roomname}/`;
-  const response = await fetch(endpoint, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json"
-    },
-  });
-  return await response.json()
-}
-
-function sendPlayersLimit(playersLimit, roomname) {
-  let bingoSocketUrl = `${socketUrl}/bingo/${roomname}/`;
-  let bingoHomeSocket = new WebSocket(bingoSocketUrl);
-  bingoHomeSocket.addEventListener("open", function (event) {
-    bingoHomeSocket.send(
-      JSON.stringify({
-        command: "room_created",
-        players_limit: playersLimit,
-      })
-    );
-  });
-}
-
-function setUsername() {
-  const username = localStorage.getItem("username");
-  const url = window.location;
-  if (url.pathname.includes("bingo")) {
-    if (!username) {
-      localStorage.setItem("message", "Provide a username before connecting.");
-      window.location.href = bingoHomeUrl;
-      return;
-    }
-  }
-  if (url.pathname.includes("tictactoe")) {
-    if (!username) {
-      localStorage.setItem("message", "Provide a username before connecting.");
-      window.location.href = tictactoeHomeUrl;
-      return;
-    }
-  }
-  const userdiv = document.getElementById("userdiv");
-  userdiv.textContent = localStorage.getItem("username");
+function redirectToRoom(roomname) {
+  localStorage.setItem("username", username.value);
+  window.location.href = window.location.href + roomname;
 }
 
 window.addEventListener("load", function () {
@@ -75,9 +19,56 @@ window.addEventListener("load", function () {
   }
 });
 
-async function checkUsername(url, roomname, username, makeRoomBool) {
+function setUsername() {
+  const username = localStorage.getItem("username");
+  if (!username) {
+    localStorage.setItem("message", "Provide a username before connecting.");
+    window.location.href = homeUrl;
+    return;
+  }
+  const usernameDiv = document.getElementById("username");
+  usernameDiv.textContent = localStorage.getItem("username");
+}
+
+async function getCheckRoom(roomname) {
+  const endpoint = `${homeUrl}/api/check/${roomname}/`;
+  const response = await fetch(endpoint, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json"
+    }
+  });
+  const answer = await response.json();
+  return answer.room_exist;
+}
+
+async function getRoomDetails(roomname) {
+  const endpoint = `${homeUrl}/api/details/${roomname}/`;
+  const response = await fetch(endpoint, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json"
+    }
+  });
+  return await response.json();
+}
+
+function sendPlayersLimit(playersLimit, roomname) {
+  let bingoSocketUrl = `${socketUrl}/${app}/${roomname}/`;
+  let bingoHomeSocket = new WebSocket(bingoSocketUrl);
+  bingoHomeSocket.addEventListener("open", function (event) {
+    bingoHomeSocket.send(
+      JSON.stringify({
+        command: "room_created",
+        players_limit: playersLimit
+      })
+    );
+  });
+}
+
+async function checkUsername(roomname, username, createRoom) {
   const invalidUsername = !/^[a-zA-Z0-9-_]+$/.test(username);
-  if (makeRoomBool) {
+  if (createRoom) {
     if (username.length > 10 || invalidUsername) {
       Swal.fire({
         icon: "error",
@@ -89,8 +80,9 @@ async function checkUsername(url, roomname, username, makeRoomBool) {
       return false;
     }
   } else {
-    const room = await getRoomDetails(url, roomname)
-    if (room.players.includes(username)) {
+    const room = await getRoomDetails(roomname);
+    const isUsernameTaken = room.players.some((player) => player.username === username);
+    if (isUsernameTaken) {
       Swal.fire({
         icon: "error",
         title: "Error",
@@ -104,12 +96,7 @@ async function checkUsername(url, roomname, username, makeRoomBool) {
   return true;
 }
 
-function redirectToRoom(roomname) {
-  localStorage.setItem("username", username.value);
-  window.location.href = window.location.href + roomname;
-}
-
-async function getInRoom(url, roomname, username) {
+async function getInRoom(roomname, username) {
   if (!roomname) {
     return Swal.fire({
       icon: "error",
@@ -119,7 +106,7 @@ async function getInRoom(url, roomname, username) {
       position: "top-right"
     });
   }
-  const roomExists = await getCheckRoom(url, roomname);
+  const roomExists = await getCheckRoom(roomname);
   if (!roomExists) {
     Swal.fire({
       icon: "error",
@@ -129,14 +116,14 @@ async function getInRoom(url, roomname, username) {
       position: "top-right"
     });
   } else {
-    if (await checkUsername(url, roomname, username)){
+    if (await checkUsername(roomname, username)) {
       redirectToRoom(roomname);
     }
   }
 }
 
-async function makeRoom(url, roomname, username, playersLimit) {
-  const roomExists = await getCheckRoom(url, roomname);
+async function makeRoom(roomname, username, playersLimit) {
+  const roomExists = await getCheckRoom(roomname);
   const invalidRoomName = !/^[a-zA-Z0-9-_]+$/.test(roomname);
   if (roomExists || invalidRoomName) {
     Swal.fire({
@@ -147,7 +134,7 @@ async function makeRoom(url, roomname, username, playersLimit) {
       position: "top-right"
     });
   } else {
-    if (await checkUsername(url, roomname, username, makeRoomBool=true)) {
+    if (await checkUsername(roomname, username, true)) {
       redirectToRoom(roomname);
       if (playersLimit) {
         sendPlayersLimit(playersLimit, roomname);
@@ -157,15 +144,13 @@ async function makeRoom(url, roomname, username, playersLimit) {
 }
 
 function checkTurnBetweenPlayers() {
-  const url = window.location;
-  const splitUrl = url.pathname.split("/");
-  const app = splitUrl[1];
-  const roomName = splitUrl[2];
-  getRoomDetails(`${url.origin}/${app}`, roomName).then(({ players_turn }) => {
+  getRoomDetails(appRoomName).then((response) => {
     playersLimitNumber = typeof playersLimitNumber !== 'undefined' ? playersLimitNumber : 2;
     const enoughPlayers = totalPlayers >= playersLimitNumber;
-    if (enoughPlayers) {
-      currentPlayer = players_turn.username;
+    const players = response.players;
+    const allPlayersActive = players.every(player => player.is_active);
+    if (allPlayersActive && enoughPlayers) {
+      currentPlayer = response.players_turn;
       userTurn.textContent = `${currentPlayer}'s turn`;
       userTurn.classList.remove("not-enough-players");
     } else {

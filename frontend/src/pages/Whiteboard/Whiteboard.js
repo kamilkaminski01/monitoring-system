@@ -8,7 +8,7 @@ const Whiteboard = () => {
   const socketRef = useRef(null);
 
   useEffect(() => {
-    socketRef.current = new WebSocket(PATHS.websocketWhiteboard);
+    socketRef.current = new WebSocket(PATHS.socketWhiteboard);
     const canvas = canvasRef.current;
     const context = canvas.getContext('2d');
 

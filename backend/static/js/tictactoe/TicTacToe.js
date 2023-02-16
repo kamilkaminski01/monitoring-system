@@ -4,8 +4,7 @@ const userTurn = document.getElementById("userTurn");
 const chatInput = document.getElementById("chatInput");
 let elementArray = document.querySelectorAll(".space");
 
-const tictactoeSocketUrl = socketUrl + window.location.pathname;
-const tictactoeSocket = new WebSocket(tictactoeSocketUrl);
+const tictactoeSocket = new WebSocket(socketAppUrl);
 const tictactoeUsername = localStorage.getItem("username");
 
 let boardState = ["", "", "", "", "", "", "", "", ""];
@@ -17,7 +16,7 @@ let currentPlayer;
 
 elementArray.forEach(function (elem) {
   elem.addEventListener("click", function (event) {
-    if (totalPlayers !== 2) {
+    if (totalPlayers < 2) {
       Swal.fire("Oops...", "Wait for the second player", "warning");
     } else {
       if (currentPlayer === tictactoeUsername && gameState === "ON") {
@@ -151,9 +150,7 @@ tictactoeSocket.onmessage = function (e) {
         position: "top-right"
       });
     }
-    const url = window.location;
-    const roomName = url.pathname.split("/")[2];
-    getRoomDetails(`${url.origin}/tictactoe`, roomName).then((response) => {
+    getRoomDetails(appRoomName).then((response) => {
       if (tictactoeUsername === response.players[0].username){
         player = "O";
       } else {

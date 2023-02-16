@@ -91,8 +91,8 @@ input[type='submit']:hover {
 }
 
 @media screen and (max-width: 1000px) {
-  .login-container{
-    width: 70%;;
+  .login-container {
+    width: 70%;
     max-width: 30rem;
   }
 }
