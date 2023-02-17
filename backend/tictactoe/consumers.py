@@ -28,6 +28,9 @@ class TicTacToeConsumer(AsyncJsonWebsocketConsumer):
             self.board_state = board_state
             await self.update_or_retrieve_board_state(True)
 
+        if self.command == "room_created":
+            await self.get_or_create_room()
+
         if self.command == "joined":
             await self.create_player()
             await self.set_player_inactive_or_active(True)

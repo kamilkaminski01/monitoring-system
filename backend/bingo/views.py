@@ -33,7 +33,7 @@ class BingoRoomCheckAPIView(RetrieveAPIView):
             self.get_object()
             return Response({"room_exist": True})
         except Http404:
-            return Response({"room_exist": False}, status=status.HTTP_404_NOT_FOUND)
+            return Response({"room_exist": False})
 
 
 class BingoRoomDetailsAPIView(RetrieveAPIView):

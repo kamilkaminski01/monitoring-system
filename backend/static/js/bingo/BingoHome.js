@@ -2,14 +2,13 @@ const createRoom = document.querySelector("#createRoom");
 const joinRoom = document.querySelector("#joinRoom");
 const roomName = document.querySelector("#roomName");
 const bingoUsername = document.querySelector("#username");
-const playerLimit2 = document.querySelector("#playerLimit2").parentNode.textContent.trim();
-const playerLimit3 = document.querySelector("#playerLimit3").parentNode.textContent.trim();
-const playerLimit4 = document.querySelector("#playerLimit4").parentNode.textContent.trim();
+const playerLimit2 = document.querySelector("#playerLimit2");
+const playerLimit3 = document.querySelector("#playerLimit3");
+const playerLimit4 = document.querySelector("#playerLimit4");
 const onlinerooms = document.getElementById("onlinerooms");
 
 bingoUsername.value = localStorage.getItem("username");
 const bingoOnlineRoomsSocket = new WebSocket(socketRoomsUrl);
-let playersLimit;
 
 document.querySelector("#show-createRoom").addEventListener("click", function () {
   document.querySelector(".popup").classList.add("active");
@@ -18,22 +17,22 @@ document.querySelector(".popup .close-btn").addEventListener("click", function (
   document.querySelector(".popup").classList.remove("active");
 });
 
-createRoom.addEventListener("click", async function () {
-  const selectedCheckbox = document.querySelector("input[type='checkbox']:checked");
-  if (selectedCheckbox) {
-    if (roomName.value) {
-      switch (selectedCheckbox.id) {
-        case "playerLimit2":
-          playersLimit = parseInt(playerLimit2);
-          break;
-        case "playerLimit3":
-          playersLimit = parseInt(playerLimit3);
-          break;
-        case "playerLimit4":
-          playersLimit = parseInt(playerLimit4);
-          break;
+const checkboxes = [playerLimit2, playerLimit3, playerLimit4];
+for (const checkbox of checkboxes) {
+  checkbox.addEventListener("change", function () {
+    for (const otherCheckbox of checkboxes) {
+      if (otherCheckbox !== this) {
+        otherCheckbox.checked = false;
       }
-      await makeRoom(roomName.value, bingoUsername.value, playersLimit);
+    }
+  });
+}
+
+createRoom.addEventListener("click", async function () {
+  const selectedPlayersLimit = document.querySelector("input[type='checkbox']:checked");
+  if (selectedPlayersLimit) {
+    if (roomName.value) {
+      await makeRoom(roomName.value, bingoUsername.value, selectedPlayersLimit.value);
     } else {
       Swal.fire({
         icon: "error",

@@ -34,21 +34,21 @@
     <h2>Players Limit</h2>
     <div class="checkbox-wrapper">
       <label>
-        <input id="playerLimit2" type="checkbox" />
+        <input id="playerLimit2" value="2" type="checkbox" />
         <span class="checkbox"></span>
         2
       </label>
     </div>
     <div class="checkbox-wrapper">
       <label>
-        <input id="playerLimit3" type="checkbox" />
+        <input id="playerLimit3" value="3" type="checkbox" />
         <span class="checkbox"></span>
         3
       </label>
     </div>
     <div class="checkbox-wrapper">
       <label>
-        <input id="playerLimit4" type="checkbox" />
+        <input id="playerLimit4" value="4" type="checkbox" />
         <span class="checkbox"></span>
         4
       </label>
@@ -62,18 +62,6 @@
 <link
   rel="stylesheet"
   href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
-<script>
-const checkboxes = [playerLimit2, playerLimit3, playerLimit4];
-for (const checkbox of checkboxes) {
-  checkbox.addEventListener("change", function() {
-    for (const otherCheckbox of checkboxes) {
-      if (otherCheckbox !== this) {
-        otherCheckbox.checked = false;
-      }
-    }
-  });
-}
-</script>
 <script src="{% static 'js/consts.js' %}"></script>
 <script src="{% static 'js/utils.js' %}"></script>
 <script src="{% static 'js/websocketRoomsUtils.js' %}"></script>

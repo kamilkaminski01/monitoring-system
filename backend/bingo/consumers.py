@@ -29,6 +29,7 @@ class BingoConsumer(AsyncJsonWebsocketConsumer):
 
         if self.command == "room_created":
             players_limit = content.get("players_limit")
+            await self.get_or_create_room()
             await self.set_players_limit(players_limit)
 
         if self.command == "initialize_board":

@@ -65,16 +65,17 @@ async function getRoomDetails(roomname) {
   return await response.json();
 }
 
-function sendPlayersLimit(playersLimit, roomname) {
-  let bingoSocketUrl = `${socketUrl}/${app}/${roomname}/`;
-  let bingoHomeSocket = new WebSocket(bingoSocketUrl);
-  bingoHomeSocket.addEventListener("open", function (event) {
-    bingoHomeSocket.send(
-      JSON.stringify({
-        command: "room_created",
-        players_limit: playersLimit
-      })
-    );
+function sendRoomCreated(roomname, playersLimit) {
+  let endpoint = `${socketUrl}/${app}/${roomname}/`;
+  let socket = new WebSocket(endpoint);
+  socket.addEventListener("open", function (event) {
+    const data = {
+      command: "room_created"
+    };
+    if (playersLimit) {
+      data.players_limit = playersLimit;
+    }
+    socket.send(JSON.stringify(data));
   });
 }
 
@@ -160,9 +161,7 @@ async function makeRoom(roomname, username, playersLimit) {
   } else {
     if (await checkUsername(roomname, username, true)) {
       redirectToRoom(roomname);
-      if (playersLimit) {
-        sendPlayersLimit(playersLimit, roomname);
-      }
+      playersLimit ? sendRoomCreated(roomname, playersLimit) : sendRoomCreated(roomname);
     }
   }
 }
