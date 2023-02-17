@@ -2,8 +2,8 @@ from django.urls import path
 
 from .views import (
     CreateTicTacToeRoomView,
-    TicTacToeRoomDetails,
-    TicTacToeRoomExist,
+    TicTacToeCheckAPIView,
+    TicTacToeRoomDetailsView,
     TicTacToeView,
 )
 
@@ -12,12 +12,12 @@ urlpatterns = [
     path("<str:room_name>/", TicTacToeView.as_view(), name="tictactoe"),
     path(
         "api/check/<str:room_name>/",
-        TicTacToeRoomExist.as_view(),
+        TicTacToeCheckAPIView.as_view(),
         name="check_tictactoe_room",
     ),
     path(
         "api/details/<str:room_name>/",
-        TicTacToeRoomDetails.as_view(),
+        TicTacToeRoomDetailsView.as_view(),
         name="details_tictactoe_room",
     ),
 ]

@@ -162,11 +162,8 @@ chatInput.addEventListener("keyup", (e) => {
 
 bingoSocket.onopen = function (e) {
   onOpen(bingoSocket, bingoUsername);
-  getRoomDetails(appRoomName).then((response) => {
-    const players = response.players;
-    const room = response.room;
+  getRoomDetails(appRoomName).then(({ players, players_limit, board_state }) => {
     const player = players.find((p) => p.username === bingoUsername);
-    const boardState = room.board_state;
     if (!player) {
       initializeBoard();
       bingoSocket.send(
@@ -177,10 +174,10 @@ bingoSocket.onopen = function (e) {
         })
       );
     } else {
-      getBoardState(player, boardState);
+      getBoardState(player, board_state);
     }
-    playersLimit.textContent = room.players_limit;
-    playersLimitNumber = room.players_limit;
+    playersLimit.textContent = players_limit;
+    playersLimitNumber = players_limit;
   });
 };
 

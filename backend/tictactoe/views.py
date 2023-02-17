@@ -1,10 +1,15 @@
 import re
 
-from django.http import HttpRequest, HttpResponse, JsonResponse
+from django.http import Http404, HttpRequest, HttpResponse
 from django.shortcuts import render
 from django.views import View
+from rest_framework import status
+from rest_framework.generics import RetrieveAPIView
+from rest_framework.request import Request
+from rest_framework.response import Response
 
 from .models import TicTacToeRoom
+from .serializers import TicTacToeRoomDetailsSerializer
 
 
 class CreateTicTacToeRoomView(View):
@@ -19,31 +24,33 @@ class TicTacToeView(View):
         return render(request, "tictactoe/tictactoe.html")
 
 
-class TicTacToeRoomExist(View):
-    def get(self, request: HttpRequest, room_name: str) -> JsonResponse:
-        return JsonResponse(
-            {"room_exist": TicTacToeRoom.objects.filter(room_name=room_name).exists()}
-        )
+class TicTacToeCheckAPIView(RetrieveAPIView):
+    queryset = TicTacToeRoom.objects.all()
+    lookup_field = "room_name"
 
-
-class TicTacToeRoomDetails(View):
-    def get(self, request: HttpRequest, room_name: str) -> JsonResponse:
+    def retrieve(self, request: Request, *args, **kwargs) -> Response:
         try:
-            tictactoe_room = TicTacToeRoom.objects.get(room_name=room_name)
-            players = tictactoe_room.players.all()
-            player_list = [
-                {"username": player.username, "is_active": player.is_active}
-                for player in players
-            ]
-            if players_turn := tictactoe_room.players_turn:
-                players_turn_data = players_turn.username
-            else:
-                players_turn_data = None
-            return JsonResponse(
+            self.get_object()
+            return Response({"room_exist": True})
+        except Http404:
+            return Response({"room_exist": False}, status=status.HTTP_404_NOT_FOUND)
+
+
+class TicTacToeRoomDetailsView(RetrieveAPIView):
+    serializer_class = TicTacToeRoomDetailsSerializer
+    queryset = TicTacToeRoom.objects.all()
+    lookup_field = "room_name"
+
+    def get(self, request: Request, *args, **kwargs) -> Response:
+        try:
+            instance: TicTacToeRoom = self.get_object()
+            serializer = self.get_serializer(instance)
+            return Response(serializer.data)
+        except Http404:
+            return Response(
                 {
-                    "players": player_list,
-                    "players_turn": players_turn_data,
-                }
+                    "message": "Tic tac toe room does not exist",
+                    "code": "tictactoe_room_not_found",
+                },
+                status=status.HTTP_404_NOT_FOUND,
             )
-        except TicTacToeRoom.DoesNotExist:
-            return JsonResponse({"error": "TicTacToeRoom does not exist."}, status=404)

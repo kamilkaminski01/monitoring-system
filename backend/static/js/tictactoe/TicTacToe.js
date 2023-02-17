@@ -149,8 +149,8 @@ tictactoeSocket.onmessage = function (e) {
         position: "top-right"
       });
     }
-    getRoomDetails(appRoomName).then((response) => {
-      if (tictactoeUsername === response.players[0].username){
+    getRoomDetails(appRoomName).then(({ players }) => {
+      if (tictactoeUsername === players[0].username){
         player = "O";
       } else {
         player = "X";

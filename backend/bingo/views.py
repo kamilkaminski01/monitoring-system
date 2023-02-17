@@ -1,10 +1,15 @@
 import re
 
-from django.http import HttpRequest, HttpResponse, JsonResponse
+from django.http import Http404, HttpRequest, HttpResponse
 from django.shortcuts import render
 from django.views import View
+from rest_framework import status
+from rest_framework.generics import RetrieveAPIView
+from rest_framework.request import Request
+from rest_framework.response import Response
 
 from .models import BingoRoom
+from .serializers import BingoRoomDetailsSerializer
 
 
 class CreateBingoRoomView(View):
@@ -19,42 +24,33 @@ class BingoView(View):
         return render(request, "bingo/bingo.html")
 
 
-class BingoRoomExist(View):
-    def get(self, request: HttpRequest, room_name: str) -> JsonResponse:
-        return JsonResponse(
-            {"room_exist": BingoRoom.objects.filter(room_name=room_name).exists()}
-        )
+class BingoRoomCheckAPIView(RetrieveAPIView):
+    queryset = BingoRoom.objects.all()
+    lookup_field = "room_name"
 
-
-class BingoRoomDetails(View):
-    def get(self, request: HttpRequest, room_name: str) -> JsonResponse:
+    def retrieve(self, request: Request, *args, **kwargs) -> Response:
         try:
-            bingo_room = BingoRoom.objects.get(room_name=room_name)
-            players = bingo_room.players.all()
-            players_data = []
-            for player in players:
-                players_data.append(
-                    {
-                        "username": player.username,
-                        "is_active": player.is_active,
-                        "initial_board_state": player.initial_board_state,
-                        "bingo_state": player.bingo_state,
-                    }
-                )
-            if players_turn := bingo_room.players_turn:
-                players_turn_data = players_turn.username
-            else:
-                players_turn_data = None
-            room_data = {
-                "board_state": bingo_room.board_state,
-                "players_limit": bingo_room.players_limit,
-            }
-            return JsonResponse(
+            self.get_object()
+            return Response({"room_exist": True})
+        except Http404:
+            return Response({"room_exist": False}, status=status.HTTP_404_NOT_FOUND)
+
+
+class BingoRoomDetailsAPIView(RetrieveAPIView):
+    serializer_class = BingoRoomDetailsSerializer
+    queryset = BingoRoom.objects.all()
+    lookup_field = "room_name"
+
+    def get(self, request: Request, *args, **kwargs) -> Response:
+        try:
+            instance: BingoRoom = self.get_object()
+            serializer = self.get_serializer(instance)
+            return Response(serializer.data)
+        except Http404:
+            return Response(
                 {
-                    "players": players_data,
-                    "players_turn": players_turn_data,
-                    "room": room_data,
-                }
+                    "message": "Bingo room does not exist",
+                    "code": "bingo_room_not_found",
+                },
+                status=status.HTTP_404_NOT_FOUND,
             )
-        except BingoRoom.DoesNotExist:
-            return JsonResponse({"error": "BingoRoom does not exist."}, status=404)

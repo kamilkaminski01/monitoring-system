@@ -31,13 +31,11 @@ function setUsername() {
 }
 
 function checkRoomPlayers() {
-  getRoomDetails(appRoomName).then((response) => {
+  getRoomDetails(appRoomName).then(({ players, players_limit }) => {
     const username = localStorage.getItem("username");
-    const players = response.players;
-    const playersAmount = players.length;
     const isPlayer = players.find((p) => p.username === username);
-    const maxPlayers = response.room ? response.room.players_limit : 2;
-    if (playersAmount >= maxPlayers && !isPlayer) {
+    const maxPlayers = players_limit ? players_limit : 2;
+    if (players.length >= maxPlayers && !isPlayer) {
       localStorage.setItem("message", "Room is full");
       window.location.href = homeUrl;
     }
@@ -170,13 +168,12 @@ async function makeRoom(roomname, username, playersLimit) {
 }
 
 function checkTurnBetweenPlayers() {
-  getRoomDetails(appRoomName).then((response) => {
+  getRoomDetails(appRoomName).then(({ players, players_turn }) => {
     playersLimitNumber = typeof playersLimitNumber !== "undefined" ? playersLimitNumber : 2;
     const enoughPlayers = totalPlayers >= playersLimitNumber;
-    const players = response.players;
     const allPlayersActive = players.every((player) => player.is_active);
     if (allPlayersActive && enoughPlayers) {
-      currentPlayer = response.players_turn;
+      currentPlayer = players_turn;
       userTurn.textContent = `${currentPlayer}'s turn`;
       userTurn.classList.remove("not-enough-players");
     } else {
