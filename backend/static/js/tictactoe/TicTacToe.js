@@ -10,7 +10,6 @@ const tictactoeUsername = localStorage.getItem("username");
 let boardState = ["", "", "", "", "", "", "", "", ""];
 let gameState = "ON";
 let player
-
 let totalPlayers;
 let currentPlayer;
 
@@ -90,7 +89,7 @@ function setText(index, value) {
         game_state: "running",
         player: player,
         index: index,
-        boardState: boardState,
+        board_state: boardState,
       })
     );
     checkWon(value, player);
@@ -105,9 +104,9 @@ function setAnotherUserText(index, value) {
 }
 
 function initializeBoard(data){
-  boardState = data.boardState;
+  boardState = data.board_state;
   for(let i = 0; i < boardState.length; i++)
-    elementArray[i].innerHTML = data.boardState[i];
+    elementArray[i].innerHTML = boardState[i];
 }
 
 function restartTicTacToeBoardState() {
@@ -161,10 +160,11 @@ tictactoeSocket.onmessage = function (e) {
   }
   if (data.game_state === "won") {
     gameState = "OFF";
-    if (data.player === player)
+    if (data.player === player) {
       Swal.fire("Good job", "You won", "success");
-    else
+    } else {
       Swal.fire("Sorry", "You lost", "error");
+    }
   }
   if (data.game_state === "over") {
     gameState = "OFF";

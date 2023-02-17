@@ -11,11 +11,10 @@ const bingoSocket = new WebSocket(socketAppUrl);
 const bingoUsername = localStorage.getItem("username");
 
 const bingoState = ["B", "I", "N", "G", "O", ""];
-let gamestate = "ON";
+let gameState = "ON";
 let playersBingoState = [];
 let keysArr = [];
 let datasetArr = [];
-
 let totalPlayers;
 let currentPlayer;
 let playersLimitNumber;
@@ -40,10 +39,11 @@ const originalBingoWinRows = [...bingoWinRows];
 function initializeBoard() {
   for (let i = 1; i < 26; i++) {
     let b = Math.ceil(Math.random() * 25);
-    if (!keysArr.includes(b))
+    if (!keysArr.includes(b)) {
       keysArr.push(b);
-    else
+    } else {
       i--;
+    }
   }
   items.forEach((item, index) => {
     item.removeAttribute("class");
@@ -56,23 +56,24 @@ function checkBingo(item) {
   const dataID = item.dataset.id;
   const innernum = item.dataset.innernum;
   const dataNumber = parseInt(dataID);
-  if (datasetArr.includes(dataNumber))
+  if (datasetArr.includes(dataNumber)) {
     return Swal.fire("Oops..", "Already selected", "warning");
+  }
   datasetArr.push(dataNumber);
   item.classList.add("clicked");
   bingoSocket.send(
     JSON.stringify({
       command: "clicked",
       user: bingoUsername,
-      dataID: dataID,
-      dataset: innernum
+      data_id: dataID,
+      data_set: innernum
     })
   );
   loopItemsAndCheck();
 }
 
 const handleClick = (e) => {
-  if (gamestate === "OFF") {
+  if (gameState === "OFF") {
     return Swal.fire("Game finished", "Restart to play again!", "warning");
   }
   if (totalPlayers < playersLimitNumber) {
@@ -101,9 +102,13 @@ function successGrid(index, li) {
 function loopItemsAndCheck() {
   for (const j of bingoWinRows) {
     if (includesAll(datasetArr, j)) {
-      for (let [index, li] of j.entries()) successGrid(index, li);
+      for (let [index, li] of j.entries()) {
+        successGrid(index, li);
+      }
       const index = bingoWinRows.indexOf(j);
-      if (index > -1) bingoWinRows.splice(index, 1);
+      if (index > -1) {
+        bingoWinRows.splice(index, 1);
+      }
       let span = document.createElement("span");
       span.classList.add("bingoState");
       span.append(bingoState[playersBingoState.length]);
@@ -190,7 +195,7 @@ bingoSocket.onmessage = function (e) {
   chatData(data);
   checkTurnBetweenPlayers();
   if (data.command === "clicked") {
-    const clickedDiv = document.querySelector(`[data-innernum='${data.dataset}']`);
+    const clickedDiv = document.querySelector(`[data-innernum='${data.data_set}']`);
     if (notForMeData(data, bingoUsername)) {
       const myDataSetId = parseInt(clickedDiv.dataset.id);
       if (!datasetArr.includes(myDataSetId)) {
@@ -201,7 +206,7 @@ bingoSocket.onmessage = function (e) {
     clickedDiv.classList.add("clicked");
   }
   if (data.command === "restart") {
-    gamestate = "ON";
+    gameState = "ON";
     datasetArr.splice(0, datasetArr.length);
     playersBingoState.splice(0, playersBingoState.length);
     keysArr.splice(0, keysArr.length);
@@ -227,7 +232,7 @@ bingoSocket.onmessage = function (e) {
     });
   }
   if (data.command === "win") {
-    gamestate = "OFF";
+    gameState = "OFF";
     if (data.winners.includes(bingoUsername))
       Swal.fire("Good job", "You won!", "success");
     else

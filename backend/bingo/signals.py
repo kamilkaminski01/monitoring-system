@@ -13,7 +13,7 @@ def create_room_signal(sender, instance: BingoRoom, **kwargs) -> None:
     async_to_sync(channel_layer.group_send)(
         "online_bingo_room",
         {
-            "type": "websocket_room_added",
+            "type": "websocket_room_added_or_deleted",
             "command": "room_added",
             "room_name": instance.room_name,
             "room_id": instance.id,
@@ -26,7 +26,7 @@ def delete_room_signal(sender, instance: BingoRoom, **kwargs) -> None:
     async_to_sync(channel_layer.group_send)(
         "online_bingo_room",
         {
-            "type": "websocket_room_deleted",
+            "type": "websocket_room_added_or_deleted",
             "command": "room_deleted",
             "room_name": instance.room_name,
             "room_id": instance.id,

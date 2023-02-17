@@ -2,6 +2,8 @@ from autobahn.exception import Disconnected
 from channels.db import database_sync_to_async
 from channels.generic.websocket import AsyncJsonWebsocketConsumer
 
+from backend.utils import websocket_send_event
+
 from .models import TicTacToePlayer, TicTacToeRoom
 
 
@@ -10,7 +12,7 @@ class TicTacToeConsumer(AsyncJsonWebsocketConsumer):
         self.url_route = self.scope["url_route"]["kwargs"]["room_name"]
         self.room_name = f"tictactoe_room_{self.url_route}"
         await self.accept()
-        await self.create_room()
+        await self.get_or_create_room()
         await self.channel_layer.group_add(self.room_name, self.channel_name)
 
     async def disconnect(self, close_code: int) -> None:
@@ -21,18 +23,16 @@ class TicTacToeConsumer(AsyncJsonWebsocketConsumer):
         self.info = content.get("info", None)
         self.user = content.get("user", None)
         self.game_state = content.get("game_state", None)
-        if board_state := content.get("boardState"):
+        await self.update_or_retrieve_board_state()
+        if board_state := content.get("board_state"):
             self.board_state = board_state
-            await self.set_board_state()
-        else:
-            await self.get_board_state()
+            await self.update_or_retrieve_board_state(True)
 
         if self.command == "joined":
-            await self.set_player_inactive_or_active(True)
             await self.create_player()
-            await self.get_active_players_count()
-            await self.get_players_in_room()
-            if self.players < 2:
+            await self.set_player_inactive_or_active(True)
+            await self.get_players_count()
+            if self.players_count < 2:
                 await self.set_or_change_turn()
             await self.channel_layer.group_send(
                 self.room_name,
@@ -41,13 +41,13 @@ class TicTacToeConsumer(AsyncJsonWebsocketConsumer):
                     "command": self.command,
                     "user": self.user,
                     "info": self.info,
-                    "boardState": self.board_state,
+                    "board_state": self.board_state,
                     "active_players_count": self.active_players_count,
                 },
             )
         if self.command == "leave":
             await self.set_player_inactive_or_active(False)
-            await self.get_active_players_count()
+            await self.get_players_count()
             await self.channel_layer.group_send(
                 self.room_name,
                 {
@@ -81,7 +81,7 @@ class TicTacToeConsumer(AsyncJsonWebsocketConsumer):
             )
         if self.command == "restart":
             self.board_state = [""] * 9
-            await self.set_board_state()
+            await self.update_or_retrieve_board_state(True)
             await self.channel_layer.group_send(
                 self.room_name,
                 {
@@ -89,76 +89,32 @@ class TicTacToeConsumer(AsyncJsonWebsocketConsumer):
                     "command": self.command,
                     "info": self.info,
                     "user": self.user,
-                    "boardState": self.board_state,
+                    "board_state": self.board_state,
                 },
             )
 
-    async def websocket_restart(self, event: dict) -> None:
-        await self.send_json(
-            {
-                "command": event["command"],
-                "info": event["info"],
-                "user": event["user"],
-                "boardState": event["boardState"],
-            }
-        )
-
-    async def websocket_run(self, event: dict) -> None:
-        await self.send_json(
-            (
-                {
-                    "game_state": event["game_state"],
-                    "player": event["player"],
-                    "index": event["index"],
-                    "boardState": self.board_state,
-                }
-            )
-        )
-
-    async def websocket_chat(self, event: dict) -> None:
-        await self.send_json(
-            (
-                {
-                    "command": event["command"],
-                    "user": event["user"],
-                    "chat": event["chat"],
-                }
-            )
-        )
-
     async def websocket_joined(self, event: dict) -> None:
-        await self.send_json(
-            (
-                {
-                    "command": event["command"],
-                    "info": event["info"],
-                    "user": event["user"],
-                    "boardState": event["boardState"],
-                    "active_players_count": event["active_players_count"],
-                }
-            )
-        )
+        field_names = ["command", "user", "info", "board_state", "active_players_count"]
+        await websocket_send_event(self, event, field_names)
 
     async def websocket_leave(self, event: dict) -> None:
         try:
-            await self.send_json(
-                (
-                    {
-                        "command": event["command"],
-                        "info": event["info"],
-                        "user": event["user"],
-                        "active_players_count": event["active_players_count"],
-                    }
-                )
-            )
+            field_names = ["command", "user", "info", "active_players_count"]
+            await websocket_send_event(self, event, field_names)
         except Disconnected:
             pass
 
-    @database_sync_to_async
-    def get_players_in_room(self) -> None:
-        self.players = TicTacToeRoom.objects.get(
-            room_name=self.url_route
-        ).players.count()
+    async def websocket_restart(self, event: dict) -> None:
+        field_names = ["command", "info", "user", "board_state"]
+        await websocket_send_event(self, event, field_names)
+
+    async def websocket_run(self, event: dict) -> None:
+        field_names = ["game_state", "player", "index"]
+        await websocket_send_event(self, event, field_names)
+
+    async def websocket_chat(self, event: dict) -> None:
+        field_names = ["command", "user", "chat"]
+        await websocket_send_event(self, event, field_names)
 
     @database_sync_to_async
     def set_or_change_turn(self) -> None:
@@ -177,7 +133,11 @@ class TicTacToeConsumer(AsyncJsonWebsocketConsumer):
             )
 
     @database_sync_to_async
-    def get_board_state(self) -> None:
+    def update_or_retrieve_board_state(self, update: bool = None) -> None:
+        if update:
+            TicTacToeRoom.objects.filter(room_name=self.url_route).update(
+                board_state=self.board_state
+            )
         try:
             self.board_state = TicTacToeRoom.objects.get(
                 room_name=self.url_route
@@ -186,14 +146,7 @@ class TicTacToeConsumer(AsyncJsonWebsocketConsumer):
             pass
 
     @database_sync_to_async
-    def set_board_state(self) -> None:
-        TicTacToeRoom.objects.filter(room_name=self.url_route).update(
-            board_state=self.board_state
-        )
-        self.get_board_state()
-
-    @database_sync_to_async
-    def create_room(self) -> None:
+    def get_or_create_room(self) -> None:
         self.tictactoe_room, _ = TicTacToeRoom.objects.get_or_create(
             room_name=self.url_route
         )
@@ -202,15 +155,19 @@ class TicTacToeConsumer(AsyncJsonWebsocketConsumer):
     def create_player(self) -> None:
         room = TicTacToeRoom.objects.get(room_name=self.url_route)
         if room.players.count() < 2:
-            player = TicTacToePlayer.objects.create(
-                room=self.tictactoe_room, username=self.user, is_player=True
-            )
-            player.save()
-            self.tictactoe_room.players.add(player)
+            if self.user is not None:
+                player = TicTacToePlayer.objects.create(
+                    room=self.tictactoe_room, username=self.user, is_player=True
+                )
+                player.save()
+                self.tictactoe_room.players.add(player)
 
     @database_sync_to_async
-    def get_active_players_count(self) -> None:
-        active_players = self.tictactoe_room.tictactoeplayer_set.filter(is_active=True)
+    def get_players_count(self) -> None:
+        active_players = self.tictactoe_room.players.filter(is_active=True)
+        self.players_count = TicTacToeRoom.objects.get(
+            room_name=self.url_route
+        ).players.count()
         self.active_players_count = active_players.count()
         if self.active_players_count == 0:
             if self.tictactoe_room is not None:
@@ -219,7 +176,7 @@ class TicTacToeConsumer(AsyncJsonWebsocketConsumer):
     @database_sync_to_async
     def set_player_inactive_or_active(self, status: bool) -> None:
         try:
-            player = self.tictactoe_room.tictactoeplayer_set.get(username=self.user)
+            player = self.tictactoe_room.players.get(username=self.user)
             player.is_active = status
             player.save()
         except TicTacToePlayer.DoesNotExist:
@@ -234,37 +191,20 @@ class TicTacToeOnlineRoomConsumer(AsyncJsonWebsocketConsumer):
         await self.get_rooms()
         await self.channel_layer.group_send(
             self.room_name,
-            {"type": "websocket_rooms", "online_rooms": self.online_rooms},
+            {
+                "type": "websocket_rooms",
+                "command": "online_rooms",
+                "online_rooms": self.online_rooms,
+            },
         )
 
     async def websocket_rooms(self, event: dict) -> None:
-        await self.send_json(
-            ({"command": "online_rooms", "online_rooms": event["online_rooms"]})
-        )
+        field_names = ["command", "online_rooms"]
+        await websocket_send_event(self, event, field_names)
 
-    async def websocket_room_added(self, event: dict) -> None:
-        await self.get_rooms()
-        await self.send_json(
-            (
-                {
-                    "command": event["command"],
-                    "room_name": event["room_name"],
-                    "room_id": event["room_id"],
-                }
-            )
-        )
-
-    async def websocket_room_deleted(self, event: dict) -> None:
-        await self.get_rooms()
-        await self.send_json(
-            (
-                {
-                    "command": event["command"],
-                    "room_name": event["room_name"],
-                    "room_id": event["room_id"],
-                }
-            )
-        )
+    async def websocket_room_added_or_deleted(self, event: dict) -> None:
+        field_names = ["command", "room_name", "room_id"]
+        await websocket_send_event(self, event, field_names)
 
     @database_sync_to_async
     def get_rooms(self) -> None:
