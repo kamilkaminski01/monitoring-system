@@ -1,6 +1,7 @@
 from autobahn.exception import Disconnected
 from channels.db import database_sync_to_async
 from channels.generic.websocket import AsyncJsonWebsocketConsumer
+from channels.layers import get_channel_layer
 
 from backend.utils import websocket_send_event
 
@@ -11,6 +12,7 @@ class TicTacToeConsumer(AsyncJsonWebsocketConsumer):
     async def connect(self) -> None:
         self.url_route = self.scope["url_route"]["kwargs"]["room_name"]
         self.room_name = f"tictactoe_room_{self.url_route}"
+        self.channel_layer = get_channel_layer()
         await self.accept()
         await self.get_or_create_room()
         await self.channel_layer.group_add(self.room_name, self.channel_name)
@@ -23,13 +25,11 @@ class TicTacToeConsumer(AsyncJsonWebsocketConsumer):
         self.info = content.get("info", None)
         self.user = content.get("user", None)
         self.game_state = content.get("game_state", None)
+
         await self.update_or_retrieve_board_state()
         if board_state := content.get("board_state"):
             self.board_state = board_state
             await self.update_or_retrieve_board_state(True)
-
-        if self.command == "room_created":
-            await self.get_or_create_room()
 
         if self.command == "joined":
             await self.create_player()
@@ -145,7 +145,7 @@ class TicTacToeConsumer(AsyncJsonWebsocketConsumer):
             self.board_state = TicTacToeRoom.objects.get(
                 room_name=self.url_route
             ).board_state
-        except TicTacToeRoom.DoesNotExist:
+        except (TicTacToePlayer.DoesNotExist, TicTacToePlayer.MultipleObjectsReturned):
             pass
 
     @database_sync_to_async
@@ -182,7 +182,7 @@ class TicTacToeConsumer(AsyncJsonWebsocketConsumer):
             player = self.tictactoe_room.players.get(username=self.user)
             player.is_active = status
             player.save()
-        except TicTacToePlayer.DoesNotExist:
+        except (TicTacToePlayer.DoesNotExist, TicTacToePlayer.MultipleObjectsReturned):
             pass
 
 
@@ -190,6 +190,7 @@ class TicTacToeOnlineRoomConsumer(AsyncJsonWebsocketConsumer):
     async def connect(self) -> None:
         await self.accept()
         self.room_name = "online_tictactoe_room"
+        self.channel_layer = get_channel_layer()
         await self.channel_layer.group_add(self.room_name, self.channel_name)
         await self.get_rooms()
         await self.channel_layer.group_send(

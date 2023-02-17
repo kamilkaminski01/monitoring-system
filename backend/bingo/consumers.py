@@ -1,6 +1,7 @@
 from autobahn.exception import Disconnected
 from channels.db import database_sync_to_async
 from channels.generic.websocket import AsyncJsonWebsocketConsumer
+from channels.layers import get_channel_layer
 
 from backend.utils import websocket_send_event
 
@@ -11,6 +12,7 @@ class BingoConsumer(AsyncJsonWebsocketConsumer):
     async def connect(self) -> None:
         self.url_route = self.scope["url_route"]["kwargs"]["room_name"]
         self.room_name = f"bingo_room_{self.url_route}"
+        self.channel_layer = get_channel_layer()
         await self.accept()
         await self.get_or_create_room()
         await self.channel_layer.group_add(self.room_name, self.channel_name)
@@ -26,11 +28,6 @@ class BingoConsumer(AsyncJsonWebsocketConsumer):
         self.data_set = content.get("data_set", None)
         if players_bingo_state := content.get("players_bingo_state"):
             self.players_bingo_state = players_bingo_state
-
-        if self.command == "room_created":
-            players_limit = content.get("players_limit")
-            await self.get_or_create_room()
-            await self.set_players_limit(players_limit)
 
         if self.command == "initialize_board":
             if initial_board_state := content.get("initial_board_state"):
@@ -146,12 +143,6 @@ class BingoConsumer(AsyncJsonWebsocketConsumer):
         await websocket_send_event(self, event, field_names)
 
     @database_sync_to_async
-    def set_players_limit(self, players_limit) -> None:
-        BingoRoom.objects.filter(room_name=self.url_route).update(
-            players_limit=players_limit
-        )
-
-    @database_sync_to_async
     def set_or_change_turn(self) -> None:
         room = BingoRoom.objects.get(room_name=self.url_route)
         players = list(room.players.all().order_by("id"))
@@ -173,7 +164,7 @@ class BingoConsumer(AsyncJsonWebsocketConsumer):
             bingo_player = self.bingo_room.players.get(username=self.user)
             bingo_player.initial_board_state = self.initial_board_state
             bingo_player.save()
-        except BingoPlayer.DoesNotExist:
+        except (BingoPlayer.DoesNotExist, BingoPlayer.MultipleObjectsReturned):
             pass
 
     @database_sync_to_async
@@ -231,7 +222,7 @@ class BingoConsumer(AsyncJsonWebsocketConsumer):
             player = self.bingo_room.players.get(username=self.user)
             player.is_active = status
             player.save()
-        except BingoPlayer.DoesNotExist:
+        except (BingoPlayer.DoesNotExist, BingoPlayer.MultipleObjectsReturned):
             pass
 
     @database_sync_to_async
@@ -254,6 +245,7 @@ class BingoOnlineRoomConsumer(AsyncJsonWebsocketConsumer):
     async def connect(self) -> None:
         await self.accept()
         self.room_name = "online_bingo_room"
+        self.channel_layer = get_channel_layer()
         await self.channel_layer.group_add(self.room_name, self.channel_name)
         await self.get_rooms()
         await self.channel_layer.group_send(

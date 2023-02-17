@@ -65,18 +65,22 @@ async function getRoomDetails(roomname) {
   return await response.json();
 }
 
-function sendRoomCreated(roomname, playersLimit) {
-  let endpoint = `${socketUrl}/${app}/${roomname}/`;
-  let socket = new WebSocket(endpoint);
-  socket.addEventListener("open", function (event) {
-    const data = {
-      command: "room_created"
-    };
-    if (playersLimit) {
-      data.players_limit = playersLimit;
-    }
-    socket.send(JSON.stringify(data));
+async function postRoom(roomname, playersLimit) {
+  const endpoint = `${homeUrl}/api/details/`;
+  const data = {
+    "room_name": roomname,
+  };
+  if (playersLimit) {
+    data.players_limit = playersLimit;
+  }
+  const response = await fetch(endpoint, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(data),
   });
+  return await response.json();
 }
 
 async function checkUsername(roomname, username, createRoom) {
@@ -160,8 +164,8 @@ async function makeRoom(roomname, username, playersLimit) {
     });
   } else {
     if (await checkUsername(roomname, username, true)) {
+      playersLimit ? await postRoom(roomname, playersLimit) : await postRoom(roomname);
       redirectToRoom(roomname);
-      playersLimit ? sendRoomCreated(roomname, playersLimit) : sendRoomCreated(roomname);
     }
   }
 }

@@ -1,6 +1,7 @@
 from django.urls import path
 
 from .views import (
+    BingoAPIView,
     BingoRoomCheckAPIView,
     BingoRoomDetailsAPIView,
     BingoView,
@@ -15,6 +16,7 @@ urlpatterns = [
         BingoRoomCheckAPIView.as_view(),
         name="check_bingo_room",
     ),
+    path("api/details/", BingoAPIView.as_view(), name="bingo_api"),
     path(
         "api/details/<str:room_name>/",
         BingoRoomDetailsAPIView.as_view(),

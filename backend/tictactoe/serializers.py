@@ -3,6 +3,12 @@ from rest_framework import serializers
 from .models import TicTacToePlayer, TicTacToeRoom
 
 
+class TicTacToeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TicTacToeRoom
+        fields = ("room_name",)
+
+
 class TicTacToePlayerSerializer(serializers.ModelSerializer):
     class Meta:
         model = TicTacToePlayer
