@@ -31,7 +31,7 @@ e.g. `localhost:8000/admin`.
 
 [Docker Compose](https://docs.docker.com/compose/install/) is leveraged
 for reproducible builds and consistent local development environments.
-The default [`docker-compose.yml`](docker-compose.yml) file is set up
+The default [`docker-compose.yml`](docker-compose.dev.yml) file is set up
 to support local development with code reload and debug mode.
 
 The [`Makefile`](Makefile) contains common commands that can be used to

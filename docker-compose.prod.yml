@@ -1,0 +1,36 @@
+version: '3'
+
+services:
+  redis:
+    image: redis:7.0.2-alpine
+    ports:
+      - "6379:6379"
+
+  backend:
+    build:
+      context: backend
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    depends_on:
+      - redis
+    env_file:
+      - .env
+    environment:
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+    command: /bin/bash -c "./start.sh && python manage.py migrate"
+    volumes:
+      - ./backend:/app
+
+  frontend:
+    build:
+      context: frontend
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    depends_on:
+      - backend

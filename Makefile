@@ -1,43 +1,51 @@
+# Set the COMPOSE_FILE variable to the appropriate file based on the environment
+
+ifeq ($(ENV),dev)
+	COMPOSE_FILE=docker-compose.yml
+else ifeq ($(ENV),prod)
+	COMPOSE_FILE=docker-compose.prod.yml
+endif
+
 build:
-	docker-compose build
+	docker-compose -f $(COMPOSE_FILE) build
 
 run:
-	docker-compose up
+	docker-compose -f $(COMPOSE_FILE) up
 
 superuser:
-	docker-compose run django python manage.py createsuperuser
+	docker-compose -f $(COMPOSE_FILE) run django python manage.py createsuperuser
 
 flush:
-	docker-compose run django python manage.py flush
+	docker-compose -f $(COMPOSE_FILE) run django python manage.py flush
 
 check:
-	docker-compose run --rm django isort --check-only .
-	docker-compose run --rm django black --check .
-	docker-compose run --rm django flake8 .
-	docker-compose run --rm django mypy .
+	docker-compose -f $(COMPOSE_FILE) run --rm django isort --check-only .
+	docker-compose -f $(COMPOSE_FILE) run --rm django black --check .
+	docker-compose -f $(COMPOSE_FILE) run --rm django flake8 .
+	docker-compose -f $(COMPOSE_FILE) run --rm django mypy .
 
 frontcheck:
-	docker-compose run react npm run --rm check
+	docker-compose -f $(COMPOSE_FILE) run react npm run --rm check
 
 isort:
-	docker-compose run --rm django isort .
+	docker-compose -f $(COMPOSE_FILE) run --rm django isort .
 
 black:
-	docker-compose run --rm django black .
+	docker-compose -f $(COMPOSE_FILE) run --rm django black .
 
 flake8:
-	docker-compose run --rm django flake8 .
+	docker-compose -f $(COMPOSE_FILE) run --rm django flake8 .
 
 mypy:
-	docker-compose run --rm django mypy .
+	docker-compose -f $(COMPOSE_FILE) run --rm django mypy .
 
 migrations:
-	docker-compose run django python manage.py makemigrations
+	docker-compose -f $(COMPOSE_FILE) run django python manage.py makemigrations
 
 migrate:
-	docker-compose run django python manage.py migrate
+	docker-compose -f $(COMPOSE_FILE) run django python manage.py migrate
 
 clear:
-	docker-compose down -v
+	docker-compose -f $(COMPOSE_FILE) down -v
 	docker system prune --force
 	docker volume prune --force
