@@ -35,3 +35,10 @@ body {
   display: flex;
   gap: 1rem;
 }
+
+@media screen and (max-width: 500px) {
+  .nav {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+}

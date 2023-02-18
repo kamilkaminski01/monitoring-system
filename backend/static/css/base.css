@@ -26,10 +26,12 @@ h1, h2, h3, h4 {
   justify-content: center;
   align-items: center;
   font-size: 120%;
+  margin: 0 5rem;
 }
 .home-form {
   font-size: 1em;
-  width: 120%;
+  width: 100%;
+  max-width: 40rem;
 }
 .btn-home {
   font-size: 1em;
@@ -45,6 +47,7 @@ h1, h2, h3, h4 {
 #onlinerooms {
   display: flex;
   flex-wrap: wrap;
+  max-width: 25rem;
 }
 .room-div {
   color: white;
@@ -75,11 +78,13 @@ h1, h2, h3, h4 {
   }
   .home-container {
     font-size: 100%;
-    margin: 1rem;
+    margin: 0 4rem;
+    min-height: 100vh;
   }
   .home-form {
     font-size: 100%;
     width: 110%;
+    max-width: 20rem;
   }
   .room-div{
     padding: 0.4rem;

@@ -160,7 +160,7 @@ async function getInRoom(roomname, username) {
 async function makeRoom(roomname, username, playersLimit) {
   const roomExists = await getCheckRoom(roomname);
   const invalidRoomName = !/^[a-zA-Z0-9-_]+$/.test(roomname);
-  if (roomExists || invalidRoomName) {
+  if (roomExists || invalidRoomName || roomname.length > 10) {
     Swal.fire({
       icon: "error",
       title: "Room error",

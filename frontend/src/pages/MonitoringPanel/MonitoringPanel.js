@@ -51,7 +51,7 @@ const MonitoringPanel = () => {
   return (
     <div className="container">
       <div className="rooms-container">
-        <h2>Online Bingo Rooms</h2>
+        <h2>Bingo Rooms</h2>
         {bingoRooms.length ? (
           bingoRooms.map((room) => (
             <a
@@ -72,7 +72,7 @@ const MonitoringPanel = () => {
         )}
       </div>
       <div className="rooms-container">
-        <h2>Online Tic Tac Toe Rooms</h2>
+        <h2>Tic Tac Toe Rooms</h2>
         {tictactoeRooms.length ? (
           tictactoeRooms.map((room) => (
             <a
