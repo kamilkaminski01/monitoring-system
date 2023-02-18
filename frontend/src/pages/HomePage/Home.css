@@ -3,7 +3,7 @@
   justify-content: center;
   align-items: center;
   text-align: center;
-  min-height: 100vh;
+  min-height: 88.8vh;
   column-gap: 4em;
 }
 @media screen and (max-width: 750px) {

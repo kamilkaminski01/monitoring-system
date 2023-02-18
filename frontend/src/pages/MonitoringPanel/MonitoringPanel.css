@@ -1,24 +1,28 @@
 .container {
+  display: flex;
+  justify-content: center;
   min-height: 79vh;
   margin: 4rem auto;
 }
 .rooms-container {
   font-size: 15px;
   padding: 1.5rem;
-  margin-bottom: 25px;
   text-align: center;
+  width: 80%;
+}
+.rooms-container .online-room {
+  width: 70%;
 }
 .online-room {
   display: flex;
   align-items: center;
   justify-content: center;
   margin: 10px auto;
-  padding: 20px;
+  padding: 2rem;
   border: 1px solid #ddd;
   border-radius: 5px;
   text-decoration: none;
   color: #333;
-  width: 40%;
 }
 .no-rooms {
   text-align: center;
