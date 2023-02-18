@@ -145,7 +145,7 @@ class TicTacToeConsumer(AsyncJsonWebsocketConsumer):
             self.board_state = TicTacToeRoom.objects.get(
                 room_name=self.url_route
             ).board_state
-        except (TicTacToePlayer.DoesNotExist, TicTacToePlayer.MultipleObjectsReturned):
+        except TicTacToeRoom.DoesNotExist:
             pass
 
     @database_sync_to_async
@@ -209,6 +209,10 @@ class TicTacToeOnlineRoomConsumer(AsyncJsonWebsocketConsumer):
     async def websocket_room_added_or_deleted(self, event: dict) -> None:
         field_names = ["command", "room_name", "room_id"]
         await websocket_send_event(self, event, field_names)
+
+    async def disconnect(self, close_code: int) -> None:
+        await self.channel_layer.group_discard(self.room_name, self.channel_name)
+        await super().disconnect(close_code)
 
     @database_sync_to_async
     def get_rooms(self) -> None:

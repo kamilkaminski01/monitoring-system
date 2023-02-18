@@ -161,23 +161,29 @@ chatInput.addEventListener("keyup", (e) => {
 });
 
 bingoSocket.onopen = function (e) {
-  onOpen(bingoSocket, bingoUsername);
-  getRoomDetails(appRoomName).then(({ players, players_limit, board_state }) => {
-    const player = players.find((p) => p.username === bingoUsername);
-    if (!player) {
-      initializeBoard();
-      bingoSocket.send(
-        JSON.stringify({
-          command: "initialize_board",
-          user: bingoUsername,
-          initial_board_state: keysArr
-        })
-      );
+  getCheckRoom(appRoomName).then((roomExists) => {
+    if (roomExists) {
+      onOpen(bingoSocket, bingoUsername);
+      getRoomDetails(appRoomName).then(({ players, players_limit, board_state }) => {
+        const player = players.find((p) => p.username === bingoUsername);
+        if (!player) {
+          initializeBoard();
+          bingoSocket.send(
+            JSON.stringify({
+              command: "initialize_board",
+              user: bingoUsername,
+              initial_board_state: keysArr
+            })
+          );
+        } else {
+          getBoardState(player, board_state);
+        }
+        playersLimit.textContent = players_limit;
+        playersLimitNumber = players_limit;
+      });
     } else {
-      getBoardState(player, board_state);
+      window.location.href = homeUrl;
     }
-    playersLimit.textContent = players_limit;
-    playersLimitNumber = players_limit;
   });
 };
 

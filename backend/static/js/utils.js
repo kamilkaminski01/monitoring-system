@@ -8,7 +8,7 @@ function homePage() {
 
 function redirectToRoom(roomname) {
   localStorage.setItem("username", username.value);
-  window.location.href = window.location.href + roomname;
+  window.location.href = `${homeUrl}/${roomname}`;
 }
 
 window.addEventListener("load", function () {
@@ -31,13 +31,19 @@ function setUsername() {
 }
 
 function checkRoomPlayers() {
-  getRoomDetails(appRoomName).then(({ players, players_limit }) => {
-    const username = localStorage.getItem("username");
-    const isPlayer = players.find((p) => p.username === username);
-    const maxPlayers = players_limit ? players_limit : 2;
-    if (players.length >= maxPlayers && !isPlayer) {
-      localStorage.setItem("message", "Room is full");
-      window.location.href = homeUrl;
+  getCheckRoom(appRoomName).then((roomExists) => {
+    if (roomExists) {
+      getRoomDetails(appRoomName).then(({ players, players_limit }) => {
+        const username = localStorage.getItem("username");
+        if (players) {
+          const isPlayer = players.some((p) => p.username === username);
+          const maxPlayers = players_limit ? players_limit : 2;
+          if (players.length >= maxPlayers && !isPlayer) {
+            localStorage.setItem("message", "Room is full");
+            window.location.href = homeUrl;
+          }
+        }
+      });
     }
   });
 }
@@ -134,9 +140,9 @@ async function getInRoom(roomname, username) {
     });
   } else {
     if (await checkUsername(roomname, username)) {
-      const { players, room } = await getRoomDetails(roomname);
+      const { players, players_limit } = await getRoomDetails(roomname);
       const playersAmount = players.length;
-      const maxPlayers = room ? room.players_limit : 2;
+      const maxPlayers = players_limit ? players_limit : 2;
       if (playersAmount >= maxPlayers) {
         return Swal.fire({
           icon: "error",

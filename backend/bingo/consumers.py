@@ -19,6 +19,7 @@ class BingoConsumer(AsyncJsonWebsocketConsumer):
 
     async def disconnect(self, close_code: int) -> None:
         await self.channel_layer.group_discard(self.room_name, self.channel_name)
+        await super().disconnect(close_code)
 
     async def receive_json(self, content: dict, **kwargs) -> None:
         self.command = content.get("command", None)
@@ -197,13 +198,13 @@ class BingoConsumer(AsyncJsonWebsocketConsumer):
     @database_sync_to_async
     def create_player(self) -> None:
         room = BingoRoom.objects.get(room_name=self.url_route)
-        if room.players.count() < room.players_limit:
-            if self.user is not None:
-                player = BingoPlayer.objects.create(
-                    room=self.bingo_room, username=self.user, is_player=True
-                )
-                player.save()
-                self.bingo_room.players.add(player)
+        players_queryset = room.players.filter(username=self.user)
+        if not players_queryset.exists() and room.players.count() < room.players_limit:
+            player = BingoPlayer.objects.create(
+                room=self.bingo_room, username=self.user, is_player=True
+            )
+            player.save()
+            self.bingo_room.players.add(player)
 
     @database_sync_to_async
     def get_players_count(self) -> None:
@@ -264,6 +265,10 @@ class BingoOnlineRoomConsumer(AsyncJsonWebsocketConsumer):
     async def websocket_room_added_or_deleted(self, event: dict) -> None:
         field_names = ["command", "room_name", "room_id"]
         await websocket_send_event(self, event, field_names)
+
+    async def disconnect(self, code: int) -> None:
+        await self.channel_layer.group_discard(self.room_name, self.channel_name)
+        await super().disconnect(code)
 
     @database_sync_to_async
     def get_rooms(self) -> None:
