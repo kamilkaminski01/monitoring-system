@@ -1,7 +1,7 @@
 # Set the COMPOSE_FILE variable to the appropriate file based on the environment
 
 ifeq ($(ENV),dev)
-	COMPOSE_FILE=docker-compose.yml
+	COMPOSE_FILE=docker-compose.dev.yml
 else ifeq ($(ENV),prod)
 	COMPOSE_FILE=docker-compose.prod.yml
 endif

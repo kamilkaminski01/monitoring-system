@@ -2,11 +2,13 @@ version: '3'
 
 services:
   redis:
+    container_name: redis
     image: redis:7.0.2-alpine
     ports:
       - "6379:6379"
 
-  backend:
+  django:
+    container_name: backend
     build:
       context: backend
       dockerfile: Dockerfile
@@ -23,7 +25,8 @@ services:
     volumes:
       - ./backend:/app
 
-  frontend:
+  react:
+    container_name: frontend
     build:
       context: frontend
       dockerfile: Dockerfile
@@ -32,5 +35,3 @@ services:
     volumes:
       - ./frontend:/app
       - /app/node_modules
-    depends_on:
-      - backend
