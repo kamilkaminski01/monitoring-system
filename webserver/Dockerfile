@@ -11,5 +11,5 @@ RUN npm run build
 # 2nd Stage
 # Use nginx to server static files
 FROM nginx:alpine
-COPY ./frontend/deploy/nginx/nginx.conf /etc/nginx/conf.d/default.conf
+COPY ./webserver/nginx.conf /etc/nginx/conf.d/default.conf
 COPY --from=builder /frontend/build /usr/share/nginx/html

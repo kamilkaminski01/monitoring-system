@@ -4,13 +4,13 @@ version: '3'
 
 services:
   redis:
-    container_name: monitoring-redis
+    container_name: redis
     image: redis:7.0.2-alpine
     ports:
       - "6379:6379"
 
-  django:
-    container_name: monitoring-backend
+  backend:
+    container_name: backend
     build:
       context: backend
       dockerfile: local.Dockerfile
@@ -25,8 +25,8 @@ services:
     depends_on:
       - redis
 
-  react:
-    container_name: monitoring-frontend
+  frontend:
+    container_name: frontend
     build:
       context: frontend
       dockerfile: local.Dockerfile

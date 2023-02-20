@@ -1,9 +1,9 @@
 # Set the COMPOSE_FILE variable to the appropriate file based on the environment
 
-ifeq ($(ENV),dev)
-	COMPOSE_FILE=docker-compose.dev.yml
-else ifeq ($(ENV),prod)
+ifeq ($(ENV),prod)
 	COMPOSE_FILE=docker-compose.prod.yml
+else
+	COMPOSE_FILE=docker-compose.yml
 endif
 
 build:
@@ -13,37 +13,37 @@ run:
 	docker-compose -f $(COMPOSE_FILE) up
 
 superuser:
-	docker-compose -f $(COMPOSE_FILE) run django python manage.py createsuperuser
+	docker-compose -f $(COMPOSE_FILE) run backend python manage.py createsuperuser
 
 flush:
-	docker-compose -f $(COMPOSE_FILE) run django python manage.py flush
+	docker-compose -f $(COMPOSE_FILE) run backend python manage.py flush
 
 check:
-	docker-compose -f $(COMPOSE_FILE) run --rm django isort --check-only .
-	docker-compose -f $(COMPOSE_FILE) run --rm django black --check .
-	docker-compose -f $(COMPOSE_FILE) run --rm django flake8 .
-	docker-compose -f $(COMPOSE_FILE) run --rm django mypy .
+	docker-compose -f $(COMPOSE_FILE) run --rm backend isort --check-only .
+	docker-compose -f $(COMPOSE_FILE) run --rm backend black --check .
+	docker-compose -f $(COMPOSE_FILE) run --rm backend flake8 .
+	docker-compose -f $(COMPOSE_FILE) run --rm backend mypy .
 
 frontcheck:
-	docker-compose -f $(COMPOSE_FILE) run react npm run --rm check
+	docker-compose -f $(COMPOSE_FILE) run frontend npm run --rm check
 
 isort:
-	docker-compose -f $(COMPOSE_FILE) run --rm django isort .
+	docker-compose -f $(COMPOSE_FILE) run --rm backend isort .
 
 black:
-	docker-compose -f $(COMPOSE_FILE) run --rm django black .
+	docker-compose -f $(COMPOSE_FILE) run --rm backend black .
 
 flake8:
-	docker-compose -f $(COMPOSE_FILE) run --rm django flake8 .
+	docker-compose -f $(COMPOSE_FILE) run --rm backend flake8 .
 
 mypy:
-	docker-compose -f $(COMPOSE_FILE) run --rm django mypy .
+	docker-compose -f $(COMPOSE_FILE) run --rm backend mypy .
 
 migrations:
-	docker-compose -f $(COMPOSE_FILE) run django python manage.py makemigrations
+	docker-compose -f $(COMPOSE_FILE) run backend python manage.py makemigrations
 
 migrate:
-	docker-compose -f $(COMPOSE_FILE) run django python manage.py migrate
+	docker-compose -f $(COMPOSE_FILE) run backend python manage.py migrate
 
 clear:
 	docker-compose -f $(COMPOSE_FILE) down -v

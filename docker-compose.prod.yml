@@ -1,37 +1,40 @@
+# This docker-compose file is designed for production purposes
+
 version: '3'
 
 services:
   redis:
-    container_name: redis
     image: redis:7.0.2-alpine
     ports:
       - "6379:6379"
 
-  django:
-    container_name: backend
+  backend:
     build:
-      context: backend
+      context: ./backend
       dockerfile: Dockerfile
     ports:
       - "8000:8000"
     depends_on:
       - redis
+    entrypoint: /entrypoint.sh
     env_file:
       - .env
     environment:
       - REDIS_HOST=redis
       - REDIS_PORT=6379
-    command: /bin/bash -c "./start.sh && python manage.py migrate"
     volumes:
-      - ./backend:/app
+      - staticfiles:/backend/staticfiles
 
-  react:
-    container_name: frontend
+  nginx:
     build:
-      context: frontend
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: ./webserver/Dockerfile
+    volumes:
+      - staticfiles:/staticfiles
     ports:
       - "80:80"
-    volumes:
-      - ./frontend:/app
-      - /app/node_modules
+    depends_on:
+      - backend
+
+volumes:
+  staticfiles:
