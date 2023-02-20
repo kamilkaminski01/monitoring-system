@@ -70,8 +70,12 @@ WSGI_APPLICATION = "backend.wsgi.application"
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+        "ENGINE": "django.db.backends.postgresql",
+        "HOST": env("POSTGRES_HOST", "localhost"),
+        "PORT": env("POSTGRES_PORT", "5432"),
+        "NAME": env("POSTGRES_NAME", "postgres"),
+        "USER": env("POSTGRES_USER", "postgres"),
+        "PASSWORD": env("POSTGRES_PASSWORD", "postgres"),
     }
 }
 
@@ -88,6 +92,7 @@ if USE_REDIS:
                         int(os.getenv("REDIS_PORT", "6379")),
                     )
                 ],
+                "capacity": 1500,
             },
         },
     }

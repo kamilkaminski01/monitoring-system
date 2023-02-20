@@ -3,6 +3,15 @@
 version: '3'
 
 services:
+  db:
+    image: postgres:14.1-alpine
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    env_file:
+      - .env
+    ports:
+      - "5432:5432"
+
   redis:
     image: redis:7.0.2-alpine
     ports:
@@ -16,12 +25,10 @@ services:
       - "8000:8000"
     depends_on:
       - redis
+      - db
     entrypoint: /entrypoint.sh
     env_file:
       - .env
-    environment:
-      - REDIS_HOST=redis
-      - REDIS_PORT=6379
     volumes:
       - staticfiles:/backend/staticfiles
 
@@ -37,4 +44,5 @@ services:
       - backend
 
 volumes:
+  postgres_data:
   staticfiles:
