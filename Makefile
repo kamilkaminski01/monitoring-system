@@ -25,7 +25,7 @@ check:
 	docker-compose -f $(COMPOSE_FILE) run --rm backend mypy .
 
 frontcheck:
-	docker-compose -f $(COMPOSE_FILE) run frontend npm run --rm check
+	docker-compose -f $(COMPOSE_FILE) run --rm frontend npm run --rm check
 
 isort:
 	docker-compose -f $(COMPOSE_FILE) run --rm backend isort .
