@@ -1,8 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { PATHS } from 'utils/consts';
-import './MonitoringPanel.css';
+import './MonitoringPanelPage.scss';
 
-const MonitoringPanel = () => {
+const MonitoringPanelPage = () => {
   const [bingoRooms, setBingoRooms] = useState([]);
   const [tictactoeRooms, setTicTacToeRooms] = useState([]);
   const bingoSocketRef = useRef(null);
@@ -100,4 +100,4 @@ const MonitoringPanel = () => {
   );
 };
 
-export default MonitoringPanel;
+export default MonitoringPanelPage;

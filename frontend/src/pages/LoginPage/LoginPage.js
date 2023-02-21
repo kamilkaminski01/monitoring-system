@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { PATHS } from 'utils/consts';
 import useAuth from 'hooks/useAuth';
-import './LoginPage.css';
+import './LoginPage.scss';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -14,7 +14,7 @@ const Login = () => {
   };
 
   return (
-    <div className="login-container">
+    <div className="login-wrapper">
       <h1>Login</h1>
       <form onSubmit={handleSubmit} noValidate>
         <div className="txt-field">
@@ -40,7 +40,7 @@ const Login = () => {
         <input type="submit" value="Confirm" />
       </form>
       {error && <p className="error-message">Incorrect email or password. Please try again.</p>}
-      <div className="back">
+      <div className="home">
         <a href={PATHS.home}>Home</a>
       </div>
     </div>

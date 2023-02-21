@@ -1,0 +1,78 @@
+@import 'utils/mixins.scss';
+@import 'utils/variables.scss';
+
+.whiteboard {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  touch-action: none;
+}
+
+.colors {
+  position: fixed;
+  margin: 2px;
+}
+
+.color {
+  display: inline-block;
+  border-radius: 5px;
+  height: 48px;
+  width: 48px;
+  border: 1px solid $border-color;
+  margin: 1px;
+
+  &.black {
+    background-color: black;
+  }
+
+  &.red {
+    background-color: red;
+  }
+
+  &.green {
+    background-color: green;
+  }
+
+  &.blue {
+    background-color: blue;
+  }
+
+  &.yellow {
+    background-color: yellow;
+  }
+
+  &.white {
+    background-color: white;
+  }
+}
+
+.whiteboard-container {
+  btn {
+    display: flex;
+    justify-content: center;
+  }
+
+  button {
+    background-color: white;
+    color: $button-text-color-blue;
+    font-size: 16px;
+    font-weight: 700;
+    border: 1px solid $border-color;
+    border-radius: 10px;
+    padding: 15px 32px;
+    float: right;
+
+    &:hover {
+      background: $hover-color;
+    }
+  }
+  @include for-phone {
+    button {
+      float: left;
+    }
+  }
+}

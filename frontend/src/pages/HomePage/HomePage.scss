@@ -1,0 +1,14 @@
+@import 'utils/mixins.scss';
+
+.home-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  min-height: 87vh;
+  column-gap: 4em;
+
+  @include for-tablet {
+    flex-flow: column wrap;
+  }
+}

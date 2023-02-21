@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import './Navbar.css';
+import './Navbar.scss';
 import { PATHS } from 'utils/consts';
 import { AuthContext } from 'providers/AuthContextProvider';
 import { useContext } from 'react';
@@ -8,7 +8,7 @@ export default function Navbar() {
   const { isLogged, logout } = useContext(AuthContext);
 
   return (
-    <nav className="nav">
+    <nav>
       <Link to={PATHS.home} className="site-title">
         Monitoring System
       </Link>

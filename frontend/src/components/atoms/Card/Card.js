@@ -1,9 +1,9 @@
 import React from 'react';
-import './Card.css';
+import './Card.scss';
 
 function Card({ title, imageUrl, body, link }) {
   return (
-    <div className="card-container">
+    <div className="card-wrapper">
       <div className="image-container">
         <img src={imageUrl} alt="" />
       </div>

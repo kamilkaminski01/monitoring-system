@@ -1,0 +1,33 @@
+@import 'utils/variables.scss';
+
+.container {
+  display: flex;
+  justify-content: center;
+  min-height: 77.15vh;
+  margin: 4rem auto;
+
+  .rooms-container {
+    font-size: 15px;
+    padding: 1.5rem;
+    text-align: center;
+    width: 80%;
+
+    .online-room {
+      width: 70%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 10px auto;
+      padding: 1rem;
+      border: 1px solid $border-color;
+      border-radius: 5px;
+      text-decoration: none;
+    }
+
+    .no-rooms {
+      text-align: center;
+      font-size: 1.2em;
+      color: $grey-light;
+    }
+  }
+}

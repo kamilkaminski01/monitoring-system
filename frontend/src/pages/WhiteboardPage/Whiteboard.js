@@ -1,6 +1,6 @@
 import React, { useRef, useEffect } from 'react';
 import { PATHS } from 'utils/consts';
-import './Whiteboard.css';
+import './Whiteboard.scss';
 
 const Whiteboard = () => {
   const canvasRef = useRef(null);
@@ -80,14 +80,16 @@ const Whiteboard = () => {
       if (!drawing) return;
 
       drawing = false;
-      drawLine(
-        current.x,
-        current.y,
-        e.clientX || e.touches[0].clientX,
-        e.clientY || e.touches[0].clientY,
-        current.color,
-        true
-      );
+      try {
+        drawLine(
+          current.x,
+          current.y,
+          e.clientX || e.touches[0].clientX,
+          e.clientY || e.touches[0].clientY,
+          current.color,
+          true
+        );
+      } catch {}
     };
 
     const throttle = (callback, delay) => {

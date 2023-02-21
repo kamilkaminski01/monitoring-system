@@ -1,0 +1,57 @@
+@import 'utils/mixins.scss';
+@import 'utils/variables.scss';
+
+.card-wrapper {
+  width: 270px;
+  margin: 15px;
+  overflow: hidden;
+  box-shadow: 0 0 15px -5px;
+  transition: 0.3s;
+
+  &:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 15px 0;
+  }
+
+  .image-container img {
+    overflow: hidden;
+    height: 300px;
+  }
+
+  .card-content {
+    margin: 0.5rem 1rem 1rem 1rem;
+
+    h3,
+    p {
+      margin: 0;
+    }
+
+    .card-title {
+      margin-bottom: 0.5rem;
+    }
+  }
+
+  .btn-open {
+    padding: 0.5rem;
+    margin-bottom: 0.5rem;
+    border-radius: 10px;
+    font-weight: bold;
+    background-color: white;
+    color: $button-text-color-blue;
+    border: none;
+    transition: 0.2s;
+    &:hover {
+      background: $hover-color;
+      transform: scale(1.1);
+    }
+  }
+
+  @include for-tablet {
+    width: 60%;
+    margin: 2.5rem;
+
+    .image-container img {
+      height: 20rem;
+    }
+  }
+}
