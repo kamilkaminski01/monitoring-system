@@ -5,10 +5,10 @@ version: '3'
 services:
   db:
     image: postgres:14.1-alpine
-    volumes:
-      - postgres_data:/var/lib/postgresql/data/
     env_file:
       - .env
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
     ports:
       - "5432:5432"
 
@@ -21,21 +21,20 @@ services:
     build:
       context: ./backend
       dockerfile: Dockerfile
+    env_file:
+      - .env
+    volumes:
+      - staticfiles:/backend/staticfiles
     ports:
       - "8000:8000"
     depends_on:
       - redis
       - db
-    entrypoint: /entrypoint.sh
-    env_file:
-      - .env
-    volumes:
-      - staticfiles:/backend/staticfiles
 
-  nginx:
+  frontend:
     build:
       context: .
-      dockerfile: ./webserver/Dockerfile
+      dockerfile: ./frontend/Dockerfile
     volumes:
       - staticfiles:/staticfiles
     ports:

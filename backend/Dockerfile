@@ -10,7 +10,7 @@ WORKDIR /backend
 COPY requirements.txt ./
 RUN pip install -r requirements.txt
 
-COPY entrypoint.sh /entrypoint.sh
-RUN chmod +x /entrypoint.sh
-
 COPY . /backend/
+
+RUN chmod +x ./start.sh
+CMD ["/bin/bash", "-c", "./start.sh"]

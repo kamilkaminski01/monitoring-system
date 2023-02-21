@@ -13,10 +13,10 @@ run:
 	docker-compose -f $(COMPOSE_FILE) up
 
 superuser:
-	docker-compose -f $(COMPOSE_FILE) run backend python manage.py createsuperuser
+	docker-compose -f $(COMPOSE_FILE) run --rm backend python manage.py createsuperuser
 
 flush:
-	docker-compose -f $(COMPOSE_FILE) run backend python manage.py flush
+	docker-compose -f $(COMPOSE_FILE) run --rm backend python manage.py flush
 
 check:
 	docker-compose -f $(COMPOSE_FILE) run --rm backend isort --check-only .
@@ -40,10 +40,10 @@ mypy:
 	docker-compose -f $(COMPOSE_FILE) run --rm backend mypy .
 
 migrations:
-	docker-compose -f $(COMPOSE_FILE) run backend python manage.py makemigrations
+	docker-compose -f $(COMPOSE_FILE) run --rm backend python manage.py makemigrations
 
 migrate:
-	docker-compose -f $(COMPOSE_FILE) run backend python manage.py migrate
+	docker-compose -f $(COMPOSE_FILE) run --rm backend python manage.py migrate
 
 clear:
 	docker-compose -f $(COMPOSE_FILE) down -v
