@@ -1,0 +1,47 @@
+# This docker-compose file is designed for production purposes
+
+version: '3'
+
+services:
+  db:
+    image: postgres:13.3-alpine
+    env_file:
+      - .env
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    ports:
+      - "5432:5432"
+
+  redis:
+    image: redis:7.0.2-alpine
+    ports:
+      - "6379:6379"
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    env_file:
+      - .env
+    volumes:
+      - staticfiles:/backend/staticfiles
+    ports:
+      - "8000:8000"
+    depends_on:
+      - redis
+      - db
+
+  frontend:
+    build:
+      context: .
+      dockerfile: ./frontend/Dockerfile
+    volumes:
+      - staticfiles:/staticfiles
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+
+volumes:
+  postgres_data:
+  staticfiles:

@@ -1,15 +1,15 @@
-FROM node:13.12.0-alpine
-
-ENV PATH /app/node_modules/.bin:$PATH
-
-EXPOSE 3000
-
-WORKDIR /app
-
-COPY package.json ./
-COPY package-lock.json ./
+# 1st Stage
+# Build React App static files
+FROM node:13.12.0-alpine AS builder
+WORKDIR /frontend
+COPY ./frontend/package.json ./
+COPY ./frontend/package-lock.json ./
 RUN npm install
+COPY ./frontend/ ./
+RUN npm run build
 
-COPY . ./
-
-CMD ["npm", "start"]
+# 2nd Stage
+# Use nginx to server static files
+FROM nginx:alpine
+COPY ./frontend/deploy/nginx/nginx.conf /etc/nginx/conf.d/default.conf
+COPY --from=builder /frontend/build /usr/share/nginx/html
