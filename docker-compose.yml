@@ -6,11 +6,11 @@ services:
   db:
     container_name: db
     restart: always
-    image: postgres:14.1-alpine
-    volumes:
-      - postgres_data:/var/lib/postgresql/data/
+    image: postgres:13.3-alpine
     env_file:
       - .env
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
 
   redis:
     container_name: redis
