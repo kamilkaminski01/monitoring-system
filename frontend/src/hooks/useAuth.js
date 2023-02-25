@@ -1,7 +1,7 @@
 import { useContext, useState } from 'react';
 import { AuthContext } from 'providers/AuthContextProvider';
 import { useNavigate } from 'react-router-dom';
-import axiosAuth from 'setup/axios/authInstance';
+import axiosDefault from 'setup/axios/defaultInstance';
 import { ENDPOINTS, LOCAL_STORAGE, PATHS } from 'utils/consts';
 
 const useAuth = () => {
@@ -10,7 +10,7 @@ const useAuth = () => {
   const [error, setError] = useState('');
 
   const login = (data) => {
-    axiosAuth
+    axiosDefault
       .post(ENDPOINTS.getToken, data)
       .then((response) => {
         localStorage.setItem(LOCAL_STORAGE.accessToken, response.data.access);

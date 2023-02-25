@@ -1,0 +1,10 @@
+@import 'utils/mixins.scss';
+
+.home-input {
+  font-size: 1.25rem;
+
+  @include for-desktop {
+    font-size: 0.9rem;
+    max-width: 20rem;
+  }
+}

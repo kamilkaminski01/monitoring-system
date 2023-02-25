@@ -11,8 +11,6 @@ nav {
   padding: 1rem 1rem;
 
   a {
-    color: inherit;
-    text-decoration: none;
     height: 100%;
     display: flex;
     align-items: center;
@@ -36,7 +34,7 @@ nav {
     gap: 1rem;
   }
 
-  @include for-phone {
+  @include for-tablet {
     flex-wrap: wrap;
     justify-content: center;
   }

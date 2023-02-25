@@ -18,3 +18,33 @@
     @content;
   }
 }
+
+@mixin home-page {
+  .home-container {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 5rem;
+
+    h2, h4 {
+      color: white;
+    }
+    h2 {
+      font-size: 2.5rem;
+    }
+
+    .btn-home {
+      font-size: 1.2rem;
+      padding: 0.25em 0.5em;
+      margin-right: 0.5rem;
+    }
+
+    @include for-desktop {
+      margin: 0 4rem;
+      .btn-home {
+        font-size: 0.85rem;
+      }
+    }
+  }
+}

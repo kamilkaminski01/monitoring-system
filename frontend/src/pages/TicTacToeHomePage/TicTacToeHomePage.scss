@@ -1,0 +1,11 @@
+@import url('https://fonts.googleapis.com/css?family=Catamaran:200');
+@import url('https://fonts.googleapis.com/css?family=Quicksand');
+@import 'utils/mixins.scss';
+@import 'utils/variables.scss';
+
+.tictactoe-body {
+  background-color: $grey-dark;
+  font-family: 'Catamaran', sans-serif;
+}
+
+@include home-page;

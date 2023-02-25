@@ -1,6 +1,6 @@
 import React, { useRef, useEffect } from 'react';
-import { PATHS } from 'utils/consts';
-import './Whiteboard.scss';
+import { PATHS, WEBSOCKETS } from 'utils/consts';
+import 'apps/Whiteboard/Whiteboard.scss';
 
 const Whiteboard = () => {
   const canvasRef = useRef(null);
@@ -8,7 +8,7 @@ const Whiteboard = () => {
   const socketRef = useRef(null);
 
   useEffect(() => {
-    socketRef.current = new WebSocket(PATHS.socketWhiteboard);
+    socketRef.current = new WebSocket(WEBSOCKETS.whiteboard);
     const canvas = canvasRef.current;
     const context = canvas.getContext('2d');
 
@@ -50,15 +50,17 @@ const Whiteboard = () => {
       const w = canvas.width;
       const h = canvas.height;
 
-      socketRef.current.send(
-        JSON.stringify({
-          x0: x0 / w,
-          y0: y0 / h,
-          x1: x1 / w,
-          y1: y1 / h,
-          color
-        })
-      );
+      try {
+        socketRef.current.send(
+          JSON.stringify({
+            x0: x0 / w,
+            y0: y0 / h,
+            x1: x1 / w,
+            y1: y1 / h,
+            color
+          })
+        );
+      } catch {}
     };
 
     const onMouseMove = (e) => {
@@ -150,9 +152,7 @@ const Whiteboard = () => {
         <div className="color blue" />
         <div className="color yellow" />
         <div className="color white" />
-        <button className="btn" onClick={() => (window.location.href = PATHS.home)}>
-          MENU
-        </button>
+        <button onClick={() => (window.location.href = PATHS.home)}>MENU</button>
       </div>
     </div>
   );

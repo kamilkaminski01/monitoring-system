@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { PATHS } from 'utils/consts';
 import useAuth from 'hooks/useAuth';
-import './LoginPage.scss';
+import './LoginForm.scss';
 
-const Login = () => {
+const LoginForm = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const { login, error } = useAuth();
@@ -24,7 +24,6 @@ const Login = () => {
             value={email}
             onChange={(event) => setEmail(event.target.value)}
           />
-          <span></span>
           <label>E-mail</label>
         </div>
         <div className="txt-field">
@@ -34,7 +33,6 @@ const Login = () => {
             value={password}
             onChange={(event) => setPassword(event.target.value)}
           />
-          <span></span>
           <label>Password</label>
         </div>
         <input type="submit" value="Confirm" />
@@ -47,4 +45,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default LoginForm;

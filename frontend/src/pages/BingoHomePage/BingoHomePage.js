@@ -1,0 +1,79 @@
+import React, { useState } from 'react';
+import { ENDPOINTS, PATHS, WEBSOCKETS } from 'utils/consts';
+import './BingoHomePage.scss';
+import { handleCreateRoom, handleJoinRoom } from 'utils/Rooms/handleRooms';
+import { useSocketRooms } from 'hooks/useSocketRooms';
+import { useHomeData } from 'hooks/useHomeData';
+import Checkbox from 'components/atoms/Checkbox/Checkbox';
+import Input from 'components/atoms/Input/Input';
+import HomeButton from 'components/atoms/HomeButton';
+import OnlineRooms from 'components/molecules/OnlineRooms/OnlineRooms';
+
+const BingoHomePage = () => {
+  const { username, setUsername, roomName, setRoomName } = useHomeData('', '');
+  const [playersLimit, setPlayersLimit] = useState('');
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [bingoRooms] = useSocketRooms(WEBSOCKETS.bingoOnlineRooms);
+
+  return (
+    <div className="bingo-body">
+      <div className="home-container">
+        <div>
+          <div>
+            <h2>Bingo</h2>
+            <Input value={username} onChange={(e) => setUsername(e.target.value)} />
+            <Input value={roomName} onChange={(e) => setRoomName(e.target.value)} />
+            <button className="my-2 btn btn-success btn-home" onClick={() => setIsPopupOpen(true)}>
+              Create Room
+            </button>
+            <button
+              className="my-2 btn btn-success btn-home"
+              disabled={!roomName}
+              onClick={() => handleJoinRoom(ENDPOINTS.checkBingoRoom, username, roomName)}>
+              Join Room
+            </button>
+            <HomeButton className="btn-primary" />
+          </div>
+          <OnlineRooms rooms={bingoRooms} path={PATHS.bingo} />
+        </div>
+      </div>
+      <div className={`popup ${isPopupOpen ? 'active' : ''}`}>
+        <div className="close-btn" onClick={() => setIsPopupOpen(false)}>
+          &times;
+        </div>
+        <div className="form">
+          <h2>Players Limit</h2>
+          <Checkbox
+            value="2"
+            checked={playersLimit === '2'}
+            onChange={(event) => setPlayersLimit(event.target.value)}
+          />
+          <Checkbox
+            value="3"
+            checked={playersLimit === '3'}
+            onChange={(event) => setPlayersLimit(event.target.value)}
+          />
+          <Checkbox
+            value="4"
+            checked={playersLimit === '4'}
+            onChange={(event) => setPlayersLimit(event.target.value)}
+          />
+          <button
+            onClick={() =>
+              handleCreateRoom(
+                ENDPOINTS.checkBingoRoom,
+                ENDPOINTS.createBingoRoom,
+                username,
+                roomName,
+                playersLimit
+              )
+            }>
+            Confirm
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default BingoHomePage;

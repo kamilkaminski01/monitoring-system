@@ -1,0 +1,37 @@
+@import 'utils/mixins.scss';
+@import 'utils/variables.scss';
+
+.rooms-container {
+  font-size: 15px;
+  padding: 1.5rem;
+  text-align: center;
+  width: 80%;
+
+  .online-room {
+    width: 70%;
+    display: flex;
+    justify-content: center;
+    margin: 10px auto;
+    padding: 1.5rem;
+    border: 1px solid $border-color;
+    border-radius: 5px;
+
+    p {
+      margin: 0;
+    }
+  }
+
+  .no-rooms {
+    text-align: center;
+    font-size: 1.2em;
+    color: $grey-light;
+  }
+
+  @include for-tablet {
+    font-size: 0.75rem;
+
+    h2 {
+      font-size: 1.5rem;
+    }
+  }
+}

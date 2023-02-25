@@ -12,17 +12,15 @@
 
   h1 {
     text-align: center;
-    padding: 0 0 2rem 0;
+    padding: 1rem 1rem;
     border-bottom: $border-color solid 1px;
   }
 
   form {
     padding: 0 1rem;
-    box-sizing: border-box;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
 
     .txt-field {
       position: relative;
@@ -30,13 +28,12 @@
       margin: 1.5rem 0;
 
       input {
-        width: 100%;
         padding: 0 0.5rem;
         height: 4rem;
         font-size: 16px;
         border: none;
         outline: none;
-        margin-right: auto; /* This will push the input to the left */
+        margin-right: auto;
       }
 
       label {
@@ -46,17 +43,6 @@
         transform: translateY(-50%);
         font-size: 16px;
         pointer-events: none;
-        transition: 0.5s;
-      }
-
-      span::before {
-        content: '';
-        position: absolute;
-        top: 4rem;
-        left: 0;
-        width: 0;
-        height: 2px;
-        background: #222222;
         transition: 0.5s;
       }
 
@@ -80,7 +66,7 @@
       background: $grey-light;
       border-radius: 25px;
       font-size: 18px;
-      color: #e9f4fb;
+      color: $border-color;
       cursor: pointer;
     }
   }

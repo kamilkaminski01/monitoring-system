@@ -23,7 +23,7 @@ function HomePage() {
           title="Tic Tac Toe"
           imageUrl="https://picsum.photos/900/500"
           body="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
-          link={PATHS.tempTictactoe}
+          link={PATHS.tictactoe}
         />
       </div>
     </div>
