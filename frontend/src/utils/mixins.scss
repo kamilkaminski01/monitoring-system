@@ -5,6 +5,11 @@
     @content;
   }
 }
+@mixin for-desktop-under-850 {
+  @media (max-width: 1024px) and (max-height: 850px) {
+    @content;
+  }
+}
 @mixin for-tablet {
   @media (max-width: 768px) {
     @content;

@@ -56,16 +56,20 @@
     }
     @include for-desktop {
       flex-direction: column;
-      height: $bingo-height-for-mobile-devices;
+      min-height: $bingo-height-for-desktop;
+      @include for-desktop-under-850 {
+        min-height: $bingo-height-for-desktop-under-850;
+      }
       .bingo {
         margin: 2rem;
+
         .grid {
           gap: 4px;
         }
       }
     }
     @include for-extra-small-phone {
-      height: $bingo-height-for-mobile-devices;
+      min-height: $bingo-height-for-phones;
     }
   }
 }

@@ -5,7 +5,7 @@ export const API_URL =
   url.port !== '' ? `${url.protocol}//${url.hostname}:8000/api/` : `${url.origin}/api/`;
 
 export const SOCKET_URL =
-  url.port !== '' ? `${isSecure}//${url.hostname}:8000/ws` : `${isSecure}//${url.origin}/ws`;
+  url.port !== '' ? `${isSecure}//${url.hostname}:8000/ws` : `${isSecure}//${url.hostname}/ws`;
 
 export const ENDPOINTS = {
   getToken: 'token/',

@@ -1,9 +1,9 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import './Chat.scss';
-import useMessage from 'hooks/useMessage';
+import { useSocketChat } from 'hooks/useSocketChat';
 
-const Chat = ({ socketRef, username }) => {
-  const { messages, newMessage, handleNewMessage, handleSubmit } = useMessage(socketRef, username);
+const Chat = ({ websocket, username }) => {
+  const { messages, sendMessage } = useSocketChat(websocket, username);
   const chatRef = useRef(null);
 
   useEffect(() => {
@@ -11,6 +11,19 @@ const Chat = ({ socketRef, username }) => {
       chatRef.current.scrollTop = chatRef.current.scrollHeight;
     }
   }, [messages]);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (!newMessage.trim()) return;
+    sendMessage(newMessage.trim());
+    setNewMessage('');
+  };
+
+  const [newMessage, setNewMessage] = useState('');
+
+  const handleNewMessage = (e) => {
+    setNewMessage(e.target.value);
+  };
 
   return (
     <div className="chat-wrapper">

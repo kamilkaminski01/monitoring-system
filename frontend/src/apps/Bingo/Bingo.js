@@ -9,7 +9,6 @@ import { BINGO, ENDPOINTS, PATHS, WEBSOCKET_MESSAGES, WEBSOCKETS } from 'utils/c
 import { generateBoardState } from 'utils/generateBoardState';
 import useWebSocket from 'react-use-websocket';
 import { swalCornerSuccess, swalError, swalSuccess, swalWarning } from 'utils/swal';
-import { useSocketLeave } from 'hooks/useSocketLeave';
 import {
   getRoomDetailsPlayer,
   putRoomDetailsPlayer,
@@ -17,6 +16,7 @@ import {
   putRoomDetails
 } from 'utils/roomDetails';
 import { useBingoData } from 'hooks/useBingoData';
+import { useSocketLeave } from 'hooks/useSocketLeave';
 
 const Bingo = () => {
   const { isUsernameSet } = useContext(UsernameContext);
@@ -102,7 +102,7 @@ const Bingo = () => {
     }
   });
 
-  const { socketRef } = useSocketLeave(websocket, username, sendJsonMessage);
+  useSocketLeave(websocket, username, sendJsonMessage);
 
   const checkBingo = async (boardStateIndexes, gameState) => {
     const bingoState = [];
@@ -166,16 +166,18 @@ const Bingo = () => {
 
   return (
     <div className="bingo-body">
-      <GameButton
-        className="btn-danger"
-        value="Menu"
-        onClick={() => (window.location.href = PATHS.bingo)}
-      />
-      <GameButton
-        className="btn-danger"
-        value="Restart"
-        onClick={() => sendJsonMessage(WEBSOCKET_MESSAGES.restart(username))}
-      />
+      <div className="menu-buttons">
+        <GameButton
+          className="btn-danger"
+          value="Menu"
+          onClick={() => (window.location.href = PATHS.bingo)}
+        />
+        <GameButton
+          className="btn-danger"
+          value="Restart"
+          onClick={() => sendJsonMessage(WEBSOCKET_MESSAGES.restart(username))}
+        />
+      </div>
       <div className="bingo-wrapper">
         <div className="bingo">
           <div className="scoreboard">
@@ -189,7 +191,7 @@ const Bingo = () => {
           <div>{generateGrid()}</div>
           <div className="bingo-state">{bingoState}</div>
         </div>
-        <Chat socketRef={socketRef} username={username} />
+        <Chat websocket={websocket} username={username} />
       </div>
     </div>
   );

@@ -6,7 +6,6 @@ import GameButton from 'components/atoms/GameButton';
 import Chat from 'components/organisms/Chat/Chat';
 import { useParams } from 'react-router-dom';
 import useWebSocket from 'react-use-websocket';
-import { useSocketLeave } from 'hooks/useSocketLeave';
 import useUsername from 'hooks/useUsername';
 import { useTicTacToeData } from 'hooks/useTicTacToeData';
 import {
@@ -16,6 +15,7 @@ import {
   roomDetails
 } from 'utils/roomDetails';
 import { swalCornerSuccess, swalError, swalSuccess, swalWarning } from 'utils/swal';
+import { useSocketLeave } from 'hooks/useSocketLeave';
 
 const TicTacToe = () => {
   const { isUsernameSet } = useContext(UsernameContext);
@@ -72,7 +72,7 @@ const TicTacToe = () => {
     }
   });
 
-  const { socketRef } = useSocketLeave(websocket, username, sendJsonMessage);
+  useSocketLeave(websocket, username, sendJsonMessage);
 
   const checkWin = async (boardState) => {
     for (let i = 0; i < TICTACTOE.tictactoeWinRows.length; i++) {
@@ -130,7 +130,7 @@ const TicTacToe = () => {
             <div className="board">{boardElements}</div>
           </div>
         </div>
-        <Chat socketRef={socketRef} username={username} />
+        <Chat websocket={websocket} username={username} />
       </div>
     </div>
   );
