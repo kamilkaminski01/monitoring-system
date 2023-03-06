@@ -6,7 +6,7 @@ const HomeButton = ({ className }) => {
   const navigate = useNavigate();
   return (
     <button className={`btn btn-home ${className}`} onClick={() => navigate(PATHS.home)}>
-      Menu
+      Home
     </button>
   );
 };

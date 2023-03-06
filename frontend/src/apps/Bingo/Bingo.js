@@ -166,18 +166,21 @@ const Bingo = () => {
 
   return (
     <div className="bingo-body">
-      <div className="menu-buttons">
-        <GameButton
-          className="btn-danger"
-          value="Menu"
-          onClick={() => (window.location.href = PATHS.bingo)}
-        />
-        <GameButton
-          className="btn-danger"
-          value="Restart"
-          onClick={() => sendJsonMessage(WEBSOCKET_MESSAGES.restart(username))}
-        />
-      </div>
+      <GameButton
+        className="btn-danger"
+        value="Home"
+        onClick={() => (window.location.href = PATHS.home)}
+      />
+      <GameButton
+        className="btn-danger"
+        value="Menu"
+        onClick={() => (window.location.href = PATHS.bingo)}
+      />
+      <GameButton
+        className="btn-danger"
+        value="Restart"
+        onClick={() => sendJsonMessage(WEBSOCKET_MESSAGES.restart(username))}
+      />
       <div className="bingo-wrapper">
         <div className="bingo">
           <div className="scoreboard">

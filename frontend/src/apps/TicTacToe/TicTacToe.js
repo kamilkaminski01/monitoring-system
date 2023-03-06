@@ -111,6 +111,11 @@ const TicTacToe = () => {
     <div className="tictactoe-body">
       <GameButton
         className="btn-light"
+        value="Home"
+        onClick={() => (window.location.href = PATHS.home)}
+      />
+      <GameButton
+        className="btn-light"
         value="Menu"
         onClick={() => (window.location.href = PATHS.tictactoe)}
       />
