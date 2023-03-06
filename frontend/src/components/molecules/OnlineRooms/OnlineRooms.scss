@@ -6,6 +6,8 @@
   display: flex;
   flex-wrap: wrap;
   max-width: 25rem;
+  animation: fadeIn;
+  animation-duration: 2s;
 
   .room {
     color: white;
@@ -13,6 +15,8 @@
     padding: 0.65rem;
     margin: 0.25rem;
     border-radius: 3px;
+    animation: fadeIn;
+    animation-duration: 1s;
 
     p {
       margin: 0;

@@ -1,0 +1,91 @@
+@import 'utils/mixins.scss';
+@import 'utils/variables.scss';
+
+@include tictactoe;
+@include game-page;
+
+.tictactoe-body {
+  .tictactoe-wrapper {
+    height: $tictactoe-height;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .tictactoe {
+      width: 100%;
+      max-width: 400px;
+      margin: 8rem;
+
+      .scoreboard {
+        font-size: 18px;
+        display: grid;
+        grid-template-columns: $tictactoe-grid-columns;
+        justify-content: center;
+        background-color: $scoreboard-bg-color;
+        padding: 0.5rem;
+
+        > div {
+          flex: 1 1 auto;
+          display: flex;
+          justify-content: center;
+          flex-wrap: wrap;
+        }
+      }
+
+      .board-wrapper {
+        padding-top: 100%;
+        position: relative;
+
+        .board {
+          position: absolute;
+          top: 0;
+          left: 0;
+          bottom: 0;
+          right: 0;
+          display: grid;
+          grid-template-columns: $tictactoe-grid-columns;
+          grid-template-rows: $tictactoe-grid-rows;
+          grid-column-gap: 2px;
+          grid-row-gap: 2px;
+
+          .space {
+            background-color: $tictactoe-board-color;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: $tictactoe-font-family;
+            font-weight: 300;
+            font-size: 3em;
+            cursor: pointer;
+
+            &:hover {
+              background-color: $tictactoe-primary-color;
+            }
+
+            &:active {
+              background-color: $tictactoe-hover-color;
+            }
+          }
+        }
+      }
+    }
+    @include for-desktop {
+      flex-direction: column;
+      align-items: center;
+      height: $tictactoe-height-for-desktop;
+
+      .tictactoe {
+        flex: none;
+        width: 80%;
+        margin: 3rem;
+      }
+    }
+    @include for-phone {
+      .tictactoe {
+        .scoreboard {
+          font-size: 15px;
+        }
+      }
+    }
+  }
+}

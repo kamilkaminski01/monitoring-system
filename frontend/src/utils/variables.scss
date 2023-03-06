@@ -1,14 +1,32 @@
-$button-text-color-blue: #1b9cfc;
+$blue-txt: #1b9cfc;
 $grey-light: #777777;
 $grey-dark: #333333;
 $red-light-error: #f04e4e;
 $hover-color: rgba(27, 156, 252, 0.1);
 $border-color: #e7e7e7;
-$black-background: #121213;
+$black-bg: #121213;
 $violet: #6d5baf;
+
+$home-page-height: 100vh;
 
 $bingo-primary-color: #262350;
 $bingo-secondary-color: #363263;
+$bingo-chat-primary-color: #1b1b21;
+$bingo-success-row: #5baf5b;
+
+$bingo-height: 94.8vh;
+$bingo-desktop-height: 120vh;
+$bingo-extra-small-phone-height: 160vh;
 
 $tictactoe-primary-color: #C0C0C0;
 $tictactoe-secondary-color: #808080;
+$tictactoe-board-color: #ccc;
+$tictactoe-hover-color: #bbb;
+$scoreboard-bg-color: #f0f0f0;
+$tictactoe-font-family: 'Quicksand';
+$tictactoe-chat-color: #212529;
+
+$tictactoe-height: 94.8vh;
+$tictactoe-height-for-desktop: 140vh;
+$tictactoe-grid-columns: 1fr 1fr 1fr;
+$tictactoe-grid-rows: 1fr 1fr 1fr;

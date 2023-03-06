@@ -2,24 +2,14 @@ from django.urls import path
 
 from .views import (
     BingoAPIView,
+    BingoPlayerAPIView,
     BingoRoomCheckAPIView,
     BingoRoomDetailsAPIView,
-    BingoView,
-    CreateBingoRoomView,
 )
 
 urlpatterns = [
-    path("", CreateBingoRoomView.as_view(), name="create_bingo_room"),
-    path("<str:room_name>/", BingoView.as_view(), name="bingo"),
-    path(
-        "api/check/<str:room_name>/",
-        BingoRoomCheckAPIView.as_view(),
-        name="check_bingo_room",
-    ),
-    path("api/details/", BingoAPIView.as_view(), name="bingo_api"),
-    path(
-        "api/details/<str:room_name>/",
-        BingoRoomDetailsAPIView.as_view(),
-        name="details_bingo_room",
-    ),
+    path("check/<str:room_name>/", BingoRoomCheckAPIView.as_view()),
+    path("details/", BingoAPIView.as_view()),
+    path("details/<str:room_name>/", BingoRoomDetailsAPIView.as_view()),
+    path("details/<str:room_name>/<str:username>/", BingoPlayerAPIView.as_view()),
 ]

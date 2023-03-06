@@ -9,10 +9,11 @@ def default_board_state() -> List:
 
 class TicTacToeRoom(models.Model):
     room_name = models.CharField(max_length=50)
+    game_state = models.BooleanField(default=False)
+    total_players = models.PositiveIntegerField(default=0)
     board_state = models.JSONField(default=default_board_state)
     players = models.ManyToManyField(
         "TicTacToePlayer",
-        limit_choices_to={"is_player": True},
         related_name="players",
     )
     players_turn = models.ForeignKey(
@@ -30,8 +31,9 @@ class TicTacToeRoom(models.Model):
 class TicTacToePlayer(models.Model):
     room = models.ForeignKey(TicTacToeRoom, on_delete=models.CASCADE)
     username = models.CharField(max_length=50)
-    is_player = models.BooleanField(default=False)
+    figure = models.CharField(max_length=1, null=True, blank=True)
     is_active = models.BooleanField(default=True)
+    is_winner = models.BooleanField(default=False)
 
     def __str__(self) -> str:
         return self.username

@@ -7,9 +7,10 @@
   overflow: hidden;
   box-shadow: 0 0 15px -5px;
   transition: 0.3s;
+  animation: pulse;
+  animation-duration: 1s;
 
   &:hover {
-    transform: scale(1.1);
     box-shadow: 0 0 15px 0;
   }
 
@@ -31,7 +32,7 @@
     border-radius: 10px;
     font-weight: bold;
     background-color: white;
-    color: $button-text-color-blue;
+    color: $blue-txt;
     border: none;
     outline: none;
     transition: 0.2s;
@@ -42,7 +43,7 @@
   }
 
   @include for-tablet {
-    width: 60%;
+    width: 70%;
     margin: 2.5rem;
 
     .image-container img {

@@ -10,11 +10,9 @@ const axiosAuth = axios.create({
 axiosAuth.interceptors.request.use(
   (config) => {
     const accessToken = localStorage.getItem(LOCAL_STORAGE.accessToken);
-
     if (accessToken && typeof accessToken !== 'undefined') {
       config.headers.Authorization = `Bearer ${accessToken}`;
     }
-
     return config;
   },
   (error) => {
@@ -24,16 +22,13 @@ axiosAuth.interceptors.request.use(
 
 const refreshAuthLogic = async (failedRequest) => {
   const response = await refreshToken();
-
   if (response.succeed) {
     const accessToken = localStorage.getItem(LOCAL_STORAGE.accessToken);
     failedRequest.response.config.headers.Authorization = `Bearer ${accessToken}`;
-
     return Promise.resolve();
   } else {
     localStorage.removeItem(LOCAL_STORAGE.accessToken);
     localStorage.removeItem(LOCAL_STORAGE.refreshToken);
-
     window.location.href = PATHS.login;
 
     return Promise.reject(failedRequest);

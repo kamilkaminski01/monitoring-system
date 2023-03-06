@@ -38,4 +38,7 @@ nav {
     flex-wrap: wrap;
     justify-content: center;
   }
+  //@include for-phone {
+  //  justify-content: center;
+  //}
 }

@@ -15,6 +15,8 @@
     padding: 1.5rem;
     border: 1px solid $border-color;
     border-radius: 5px;
+    animation: fadeIn;
+    animation-duration: 2s;
 
     p {
       margin: 0;
@@ -25,6 +27,8 @@
     text-align: center;
     font-size: 1.2em;
     color: $grey-light;
+    animation: fadeIn;
+    animation-duration: 2s;
   }
 
   @include for-tablet {

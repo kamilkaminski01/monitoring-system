@@ -1,12 +1,7 @@
-@import url('https://fonts.googleapis.com/css2?family=Ubuntu&display=swap');
 @import 'utils/mixins.scss';
 @import 'utils/variables.scss';
 
-.bingo-body {
-  background-color: $black-background;
-  font-family: 'Ubuntu', sans-serif;
-}
-
+@include bingo;
 @include home-page;
 
 .popup {

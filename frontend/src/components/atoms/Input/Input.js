@@ -7,7 +7,6 @@ const Input = ({ value, onChange, ...rest }) => {
       type="text"
       className="form-control my-1 home-input"
       autoComplete="off"
-      placeholder="Your username"
       value={value}
       onChange={onChange}
       {...rest}

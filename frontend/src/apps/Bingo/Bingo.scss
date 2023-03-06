@@ -1,0 +1,84 @@
+@import 'utils/mixins.scss';
+
+@include bingo;
+@include game-page;
+
+.bingo-body {
+  .bingo-wrapper {
+    height: $bingo-height;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .bingo {
+      margin: 8rem;
+      font-weight: bolder;
+
+      .scoreboard {
+        color: white;
+
+        .username {
+          text-align: center;
+        }
+
+        .room-info {
+          display: flex;
+          justify-content: space-between;
+        }
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(5, auto);
+        gap: 10px;
+
+        span {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          cursor: pointer;
+          width: 4rem;
+          height: 4rem;
+          color: white;
+          border: 2px solid #3a3a3c;
+          font-size: 1.3em;
+
+          &.clicked {
+            background: #3a3a3c;
+          }
+        }
+      }
+
+      .success-row {
+        background: $bingo-success-row;
+        border: none;
+      }
+
+      .bingo-state {
+        font-size: 30px;
+        color: white;
+        padding: 0.2rem;
+        text-align: center;
+        animation: fadeInUp;
+        animation-duration: 2s;
+      }
+    }
+
+    @include for-desktop {
+      flex-direction: column;
+      height: $bingo-desktop-height;
+
+      .bingo {
+        margin: 2rem;
+
+        .grid {
+          gap: 4px;
+        }
+      }
+    }
+
+    @include for-extra-small-phone {
+      height: $bingo-extra-small-phone-height;
+    }
+  }
+}

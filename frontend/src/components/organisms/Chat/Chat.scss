@@ -1,0 +1,93 @@
+@import 'utils/mixins.scss';
+@import 'utils/variables.scss';
+
+.chat-wrapper {
+  width: 18rem;
+
+  input {
+    border: none;
+    font-size: 13px;
+
+    .bingo-body & {
+      background: $bingo-chat-primary-color;
+
+      &:focus {
+        background: $bingo-chat-primary-color !important;
+        color: white;
+      }
+    }
+
+    .tictactoe-body & {
+      background: $tictactoe-primary-color;
+
+      &:focus {
+        background: $tictactoe-secondary-color !important;
+        color: white;
+      }
+    }
+
+    &::placeholder {
+      color: white;
+    }
+  }
+
+  .chat {
+    padding: 1rem;
+    min-height: 450px;
+    max-height: 450px;
+    overflow-y: auto;
+    scroll-behavior: smooth;
+
+    .message {
+      display: flex;
+      justify-content: space-between;
+      margin: 1rem 0.5rem;
+      font-size: 15px;
+      color: white;
+    }
+
+    .centered-message {
+      margin: 1rem 0;
+      font-size: 15px;
+      text-align: center;
+      color: white;
+    }
+
+    .bingo-body & {
+      background-color: $bingo-chat-primary-color;
+      .message {
+        border-bottom: 1px solid $bingo-secondary-color;
+      }
+    }
+
+    .tictactoe-body & {
+      background-color: $tictactoe-board-color;
+      .centered-message {
+        font-size: 17px;
+        color: $tictactoe-chat-color;
+      }
+      h6 {
+        font-size: 17px;
+        color: $tictactoe-chat-color;
+        border-bottom: 1px solid white;
+      }
+      .message {
+        font-size: 17px;
+        color: $tictactoe-chat-color;
+        border-bottom: 1px solid white;
+      }
+    }
+
+    h6 {
+      color: white;
+      text-align: center;
+      border-bottom: 1px solid;
+    }
+  }
+
+  @include for-desktop {
+    width: 20rem;
+    margin-bottom: 3rem;
+    padding: 0.7rem;
+  }
+}

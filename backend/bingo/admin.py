@@ -12,7 +12,6 @@ class BingoPlayersAdmin(admin.TabularInline):
             "room",
             "username",
             "is_active",
-            "is_player",
             "is_winner",
             "initial_board_state",
             "bingo_state",
@@ -26,7 +25,15 @@ class BingoRoomAdmin(admin.ModelAdmin):
     inlines = [BingoPlayersAdmin]
 
     def get_readonly_fields(self, request: HttpRequest, obj=None):
-        return "room_name", "players_limit", "players", "players_turn", "board_state"
+        return (
+            "room_name",
+            "game_state",
+            "total_players",
+            "players_limit",
+            "players",
+            "players_turn",
+            "board_state",
+        )
 
 
 admin.site.register(BingoRoom, BingoRoomAdmin)
