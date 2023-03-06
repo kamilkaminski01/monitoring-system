@@ -27,7 +27,7 @@ const Chat = ({ websocket, username }) => {
 
   return (
     <div className="chat-wrapper">
-      <div className="chat" ref={chatRef}>
+      <div className="chat">
         <h6>Room Activity</h6>
         {messages.map((message, index) => (
           <div key={index}>
@@ -38,7 +38,7 @@ const Chat = ({ websocket, username }) => {
             ) : (
               <div className="message">
                 <span> {message.message} </span>
-                <span> {message.user} </span>
+                <span className="message-user"> {message.user} </span>
               </div>
             )}
           </div>
