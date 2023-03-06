@@ -10,12 +10,10 @@
     display: flex;
     justify-content: center;
     align-items: center;
-
     .tictactoe {
       width: 100%;
       max-width: 400px;
       margin: 8rem;
-
       .scoreboard {
         font-size: 18px;
         display: grid;
@@ -23,7 +21,6 @@
         justify-content: center;
         background-color: $scoreboard-bg-color;
         padding: 0.5rem;
-
         > div {
           flex: 1 1 auto;
           display: flex;
@@ -31,11 +28,9 @@
           flex-wrap: wrap;
         }
       }
-
       .board-wrapper {
         padding-top: 100%;
         position: relative;
-
         .board {
           position: absolute;
           top: 0;
@@ -47,23 +42,16 @@
           grid-template-rows: $tictactoe-grid-rows;
           grid-column-gap: 2px;
           grid-row-gap: 2px;
-
           .space {
             background-color: $tictactoe-board-color;
             display: flex;
             align-items: center;
             justify-content: center;
             font-family: $tictactoe-font-family;
-            font-weight: 300;
             font-size: 3em;
             cursor: pointer;
-
             &:hover {
               background-color: $tictactoe-primary-color;
-            }
-
-            &:active {
-              background-color: $tictactoe-hover-color;
             }
           }
         }
@@ -81,6 +69,7 @@
       }
     }
     @include for-phone {
+      height: $tictactoe-height-for-phone;
       .tictactoe {
         .scoreboard {
           font-size: 15px;

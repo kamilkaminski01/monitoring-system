@@ -1,7 +1,9 @@
 import React from 'react';
 import './Card.scss';
+import { useNavigate } from 'react-router-dom';
 
 function Card({ title, imageUrl, body, link }) {
+  const navigate = useNavigate();
   return (
     <div className="card-wrapper">
       <div className="image-container">
@@ -15,7 +17,7 @@ function Card({ title, imageUrl, body, link }) {
           <p>{body}</p>
         </div>
       </div>
-      <button className="btn-open" onClick={() => (window.location.href = link)}>
+      <button className="btn-open" onClick={() => navigate(link)}>
         OPEN
       </button>
     </div>

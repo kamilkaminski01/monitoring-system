@@ -34,11 +34,8 @@ nav {
     gap: 1rem;
   }
 
-  @include for-tablet {
+  @include for-nav {
     flex-wrap: wrap;
     justify-content: center;
   }
-  //@include for-phone {
-  //  justify-content: center;
-  //}
 }

@@ -1,7 +1,9 @@
-from typing import List, Union
+from typing import List
 
-from bingo.models import BingoRoom
-from tictactoe.models import TicTacToeRoom
+from asgiref.sync import async_to_sync
+from channels.layers import get_channel_layer
+
+channel_layer = get_channel_layer()
 
 
 async def websocket_send_event(self, event: dict, field_names: List[str]) -> None:
@@ -9,10 +11,25 @@ async def websocket_send_event(self, event: dict, field_names: List[str]) -> Non
     await self.send_json(payload)
 
 
-def get_room_data(instance: Union[BingoRoom, TicTacToeRoom], command: str) -> dict:
-    return {
+def send_room_signal(channel_name, instance, command):
+    data = {
         "type": "websocket_room_added_or_deleted",
         "command": command,
         "room_name": instance.room_name,
         "room_id": instance.id,
     }
+    try:
+        async_to_sync(channel_layer.group_send)(channel_name, data)
+    except TypeError:
+        print(f"failed sending {command}")
+
+
+def update_total_players(room_model, player_model, player_instance):
+    room_instance = player_instance.room
+    active_players = player_model.objects.filter(room=room_instance, is_active=True)
+    if active_players.count() == 0:
+        room_instance.delete()
+    else:
+        room_model.objects.filter(id=room_instance.id).update(
+            total_players=active_players.count()
+        )

@@ -15,8 +15,7 @@ $bingo-chat-primary-color: #1b1b21;
 $bingo-success-row: #5baf5b;
 
 $bingo-height: 94.8vh;
-$bingo-desktop-height: 120vh;
-$bingo-extra-small-phone-height: 160vh;
+$bingo-height-for-mobile-devices: 150vh;
 
 $tictactoe-primary-color: #C0C0C0;
 $tictactoe-secondary-color: #808080;
@@ -27,6 +26,7 @@ $tictactoe-font-family: 'Quicksand';
 $tictactoe-chat-color: #212529;
 
 $tictactoe-height: 94.8vh;
-$tictactoe-height-for-desktop: 140vh;
+$tictactoe-height-for-desktop: 160vh;
+$tictactoe-height-for-phone: 150vh;
 $tictactoe-grid-columns: 1fr 1fr 1fr;
 $tictactoe-grid-rows: 1fr 1fr 1fr;

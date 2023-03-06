@@ -37,9 +37,7 @@ export async function getRoomDetailsPlayer(endpoint, roomName, username) {
       generatePath(endpoint, { room_name: roomName, username })
     );
     return response.data;
-  } catch (error) {
-    // return error;
-  }
+  } catch (error) {}
 }
 
 export async function putRoomDetailsPlayer(endpoint, roomName, username, data) {

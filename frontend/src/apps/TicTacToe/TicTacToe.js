@@ -46,6 +46,7 @@ const TicTacToe = () => {
       const user = data.user;
       const updatedBoardState = data.value;
       if (command === 'click' && updatedBoardState.every((value) => value !== '')) {
+        setBoardState(updatedBoardState);
         setGameState(false);
         swalWarning('Game over!', 'No one won');
       } else if (command === 'click' && user !== username) {

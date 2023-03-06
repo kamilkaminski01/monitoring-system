@@ -20,7 +20,11 @@
     @content;
   }
 }
-
+@mixin for-nav {
+  @media (max-width: 575px) {
+    @content;
+  }
+}
 @mixin tictactoe {
   @import url('https://fonts.googleapis.com/css?family=Catamaran:200');
   @import url('https://fonts.googleapis.com/css?family=Quicksand');
@@ -29,7 +33,6 @@
     font-family: 'Catamaran', sans-serif;
   }
 }
-
 @mixin bingo {
   @import url('https://fonts.googleapis.com/css2?family=Ubuntu&display=swap');
   .bingo-body {
@@ -37,7 +40,6 @@
     font-family: 'Ubuntu', sans-serif;
   }
 }
-
 @mixin home-page {
   .home-container {
     height: $home-page-height;
@@ -67,7 +69,6 @@
     }
   }
 }
-
 @mixin game-page {
   .btn-game {
     padding: 0.7rem;
