@@ -152,7 +152,7 @@ const Whiteboard = () => {
         <div className="color blue" />
         <div className="color yellow" />
         <div className="color white" />
-        <button onClick={() => (window.location.href = PATHS.home)}>MENU</button>
+        <button onClick={() => (window.location.href = PATHS.home)}>HOME</button>
       </div>
     </div>
   );
