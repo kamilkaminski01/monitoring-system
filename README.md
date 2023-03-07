@@ -2,7 +2,8 @@
 
 This project is used for monitoring web apps in real-time.
 It allows users to interact within a chosen web application and
-in addition a third party admin can observe the taken actions of users.
+in addition a third party admin can observe the taken actions of users
+and communicate with them through a chat.
 
 ## Resources
 
@@ -22,13 +23,6 @@ make build
 make run
 ```
 
-Users can choose and interact within available web apps on `localhost:3000` which is
-the frontend domain.
-
-Backend is available at `localhost:8000`.
-Admin panel can be accessed through freely chosen backend domain at `/admin`
-e.g. `localhost:8000/admin`.
-
 [Docker Compose](https://docs.docker.com/compose/install/) is leveraged
 for reproducible builds and consistent local development environments.
 The default [`docker-compose.yml`](docker-compose.yml) file is set up
@@ -43,10 +37,8 @@ build, run, and test the project. The most important commands include:
 - `frontcheck`: performs frontend static code checks.
 - `clear`: stops the currently running services and removes the volumes.
 
-If `build` doesn't run, uncheck "Use Docker Compose V2" in Docker Desktop settings.
-
 When using a local Python environment, [`pre-commit`](https://pre-commit.com/)
-should be installed and ran on staged files to ensure that the code
+is installed and ran on staged files to ensure that the code
 quality standards are met. During frontend development, Git hooks are handled
 by [`husky`](https://github.com/typicode/husky).
 
@@ -72,12 +64,11 @@ docker-compose run
 
 ## Code quality standards
 
-The `master` is the stable branch used for releases.
+The `master` branch is the stable branch used for releases.
 
-Git branches should be named according to the
+Git branches are named according to the
 [Git Flow](https://danielkummer.github.io/git-flow-cheatsheet/) methodology.
-Always include the IDs of the associated tasks in the branches and commit
-names. For example:
+For example:
 
 ```bash
 # Branches:
@@ -90,15 +81,15 @@ Add user model
 
 ### Backend
 
-All backend code must be formatted and verified by the `black`, `flake8`,
+All backend code is formatted and verified by the `black`, `flake8`,
 `mypy` and `isort` tools. Their configurations can be found in the
 [.setup.cfg](backend/setup.cfg) file. Additionally, `pre-commit` [checks](.pre-commit-config.yaml)
-should be performed in order to verify whitespaces, credentials, etc.
+are performed in order to verify whitespaces, credentials, etc.
 
-Custom functions and methods should use **type hints** to improve IDE code
+Custom functions and methods use **type hints** to improve IDE code
 completions, prevent from type errors and extend code documentation.
 
 ### Frontend
 
-All frontend code must be formatted and verified by the `prettier`
-and `eslint` tools. Pre-commit hooks can be set up with `husky`.
+All frontend code is formatted and verified by the `prettier`
+and `eslint` tools. Pre-commit hooks are set up with `husky`.
