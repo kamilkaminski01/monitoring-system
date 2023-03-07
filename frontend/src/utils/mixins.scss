@@ -47,6 +47,8 @@
 }
 @mixin home-page {
   .home-container {
+    animation: fadeIn;
+    animation-duration: 0.4s;
     height: $home-page-height;
     display: flex;
     justify-content: center;

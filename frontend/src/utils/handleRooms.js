@@ -17,9 +17,7 @@ async function createRoom(endpoint, username, roomName, playersLimit) {
     }
     await postRoomDetails(endpoint, roomName, data);
     redirectToRoom(roomName);
-  } catch (error) {
-    swalCornerError('Room error', error);
-  }
+  } catch (error) {}
 }
 
 async function joinRoom(detailsEndpoint, createEndpoint, username, roomName) {
@@ -28,18 +26,36 @@ async function joinRoom(detailsEndpoint, createEndpoint, username, roomName) {
       room_name: roomName,
       player: username
     };
-    const room = await roomDetails(detailsEndpoint, roomName, true);
-    const playersAmount = room.players.length;
-    const maxPlayers = room.players_limit ? room.players_limit : 2;
-
-    if (playersAmount >= maxPlayers) {
-      swalCornerError('Room error', 'Room is full');
-    } else {
+    if (
+      (await checkRoomLimit(detailsEndpoint, roomName)) &&
+      (await checkRoomPlayers(detailsEndpoint, roomName, username))
+    ) {
       await postRoomDetails(createEndpoint, roomName, data);
       redirectToRoom(roomName);
     }
-  } catch (error) {
-    swalCornerError('Room error', error);
+  } catch (error) {}
+}
+
+async function checkRoomPlayers(endpoint, roomName, username) {
+  const room = await roomDetails(endpoint, roomName, true);
+  const isUsernameTaken = room.players.some((player) => player.username === username);
+  if (isUsernameTaken) {
+    await swalCornerError('Username error', 'Username is taken');
+    return false;
+  } else {
+    return true;
+  }
+}
+
+export async function checkRoomLimit(endpoint, roomName) {
+  const room = await roomDetails(endpoint, roomName, true);
+  const playersAmount = room.players.length;
+  const maxPlayers = room.players_limit ? room.players_limit : 2;
+  if (playersAmount >= maxPlayers) {
+    await swalCornerError('Room error', 'Room is full');
+    return false;
+  } else {
+    return true;
   }
 }
 

@@ -1,10 +1,19 @@
-import { Link } from 'react-router-dom';
 import { useContext } from 'react';
 import { UsernameContext } from 'providers/UsernameContextProvider';
 import './OnlineRooms.scss';
+import { ENDPOINTS } from 'utils/consts';
+import { checkRoomLimit } from 'utils/handleRooms';
 
 const OnlineRooms = ({ rooms, path }) => {
   const { isUsernameSet } = useContext(UsernameContext);
+  const detailsEndpoint = path.includes('bingo')
+    ? ENDPOINTS.detailsBingoRoom
+    : ENDPOINTS.detailsTicTacToeRoom;
+
+  const handleLinkClick = async (roomName) => {
+    if (await checkRoomLimit(detailsEndpoint, roomName))
+      window.location.href = `${path}/${roomName}`;
+  };
 
   return (
     <div className="my-3">
@@ -13,21 +22,21 @@ const OnlineRooms = ({ rooms, path }) => {
         {rooms.length ? (
           rooms.map((room) =>
             isUsernameSet ? (
-              <Link
+              <p
                 key={room.room_id}
                 id={room.room_id}
                 className="room"
-                to={`${path}/${room.room_name}`}>
-                <p>{room.room_name}</p>
-              </Link>
+                onClick={() => handleLinkClick(room.room_name)}>
+                {room.room_name}
+              </p>
             ) : (
-              <p key={room.room_id} className="room">
+              <p key={room.room_id} className="room no-link">
                 {room.room_name}
               </p>
             )
           )
         ) : (
-          <p className="room">No online rooms</p>
+          <p className="room no-link">No online rooms</p>
         )}
       </div>
     </div>

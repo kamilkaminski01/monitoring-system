@@ -5,6 +5,8 @@
 
 .bingo-body {
   .bingo-wrapper {
+    animation: fadeIn;
+    animation-duration: 0.4s;
     height: $bingo-height;
     display: flex;
     justify-content: center;

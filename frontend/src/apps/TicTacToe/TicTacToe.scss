@@ -6,6 +6,8 @@
 
 .tictactoe-body {
   .tictactoe-wrapper {
+    animation: fadeIn;
+    animation-duration: 0.4s;
     height: $tictactoe-height;
     display: flex;
     justify-content: center;
