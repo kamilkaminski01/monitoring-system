@@ -9,21 +9,21 @@ function HomePage() {
       <div className="home-wrapper">
         <Card
           title="Whiteboard"
-          imageUrl="https://picsum.photos/900/500"
-          body="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          imageUrl="https://img.icons8.com/ios/400/null/whiteboard.png"
+          body="Simple drawing board application in which users can draw in real time for those who are present in the app."
           link={PATHS.whiteboard}
         />
         <Card
-          title="Bingo"
-          imageUrl="https://picsum.photos/900/500"
-          body="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
-          link={PATHS.bingo}
+          title="Tic Tac Toe"
+          imageUrl="https://img.icons8.com/external-dreamstale-lineal-dreamstale/400/null/external-tic-tac-toe-game-dreamstale-lineal-dreamstale.png"
+          body="Two player application where users can create and join rooms to play with each other within them."
+          link={PATHS.tictactoe}
         />
         <Card
-          title="Tic Tac Toe"
-          imageUrl="https://picsum.photos/900/500"
-          body="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
-          link={PATHS.tictactoe}
+          title="Bingo"
+          imageUrl="https://img.icons8.com/external-ddara-lineal-ddara/400/null/external-bingo-gaming-gambling-ddara-lineal-ddara.png"
+          body='Multiplayer app where users can create and join rooms. The race is about who first achieves "BINGO".'
+          link={PATHS.bingo}
         />
       </div>
     </div>

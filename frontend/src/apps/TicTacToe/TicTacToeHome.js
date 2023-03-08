@@ -30,7 +30,7 @@ const TicTacToeHome = () => {
               onChange={(event) => setRoomName(event.target.value)}
             />
             <button
-              className="my-2 btn btn-light btn-home"
+              className="my-3 btn btn-light btn-home"
               onClick={() =>
                 handleCreateRoom(
                   ENDPOINTS.checkTicTacToeRoom,

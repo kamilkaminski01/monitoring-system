@@ -32,7 +32,7 @@ const BingoHome = () => {
               value={roomName}
               onChange={(event) => setRoomName(event.target.value)}
             />
-            <button className="my-2 btn btn-success btn-home" onClick={() => setIsPopupOpen(true)}>
+            <button className="my-3 btn btn-success btn-home" onClick={() => setIsPopupOpen(true)}>
               Create Room
             </button>
             <button
@@ -49,7 +49,7 @@ const BingoHome = () => {
               }>
               Join Room
             </button>
-            <HomeButton className="btn-primary" />
+            <HomeButton className="btn-success" />
           </div>
           <OnlineRooms rooms={bingoRooms} path={PATHS.bingo} />
         </div>
