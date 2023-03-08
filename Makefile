@@ -15,6 +15,9 @@ run:
 down:
 	docker-compose -f $(COMPOSE_FILE) down $(if $(filter prod,$(ENV)), -v)
 
+recreate:
+	docker-compose -f $(COMPOSE_FILE) up --build --force-recreate $(if $(filter prod,$(ENV)), -d)
+
 superuser:
 	docker-compose -f $(COMPOSE_FILE) run --rm backend python manage.py createsuperuser
 
