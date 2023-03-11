@@ -7,7 +7,7 @@
   .bingo-wrapper {
     animation: fadeIn;
     animation-duration: 0.4s;
-    height: $bingo-height;
+    min-height: $game-height;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -58,20 +58,12 @@
     }
     @include for-desktop {
       flex-direction: column;
-      min-height: $bingo-height-for-desktop;
-      @include for-desktop-under-850 {
-        min-height: $bingo-height-for-desktop-under-850;
-      }
       .bingo {
         margin: 2rem;
-
         .grid {
           gap: 4px;
         }
       }
-    }
-    @include for-extra-small-phone {
-      min-height: $bingo-height-for-phones;
     }
   }
 }

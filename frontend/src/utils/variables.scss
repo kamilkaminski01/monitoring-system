@@ -7,17 +7,15 @@ $border-color: #e7e7e7;
 $black-bg: #121213;
 $violet: #6d5baf;
 
-$home-page-height: 100vh;
+$home-page-height: 86.8vh;
+$panel-page-height: 77.25vh;
+$game-home-page-height: 100vh;
+$game-height: 95.2vh;
 
 $bingo-primary-color: #262350;
 $bingo-secondary-color: #363263;
 $bingo-chat-primary-color: #1b1b21;
 $bingo-success-row: #5baf5b;
-
-$bingo-height: 94.95vh;
-$bingo-height-for-desktop-under-850: 150vh;
-$bingo-height-for-desktop: 110vh;
-$bingo-height-for-phones: 160vh;
 
 $tictactoe-primary-color: #C0C0C0;
 $tictactoe-secondary-color: #808080;
@@ -27,9 +25,5 @@ $scoreboard-bg-color: #f0f0f0;
 $tictactoe-font-family: 'Quicksand';
 $tictactoe-chat-color: #212529;
 
-$tictactoe-height: 94.95vh;
-$tictactoe-height-for-desktop-under-850: 150vh;
-$tictactoe-height-for-desktop: 110vh;
-$tictactoe-height-for-phone: 150vh;
 $tictactoe-grid-columns: 1fr 1fr 1fr;
 $tictactoe-grid-rows: 1fr 1fr 1fr;

@@ -62,16 +62,14 @@
   @include for-desktop {
     display: flex;
     align-items: center;
-    height: 20rem;
-    width: 20rem;
-    padding: 0 1rem;
-
+    height: 22rem;
+    width: 19rem;
+    padding: 0 0.75rem;
     .form {
       h2 {
         font-size: 30px;
         margin: 1rem;
       }
-
       button {
         font-size: 15px;
       }

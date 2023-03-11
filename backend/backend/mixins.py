@@ -43,7 +43,6 @@ class GameConsumerMixin(AsyncJsonWebsocketConsumer):
         if self.command == "win":
             await self.set_game_state_off()
         try:
-            print(self.scope_user)
             if self.scope_user.is_anonymous:
                 await self.channel_layer.group_send(self.room_name, data)
         except TypeError:

@@ -1,6 +1,8 @@
+@import 'utils/variables.scss';
+
 .monitoring-container {
   display: flex;
   justify-content: center;
-  min-height: 77.25vh;
+  min-height: $panel-page-height;
   margin: 4rem auto;
 }
