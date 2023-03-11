@@ -78,17 +78,20 @@ const Bingo = () => {
         await checkBingo(updatedBoardStateIndexes, gameState);
       } else if (command === 'restart') {
         const generatedBoardState = generateBoardState();
-        setBoardState([]);
+        setInitialBoardState(generatedBoardState);
         setBoardStateIndexes([]);
         setBingoState([]);
-        setGameState(true);
-        setInitialBoardState(generatedBoardState);
-        generateGrid();
+        roomDetails(detailsRoomEndpoint, roomName, true).then((data) => {
+          setBoardState(data.board_state);
+          setGameState(data.game_state);
+        });
         await putRoomDetailsPlayer(detailsPlayerEndpoint, roomName, username, {
           initial_board_state: generatedBoardState
         });
+        generateGrid();
         swalCornerSuccess('New game', 'The game has restarted');
       } else if (command === 'win') {
+        setGameState(false);
         getRoomDetailsPlayer(detailsPlayerEndpoint, roomName, username).then((data) => {
           data.is_winner
             ? swalSuccess('BINGO!', 'You won the game')
@@ -125,10 +128,7 @@ const Bingo = () => {
     playerData.bingo_state = bingoState;
     setBingoState(bingoState);
     await putRoomDetailsPlayer(detailsPlayerEndpoint, roomName, username, playerData);
-    if (playerData.is_winner && gameState) {
-      setGameState(false);
-      sendJsonMessage(WEBSOCKET_MESSAGES.win(username));
-    }
+    if (playerData.is_winner && gameState) sendJsonMessage(WEBSOCKET_MESSAGES.win(username));
   };
 
   const handleGridClick = async (key, index) => {
@@ -185,14 +185,23 @@ const Bingo = () => {
         <div className="bingo">
           <div className="scoreboard">
             <div className="username">{username}</div>
-            <div>Total players: {totalPlayers}</div>
+            <div className="d-flex">
+              Total players:
+              <div key={totalPlayers} className="total-players">
+                {totalPlayers}
+              </div>
+            </div>
             <div className="room-info">
               <div>Players limit: {playersLimit}</div>
-              <div>{playersTurn}&apos;s turn</div>
+              <div key={playersTurn} className="players-turn">
+                {playersTurn}&apos;s turn
+              </div>
             </div>
           </div>
           <div>{generateGrid()}</div>
-          <div className="bingo-state">{bingoState}</div>
+          <div key={bingoState} className="bingo-state">
+            {bingoState}
+          </div>
         </div>
         <Chat websocket={websocket} username={username} />
       </div>

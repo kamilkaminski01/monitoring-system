@@ -43,12 +43,14 @@ const TicTacToe = () => {
       if (command === 'click' && user !== username) {
         setBoardState(updatedBoardState);
       } else if (command === 'restart') {
+        setGameState(true);
         roomDetails(detailsRoomEndpoint, roomName, true).then((data) => {
           setBoardState(data.board_state);
           setGameState(data.game_state);
         });
         swalCornerSuccess('New game', 'The game has restarted');
       } else if (command === 'win') {
+        setGameState(false);
         user === username
           ? swalSuccess('Nice!', 'You won the game')
           : swalError('Sorry', 'You lost');
@@ -70,13 +72,11 @@ const TicTacToe = () => {
       const [a, b, c] = TICTACTOE.tictactoeWinRows[i];
       if (boardState[a] && boardState[a] === boardState[b] && boardState[a] === boardState[c]) {
         await putRoomDetailsPlayer(detailsPlayerEndpoint, roomName, username, { is_winner: true });
-        setGameState(false);
         return sendJsonMessage(WEBSOCKET_MESSAGES.win(username));
       }
     }
-    if (boardState.every((value) => value !== '')) {
+    if (boardState.every((value) => value !== ''))
       sendJsonMessage(WEBSOCKET_MESSAGES.over(username, boardState));
-    }
   };
 
   const handleBoardClick = async (index) => {
@@ -121,9 +121,16 @@ const TicTacToe = () => {
       <div className="tictactoe-wrapper">
         <div className="tictactoe">
           <div className="scoreboard">
-            <div>Total players: {totalPlayers}</div>
+            <div>
+              Total players:
+              <div key={totalPlayers} className="total-players">
+                {totalPlayers}
+              </div>
+            </div>
             <div>{username}</div>
-            <div>{playersTurn}&apos;s turn</div>
+            <div key={playersTurn} className="players-turn">
+              {playersTurn}&apos;s turn
+            </div>
           </div>
           <div className="board-wrapper">
             <div className="board">{boardElements}</div>

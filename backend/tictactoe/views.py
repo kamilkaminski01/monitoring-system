@@ -86,7 +86,7 @@ class TicTacToeRoomDetailsAPIView(RetrieveUpdateAPIView):
                 next_turn_player = player
                 break
         instance.players_turn = next_turn_player
-        if any(cell == "" for cell in instance.board_state):
+        if all(cell != "" for cell in self.request.data["board_state"]):
             instance.game_state = False
         serializer.save()
 
