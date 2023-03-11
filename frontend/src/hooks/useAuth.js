@@ -15,6 +15,7 @@ const useAuth = () => {
       .then((response) => {
         localStorage.setItem(LOCAL_STORAGE.accessToken, response.data.access);
         localStorage.setItem(LOCAL_STORAGE.refreshToken, response.data.refresh);
+        localStorage.setItem(LOCAL_STORAGE.username, 'admin');
         loginContext();
         navigate(PATHS.monitoring);
       })

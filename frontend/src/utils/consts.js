@@ -63,6 +63,11 @@ export const WEBSOCKET_MESSAGES = {
     user: username,
     message: `${username} won the game`
   }),
+  over: (username, key) => ({
+    command: 'over',
+    user: username,
+    value: key
+  }),
   click: (username, key) => ({
     command: 'click',
     user: username,

@@ -2,10 +2,6 @@ import { swalCornerError } from 'utils/swal';
 import { checkIfRoomExists, postRoomDetails, roomDetails } from 'utils/roomDetails';
 import { validateHomeData } from 'utils/validators';
 
-function redirectToRoom(roomName) {
-  window.location.href = `${window.location.href}/${roomName}`;
-}
-
 async function createRoom(endpoint, username, roomName, playersLimit) {
   try {
     const data = {
@@ -45,6 +41,10 @@ async function checkRoomPlayers(endpoint, roomName, username) {
   } else {
     return true;
   }
+}
+
+export function redirectToRoom(roomName) {
+  window.location.href = `${window.location.href}/${roomName}`;
 }
 
 export async function checkRoomLimit(endpoint, roomName) {

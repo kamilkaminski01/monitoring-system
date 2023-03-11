@@ -75,7 +75,7 @@ const Bingo = () => {
         const updatedBoardStateIndexes = [...boardStateIndexes, index];
         setBoardState(updatedBoardState);
         setBoardStateIndexes(updatedBoardStateIndexes);
-        await checkBingo(updatedBoardStateIndexes);
+        await checkBingo(updatedBoardStateIndexes, gameState);
       } else if (command === 'restart') {
         const generatedBoardState = generateBoardState();
         setBoardState([]);

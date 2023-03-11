@@ -5,6 +5,7 @@ from rest_framework.generics import (
     RetrieveAPIView,
     RetrieveUpdateAPIView,
 )
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.serializers import ModelSerializer
@@ -113,3 +114,10 @@ class TicTacToePlayerAPIView(RetrieveUpdateAPIView):
                 },
                 status=status.HTTP_404_NOT_FOUND,
             )
+
+
+class TicTacToeMonitoringAPIView(RetrieveAPIView):
+    serializer_class = TicTacToeRoomDetailsSerializer
+    queryset = TicTacToeRoom.objects.all()
+    lookup_field = "room_name"
+    permission_classes = [IsAuthenticated]

@@ -11,23 +11,24 @@ class BingoConsumer(GameConsumerMixin):
 
     async def receive_json(self, content: dict, **kwargs) -> None:
         await super().receive_json(content, **kwargs)
-        if self.command == "join":
-            await self.set_player_inactive_or_active(True)
-        elif self.command == "leave":
-            await self.set_player_inactive_or_active(False)
-        elif self.command == "restart":
-            await self.restart_game()
+        if self.scope_user.is_anonymous:
+            if self.command == "join":
+                await self.set_player_inactive_or_active(True)
+            elif self.command == "leave":
+                await self.set_player_inactive_or_active(False)
+            elif self.command == "restart":
+                await self.restart_game()
 
     @database_sync_to_async
     def set_player_inactive_or_active(self, status: bool) -> None:
         try:
-            room = BingoRoom.objects.get(room_name=self.url_route)
+            room = BingoRoom.objects.get(room_name=self.scope_room_name)
             player, created = BingoPlayer.objects.get_or_create(
                 username=self.user, room=room
             )
             if created:
                 room.players.add(player)
-                room.save()
+                room.players.set(room.players.all())
             player.is_active = status
             player.save()
         except BingoRoom.DoesNotExist:
@@ -35,10 +36,10 @@ class BingoConsumer(GameConsumerMixin):
 
     @database_sync_to_async
     def restart_game(self) -> None:
-        BingoRoom.objects.filter(room_name=self.url_route).update(
+        BingoRoom.objects.filter(room_name=self.scope_room_name).update(
             game_state=True, board_state=[]
         )
-        BingoRoom.objects.get(room_name=self.url_route).players.all().update(
+        BingoRoom.objects.get(room_name=self.scope_room_name).players.all().update(
             bingo_state=[], is_winner=False
         )
 

@@ -1,6 +1,7 @@
 from typing import Type
 
 from autobahn.exception import Disconnected
+from channels.auth import get_user
 from channels.db import database_sync_to_async
 from channels.generic.websocket import AsyncJsonWebsocketConsumer
 
@@ -12,9 +13,10 @@ class GameConsumerMixin(AsyncJsonWebsocketConsumer):
     player_model: Type = NotImplemented
 
     async def connect(self) -> None:
-        self.url_route = self.scope["url_route"]["kwargs"]["room_name"]
+        self.scope_user = await get_user(self.scope)
+        self.scope_room_name = self.scope["url_route"]["kwargs"]["room_name"]
         self.room_name = (
-            f"{self.game_room_model.__name__.lower()}_room_{self.url_route}"
+            f"{self.game_room_model.__name__.lower()}_room_{self.scope_room_name}"
         )
         try:
             await self.channel_layer.group_add(self.room_name, self.channel_name)
@@ -41,7 +43,9 @@ class GameConsumerMixin(AsyncJsonWebsocketConsumer):
         if self.command == "win":
             await self.set_game_state_off()
         try:
-            await self.channel_layer.group_send(self.room_name, data)
+            print(self.scope_user)
+            if self.scope_user.is_anonymous:
+                await self.channel_layer.group_send(self.room_name, data)
         except TypeError:
             print(f"failed sending to {self.game_room_model.__name__} room")
 
@@ -54,7 +58,7 @@ class GameConsumerMixin(AsyncJsonWebsocketConsumer):
 
     @database_sync_to_async
     def set_game_state_off(self):
-        self.game_room_model.objects.filter(room_name=self.url_route).update(
+        self.game_room_model.objects.filter(room_name=self.scope_room_name).update(
             game_state=False
         )
 

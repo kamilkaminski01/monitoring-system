@@ -13,7 +13,7 @@ run:
 	docker-compose -f $(COMPOSE_FILE) up $(if $(filter prod,$(ENV)), -d)
 
 down:
-	docker-compose -f $(COMPOSE_FILE) down $(if $(filter prod,$(ENV)), -v)
+	docker-compose -f $(COMPOSE_FILE) down
 
 recreate:
 	docker-compose -f $(COMPOSE_FILE) up --build --force-recreate $(if $(filter prod,$(ENV)), -d)

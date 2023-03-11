@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { LOCAL_STORAGE } from 'utils/consts';
 
 const AuthContext = React.createContext({
@@ -7,25 +7,21 @@ const AuthContext = React.createContext({
   logout: () => {}
 });
 
+const accessToken = localStorage.getItem(LOCAL_STORAGE.accessToken);
+
 const AuthContextProvider = ({ children }) => {
   const [isLogged, setIsLogged] = useState(!!localStorage.getItem(LOCAL_STORAGE.accessToken));
 
-  useEffect(() => {
-    const handleStorageChange = () => {
-      setIsLogged(!!localStorage.getItem(LOCAL_STORAGE.accessToken));
-    };
-    window.addEventListener('storage', handleStorageChange);
-
-    return () => {
-      window.removeEventListener('storage', handleStorageChange);
-    };
+  const login = useCallback(async () => {
+    setIsLogged(true);
   }, []);
 
-  const login = (accessToken, refreshToken) => {
-    localStorage.setItem(LOCAL_STORAGE.accessToken, accessToken);
-    localStorage.setItem(LOCAL_STORAGE.refreshToken, refreshToken);
-    setIsLogged(true);
-  };
+  useEffect(() => {
+    if (accessToken) {
+      login();
+    }
+  }, [login]);
+
   const logout = () => {
     localStorage.removeItem(LOCAL_STORAGE.accessToken);
     localStorage.removeItem(LOCAL_STORAGE.refreshToken);

@@ -2,17 +2,25 @@ import { useContext } from 'react';
 import { UsernameContext } from 'providers/UsernameContextProvider';
 import './OnlineRooms.scss';
 import { ENDPOINTS } from 'utils/consts';
-import { checkRoomLimit } from 'utils/handleRooms';
+import { checkRoomLimit, redirectToRoom } from 'utils/handleRooms';
+import { roomDetails } from 'utils/roomDetails';
 
 const OnlineRooms = ({ rooms, path }) => {
-  const { isUsernameSet } = useContext(UsernameContext);
+  const { username, isUsernameSet } = useContext(UsernameContext);
   const detailsEndpoint = path.includes('bingo')
     ? ENDPOINTS.detailsBingoRoom
     : ENDPOINTS.detailsTicTacToeRoom;
 
   const handleLinkClick = async (roomName) => {
-    if (await checkRoomLimit(detailsEndpoint, roomName))
-      window.location.href = `${path}/${roomName}`;
+    const room = await roomDetails(detailsEndpoint, roomName, true);
+    const isUsernameTaken = room.players.some((player) => player.username === username);
+    if (isUsernameTaken) {
+      return redirectToRoom(roomName);
+    }
+    if (!(await checkRoomLimit(detailsEndpoint, roomName))) {
+      return;
+    }
+    redirectToRoom(roomName);
   };
 
   return (

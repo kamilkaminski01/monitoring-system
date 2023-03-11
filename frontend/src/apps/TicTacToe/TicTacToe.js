@@ -8,12 +8,7 @@ import { useParams } from 'react-router-dom';
 import useWebSocket from 'react-use-websocket';
 import useUsername from 'hooks/useUsername';
 import { useTicTacToeData } from 'hooks/useTicTacToeData';
-import {
-  getRoomDetailsPlayer,
-  putRoomDetails,
-  putRoomDetailsPlayer,
-  roomDetails
-} from 'utils/roomDetails';
+import { putRoomDetails, putRoomDetailsPlayer, roomDetails } from 'utils/roomDetails';
 import { swalCornerSuccess, swalError, swalSuccess, swalWarning } from 'utils/swal';
 import { useSocketLeave } from 'hooks/useSocketLeave';
 
@@ -45,11 +40,7 @@ const TicTacToe = () => {
       const command = data.command;
       const user = data.user;
       const updatedBoardState = data.value;
-      if (command === 'click' && updatedBoardState.every((value) => value !== '')) {
-        setBoardState(updatedBoardState);
-        setGameState(false);
-        swalWarning('Game over!', 'No one won');
-      } else if (command === 'click' && user !== username) {
+      if (command === 'click' && user !== username) {
         setBoardState(updatedBoardState);
       } else if (command === 'restart') {
         roomDetails(detailsRoomEndpoint, roomName, true).then((data) => {
@@ -58,12 +49,12 @@ const TicTacToe = () => {
         });
         swalCornerSuccess('New game', 'The game has restarted');
       } else if (command === 'win') {
-        getRoomDetailsPlayer(detailsPlayerEndpoint, roomName, username).then((data) => {
-          setGameState(false);
-          data.is_winner
-            ? swalSuccess('Nice!', 'You won the game')
-            : swalError('Sorry', 'You lost');
-        });
+        user === username
+          ? swalSuccess('Nice!', 'You won the game')
+          : swalError('Sorry', 'You lost');
+      } else if (command === 'over') {
+        setGameState(false);
+        swalWarning('Game over!', 'No one won');
       }
       roomDetails(detailsRoomEndpoint, roomName, true).then((data) => {
         setTotalPlayers(data.total_players);
@@ -80,8 +71,11 @@ const TicTacToe = () => {
       if (boardState[a] && boardState[a] === boardState[b] && boardState[a] === boardState[c]) {
         await putRoomDetailsPlayer(detailsPlayerEndpoint, roomName, username, { is_winner: true });
         setGameState(false);
-        sendJsonMessage(WEBSOCKET_MESSAGES.win(username));
+        return sendJsonMessage(WEBSOCKET_MESSAGES.win(username));
       }
+    }
+    if (boardState.every((value) => value !== '')) {
+      sendJsonMessage(WEBSOCKET_MESSAGES.over(username, boardState));
     }
   };
 
