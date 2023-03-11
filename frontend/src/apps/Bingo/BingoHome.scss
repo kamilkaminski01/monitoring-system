@@ -58,13 +58,12 @@
       border-radius: 10px;
     }
   }
-
   @include for-desktop {
     display: flex;
     align-items: center;
     height: 22rem;
-    width: 19rem;
-    padding: 0 0.75rem;
+    width: 26rem;
+    padding: 0 4.2rem;
     .form {
       h2 {
         font-size: 30px;
@@ -73,6 +72,11 @@
       button {
         font-size: 15px;
       }
+    }
+    @include for-phone {
+      height: 22rem;
+      width: 19rem;
+      padding: 0 0.75rem;
     }
   }
 }
