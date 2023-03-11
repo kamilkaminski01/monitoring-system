@@ -43,7 +43,6 @@ const TicTacToe = () => {
       if (command === 'click' && user !== username) {
         setBoardState(updatedBoardState);
       } else if (command === 'restart') {
-        setGameState(true);
         roomDetails(detailsRoomEndpoint, roomName, true).then((data) => {
           setBoardState(data.board_state);
           setGameState(data.game_state);
@@ -58,10 +57,12 @@ const TicTacToe = () => {
         setGameState(false);
         swalWarning('Game over!', 'No one won');
       }
-      roomDetails(detailsRoomEndpoint, roomName, true).then((data) => {
-        setTotalPlayers(data.total_players);
-        setPlayersTurn(data.players_turn);
-      });
+      setTimeout(() => {
+        roomDetails(detailsRoomEndpoint, roomName, true).then((data) => {
+          setTotalPlayers(data.total_players);
+          setPlayersTurn(data.players_turn);
+        });
+      }, 50);
     }
   });
 

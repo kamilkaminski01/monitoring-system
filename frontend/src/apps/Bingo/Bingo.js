@@ -98,10 +98,12 @@ const Bingo = () => {
             : swalError('Sorry', 'You lost');
         });
       }
-      roomDetails(detailsRoomEndpoint, roomName, true).then((data) => {
-        setTotalPlayers(data.total_players);
-        setPlayersTurn(data.players_turn);
-      });
+      setTimeout(() => {
+        roomDetails(detailsRoomEndpoint, roomName, true).then((data) => {
+          setTotalPlayers(data.total_players);
+          setPlayersTurn(data.players_turn);
+        });
+      }, 50);
     }
   });
 

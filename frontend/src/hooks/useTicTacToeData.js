@@ -16,13 +16,14 @@ export const useTicTacToeData = (endpoint, roomName, username) => {
       setPlayersTurn(data.players_turn);
       setBoardState(data.board_state);
     });
-    getRoomDetailsPlayer(ENDPOINTS.detailsTicTacToePlayer, roomName, username).then((data) => {
-      try {
+    getRoomDetailsPlayer(ENDPOINTS.detailsTicTacToePlayer, roomName, username)
+      .then((data) => {
         setFigure(data.figure);
-      } catch (error) {
+      })
+      // eslint-disable-next-line n/handle-callback-err
+      .catch((error) => {
         setFigure('X');
-      }
-    });
+      });
   }, [endpoint, roomName, username]);
 
   return {
