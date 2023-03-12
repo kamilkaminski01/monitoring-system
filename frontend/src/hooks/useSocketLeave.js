@@ -10,7 +10,9 @@ export const useSocketLeave = (websocket, username, sendJsonMessage) => {
       if (document.visibilityState === 'hidden') {
         sendJsonMessage(WEBSOCKET_MESSAGES.leave(username));
       } else if (document.visibilityState === 'visible') {
-        sendJsonMessage(WEBSOCKET_MESSAGES.join(username));
+        setTimeout(() => {
+          sendJsonMessage(WEBSOCKET_MESSAGES.join(username));
+        }, 250);
       }
     };
     'ontouchstart' in document

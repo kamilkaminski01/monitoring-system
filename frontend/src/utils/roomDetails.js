@@ -10,9 +10,7 @@ export async function roomDetails(endpoint, roomName, returnData = false) {
   try {
     const response = await axiosDefault.get(generatePath(endpoint, { room_name: roomName }));
     return returnData ? response.data : response.data.room_exist;
-  } catch (error) {
-    return error;
-  }
+  } catch (error) {}
 }
 
 export async function postRoomDetails(endpoint, roomName, data) {

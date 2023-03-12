@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import './Bingo.scss';
 import useUsername from 'hooks/useUsername';
 import { UsernameContext } from 'providers/UsernameContextProvider';
@@ -9,16 +9,12 @@ import { BINGO, ENDPOINTS, PATHS, WEBSOCKET_MESSAGES, WEBSOCKETS } from 'utils/c
 import { generateBoardState } from 'utils/generateBoardState';
 import useWebSocket from 'react-use-websocket';
 import { swalCornerSuccess, swalError, swalSuccess, swalWarning } from 'utils/swal';
-import {
-  getRoomDetailsPlayer,
-  putRoomDetailsPlayer,
-  roomDetails,
-  putRoomDetails
-} from 'utils/roomDetails';
+import { putRoomDetailsPlayer, roomDetails, putRoomDetails } from 'utils/roomDetails';
 import { useBingoData } from 'hooks/useBingoData';
 import { useSocketLeave } from 'hooks/useSocketLeave';
 
 const Bingo = () => {
+  const navigate = useNavigate();
   const { isUsernameSet } = useContext(UsernameContext);
   const username = useUsername();
   const { roomName } = useParams();
@@ -90,19 +86,19 @@ const Bingo = () => {
         });
         generateGrid();
         swalCornerSuccess('New game', 'The game has restarted');
-      } else if (command === 'win') {
+      } else if (command === 'win' && user !== username && gameState !== false) {
         setGameState(false);
-        getRoomDetailsPlayer(detailsPlayerEndpoint, roomName, username).then((data) => {
-          data.is_winner
-            ? swalSuccess('BINGO!', 'You won the game')
-            : swalError('Sorry', 'You lost');
-        });
+        swalError('Sorry', 'You lost');
       }
       setTimeout(() => {
-        roomDetails(detailsRoomEndpoint, roomName, true).then((data) => {
-          setTotalPlayers(data.total_players);
-          setPlayersTurn(data.players_turn);
-        });
+        roomDetails(detailsRoomEndpoint, roomName, true)
+          .then((data) => {
+            setTotalPlayers(data.total_players);
+            setPlayersTurn(data.players_turn);
+          })
+          .catch(() => {
+            navigate(PATHS.bingo);
+          });
       }, 50);
     }
   });
@@ -130,7 +126,11 @@ const Bingo = () => {
     playerData.bingo_state = bingoState;
     setBingoState(bingoState);
     await putRoomDetailsPlayer(detailsPlayerEndpoint, roomName, username, playerData);
-    if (playerData.is_winner && gameState) sendJsonMessage(WEBSOCKET_MESSAGES.win(username));
+    if (playerData.is_winner && gameState) {
+      setGameState(false);
+      sendJsonMessage(WEBSOCKET_MESSAGES.win(username));
+      swalSuccess('BINGO!', 'You won the game');
+    }
   };
 
   const handleGridClick = async (key, index) => {
