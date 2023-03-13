@@ -20,8 +20,7 @@ export const useTicTacToeData = (endpoint, roomName, username) => {
       .then((data) => {
         setFigure(data.figure);
       })
-      // eslint-disable-next-line n/handle-callback-err
-      .catch((error) => {
+      .catch(() => {
         setFigure('X');
       });
   }, [endpoint, roomName, username]);

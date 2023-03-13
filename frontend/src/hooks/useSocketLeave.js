@@ -12,7 +12,7 @@ export const useSocketLeave = (websocket, username, sendJsonMessage) => {
       } else if (document.visibilityState === 'visible') {
         setTimeout(() => {
           sendJsonMessage(WEBSOCKET_MESSAGES.join(username));
-        }, 250);
+        }, 750);
       }
     };
     'ontouchstart' in document

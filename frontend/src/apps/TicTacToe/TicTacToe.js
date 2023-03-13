@@ -1,6 +1,13 @@
 import React, { useContext } from 'react';
 import './TicTacToe.scss';
-import { ENDPOINTS, PATHS, TICTACTOE, WEBSOCKET_MESSAGES, WEBSOCKETS } from 'utils/consts';
+import {
+  ENDPOINTS,
+  LOCAL_STORAGE,
+  PATHS,
+  TICTACTOE,
+  WEBSOCKET_MESSAGES,
+  WEBSOCKETS
+} from 'utils/consts';
 import { UsernameContext } from 'providers/UsernameContextProvider';
 import GameButton from 'components/atoms/GameButton';
 import Chat from 'components/organisms/Chat/Chat';
@@ -19,7 +26,9 @@ const TicTacToe = () => {
   const { roomName } = useParams();
   const detailsPlayerEndpoint = ENDPOINTS.detailsTicTacToePlayer;
   const detailsRoomEndpoint = ENDPOINTS.detailsTicTacToeRoom;
-  const websocket = `${WEBSOCKETS.tictactoe}/${roomName}/`;
+  const websocket = `${WEBSOCKETS.tictactoe}/${roomName}/?token=${localStorage.getItem(
+    LOCAL_STORAGE.accessToken
+  )}`;
   const {
     gameState,
     totalPlayers,

@@ -1,7 +1,6 @@
 from typing import Type
 
 from autobahn.exception import Disconnected
-from channels.auth import get_user
 from channels.db import database_sync_to_async
 from channels.generic.websocket import AsyncJsonWebsocketConsumer
 
@@ -13,7 +12,7 @@ class GameConsumerMixin(AsyncJsonWebsocketConsumer):
     player_model: Type = NotImplemented
 
     async def connect(self) -> None:
-        self.scope_user = await get_user(self.scope)
+        self.scope_user = self.scope["user"]
         self.scope_room_name = self.scope["url_route"]["kwargs"]["room_name"]
         self.room_name = (
             f"{self.game_room_model.__name__.lower()}_room_{self.scope_room_name}"

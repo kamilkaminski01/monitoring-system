@@ -5,7 +5,14 @@ import useUsername from 'hooks/useUsername';
 import { UsernameContext } from 'providers/UsernameContextProvider';
 import Chat from 'components/organisms/Chat/Chat';
 import GameButton from 'components/atoms/GameButton';
-import { BINGO, ENDPOINTS, PATHS, WEBSOCKET_MESSAGES, WEBSOCKETS } from 'utils/consts';
+import {
+  BINGO,
+  ENDPOINTS,
+  LOCAL_STORAGE,
+  PATHS,
+  WEBSOCKET_MESSAGES,
+  WEBSOCKETS
+} from 'utils/consts';
 import { generateBoardState } from 'utils/generateBoardState';
 import useWebSocket from 'react-use-websocket';
 import { swalCornerSuccess, swalError, swalSuccess, swalWarning } from 'utils/swal';
@@ -20,7 +27,9 @@ const Bingo = () => {
   const { roomName } = useParams();
   const detailsPlayerEndpoint = ENDPOINTS.detailsBingoPlayer;
   const detailsRoomEndpoint = ENDPOINTS.detailsBingoRoom;
-  const websocket = `${WEBSOCKETS.bingo}/${roomName}/`;
+  const websocket = `${WEBSOCKETS.bingo}/${roomName}/?token=${localStorage.getItem(
+    LOCAL_STORAGE.accessToken
+  )}`;
   const {
     gameState,
     totalPlayers,

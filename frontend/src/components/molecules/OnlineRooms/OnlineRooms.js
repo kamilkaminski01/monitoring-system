@@ -4,6 +4,7 @@ import './OnlineRooms.scss';
 import { ENDPOINTS } from 'utils/consts';
 import { checkRoomLimit, redirectToRoom } from 'utils/handleRooms';
 import { roomDetails } from 'utils/roomDetails';
+import { swalCornerError } from 'utils/swal';
 
 const OnlineRooms = ({ rooms, path }) => {
   const { username, isUsernameSet } = useContext(UsernameContext);
@@ -13,9 +14,13 @@ const OnlineRooms = ({ rooms, path }) => {
 
   const handleLinkClick = async (roomName) => {
     const room = await roomDetails(detailsEndpoint, roomName, true);
-    const isUsernameTaken = room.players.some((player) => player.username === username);
-    if (isUsernameTaken) {
-      return redirectToRoom(roomName);
+    const player = room.players.find((player) => player.username === username);
+    if (player) {
+      if (!player.is_active) {
+        return redirectToRoom(roomName);
+      } else {
+        return swalCornerError('Username error', 'Username is taken');
+      }
     }
     if (!(await checkRoomLimit(detailsEndpoint, roomName))) {
       return;
