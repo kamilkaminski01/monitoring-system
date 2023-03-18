@@ -1,0 +1,18 @@
+@import 'utils/mixins.scss';
+@import 'utils/variables.scss';
+
+@include tictactoe;
+
+.tictactoe-monitoring {
+  min-height: $monitoring-height;
+  .tictactoe-players {
+    display: flex;
+    justify-content: center;
+  }
+  .tictactoe-wrapper {
+    min-height: unset;
+    .tictactoe {
+      margin: 1.5rem;
+    }
+  }
+}

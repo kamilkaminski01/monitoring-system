@@ -31,6 +31,7 @@
   .tictactoe-body {
     background-color: $grey-dark;
     font-family: 'Catamaran', sans-serif;
+    overflow: auto;
   }
 }
 @mixin bingo {
@@ -38,6 +39,7 @@
   .bingo-body {
     background-color: $black-bg;
     font-family: 'Ubuntu', sans-serif;
+    overflow: auto;
   }
 }
 @mixin home-page {
@@ -81,5 +83,49 @@
     margin-left: 3px;
     animation: fadeIn;
     animation-duration: 0.2s;
+  }
+}
+@mixin monitoring {
+  .monitoring-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: white;
+    padding: 2rem;
+    .tictactoe-players & {
+      width: 16rem;
+      padding: 0;
+    }
+    .monitoring-data {
+      border: 1px solid $border-color;
+      border-radius: 5px;
+      padding: 1rem;
+      font-size: 1.25rem;
+      &.room-data {
+        width: 40%;
+      }
+      &.player-data {
+        width: 60%;
+      }
+      div {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .animate-data {
+        animation: fadeIn;
+        animation-duration: 0.2s;
+      }
+    }
+    @include for-tablet {
+      .tictactoe-players & {
+        width: 12rem;
+      }
+      .monitoring-data {
+        &.room-data {
+          width: 80%;
+        }
+      }
+    }
   }
 }

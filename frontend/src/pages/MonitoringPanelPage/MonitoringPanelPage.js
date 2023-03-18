@@ -10,8 +10,12 @@ const MonitoringPanelPage = () => {
 
   return (
     <div className="monitoring-container">
-      <OnlineRoomsPanel gameName="Bingo" rooms={bingoRooms} path={PATHS.bingo} />
-      <OnlineRoomsPanel gameName="Tic Tac Toe" rooms={tictactoeRooms} path={PATHS.tictactoe} />
+      <OnlineRoomsPanel gameName="Bingo" rooms={bingoRooms} path={PATHS.monitoringBingo} />
+      <OnlineRoomsPanel
+        gameName="Tic Tac Toe"
+        rooms={tictactoeRooms}
+        path={PATHS.monitoringTicTacToe}
+      />
     </div>
   );
 };

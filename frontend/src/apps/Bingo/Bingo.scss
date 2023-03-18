@@ -27,7 +27,8 @@
       .grid {
         display: grid;
         grid-template-columns: repeat(5, auto);
-        gap: 10px;
+        animation: fadeIn;
+        animation-duration: 0.4s;
         span {
           display: flex;
           justify-content: center;
@@ -38,6 +39,7 @@
           color: white;
           border: 2px solid #3a3a3c;
           font-size: 1.3em;
+          margin: 0.2rem;
           &.clicked {
             background: #3a3a3c;
           }
@@ -62,7 +64,9 @@
       .bingo {
         margin: 2rem;
         .grid {
-          gap: 4px;
+          span {
+            margin: 0.1rem;
+          }
         }
       }
     }

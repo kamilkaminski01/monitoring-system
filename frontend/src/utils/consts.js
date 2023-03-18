@@ -15,11 +15,13 @@ export const ENDPOINTS = {
   detailsBingoRoom: 'bingo/details/:room_name/',
   detailsBingoPlayer: 'bingo/details/:room_name/:username/',
   checkBingoRoom: 'bingo/check/:room_name/',
+  monitoringBingoRoom: 'bingo/monitoring/details/:room_name/',
 
   createTicTacToeRoom: 'tictactoe/details/',
   detailsTicTacToeRoom: 'tictactoe/details/:room_name/',
   detailsTicTacToePlayer: 'tictactoe/details/:room_name/:username/',
-  checkTicTacToeRoom: 'tictactoe/check/:room_name/'
+  checkTicTacToeRoom: 'tictactoe/check/:room_name/',
+  monitoringTicTacToeRoom: 'tictactoe/monitoring/details/:room_name/'
 };
 
 export const WEBSOCKETS = {
@@ -35,10 +37,13 @@ export const PATHS = {
   login: '/login',
   monitoring: '/monitoring',
   whiteboard: '/whiteboard',
+  fifteen: '/fifteen',
   bingo: '/bingo',
   tictactoe: '/tictactoe',
   bingoRoom: '/bingo/:room_name',
-  tictactoeRoom: '/tictactoe/:room_name'
+  tictactoeRoom: '/tictactoe/:room_name',
+  monitoringBingo: '/bingo/monitoring',
+  monitoringTicTacToe: '/tictactoe/monitoring'
 };
 
 export const LOCAL_STORAGE = {
@@ -81,7 +86,7 @@ export const WEBSOCKET_MESSAGES = {
 };
 
 export const BINGO = {
-  bingoWinRows: [
+  winRows: [
     [0, 1, 2, 3, 4],
     [5, 6, 7, 8, 9],
     [10, 11, 12, 13, 14],
@@ -95,11 +100,11 @@ export const BINGO = {
     [4, 9, 14, 19, 24],
     [4, 8, 12, 16, 20]
   ],
-  bingoWinState: ['B', 'I', 'N', 'G', 'O']
+  winState: ['B', 'I', 'N', 'G', 'O']
 };
 
 export const TICTACTOE = {
-  tictactoeWinRows: [
+  winRows: [
     [0, 1, 2],
     [3, 4, 5],
     [6, 7, 8],
@@ -108,5 +113,6 @@ export const TICTACTOE = {
     [2, 5, 8],
     [0, 4, 8],
     [2, 4, 6]
-  ]
+  ],
+  defaultBoardState: ['', '', '', '', '', '', '', '', '', '']
 };

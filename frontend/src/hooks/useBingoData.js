@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { roomDetails } from 'utils/roomDetails';
-import { generateBoardState } from 'utils/generateBoardState';
+import { generateBoardState } from 'utils/bingoBoardUtils';
 
 export const useBingoData = (endpoint, roomName) => {
   const [playersLimit, setPlayersLimit] = useState(0);
@@ -22,12 +22,6 @@ export const useBingoData = (endpoint, roomName) => {
     });
   }, [endpoint, roomName]);
 
-  const getBoardStateIndexes = (boardState, initialBoardState) => {
-    const indexes = boardState.map((value) => initialBoardState.indexOf(value));
-    setBoardStateIndexes(indexes);
-    return indexes;
-  };
-
   return {
     gameState,
     totalPlayers,
@@ -43,7 +37,6 @@ export const useBingoData = (endpoint, roomName) => {
     setBoardState,
     setBingoState,
     setBoardStateIndexes,
-    getBoardStateIndexes,
     setInitialBoardState
   };
 };

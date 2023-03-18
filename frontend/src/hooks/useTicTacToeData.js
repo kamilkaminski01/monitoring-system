@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
-import { getRoomDetailsPlayer, roomDetails } from 'utils/roomDetails';
-import { ENDPOINTS } from 'utils/consts';
+import { roomDetails } from 'utils/roomDetails';
 
 export const useTicTacToeData = (endpoint, roomName, username) => {
   const [totalPlayers, setTotalPlayers] = useState(0);
@@ -11,18 +10,13 @@ export const useTicTacToeData = (endpoint, roomName, username) => {
 
   useEffect(() => {
     roomDetails(endpoint, roomName, true).then((data) => {
+      const player = data.players.find((p) => p.username === username);
       setGameState(data.game_state);
       setTotalPlayers(data.total_players);
       setPlayersTurn(data.players_turn);
       setBoardState(data.board_state);
+      player ? setFigure(player.figure) : setFigure('X');
     });
-    getRoomDetailsPlayer(ENDPOINTS.detailsTicTacToePlayer, roomName, username)
-      .then((data) => {
-        setFigure(data.figure);
-      })
-      .catch(() => {
-        setFigure('X');
-      });
   }, [endpoint, roomName, username]);
 
   return {

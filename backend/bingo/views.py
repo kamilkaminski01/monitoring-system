@@ -5,6 +5,7 @@ from rest_framework.generics import (
     RetrieveAPIView,
     RetrieveUpdateAPIView,
 )
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.serializers import ModelSerializer
@@ -108,3 +109,10 @@ class BingoPlayerAPIView(RetrieveUpdateAPIView):
                 },
                 status=status.HTTP_404_NOT_FOUND,
             )
+
+
+class BingoMonitoringAPIView(RetrieveAPIView):
+    serializer_class = BingoRoomDetailsSerializer
+    queryset = BingoRoom.objects.all()
+    lookup_field = "room_name"
+    permission_classes = [IsAuthenticated]

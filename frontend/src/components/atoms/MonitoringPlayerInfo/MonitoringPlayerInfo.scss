@@ -1,0 +1,16 @@
+@import 'utils/mixins.scss';
+@import 'utils/variables.scss';
+
+@include monitoring;
+
+.monitoring-info {
+  .monitoring-data {
+    &.player-data {
+      font-size: 1rem;
+      h4 {
+        border-bottom: 1px solid white;
+        text-align: center;
+      }
+    }
+  }
+}

@@ -1,0 +1,26 @@
+@import 'utils/mixins.scss';
+@import 'utils/variables.scss';
+
+.monitoring-chat {
+  position: absolute;
+  right: 1%;
+  top: 2%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  img {
+    cursor: pointer;
+  }
+  .fade-on-open {
+    animation-duration: 0.3s;
+  }
+  .fade-on-close {
+    animation-duration: 0.2s;
+  }
+  @include for-desktop {
+    position: unset;
+    display: flex;
+    justify-content: center;
+    margin-top: 3rem;
+  }
+}

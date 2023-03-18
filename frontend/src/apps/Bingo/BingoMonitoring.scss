@@ -1,0 +1,20 @@
+@import 'utils/mixins.scss';
+@import 'utils/variables.scss';
+
+.bingo-monitoring {
+  min-height: $monitoring-height;
+  .bingo-wrapper {
+    min-height: unset;
+    .bingo {
+      margin: unset;
+      display: flex;
+      flex-direction: row;
+      .grid {
+        margin: 0 2rem 0;
+      }
+      @include for-desktop {
+        flex-direction: column;
+      }
+    }
+  }
+}

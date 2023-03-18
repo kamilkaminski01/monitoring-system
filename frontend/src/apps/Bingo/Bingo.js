@@ -5,15 +5,8 @@ import useUsername from 'hooks/useUsername';
 import { UsernameContext } from 'providers/UsernameContextProvider';
 import Chat from 'components/organisms/Chat/Chat';
 import GameButton from 'components/atoms/GameButton';
-import {
-  BINGO,
-  ENDPOINTS,
-  LOCAL_STORAGE,
-  PATHS,
-  WEBSOCKET_MESSAGES,
-  WEBSOCKETS
-} from 'utils/consts';
-import { generateBoardState } from 'utils/generateBoardState';
+import { BINGO, ENDPOINTS, PATHS, WEBSOCKET_MESSAGES, WEBSOCKETS } from 'utils/consts';
+import { generateBoardState, getBoardStateIndexes } from 'utils/bingoBoardUtils';
 import useWebSocket from 'react-use-websocket';
 import { swalCornerSuccess, swalError, swalSuccess, swalWarning } from 'utils/swal';
 import { putRoomDetailsPlayer, roomDetails, putRoomDetails } from 'utils/roomDetails';
@@ -27,9 +20,7 @@ const Bingo = () => {
   const { roomName } = useParams();
   const detailsPlayerEndpoint = ENDPOINTS.detailsBingoPlayer;
   const detailsRoomEndpoint = ENDPOINTS.detailsBingoRoom;
-  const websocket = `${WEBSOCKETS.bingo}/${roomName}/?token=${localStorage.getItem(
-    LOCAL_STORAGE.accessToken
-  )}`;
+  const websocket = `${WEBSOCKETS.bingo}/${roomName}/`;
   const {
     gameState,
     totalPlayers,
@@ -45,7 +36,6 @@ const Bingo = () => {
     setBoardState,
     setBingoState,
     setBoardStateIndexes,
-    getBoardStateIndexes,
     setInitialBoardState
   } = useBingoData(detailsRoomEndpoint, roomName);
 
@@ -59,12 +49,11 @@ const Bingo = () => {
             initial_board_state: initialBoardState
           });
         } else {
+          const indexes = getBoardStateIndexes(data.board_state, currentPlayer.initial_board_state);
+          setBoardStateIndexes(indexes);
           setInitialBoardState(currentPlayer.initial_board_state);
           generateGrid();
-          await checkBingo(
-            getBoardStateIndexes(data.board_state, currentPlayer.initial_board_state),
-            data.game_state
-          );
+          await checkBingo(indexes, data.game_state);
         }
       });
       if (isUsernameSet) sendJsonMessage(WEBSOCKET_MESSAGES.join(username));
@@ -84,20 +73,18 @@ const Bingo = () => {
       } else if (command === 'restart') {
         const generatedBoardState = generateBoardState();
         setInitialBoardState(generatedBoardState);
-        setBoardStateIndexes([]);
         setBingoState([]);
-        roomDetails(detailsRoomEndpoint, roomName, true).then((data) => {
-          setBoardState(data.board_state);
-          setGameState(data.game_state);
-        });
+        setBoardState([]);
+        setBoardStateIndexes([]);
+        setGameState(true);
         await putRoomDetailsPlayer(detailsPlayerEndpoint, roomName, username, {
           initial_board_state: generatedBoardState
         });
         generateGrid();
-        swalCornerSuccess('New game', 'The game has restarted');
+        await swalCornerSuccess('New game', 'The game has restarted');
       } else if (command === 'win' && user !== username && gameState !== false) {
         setGameState(false);
-        swalError('Sorry', 'You lost');
+        await swalError('Sorry', 'You lost');
       }
       setTimeout(() => {
         roomDetails(detailsRoomEndpoint, roomName, true)
@@ -117,11 +104,11 @@ const Bingo = () => {
   const checkBingo = async (boardStateIndexes, gameState) => {
     const bingoState = [];
     const playerData = { username };
-    for (let i = 0; i < BINGO.bingoWinRows.length && bingoState.length < 5; i++) {
-      const row = BINGO.bingoWinRows[i];
+    for (let i = 0; i < BINGO.winRows.length && bingoState.length < 5; i++) {
+      const row = BINGO.winRows[i];
       const isBingo = row.every((index) => boardStateIndexes.includes(index));
       if (isBingo) {
-        bingoState.push(BINGO.bingoWinState[bingoState.length]);
+        bingoState.push(BINGO.winState[bingoState.length]);
         row.forEach((value, index) => {
           setTimeout(() => {
             const item = document.getElementById(value);
@@ -138,7 +125,7 @@ const Bingo = () => {
     if (playerData.is_winner && gameState) {
       setGameState(false);
       sendJsonMessage(WEBSOCKET_MESSAGES.win(username));
-      swalSuccess('BINGO!', 'You won the game');
+      await swalSuccess('BINGO!', 'You won the game');
     }
   };
 

@@ -1,13 +1,6 @@
 import React, { useContext } from 'react';
 import './TicTacToe.scss';
-import {
-  ENDPOINTS,
-  LOCAL_STORAGE,
-  PATHS,
-  TICTACTOE,
-  WEBSOCKET_MESSAGES,
-  WEBSOCKETS
-} from 'utils/consts';
+import { ENDPOINTS, PATHS, TICTACTOE, WEBSOCKET_MESSAGES, WEBSOCKETS } from 'utils/consts';
 import { UsernameContext } from 'providers/UsernameContextProvider';
 import GameButton from 'components/atoms/GameButton';
 import Chat from 'components/organisms/Chat/Chat';
@@ -24,11 +17,8 @@ const TicTacToe = () => {
   const { isUsernameSet } = useContext(UsernameContext);
   const username = useUsername();
   const { roomName } = useParams();
-  const detailsPlayerEndpoint = ENDPOINTS.detailsTicTacToePlayer;
   const detailsRoomEndpoint = ENDPOINTS.detailsTicTacToeRoom;
-  const websocket = `${WEBSOCKETS.tictactoe}/${roomName}/?token=${localStorage.getItem(
-    LOCAL_STORAGE.accessToken
-  )}`;
+  const websocket = `${WEBSOCKETS.tictactoe}/${roomName}/`;
   const {
     gameState,
     totalPlayers,
@@ -53,19 +43,17 @@ const TicTacToe = () => {
       if (command === 'click' && user !== username) {
         setBoardState(updatedBoardState);
       } else if (command === 'restart') {
-        roomDetails(detailsRoomEndpoint, roomName, true).then((data) => {
-          setBoardState(data.board_state);
-          setGameState(data.game_state);
-        });
-        swalCornerSuccess('New game', 'The game has restarted');
+        setBoardState(TICTACTOE.defaultBoardState);
+        setGameState(true);
+        await swalCornerSuccess('New game', 'The game has restarted');
       } else if (command === 'win') {
         setGameState(false);
         user === username
-          ? swalSuccess('Nice!', 'You won the game')
-          : swalError('Sorry', 'You lost');
+          ? await swalSuccess('Nice!', 'You won the game')
+          : await swalError('Sorry', 'You lost');
       } else if (command === 'over') {
         setGameState(false);
-        swalWarning('Game over!', 'No one won');
+        await swalWarning('Game over!', 'No one won');
       }
       setTimeout(() => {
         roomDetails(detailsRoomEndpoint, roomName, true)
@@ -83,10 +71,12 @@ const TicTacToe = () => {
   useSocketLeave(websocket, username, sendJsonMessage);
 
   const checkWin = async (boardState) => {
-    for (let i = 0; i < TICTACTOE.tictactoeWinRows.length; i++) {
-      const [a, b, c] = TICTACTOE.tictactoeWinRows[i];
+    for (let i = 0; i < TICTACTOE.winRows.length; i++) {
+      const [a, b, c] = TICTACTOE.winRows[i];
       if (boardState[a] && boardState[a] === boardState[b] && boardState[a] === boardState[c]) {
-        await putRoomDetailsPlayer(detailsPlayerEndpoint, roomName, username, { is_winner: true });
+        await putRoomDetailsPlayer(ENDPOINTS.detailsTicTacToePlayer, roomName, username, {
+          is_winner: true
+        });
         return sendJsonMessage(WEBSOCKET_MESSAGES.win(username));
       }
     }

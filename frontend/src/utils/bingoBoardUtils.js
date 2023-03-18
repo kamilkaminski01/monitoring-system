@@ -10,3 +10,7 @@ export const generateBoardState = () => {
   }
   return boardState;
 };
+
+export const getBoardStateIndexes = (boardState, initialBoardState) => {
+  return boardState.map((value) => initialBoardState.indexOf(value));
+};

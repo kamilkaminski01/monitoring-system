@@ -12,6 +12,8 @@ import ProtectedRoutes from './components/atoms/ProtectedRoutes';
 import Whiteboard from './apps/Whiteboard/Whiteboard';
 import MonitoringPanelPage from './pages/MonitoringPanelPage/MonitoringPanelPage';
 import './App.scss';
+import BingoMonitoring from 'apps/Bingo/BingoMonitoring';
+import TicTacToeMonitoring from 'apps/TicTacToe/TicTacToeMonitoring';
 
 function App() {
   return (
@@ -33,6 +35,11 @@ function App() {
           <Route element={<SharedLayout />}>
             <Route path={PATHS.monitoring} element={<MonitoringPanelPage />} />
           </Route>
+          <Route path={`${PATHS.monitoringBingo}/:roomName`} element={<BingoMonitoring />} />
+          <Route
+            path={`${PATHS.monitoringTicTacToe}/:roomName`}
+            element={<TicTacToeMonitoring />}
+          />
         </Route>
       </Routes>
     </div>

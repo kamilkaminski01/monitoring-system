@@ -1,3 +1,4 @@
+import axiosAuth from 'setup/axios/authInstance';
 import axiosDefault from 'setup/axios/defaultInstance';
 import { generatePath } from 'react-router-dom';
 
@@ -29,19 +30,17 @@ export async function putRoomDetails(endpoint, roomName, data) {
   }
 }
 
-export async function getRoomDetailsPlayer(endpoint, roomName, username) {
-  try {
-    const response = await axiosDefault.get(
-      generatePath(endpoint, { room_name: roomName, username })
-    );
-    return response.data;
-  } catch (error) {}
-}
-
 export async function putRoomDetailsPlayer(endpoint, roomName, username, data) {
   try {
     await axiosDefault.put(generatePath(endpoint, { room_name: roomName, username }), data);
   } catch (error) {
     return error;
   }
+}
+
+export async function getAuthRoomDetails(endpoint, roomName) {
+  try {
+    const response = await axiosAuth.get(generatePath(endpoint, { room_name: roomName }));
+    return response.data;
+  } catch (error) {}
 }
