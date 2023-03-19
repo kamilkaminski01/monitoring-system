@@ -3,9 +3,8 @@ import './OnlineRoomsPanel.scss';
 
 const OnlineRoomsPanel = ({ gameName, rooms, path }) => {
   const openRoomWindow = (event, roomName) => {
-    const windowOptions = 'height=900,width=1400';
     event.preventDefault();
-    window.open(`${path}/${roomName}`, '_blank', windowOptions);
+    window.open(`${path}/${roomName}`, '_blank', 'height=900,width=1435');
   };
 
   return (
