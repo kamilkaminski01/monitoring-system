@@ -44,3 +44,10 @@ export async function getAuthRoomDetails(endpoint, roomName) {
     return response.data;
   } catch (error) {}
 }
+
+export async function deleteAuthRoom(endpoint, roomName) {
+  try {
+    const response = await axiosAuth.delete(generatePath(endpoint, { room_name: roomName }));
+    return response.data;
+  } catch (error) {}
+}

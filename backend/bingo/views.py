@@ -3,6 +3,7 @@ from rest_framework import status
 from rest_framework.generics import (
     CreateAPIView,
     RetrieveAPIView,
+    RetrieveDestroyAPIView,
     RetrieveUpdateAPIView,
 )
 from rest_framework.permissions import IsAuthenticated
@@ -111,7 +112,7 @@ class BingoPlayerAPIView(RetrieveUpdateAPIView):
             )
 
 
-class BingoMonitoringAPIView(RetrieveAPIView):
+class BingoMonitoringAPIView(RetrieveDestroyAPIView):
     serializer_class = BingoRoomDetailsSerializer
     queryset = BingoRoom.objects.all()
     lookup_field = "room_name"

@@ -11,13 +11,27 @@
     width: 70%;
     display: flex;
     justify-content: center;
+    position: relative;
     margin: 10px auto;
     padding: 1.5rem;
     border: 1px solid $border-color;
     border-radius: 5px;
     animation: fadeIn;
     animation-duration: 2s;
-
+    cursor: pointer;
+    .close-btn {
+      position: absolute;
+      top: 0;
+      right: 3px;
+      width: 17px;
+      margin-top: 2px;
+      padding: 0.03rem;
+      font-size: 14px;
+      &:hover {
+        background-color: $border-color;
+        border-radius: 4px;
+      }
+    }
     p {
       margin: 0;
     }

@@ -3,6 +3,7 @@ from rest_framework import status
 from rest_framework.generics import (
     CreateAPIView,
     RetrieveAPIView,
+    RetrieveDestroyAPIView,
     RetrieveUpdateAPIView,
 )
 from rest_framework.permissions import IsAuthenticated
@@ -116,7 +117,7 @@ class TicTacToePlayerAPIView(RetrieveUpdateAPIView):
             )
 
 
-class TicTacToeMonitoringAPIView(RetrieveAPIView):
+class TicTacToeMonitoringAPIView(RetrieveDestroyAPIView):
     serializer_class = TicTacToeRoomDetailsSerializer
     queryset = TicTacToeRoom.objects.all()
     lookup_field = "room_name"
