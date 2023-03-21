@@ -27,6 +27,7 @@ INSTALLED_APPS = [
     "bingo",
     "whiteboard",
     "tictactoe",
+    "fifteen",
 ]
 
 MIDDLEWARE = [

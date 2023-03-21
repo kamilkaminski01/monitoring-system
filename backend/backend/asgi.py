@@ -9,6 +9,7 @@ from channels.routing import ProtocolTypeRouter, URLRouter
 from django.core.asgi import get_asgi_application
 
 import bingo.routing
+import fifteen.routing
 import tictactoe.routing
 import whiteboard.routing
 
@@ -22,6 +23,7 @@ application = ProtocolTypeRouter(
                 whiteboard.routing.websocket_urlpatterns
                 + bingo.routing.websocket_urlpatterns
                 + tictactoe.routing.websocket_urlpatterns
+                + fifteen.routing.websocket_urlpatterns
             )
         ),
     }

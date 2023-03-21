@@ -6,7 +6,7 @@ from .models import BingoPlayer, BingoRoom
 
 
 class BingoConsumer(GameConsumerMixin):
-    game_room_model = BingoRoom
+    game_model = BingoRoom
     player_model = BingoPlayer
 
     async def receive_json(self, content: dict, **kwargs) -> None:
@@ -45,5 +45,5 @@ class BingoConsumer(GameConsumerMixin):
 
 
 class BingoOnlineRoomsConsumer(OnlineRoomsConsumerMixin):
-    room_type = "bingo"
+    game = "bingo"
     model = BingoRoom

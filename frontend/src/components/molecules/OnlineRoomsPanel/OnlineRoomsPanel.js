@@ -24,7 +24,7 @@ const OnlineRoomsPanel = ({ gameName, rooms, path, endpoint }) => {
               id={room.room_id}
               to={`${path}/${room.room_name}`}
               onClick={(event) => {
-                openRoomWindow(event, room.room_name);
+                event.preventDefault();
               }}>
               <p>{room.room_name}</p>
             </Link>

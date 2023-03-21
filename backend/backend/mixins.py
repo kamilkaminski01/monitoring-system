@@ -8,19 +8,19 @@ from .utils import websocket_send_event
 
 
 class GameConsumerMixin(AsyncJsonWebsocketConsumer):
-    game_room_model: Type = NotImplemented
+    game_model: Type = NotImplemented
     player_model: Type = NotImplemented
 
     async def connect(self) -> None:
         self.scope_user = self.scope["user"]
         self.scope_room_name = self.scope["url_route"]["kwargs"]["room_name"]
         self.room_name = (
-            f"{self.game_room_model.__name__.lower()}_room_{self.scope_room_name}"
+            f"{self.game_model.__name__.lower()}_room_{self.scope_room_name}"
         )
         try:
             await self.channel_layer.group_add(self.room_name, self.channel_name)
         except TypeError:
-            print(f"failed adding {self.game_room_model.__name__} room")
+            print(f"failed adding {self.game_model.__name__}")
         await self.accept()
 
     async def disconnect(self, close_code: int) -> None:
@@ -44,7 +44,7 @@ class GameConsumerMixin(AsyncJsonWebsocketConsumer):
         try:
             await self.channel_layer.group_send(self.room_name, data)
         except TypeError:
-            print(f"failed sending to {self.game_room_model.__name__} room")
+            print(f"failed sending to {self.game_model.__name__}")
 
     async def websocket_message(self, event: dict) -> None:
         field_names = ["command", "user", "message", "value"]
@@ -54,22 +54,22 @@ class GameConsumerMixin(AsyncJsonWebsocketConsumer):
             pass
 
     @database_sync_to_async
-    def set_game_state_off(self):
-        self.game_room_model.objects.filter(room_name=self.scope_room_name).update(
+    def set_game_state_off(self) -> None:
+        self.game_model.objects.filter(room_name=self.scope_room_name).update(
             game_state=False
         )
 
 
 class OnlineRoomsConsumerMixin(AsyncJsonWebsocketConsumer):
-    room_type: str = ""
+    game: str = ""
     model: Type = NotImplemented
 
     async def connect(self) -> None:
-        self.rooms = f"online_{self.room_type}_rooms"
+        self.rooms = f"online_{self.game}_rooms"
         try:
             await self.channel_layer.group_add(self.rooms, self.channel_name)
         except TypeError:
-            print(f"Failed adding {self.room_type} room to group")
+            print(f"failed adding {self.game} to group")
         await self.get_rooms()
         await self.channel_layer.group_send(
             self.rooms,

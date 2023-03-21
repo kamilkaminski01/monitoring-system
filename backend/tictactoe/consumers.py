@@ -6,7 +6,7 @@ from .models import TicTacToePlayer, TicTacToeRoom, default_board_state
 
 
 class TicTacToeConsumer(GameConsumerMixin):
-    game_room_model = TicTacToeRoom
+    game_model = TicTacToeRoom
     player_model = TicTacToePlayer
 
     async def receive_json(self, content: dict, **kwargs) -> None:
@@ -47,5 +47,5 @@ class TicTacToeConsumer(GameConsumerMixin):
 
 
 class TicTacToeOnlineRoomsConsumer(OnlineRoomsConsumerMixin):
-    room_type = "tictactoe"
+    game = "tictactoe"
     model = TicTacToeRoom
