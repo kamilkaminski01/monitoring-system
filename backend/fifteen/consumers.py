@@ -43,7 +43,6 @@ class FifteenPuzzleConsumer(AsyncJsonWebsocketConsumer):
                 await self.delete_game()
             elif self.command == "win":
                 await self.set_game_state_off()
-
         try:
             await self.channel_layer.group_send(self.scope_user_puzzle, data)
         except TypeError:

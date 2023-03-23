@@ -25,7 +25,8 @@ export const ENDPOINTS = {
 
   checkFifteenPuzzle: 'fifteen/check/:username/',
   createFifteenPuzzle: 'fifteen/details/',
-  detailsFifteenPuzzle: 'fifteen/details/:username/'
+  detailsFifteenPuzzle: 'fifteen/details/:username/',
+  monitoringFifteenPuzzle: 'fifteen/monitoring/details/:username/'
 };
 
 export const WEBSOCKETS = {
@@ -47,7 +48,8 @@ export const PATHS = {
   bingo: '/bingo',
   tictactoe: '/tictactoe',
   monitoringBingo: '/bingo/monitoring',
-  monitoringTicTacToe: '/tictactoe/monitoring'
+  monitoringTicTacToe: '/tictactoe/monitoring',
+  monitoringFifteen: '/fifteen/monitoring'
 };
 
 export const LOCAL_STORAGE = {

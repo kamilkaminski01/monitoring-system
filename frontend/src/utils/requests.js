@@ -30,12 +30,6 @@ export async function postRoomDetails(endpoint, roomName, data) {
   }
 }
 
-export async function getGameDetails(endpoint, username) {
-  try {
-    await axiosDefault.get(generatePath(endpoint, { username }));
-  } catch (error) {}
-}
-
 export async function postGameDetails(endpoint, username) {
   try {
     await axiosDefault.post(generatePath(endpoint, { username }), { username, game_state: true });
@@ -78,6 +72,20 @@ export async function getAuthRoomDetails(endpoint, roomName) {
 export async function deleteAuthRoom(endpoint, roomName) {
   try {
     const response = await axiosAuth.delete(generatePath(endpoint, { room_name: roomName }));
+    return response.data;
+  } catch (error) {}
+}
+
+export async function getAuthGameDetails(endpoint, username) {
+  try {
+    const response = await axiosAuth.get(generatePath(endpoint, { username }));
+    return response.data;
+  } catch (error) {}
+}
+
+export async function deleteAuthGame(endpoint, username) {
+  try {
+    const response = await axiosAuth.delete(generatePath(endpoint, { username }));
     return response.data;
   } catch (error) {}
 }

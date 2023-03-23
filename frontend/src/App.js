@@ -16,6 +16,7 @@ import BingoMonitoring from 'apps/Bingo/BingoMonitoring';
 import TicTacToeMonitoring from 'apps/TicTacToe/TicTacToeMonitoring';
 import FifteenHome from 'apps/Fifteen/FifteenHome';
 import Fifteen from 'apps/Fifteen/Fifteen';
+import FifteenMonitoring from 'apps/Fifteen/FifteenMonitoring';
 
 function App() {
   return (
@@ -45,6 +46,7 @@ function App() {
             path={`${PATHS.monitoringTicTacToe}/:roomName`}
             element={<TicTacToeMonitoring />}
           />
+          <Route path={`${PATHS.monitoringFifteen}/:userName`} element={<FifteenMonitoring />} />
         </Route>
       </Routes>
     </div>

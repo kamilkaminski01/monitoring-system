@@ -7,7 +7,7 @@ import { useTicTacToeMonitoringData } from 'hooks/useTicTacToeMonitoringData';
 import useUsername from 'hooks/useUsername';
 import useWebSocket from 'react-use-websocket';
 import { getAuthRoomDetails } from 'utils/requests';
-import MonitoringRoomInfo from 'components/atoms/MonitoringRoomInfo/MonitoringRoomInfo';
+import MonitoringGameInfo from 'components/atoms/MonitoringRoomInfo/MonitoringGameInfo';
 import MonitoringPlayerInfo from 'components/atoms/MonitoringPlayerInfo/MonitoringPlayerInfo';
 import MonitoringChat from 'components/atoms/MonitoringChat/MonitoringChat';
 
@@ -70,7 +70,7 @@ const TicTacToeMonitoring = () => {
 
   return (
     <div className="tictactoe-body tictactoe-monitoring">
-      <MonitoringRoomInfo
+      <MonitoringGameInfo
         roomName={roomName}
         gameState={gameState}
         totalPlayers={totalPlayers}

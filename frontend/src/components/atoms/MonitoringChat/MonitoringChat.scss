@@ -17,6 +17,9 @@
   .fade-on-close {
     animation-duration: 0.2s;
   }
+  .chat-wrapper {
+    width: 20rem;
+  }
   @include for-desktop {
     position: unset;
     display: flex;

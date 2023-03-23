@@ -3,8 +3,10 @@ from rest_framework import status
 from rest_framework.generics import (
     CreateAPIView,
     RetrieveAPIView,
+    RetrieveDestroyAPIView,
     RetrieveUpdateAPIView,
 )
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.request import Request
 from rest_framework.response import Response
 
@@ -47,3 +49,10 @@ class FifteenPuzzleDetailsAPIView(RetrieveUpdateAPIView):
                 },
                 status=status.HTTP_404_NOT_FOUND,
             )
+
+
+class FifteenPuzzleMonitoringAPIView(RetrieveDestroyAPIView):
+    serializer_class = FifteenPuzzleDetailsSerializer
+    queryset = FifteenPuzzle.objects.all()
+    lookup_field = "username"
+    permission_classes = [IsAuthenticated]

@@ -3,12 +3,13 @@ import './MonitoringRoomInfo.scss';
 import Checkmark from 'assets/icons/checkmark.svg';
 import Cancel from 'assets/icons/cancel.svg';
 
-const MonitoringRoomInfo = ({
+const MonitoringGameInfo = ({
   roomName,
   gameState,
   totalPlayers,
   playersTurn,
-  playersLimit = null
+  playersLimit = null,
+  moves = null
 }) => {
   return (
     <div className="monitoring-info">
@@ -29,21 +30,37 @@ const MonitoringRoomInfo = ({
             <div>{playersLimit}</div>
           </div>
         )}
-        <div>
-          Total active players:
-          <div key={totalPlayers} className="animate-data">
-            {totalPlayers}
+        {totalPlayers && (
+          <div>
+            Total active players:
+            <div key={totalPlayers} className="animate-data">
+              {totalPlayers}
+            </div>
           </div>
-        </div>
-        <div>
-          Players turn:
-          <div key={playersTurn} className="animate-data">
-            {playersTurn}
+        )}
+        {playersTurn && (
+          <div>
+            Players turn:
+            <div key={playersTurn} className="animate-data">
+              {playersTurn}
+            </div>
           </div>
-        </div>
+        )}
+        {moves !== null && (
+          <div>
+            Moves:
+            {moves === 0 ? (
+              <div>0</div>
+            ) : (
+              <div key={moves} className="animate-data">
+                {moves}
+              </div>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );
 };
 
-export default MonitoringRoomInfo;
+export default MonitoringGameInfo;

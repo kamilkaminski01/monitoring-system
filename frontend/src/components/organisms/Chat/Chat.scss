@@ -2,7 +2,8 @@
 @import 'utils/variables.scss';
 
 .chat-wrapper {
-  width: 18rem;
+  width: 100%;
+  max-width: 18rem;
   input {
     border: none;
     font-size: 13px;

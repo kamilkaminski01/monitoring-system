@@ -1,13 +1,13 @@
 @import 'utils/mixins.scss';
 @import 'utils/variables.scss';
 
-.rooms-container {
+.online-content-container {
   font-size: 15px;
   padding: 1.5rem;
   text-align: center;
   width: 80%;
 
-  .online-room {
+  .online-content {
     width: 70%;
     display: flex;
     justify-content: center;
@@ -37,7 +37,7 @@
     }
   }
 
-  .no-rooms {
+  .no-online {
     text-align: center;
     font-size: 1.2em;
     color: $grey-light;

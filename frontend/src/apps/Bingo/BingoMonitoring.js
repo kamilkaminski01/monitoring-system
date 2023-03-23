@@ -8,7 +8,7 @@ import useWebSocket from 'react-use-websocket';
 import { getAuthRoomDetails } from 'utils/requests';
 import { useBingoMonitoringData } from 'hooks/useBingoMonitoringData';
 import { getBoardStateIndexes } from 'utils/boards';
-import MonitoringRoomInfo from 'components/atoms/MonitoringRoomInfo/MonitoringRoomInfo';
+import MonitoringGameInfo from 'components/atoms/MonitoringRoomInfo/MonitoringGameInfo';
 import MonitoringPlayerInfo from 'components/atoms/MonitoringPlayerInfo/MonitoringPlayerInfo';
 import MonitoringChat from 'components/atoms/MonitoringChat/MonitoringChat';
 
@@ -96,7 +96,7 @@ const BingoMonitoring = () => {
 
   function generateGrid(player) {
     return (
-      <div key={player.username} className="grid">
+      <div key={player.username} className="grid" id={`grid-${player.username}`}>
         {player.initialBoardState.map((key, index) => (
           <span
             key={key}
@@ -111,7 +111,7 @@ const BingoMonitoring = () => {
 
   return (
     <div className="bingo-body bingo-monitoring">
-      <MonitoringRoomInfo
+      <MonitoringGameInfo
         roomName={roomName}
         gameState={gameState}
         totalPlayers={totalPlayers}
