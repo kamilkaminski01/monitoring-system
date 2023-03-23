@@ -3,7 +3,7 @@ import './TicTacToeHome.scss';
 import { handleCreateRoom, handleJoinRoom } from 'utils/handleRooms';
 import { ENDPOINTS, PATHS, WEBSOCKETS } from 'utils/consts';
 import { UsernameContext } from 'providers/UsernameContextProvider';
-import { useSocketRooms } from 'hooks/useSocketRooms';
+import { useSocketRoomsAndUsers } from 'hooks/useSocketRoomsAndUsers';
 import Input from 'components/atoms/Input/Input';
 import HomeButton from 'components/atoms/HomeButton';
 import OnlineRooms from 'components/molecules/OnlineRooms/OnlineRooms';
@@ -11,7 +11,7 @@ import OnlineRooms from 'components/molecules/OnlineRooms/OnlineRooms';
 const TicTacToeHome = () => {
   const { username, setUsername } = useContext(UsernameContext);
   const [roomName, setRoomName] = useState('');
-  const [tictactoeRooms] = useSocketRooms(WEBSOCKETS.tictactoeOnlineRooms);
+  const [tictactoeRooms] = useSocketRoomsAndUsers(WEBSOCKETS.tictactoeOnlineRooms);
 
   return (
     <div className="tictactoe-body">

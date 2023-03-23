@@ -21,15 +21,21 @@ export const ENDPOINTS = {
   detailsTicTacToeRoom: 'tictactoe/details/:room_name/',
   detailsTicTacToePlayer: 'tictactoe/details/:room_name/:username/',
   checkTicTacToeRoom: 'tictactoe/check/:room_name/',
-  monitoringTicTacToeRoom: 'tictactoe/monitoring/details/:room_name/'
+  monitoringTicTacToeRoom: 'tictactoe/monitoring/details/:room_name/',
+
+  checkFifteenPuzzle: 'fifteen/check/:username/',
+  createFifteenPuzzle: 'fifteen/details/',
+  detailsFifteenPuzzle: 'fifteen/details/:username/'
 };
 
 export const WEBSOCKETS = {
   whiteboard: `${SOCKET_URL}/whiteboard`,
   bingo: `${SOCKET_URL}/bingo`,
   tictactoe: `${SOCKET_URL}/tictactoe`,
+  fifteen: `${SOCKET_URL}/fifteen`,
   bingoOnlineRooms: `${SOCKET_URL}/online-rooms/bingo/`,
-  tictactoeOnlineRooms: `${SOCKET_URL}/online-rooms/tictactoe/`
+  tictactoeOnlineRooms: `${SOCKET_URL}/online-rooms/tictactoe/`,
+  fifteenOnlineUsers: `${SOCKET_URL}/online-users/fifteen/`
 };
 
 export const PATHS = {
@@ -40,8 +46,6 @@ export const PATHS = {
   fifteen: '/fifteen',
   bingo: '/bingo',
   tictactoe: '/tictactoe',
-  bingoRoom: '/bingo/:room_name',
-  tictactoeRoom: '/tictactoe/:room_name',
   monitoringBingo: '/bingo/monitoring',
   monitoringTicTacToe: '/tictactoe/monitoring'
 };

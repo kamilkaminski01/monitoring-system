@@ -26,7 +26,7 @@
   }
 }
 @mixin tictactoe {
-  @import url('https://fonts.googleapis.com/css?family=Catamaran:200');
+  @import url('https://fonts.googleapis.com/css?family=Catamaran&display=swap');
   @import url('https://fonts.googleapis.com/css?family=Quicksand');
   .tictactoe-body {
     background-color: $grey-dark;
@@ -39,6 +39,14 @@
   .bingo-body {
     background-color: $black-bg;
     font-family: 'Ubuntu', sans-serif;
+    overflow: auto;
+  }
+}
+@mixin fifteen {
+  @import url('https://fonts.googleapis.com/css2?family=Nunito&display=swap');
+  .fifteen-body {
+    background-color: $fifteen-primary-color;
+    font-family: 'Nunito', sans-serif;
     overflow: auto;
   }
 }
@@ -66,6 +74,9 @@
       margin: 0 4rem;
       .btn-home {
         font-size: 0.85rem;
+        .fifteen-body & {
+          font-size: 1.25rem;
+        }
       }
     }
   }
@@ -74,6 +85,10 @@
   .btn-game {
     padding: 0.7rem;
     margin: 0.6rem 0.2rem 0.6rem 0.6rem;
+    .info-container & {
+      padding: 0.4rem;
+      margin: 1rem;
+    }
   }
   .players-turn {
     animation: fadeIn;
@@ -83,6 +98,54 @@
     margin-left: 3px;
     animation: fadeIn;
     animation-duration: 0.2s;
+  }
+}
+@mixin online-content {
+  .online-content {
+    display: flex;
+    flex-wrap: wrap;
+    max-width: 25rem;
+    animation: fadeIn;
+    animation-duration: 2s;
+
+    .online-child {
+      color: white;
+      width: fit-content;
+      padding: 0.65rem;
+      margin: 0.25rem;
+      border-radius: 3px;
+      cursor: pointer;
+      animation: fadeIn;
+      animation-duration: 0.5s;
+      p {
+        margin: 0;
+      }
+      &.no-link {
+        cursor: default;
+      }
+      .bingo-body & {
+        background-color: $bingo-primary-color;
+        &:hover {
+          background-color: $bingo-secondary-color;
+        }
+      }
+      .tictactoe-body & {
+        background-color: $tictactoe-primary-color;
+        &:hover {
+          background-color: $tictactoe-secondary-color;
+        }
+      }
+      .fifteen-body & {
+        background-color: $fifteen-secondary-color;
+        cursor: unset;
+        &:hover {
+          background-color: $fifteen-hover-color;
+        }
+      }
+      @include for-desktop {
+        padding: 0.4rem;
+      }
+    }
   }
 }
 @mixin monitoring {

@@ -1,20 +1,19 @@
 import React, { useContext } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import './Bingo.scss';
 import useUsername from 'hooks/useUsername';
 import { UsernameContext } from 'providers/UsernameContextProvider';
 import Chat from 'components/organisms/Chat/Chat';
 import GameButton from 'components/atoms/GameButton';
 import { BINGO, ENDPOINTS, PATHS, WEBSOCKET_MESSAGES, WEBSOCKETS } from 'utils/consts';
-import { generateBoardState, getBoardStateIndexes } from 'utils/bingoBoardUtils';
+import { generateBoardState, getBoardStateIndexes } from 'utils/boards';
 import useWebSocket from 'react-use-websocket';
 import { swalCornerSuccess, swalError, swalSuccess, swalWarning } from 'utils/swal';
-import { putRoomDetailsPlayer, roomDetails, putRoomDetails } from 'utils/roomDetails';
+import { putRoomDetailsPlayer, roomDetails, putRoomDetails } from 'utils/requests';
 import { useBingoData } from 'hooks/useBingoData';
 import { useSocketLeave } from 'hooks/useSocketLeave';
 
 const Bingo = () => {
-  const navigate = useNavigate();
   const { isUsernameSet } = useContext(UsernameContext);
   const username = useUsername();
   const { roomName } = useParams();
@@ -87,14 +86,10 @@ const Bingo = () => {
         await swalError('Sorry', 'You lost');
       }
       setTimeout(() => {
-        roomDetails(detailsRoomEndpoint, roomName, true)
-          .then((data) => {
-            setTotalPlayers(data.total_players);
-            setPlayersTurn(data.players_turn);
-          })
-          .catch(() => {
-            navigate(PATHS.bingo);
-          });
+        roomDetails(detailsRoomEndpoint, roomName, true).then((data) => {
+          setTotalPlayers(data.total_players);
+          setPlayersTurn(data.players_turn);
+        });
       }, 50);
     }
   });

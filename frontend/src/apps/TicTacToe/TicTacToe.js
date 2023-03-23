@@ -4,16 +4,15 @@ import { ENDPOINTS, PATHS, TICTACTOE, WEBSOCKET_MESSAGES, WEBSOCKETS } from 'uti
 import { UsernameContext } from 'providers/UsernameContextProvider';
 import GameButton from 'components/atoms/GameButton';
 import Chat from 'components/organisms/Chat/Chat';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import useWebSocket from 'react-use-websocket';
 import useUsername from 'hooks/useUsername';
 import { useTicTacToeData } from 'hooks/useTicTacToeData';
-import { putRoomDetails, putRoomDetailsPlayer, roomDetails } from 'utils/roomDetails';
+import { putRoomDetails, putRoomDetailsPlayer, roomDetails } from 'utils/requests';
 import { swalCornerSuccess, swalError, swalSuccess, swalWarning } from 'utils/swal';
 import { useSocketLeave } from 'hooks/useSocketLeave';
 
 const TicTacToe = () => {
-  const navigate = useNavigate();
   const { isUsernameSet } = useContext(UsernameContext);
   const username = useUsername();
   const { roomName } = useParams();
@@ -56,14 +55,10 @@ const TicTacToe = () => {
         await swalWarning('Game over!', 'No one won');
       }
       setTimeout(() => {
-        roomDetails(detailsRoomEndpoint, roomName, true)
-          .then((data) => {
-            setTotalPlayers(data.total_players);
-            setPlayersTurn(data.players_turn);
-          })
-          .catch(() => {
-            navigate(PATHS.tictactoe);
-          });
+        roomDetails(detailsRoomEndpoint, roomName, true).then((data) => {
+          setTotalPlayers(data.total_players);
+          setPlayersTurn(data.players_turn);
+        });
       }, 50);
     }
   });

@@ -14,6 +14,8 @@ import MonitoringPanelPage from './pages/MonitoringPanelPage/MonitoringPanelPage
 import './App.scss';
 import BingoMonitoring from 'apps/Bingo/BingoMonitoring';
 import TicTacToeMonitoring from 'apps/TicTacToe/TicTacToeMonitoring';
+import FifteenHome from 'apps/Fifteen/FifteenHome';
+import Fifteen from 'apps/Fifteen/Fifteen';
 
 function App() {
   return (
@@ -30,6 +32,9 @@ function App() {
 
         <Route path={PATHS.tictactoe} element={<TicTacToeHome />} />
         <Route path={`${PATHS.tictactoe}/:roomName`} element={<TicTacToe />} />
+
+        <Route path={PATHS.fifteen} element={<FifteenHome />} />
+        <Route path={`${PATHS.fifteen}/:username`} element={<Fifteen />} />
 
         <Route element={<ProtectedRoutes />}>
           <Route element={<SharedLayout />}>

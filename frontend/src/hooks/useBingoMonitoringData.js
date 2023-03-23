@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { getAuthRoomDetails } from 'utils/roomDetails';
+import { getAuthRoomDetails } from 'utils/requests';
 
 export const useBingoMonitoringData = (endpoint, roomName, username) => {
   const [roomPlayers, setRoomPlayers] = useState([]);

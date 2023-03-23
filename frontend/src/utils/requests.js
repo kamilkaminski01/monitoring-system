@@ -7,6 +7,14 @@ export async function checkIfRoomExists(endpoint, roomName) {
   return !!roomExists;
 }
 
+export async function checkIfGameExists(endpoint, username) {
+  try {
+    const response = await axiosDefault.get(generatePath(endpoint, { username }));
+    const doesExist = response.data.game_exist;
+    return !!doesExist;
+  } catch (error) {}
+}
+
 export async function roomDetails(endpoint, roomName, returnData = false) {
   try {
     const response = await axiosDefault.get(generatePath(endpoint, { room_name: roomName }));
@@ -17,6 +25,28 @@ export async function roomDetails(endpoint, roomName, returnData = false) {
 export async function postRoomDetails(endpoint, roomName, data) {
   try {
     await axiosDefault.post(generatePath(endpoint, { room_name: roomName }), data);
+  } catch (error) {
+    return error;
+  }
+}
+
+export async function getGameDetails(endpoint, username) {
+  try {
+    await axiosDefault.get(generatePath(endpoint, { username }));
+  } catch (error) {}
+}
+
+export async function postGameDetails(endpoint, username) {
+  try {
+    await axiosDefault.post(generatePath(endpoint, { username }), { username, game_state: true });
+  } catch (error) {
+    return error;
+  }
+}
+
+export async function putGameDetails(endpoint, username, data) {
+  try {
+    await axiosDefault.put(generatePath(endpoint, { username }), data);
   } catch (error) {
     return error;
   }

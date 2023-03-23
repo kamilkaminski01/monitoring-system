@@ -17,7 +17,7 @@
     border: 1px solid $border-color;
     border-radius: 5px;
     animation: fadeIn;
-    animation-duration: 2s;
+    animation-duration: 0.5s;
     cursor: pointer;
     .close-btn {
       position: absolute;
@@ -42,7 +42,7 @@
     font-size: 1.2em;
     color: $grey-light;
     animation: fadeIn;
-    animation-duration: 2s;
+    animation-duration: 0.5s;
   }
 
   @include for-tablet {

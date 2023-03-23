@@ -1,12 +1,12 @@
 import React from 'react';
 import { ENDPOINTS, PATHS, WEBSOCKETS } from 'utils/consts';
-import { useSocketRooms } from 'hooks/useSocketRooms';
+import { useSocketRoomsAndUsers } from 'hooks/useSocketRoomsAndUsers';
 import './MonitoringPanelPage.scss';
 import OnlineRoomsPanel from 'components/molecules/OnlineRoomsPanel/OnlineRoomsPanel';
 
 const MonitoringPanelPage = () => {
-  const [bingoRooms] = useSocketRooms(WEBSOCKETS.bingoOnlineRooms);
-  const [tictactoeRooms] = useSocketRooms(WEBSOCKETS.tictactoeOnlineRooms);
+  const [bingoRooms] = useSocketRoomsAndUsers(WEBSOCKETS.bingoOnlineRooms);
+  const [tictactoeRooms] = useSocketRoomsAndUsers(WEBSOCKETS.tictactoeOnlineRooms);
 
   return (
     <div className="monitoring-container">

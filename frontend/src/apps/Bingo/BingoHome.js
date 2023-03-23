@@ -3,7 +3,7 @@ import { ENDPOINTS, PATHS, WEBSOCKETS } from 'utils/consts';
 import './BingoHome.scss';
 import { UsernameContext } from 'providers/UsernameContextProvider';
 import { handleCreateRoom, handleJoinRoom } from 'utils/handleRooms';
-import { useSocketRooms } from 'hooks/useSocketRooms';
+import { useSocketRoomsAndUsers } from 'hooks/useSocketRoomsAndUsers';
 import Checkbox from 'components/atoms/Checkbox/Checkbox';
 import Input from 'components/atoms/Input/Input';
 import HomeButton from 'components/atoms/HomeButton';
@@ -14,7 +14,7 @@ const BingoHome = () => {
   const [roomName, setRoomName] = useState('');
   const [playersLimit, setPlayersLimit] = useState('');
   const [isPopupOpen, setIsPopupOpen] = useState(false);
-  const [bingoRooms] = useSocketRooms(WEBSOCKETS.bingoOnlineRooms);
+  const [bingoRooms] = useSocketRoomsAndUsers(WEBSOCKETS.bingoOnlineRooms);
 
   return (
     <div className="bingo-body">

@@ -8,17 +8,21 @@
     font-size: 13px;
     .bingo-body & {
       background: $bingo-chat-primary-color;
-      &:focus {
-        background: $bingo-chat-primary-color !important;
-        color: white;
-      }
     }
     .tictactoe-body & {
       background: $tictactoe-primary-color;
       &:focus {
-        background: $tictactoe-secondary-color !important;
-        color: white;
+        color: $tictactoe-chat-color;
       }
+      &::placeholder {
+        color: $tictactoe-chat-color;
+      }
+    }
+    .fifteen-body & {
+      background: $fifteen-board-color !important;
+    }
+    &:focus {
+      color: white;
     }
     &::placeholder {
       color: white;
@@ -26,6 +30,7 @@
   }
   .chat {
     padding: 1rem;
+    width: 100%;
     min-height: 450px;
     max-height: 450px;
     overflow-y: auto;
@@ -55,18 +60,21 @@
     .tictactoe-body & {
       background-color: $tictactoe-board-color;
       .centered-message {
-        font-size: 17px;
         color: $tictactoe-chat-color;
       }
       h6 {
-        font-size: 17px;
         color: $tictactoe-chat-color;
         border-bottom: 1px solid white;
       }
       .message {
-        font-size: 17px;
         color: $tictactoe-chat-color;
         border-bottom: 1px solid white;
+      }
+    }
+    .fifteen-body & {
+      background-color: $fifteen-board-color;
+      .message {
+        border-bottom: 1px solid $fifteen-hover-color;
       }
     }
     h6 {
@@ -76,7 +84,8 @@
     }
   }
   @include for-desktop {
-    width: 20rem;
+    width: 80%;
+    max-width: 20rem;
     margin-bottom: 3rem;
     padding: 0.7rem;
   }

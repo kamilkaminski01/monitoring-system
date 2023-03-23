@@ -24,6 +24,18 @@ def send_room_signal(channel_name, instance, command):
         print(f"failed sending {command}")
 
 
+def send_user_signal(channel_name, instance, command):
+    data = {
+        "type": "websocket_user_added_or_deleted",
+        "command": command,
+        "username": instance.username,
+    }
+    try:
+        async_to_sync(channel_layer.group_send)(channel_name, data)
+    except TypeError:
+        print(f"failed sending {command}")
+
+
 def update_total_players(room_model, player_model, player_instance):
     room_instance = player_instance.room
     active_players = player_model.objects.filter(room=room_instance, is_active=True)

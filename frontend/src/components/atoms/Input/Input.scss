@@ -2,6 +2,10 @@
 
 .home-input {
   font-size: 1.25rem;
+  .fifteen-body & {
+    text-align: center;
+    font-size: 1.25rem;
+  }
 
   @include for-desktop {
     font-size: 0.9rem;

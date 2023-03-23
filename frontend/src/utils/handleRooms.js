@@ -1,6 +1,12 @@
 import { swalCornerError } from 'utils/swal';
-import { checkIfRoomExists, postRoomDetails, roomDetails } from 'utils/roomDetails';
-import { validateHomeData } from 'utils/validators';
+import {
+  checkIfGameExists,
+  checkIfRoomExists,
+  postGameDetails,
+  postRoomDetails,
+  roomDetails
+} from 'utils/requests';
+import { validateCreateGameData, validateHomeData } from 'utils/validators';
 
 async function createRoom(endpoint, username, roomName, playersLimit) {
   try {
@@ -12,7 +18,14 @@ async function createRoom(endpoint, username, roomName, playersLimit) {
       data.players_limit = playersLimit;
     }
     await postRoomDetails(endpoint, roomName, data);
-    redirectToRoom(roomName);
+    redirectToLocation(roomName);
+  } catch (error) {}
+}
+
+async function createGame(endpoint, username) {
+  try {
+    await postGameDetails(endpoint, username);
+    redirectToLocation(username);
   } catch (error) {}
 }
 
@@ -27,7 +40,7 @@ async function joinRoom(detailsEndpoint, createEndpoint, username, roomName) {
       (await checkRoomPlayers(detailsEndpoint, roomName, username))
     ) {
       await postRoomDetails(createEndpoint, roomName, data);
-      redirectToRoom(roomName);
+      redirectToLocation(roomName);
     }
   } catch (error) {}
 }
@@ -43,8 +56,8 @@ async function checkRoomPlayers(endpoint, roomName, username) {
   }
 }
 
-export function redirectToRoom(roomName) {
-  window.location.href = `${window.location.href}/${roomName}`;
+export function redirectToLocation(location) {
+  window.location.href = `${window.location.href}/${location}`;
 }
 
 export async function checkRoomLimit(endpoint, roomName) {
@@ -66,7 +79,7 @@ export const handleCreateRoom = async (
   roomName,
   playersLimit = null
 ) => {
-  if (validateHomeData(checkEndpoint, username, roomName, playersLimit)) {
+  if (validateHomeData(username, roomName, playersLimit)) {
     !(await checkIfRoomExists(checkEndpoint, roomName))
       ? await createRoom(createEndpoint, username, roomName, playersLimit)
       : swalCornerError('Room error', 'Room already exists');
@@ -80,9 +93,17 @@ export const handleJoinRoom = async (
   username,
   roomName
 ) => {
-  if (validateHomeData(checkEndpoint, username, roomName)) {
+  if (validateHomeData(username, roomName)) {
     (await checkIfRoomExists(checkEndpoint, roomName))
       ? await joinRoom(detailsEndpoint, createEndpoint, username, roomName)
       : swalCornerError('Room error', 'Room does not exist');
+  }
+};
+
+export const handleCreateGame = async (checkEndpoint, createEndpoint, username) => {
+  if (validateCreateGameData(username)) {
+    !(await checkIfGameExists(checkEndpoint, username))
+      ? await createGame(createEndpoint, username)
+      : swalCornerError('Game error', 'This user is already in a game');
   }
 };

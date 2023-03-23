@@ -2,6 +2,7 @@ from autobahn.exception import Disconnected
 from channels.db import database_sync_to_async
 from channels.generic.websocket import AsyncJsonWebsocketConsumer
 
+from backend.mixins import OnlineUsersConsumerMixin
 from backend.utils import websocket_send_event
 
 from .models import FifteenPuzzle
@@ -37,6 +38,12 @@ class FifteenPuzzleConsumer(AsyncJsonWebsocketConsumer):
             "message": self.message,
             "value": self.value,
         }
+        if self.scope_user.is_anonymous:
+            if self.command == "leave":
+                await self.delete_game()
+            elif self.command == "win":
+                await self.set_game_state_off()
+
         try:
             await self.channel_layer.group_send(self.scope_user_puzzle, data)
         except TypeError:
@@ -49,39 +56,21 @@ class FifteenPuzzleConsumer(AsyncJsonWebsocketConsumer):
         except Disconnected:
             pass
 
-
-class FifteenPuzzleOnlineUsersConsumer(AsyncJsonWebsocketConsumer):
-    async def connect(self) -> None:
-        self.puzzles = "online_puzzles"
+    @database_sync_to_async
+    def delete_game(self) -> None:
         try:
-            await self.channel_layer.group_add(self.puzzles, self.channel_name)
-        except TypeError:
-            print(f"failed adding {self.puzzles} to group")
-        await self.get_puzzles()
-        await self.channel_layer.group_send(
-            self.puzzles,
-            {
-                "type": "websocket_online_puzzles",
-                "command": "online_rooms",
-                "online_puzzles": self.online_puzzles,
-            },
-        )
-        await self.accept()
-
-    async def websocket_online_puzzles(self, event: dict) -> None:
-        field_names = ["command", "online_puzzles"]
-        await websocket_send_event(self, event, field_names)
-
-    async def websocket_puzzle_added_or_deleted(self, event: dict) -> None:
-        field_names = ["command", "username", "username_id"]
-        await websocket_send_event(self, event, field_names)
-
-    async def disconnect(self, code: int) -> None:
-        await self.channel_layer.group_discard(self.puzzles, self.channel_name)
-        await super().disconnect(code)
+            game = FifteenPuzzle.objects.get(username=self.user)
+            game.delete()
+        except FifteenPuzzle.DoesNotExist:
+            print("fifteen puzzle does not exist")
 
     @database_sync_to_async
-    def get_puzzles(self) -> None:
-        self.online_puzzles = [
-            {"username": user.username} for user in FifteenPuzzle.objects.all()
-        ]
+    def set_game_state_off(self) -> None:
+        FifteenPuzzle.objects.filter(username=self.scope_user_puzzle).update(
+            game_state=False
+        )
+
+
+class FifteenPuzzleOnlineUsersConsumer(OnlineUsersConsumerMixin):
+    app = "fifteen_puzzle"
+    model = FifteenPuzzle

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import './OnlineRoomsPanel.scss';
-import { deleteAuthRoom } from 'utils/roomDetails';
+import { deleteAuthRoom } from 'utils/requests';
 
 const OnlineRoomsPanel = ({ gameName, rooms, path, endpoint }) => {
   const openRoomWindow = (event, roomName) => {

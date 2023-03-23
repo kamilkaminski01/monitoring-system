@@ -6,7 +6,7 @@ import { useParams } from 'react-router-dom';
 import { useTicTacToeMonitoringData } from 'hooks/useTicTacToeMonitoringData';
 import useUsername from 'hooks/useUsername';
 import useWebSocket from 'react-use-websocket';
-import { getAuthRoomDetails } from 'utils/roomDetails';
+import { getAuthRoomDetails } from 'utils/requests';
 import MonitoringRoomInfo from 'components/atoms/MonitoringRoomInfo/MonitoringRoomInfo';
 import MonitoringPlayerInfo from 'components/atoms/MonitoringPlayerInfo/MonitoringPlayerInfo';
 import MonitoringChat from 'components/atoms/MonitoringChat/MonitoringChat';

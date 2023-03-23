@@ -99,3 +99,43 @@ class OnlineRoomsConsumerMixin(AsyncJsonWebsocketConsumer):
             {"room_name": room.room_name, "room_id": room.id}
             for room in self.model.objects.all()
         ]
+
+
+class OnlineUsersConsumerMixin(AsyncJsonWebsocketConsumer):
+    app: str = ""
+    model: Type = NotImplemented
+
+    async def connect(self) -> None:
+        self.users = f"online_{self.app}_users"
+        try:
+            await self.channel_layer.group_add(self.users, self.channel_name)
+        except TypeError:
+            print(f"failed adding {self.users} to group")
+        await self.get_users()
+        await self.channel_layer.group_send(
+            self.users,
+            {
+                "type": "websocket_online_users",
+                "command": "online_users",
+                "online_users": self.online_users,
+            },
+        )
+        await self.accept()
+
+    async def websocket_online_users(self, event: dict) -> None:
+        field_names = ["command", "online_users"]
+        await websocket_send_event(self, event, field_names)
+
+    async def websocket_user_added_or_deleted(self, event: dict) -> None:
+        field_names = ["command", "username"]
+        await websocket_send_event(self, event, field_names)
+
+    async def disconnect(self, code: int) -> None:
+        await self.channel_layer.group_discard(self.users, self.channel_name)
+        await super().disconnect(code)
+
+    @database_sync_to_async
+    def get_users(self) -> None:
+        self.online_users = [
+            {"username": user.username} for user in self.model.objects.all()
+        ]
