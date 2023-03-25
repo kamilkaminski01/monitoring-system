@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { roomDetails } from 'utils/requests';
-import { PATHS } from 'utils/consts';
 import { useNavigate } from 'react-router-dom';
 
 export const useTicTacToeData = (endpoint, roomName, username) => {
@@ -12,19 +11,17 @@ export const useTicTacToeData = (endpoint, roomName, username) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    roomDetails(endpoint, roomName, true)
-      .then((data) => {
+    setTimeout(() => {
+      roomDetails(endpoint, roomName, true).then((data) => {
         const player = data.players.find((p) => p.username === username);
         setGameState(data.game_state);
         setTotalPlayers(data.total_players);
         setPlayersTurn(data.players_turn);
         setBoardState(data.board_state);
-        player ? setFigure(player.figure) : setFigure('X');
-      })
-      .catch(() => {
-        navigate(PATHS.tictactoe);
+        setFigure(player.figure);
       });
-  }, [endpoint, navigate, roomName, username]);
+    }, 50);
+  }, [endpoint, roomName, username]);
 
   return {
     gameState,
@@ -35,6 +32,7 @@ export const useTicTacToeData = (endpoint, roomName, username) => {
     setGameState,
     setTotalPlayers,
     setPlayersTurn,
-    setBoardState
+    setBoardState,
+    navigate
   };
 };

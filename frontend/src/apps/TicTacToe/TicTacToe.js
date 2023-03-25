@@ -27,7 +27,8 @@ const TicTacToe = () => {
     setGameState,
     setTotalPlayers,
     setPlayersTurn,
-    setBoardState
+    setBoardState,
+    navigate
   } = useTicTacToeData(detailsRoomEndpoint, roomName, username);
 
   const { sendJsonMessage } = useWebSocket(websocket, {
@@ -55,10 +56,14 @@ const TicTacToe = () => {
         await swalWarning('Game over!', 'No one won');
       }
       setTimeout(() => {
-        roomDetails(detailsRoomEndpoint, roomName, true).then((data) => {
-          setTotalPlayers(data.total_players);
-          setPlayersTurn(data.players_turn);
-        });
+        roomDetails(detailsRoomEndpoint, roomName, true)
+          .then((data) => {
+            setTotalPlayers(data.total_players);
+            setPlayersTurn(data.players_turn);
+          })
+          .catch(() => {
+            navigate(PATHS.tictactoe);
+          });
       }, 50);
     }
   });

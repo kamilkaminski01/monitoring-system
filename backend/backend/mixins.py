@@ -32,7 +32,7 @@ class GameConsumerMixin(AsyncJsonWebsocketConsumer):
         self.message = content.get("message", None)
         self.user = content.get("user", None)
         self.value = content.get("value", None)
-        data = {
+        self.data = {
             "type": "websocket_message",
             "command": self.command,
             "user": self.user,
@@ -41,10 +41,11 @@ class GameConsumerMixin(AsyncJsonWebsocketConsumer):
         }
         if self.command == "win":
             await self.set_game_state_off()
-        try:
-            await self.channel_layer.group_send(self.room_name, data)
-        except TypeError:
-            print(f"failed sending to {self.game_model.__name__}")
+        elif self.command == "message":
+            try:
+                await self.channel_layer.group_send(self.room_name, self.data)
+            except TypeError:
+                print(f"failed sending to {self.game_model.__name__}")
 
     async def websocket_message(self, event: dict) -> None:
         field_names = ["command", "user", "message", "value"]

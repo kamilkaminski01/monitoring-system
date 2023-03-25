@@ -32,7 +32,12 @@ class BingoPlayerSerializer(serializers.ModelSerializer):
 
 
 class BingoRoomDetailsSerializer(serializers.ModelSerializer):
-    players = BingoPlayerSerializer(many=True, read_only=True)
+    players = serializers.SerializerMethodField()
+
+    def get_players(self, obj):
+        players = obj.players.all().order_by("id")
+        return BingoPlayerSerializer(players, many=True).data
+
     players_turn = serializers.CharField(
         source="players_turn.username", allow_null=True, read_only=True
     )

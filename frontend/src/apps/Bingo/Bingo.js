@@ -35,7 +35,8 @@ const Bingo = () => {
     setBoardState,
     setBingoState,
     setBoardStateIndexes,
-    setInitialBoardState
+    setInitialBoardState,
+    navigate
   } = useBingoData(detailsRoomEndpoint, roomName);
 
   const { sendJsonMessage } = useWebSocket(websocket, {
@@ -71,10 +72,10 @@ const Bingo = () => {
         await checkBingo(updatedBoardStateIndexes, gameState);
       } else if (command === 'restart') {
         const generatedBoardState = generateBoardState();
-        setInitialBoardState(generatedBoardState);
-        setBingoState([]);
         setBoardState([]);
         setBoardStateIndexes([]);
+        setBingoState([]);
+        setInitialBoardState(generatedBoardState);
         setGameState(true);
         await putRoomDetailsPlayer(detailsPlayerEndpoint, roomName, username, {
           initial_board_state: generatedBoardState
@@ -86,10 +87,14 @@ const Bingo = () => {
         await swalError('Sorry', 'You lost');
       }
       setTimeout(() => {
-        roomDetails(detailsRoomEndpoint, roomName, true).then((data) => {
-          setTotalPlayers(data.total_players);
-          setPlayersTurn(data.players_turn);
-        });
+        roomDetails(detailsRoomEndpoint, roomName, true)
+          .then((data) => {
+            setTotalPlayers(data.total_players);
+            setPlayersTurn(data.players_turn);
+          })
+          .catch(() => {
+            navigate(PATHS.bingo);
+          });
       }, 50);
     }
   });
@@ -149,7 +154,7 @@ const Bingo = () => {
             key={key}
             id={index}
             onClick={() => handleGridClick(key, index)}
-            className={boardState.includes(key) ? 'clicked' : ''}>
+            className={boardState.includes(key) ? 'clicked' : 'animated-data'}>
             {key}
           </span>
         ))}

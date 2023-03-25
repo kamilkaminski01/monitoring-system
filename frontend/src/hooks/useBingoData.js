@@ -27,7 +27,7 @@ export const useBingoData = (endpoint, roomName) => {
       .catch(() => {
         navigate(PATHS.bingo);
       });
-  }, [endpoint, navigate, roomName]);
+  }, [endpoint, roomName, navigate]);
 
   return {
     gameState,
@@ -44,6 +44,7 @@ export const useBingoData = (endpoint, roomName) => {
     setBoardState,
     setBingoState,
     setBoardStateIndexes,
-    setInitialBoardState
+    setInitialBoardState,
+    navigate
   };
 };

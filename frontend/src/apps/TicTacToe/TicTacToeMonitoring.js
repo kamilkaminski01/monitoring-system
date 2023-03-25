@@ -55,8 +55,8 @@ const TicTacToeMonitoring = () => {
           .catch(() => {
             window.close();
           });
-      }, 100);
-      if (data.command === 'click') {
+      }, 50);
+      if (data.command === 'click' && data.command !== 'restart') {
         setBoardState(data.value);
       }
     }

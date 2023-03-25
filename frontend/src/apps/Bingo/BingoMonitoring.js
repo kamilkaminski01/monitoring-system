@@ -54,7 +54,6 @@ const BingoMonitoring = () => {
                 initialBoardState: player.initial_board_state
               };
             });
-            setBoardState(data.board_state);
             setRoomPlayers(playersData);
             setTotalPlayers(data.total_players);
             setPlayersTurn(data.players_turn);
@@ -63,13 +62,15 @@ const BingoMonitoring = () => {
           .catch(() => {
             window.close();
           });
-      }, 100);
+      }, 50);
       if (command === 'click') {
         const updatedBoardState = [...boardState, data.value];
         setBoardState(updatedBoardState);
         roomPlayers.forEach((player) => {
           checkBingo(updatedBoardState, player);
         });
+      } else if (command === 'restart') {
+        setBoardState([]);
       }
     }
   });
@@ -101,7 +102,7 @@ const BingoMonitoring = () => {
           <span
             key={key}
             id={`${player.username}-${index}`}
-            className={boardState.includes(key) ? 'clicked' : ''}>
+            className={boardState.includes(key) ? 'clicked' : 'animated-data'}>
             {key}
           </span>
         ))}

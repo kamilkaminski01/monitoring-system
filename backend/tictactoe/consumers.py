@@ -18,6 +18,12 @@ class TicTacToeConsumer(GameConsumerMixin):
                 await self.set_player_inactive_or_active(False)
             elif self.command == "restart":
                 await self.restart_game()
+            elif self.command == "message":
+                return
+            try:
+                await self.channel_layer.group_send(self.room_name, self.data)
+            except TypeError:
+                print(f"failed sending to {self.game_model}")
 
     @database_sync_to_async
     def set_player_inactive_or_active(self, status: bool) -> None:

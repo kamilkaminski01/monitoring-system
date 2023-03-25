@@ -14,6 +14,10 @@
     .bingo {
       margin: 8rem;
       font-weight: bolder;
+      .animated-data {
+        animation: fadeIn;
+        animation-duration: 0.3s;
+      }
       .scoreboard {
         color: white;
         .username {
