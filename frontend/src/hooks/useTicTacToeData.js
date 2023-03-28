@@ -20,7 +20,7 @@ export const useTicTacToeData = (endpoint, roomName, username) => {
         setBoardState(data.board_state);
         setFigure(player.figure);
       });
-    }, 50);
+    }, 100);
   }, [endpoint, roomName, username]);
 
   return {

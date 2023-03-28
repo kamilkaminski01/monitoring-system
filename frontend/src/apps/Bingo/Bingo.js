@@ -64,12 +64,17 @@ const Bingo = () => {
       const user = data.user;
       const value = data.value;
       const index = initialBoardState.indexOf(value);
-      if (command === 'click' && user !== username) {
+      if ((command === 'click' || command === 'win') && user !== username && gameState !== false) {
         const updatedBoardState = [...boardState, value];
         const updatedBoardStateIndexes = [...boardStateIndexes, index];
         setBoardState(updatedBoardState);
         setBoardStateIndexes(updatedBoardStateIndexes);
-        await checkBingo(updatedBoardStateIndexes, gameState);
+        if (command === 'win') {
+          setGameState(false);
+          await swalError('Sorry', 'You lost');
+        } else {
+          await checkBingo(updatedBoardStateIndexes, gameState);
+        }
       } else if (command === 'restart') {
         const generatedBoardState = generateBoardState();
         setBoardState([]);
@@ -82,9 +87,6 @@ const Bingo = () => {
         });
         generateGrid();
         await swalCornerSuccess('New game', 'The game has restarted');
-      } else if (command === 'win' && user !== username && gameState !== false) {
-        setGameState(false);
-        await swalError('Sorry', 'You lost');
       }
       setTimeout(() => {
         roomDetails(detailsRoomEndpoint, roomName, true)

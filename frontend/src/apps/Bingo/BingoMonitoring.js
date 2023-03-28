@@ -62,7 +62,7 @@ const BingoMonitoring = () => {
           .catch(() => {
             window.close();
           });
-      }, 50);
+      }, 100);
       if (command === 'click') {
         const updatedBoardState = [...boardState, data.value];
         setBoardState(updatedBoardState);
