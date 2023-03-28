@@ -18,7 +18,7 @@ export const useTicTacToeData = (endpoint, roomName, username) => {
         setTotalPlayers(data.total_players);
         setPlayersTurn(data.players_turn);
         setBoardState(data.board_state);
-        player.figure ? setFigure(player.figure) : setFigure('X');
+        player ? setFigure(player.figure) : setFigure('X');
       });
     }, 100);
   }, [endpoint, roomName, username]);

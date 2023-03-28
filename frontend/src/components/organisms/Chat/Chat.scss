@@ -7,11 +7,13 @@
   input {
     border: none;
     font-size: 13px;
+    color: white;
     .bingo-body & {
       background: $bingo-chat-primary-color;
     }
     .tictactoe-body & {
       background: $tictactoe-primary-color;
+      color: $tictactoe-chat-color;
       &:focus {
         color: $tictactoe-chat-color;
       }

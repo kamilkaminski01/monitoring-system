@@ -77,13 +77,10 @@ const BingoMonitoring = () => {
 
   const checkBingo = (boardState, player) => {
     const boardStateIndexes = getBoardStateIndexes(boardState, player.initialBoardState);
-    const bingoState = [];
-    for (let i = 0; i < BINGO.winRows.length && bingoState.length < 5; i++) {
+    for (let i = 0; i < BINGO.winRows.length; i++) {
       const row = BINGO.winRows[i];
       const isBingo = row.every((index) => boardStateIndexes.includes(index));
       if (isBingo) {
-        bingoState.push(BINGO.winState[bingoState.length]);
-        player.bingoState = bingoState;
         row.forEach((value, index) => {
           setTimeout(() => {
             const item = document.getElementById(`${player.username}-${value}`);
@@ -97,7 +94,7 @@ const BingoMonitoring = () => {
 
   function generateGrid(player) {
     return (
-      <div key={player.username} className="grid" id={`grid-${player.username}`}>
+      <div key={player.username} className="grid">
         {player.initialBoardState.map((key, index) => (
           <span
             key={key}
