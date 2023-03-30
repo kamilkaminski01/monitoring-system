@@ -1,0 +1,41 @@
+import React from 'react';
+import './OnlinePanel.scss';
+import { deleteAuthGame, deleteAuthRoom } from 'utils/requests';
+
+const OnlinePanel = ({ gameName, items, path, endpoint, panelType }) => {
+  const handleClick = (event, gameName, path, item) => {
+    event.preventDefault();
+    const location = panelType === 'users' ? item.username : item.room_name;
+    window.open(`${path}/${location}`, `${gameName}/${location}`, 'height=900,width=1435');
+  };
+
+  const handleDelete = async (event, item) => {
+    event.stopPropagation();
+    panelType === 'users'
+      ? await deleteAuthGame(endpoint, item.username)
+      : await deleteAuthRoom(endpoint, item.room_name);
+  };
+
+  return (
+    <div className="online-content-container">
+      <h2>{gameName}</h2>
+      {items.length ? (
+        items.map((item) => (
+          <div
+            className="online-content"
+            key={panelType === 'users' ? item.username : item.room_id}
+            onClick={(event) => handleClick(event, gameName, path, item)}>
+            <p>{panelType === 'users' ? item.username : item.room_name}</p>
+            <div className="close-btn" onClick={(event) => handleDelete(event, item)}>
+              &times;
+            </div>
+          </div>
+        ))
+      ) : (
+        <p className="no-online">No online {panelType}</p>
+      )}
+    </div>
+  );
+};
+
+export default OnlinePanel;

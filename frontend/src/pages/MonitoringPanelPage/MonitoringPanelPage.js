@@ -2,8 +2,7 @@ import React from 'react';
 import { ENDPOINTS, PATHS, WEBSOCKETS } from 'utils/consts';
 import { useSocketRoomsAndUsers } from 'hooks/useSocketRoomsAndUsers';
 import './MonitoringPanelPage.scss';
-import OnlineRoomsPanel from 'components/molecules/OnlinePanels/OnlineRoomsPanel';
-import OnlineUsersPanel from 'components/molecules/OnlinePanels/OnlineUsersPanel';
+import OnlinePanel from 'components/molecules/OnlinePanel/OnlinePanel';
 
 const MonitoringPanelPage = () => {
   const [bingoRooms] = useSocketRoomsAndUsers(WEBSOCKETS.bingoOnlineRooms);
@@ -12,23 +11,26 @@ const MonitoringPanelPage = () => {
 
   return (
     <div className="monitoring-container">
-      <OnlineUsersPanel
+      <OnlinePanel
         gameName="Fifteen Puzzle"
-        users={fifteenUsers}
+        items={fifteenUsers}
         path={PATHS.monitoringFifteen}
         endpoint={ENDPOINTS.monitoringFifteenPuzzle}
+        panelType={'users'}
       />
-      <OnlineRoomsPanel
+      <OnlinePanel
         gameName="Tic Tac Toe"
-        rooms={tictactoeRooms}
+        items={tictactoeRooms}
         path={PATHS.monitoringTicTacToe}
         endpoint={ENDPOINTS.monitoringTicTacToeRoom}
+        panelType={'rooms'}
       />
-      <OnlineRoomsPanel
+      <OnlinePanel
         gameName="Bingo"
-        rooms={bingoRooms}
+        items={bingoRooms}
         path={PATHS.monitoringBingo}
         endpoint={ENDPOINTS.monitoringBingoRoom}
+        panelType={'rooms'}
       />
     </div>
   );

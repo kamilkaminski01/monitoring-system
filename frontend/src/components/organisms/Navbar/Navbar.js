@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import './Navbar.scss';
 import { PATHS } from 'utils/consts';
 import { AuthContext } from 'providers/AuthContextProvider';
@@ -16,7 +16,11 @@ export default function Navbar() {
         {isLogged ? (
           <>
             <li>
-              <Link to={PATHS.monitoring}>Monitoring Panel</Link>
+              <NavLink
+                to={PATHS.monitoring}
+                className={({ isActive }) => (isActive ? 'active-link' : 'inactive-link')}>
+                Monitoring Panel
+              </NavLink>
             </li>
             <li>
               <Link onClick={logout}>Logout</Link>
@@ -24,7 +28,7 @@ export default function Navbar() {
           </>
         ) : (
           <li>
-            <Link to={PATHS.login}>Login</Link>
+            <NavLink to={PATHS.login}>Login</NavLink>
           </li>
         )}
       </ul>
