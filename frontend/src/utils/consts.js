@@ -88,6 +88,10 @@ export const WEBSOCKET_MESSAGES = {
     command: 'restart',
     user: username,
     message: `${username} restarted the game`
+  }),
+  ready: (username) => ({
+    command: 'ready',
+    user: username
   })
 };
 

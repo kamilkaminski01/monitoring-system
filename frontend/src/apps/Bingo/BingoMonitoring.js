@@ -3,11 +3,11 @@ import './Bingo.scss';
 import './BingoMonitoring.scss';
 import { useParams } from 'react-router-dom';
 import useUsername from 'hooks/useUsername';
-import { BINGO, ENDPOINTS, LOCAL_STORAGE, WEBSOCKETS } from 'utils/consts';
+import { ENDPOINTS, LOCAL_STORAGE, WEBSOCKETS } from 'utils/consts';
 import useWebSocket from 'react-use-websocket';
 import { getAuthRoomDetails } from 'utils/requests';
 import { useBingoMonitoringData } from 'hooks/useBingoMonitoringData';
-import { getBoardStateIndexes } from 'utils/boards';
+import { getBoardStateIndexes, highlightBingo } from 'utils/boards';
 import MonitoringGameInfo from 'components/atoms/MonitoringRoomInfo/MonitoringGameInfo';
 import MonitoringPlayerInfo from 'components/atoms/MonitoringPlayerInfo/MonitoringPlayerInfo';
 import MonitoringChat from 'components/atoms/MonitoringChat/MonitoringChat';
@@ -50,6 +50,7 @@ const BingoMonitoring = () => {
                 username: player.username,
                 isActive: player.is_active,
                 isWinner: player.is_winner,
+                isReady: player.is_ready,
                 bingoState: player.bingo_state,
                 initialBoardState: player.initial_board_state
               };
@@ -77,19 +78,7 @@ const BingoMonitoring = () => {
 
   const checkBingo = (boardState, player) => {
     const boardStateIndexes = getBoardStateIndexes(boardState, player.initialBoardState);
-    for (let i = 0; i < BINGO.winRows.length; i++) {
-      const row = BINGO.winRows[i];
-      const isBingo = row.every((index) => boardStateIndexes.includes(index));
-      if (isBingo) {
-        row.forEach((value, index) => {
-          setTimeout(() => {
-            const item = document.getElementById(`${player.username}-${value}`);
-            item.classList.remove('clicked');
-            item.classList.add('success-row');
-          }, index * 80);
-        });
-      }
-    }
+    highlightBingo(boardStateIndexes, player.username);
   };
 
   function generateGrid(player) {

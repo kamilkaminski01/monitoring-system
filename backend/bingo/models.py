@@ -7,6 +7,7 @@ class BingoRoom(models.Model):
     total_players = models.PositiveIntegerField(default=0)
     players_limit = models.PositiveIntegerField(default=2)
     board_state = models.JSONField(default=list)
+    players_queue = models.JSONField(default=list)
     players = models.ManyToManyField(
         "BingoPlayer",
         related_name="players",
@@ -28,6 +29,7 @@ class BingoPlayer(models.Model):
     username = models.CharField(max_length=50)
     is_active = models.BooleanField(default=True)
     is_winner = models.BooleanField(default=False)
+    is_ready = models.BooleanField(default=False)
     initial_board_state = models.JSONField(default=list)
     bingo_state = models.JSONField(default=list)
 

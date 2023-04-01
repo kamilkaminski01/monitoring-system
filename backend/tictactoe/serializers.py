@@ -26,12 +26,18 @@ class TicTacToePlayerSerializer(serializers.ModelSerializer):
             "username",
             "is_active",
             "is_winner",
+            "is_ready",
             "figure",
         )
 
 
 class TicTacToeRoomDetailsSerializer(serializers.ModelSerializer):
-    players = TicTacToePlayerSerializer(many=True, read_only=True)
+    players = serializers.SerializerMethodField()
+
+    def get_players(self, obj):
+        players = obj.players.all().order_by("id")
+        return TicTacToePlayerSerializer(players, many=True).data
+
     players_turn = serializers.CharField(
         source="players_turn.username", allow_null=True, read_only=True
     )

@@ -39,8 +39,9 @@ class GameConsumerMixin(AsyncJsonWebsocketConsumer):
             "message": self.message,
             "value": self.value,
         }
-        if self.command == "win":
+        if self.command == "win" or self.command == "over":
             await self.set_game_state_off()
+            await self.set_users_ready_state_off()
         elif self.command == "message":
             try:
                 await self.channel_layer.group_send(self.room_name, self.data)
@@ -59,6 +60,12 @@ class GameConsumerMixin(AsyncJsonWebsocketConsumer):
         self.game_model.objects.filter(room_name=self.scope_room_name).update(
             game_state=False
         )
+
+    @database_sync_to_async
+    def set_users_ready_state_off(self) -> None:
+        self.game_model.objects.get(
+            room_name=self.scope_room_name
+        ).players.all().update(is_ready=False)
 
 
 class OnlineRoomsConsumerMixin(AsyncJsonWebsocketConsumer):

@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import './Bingo.scss';
 import useUsername from 'hooks/useUsername';
@@ -6,12 +6,13 @@ import { UsernameContext } from 'providers/UsernameContextProvider';
 import Chat from 'components/organisms/Chat/Chat';
 import GameButton from 'components/atoms/GameButton';
 import { BINGO, ENDPOINTS, PATHS, WEBSOCKET_MESSAGES, WEBSOCKETS } from 'utils/consts';
-import { generateBoardState, getBoardStateIndexes } from 'utils/boards';
+import { generateBoardState, getBoardStateIndexes, highlightBingo } from 'utils/boards';
 import useWebSocket from 'react-use-websocket';
 import { swalCornerSuccess, swalError, swalSuccess, swalWarning } from 'utils/swal';
 import { putRoomDetailsPlayer, roomDetails, putRoomDetails } from 'utils/requests';
 import { useBingoData } from 'hooks/useBingoData';
 import { useSocketLeave } from 'hooks/useSocketLeave';
+import GameInfoForm from 'components/molecules/GameInfoForm/GameInfoForm';
 
 const Bingo = () => {
   const { isUsernameSet } = useContext(UsernameContext);
@@ -22,6 +23,8 @@ const Bingo = () => {
   const websocket = `${WEBSOCKETS.bingo}/${roomName}/`;
   const {
     gameState,
+    players,
+    readyState,
     totalPlayers,
     playersLimit,
     playersTurn,
@@ -29,6 +32,8 @@ const Bingo = () => {
     boardState,
     boardStateIndexes,
     initialBoardState,
+    setPlayers,
+    setReadyState,
     setGameState,
     setTotalPlayers,
     setPlayersTurn,
@@ -37,7 +42,13 @@ const Bingo = () => {
     setBoardStateIndexes,
     setInitialBoardState,
     navigate
-  } = useBingoData(detailsRoomEndpoint, roomName);
+  } = useBingoData(detailsRoomEndpoint, roomName, username);
+  const [showGameInfo, setShowGameInfo] = useState(true);
+
+  useEffect(() => {
+    if (!showGameInfo) highlightBingo(boardStateIndexes, username);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [showGameInfo]);
 
   const { sendJsonMessage } = useWebSocket(websocket, {
     onOpen: async () => {
@@ -72,6 +83,7 @@ const Bingo = () => {
         if (command === 'win') {
           setGameState(false);
           await swalError('Sorry', 'You lost');
+          setShowGameInfo(true);
         } else {
           await checkBingo(updatedBoardStateIndexes, gameState);
         }
@@ -86,13 +98,18 @@ const Bingo = () => {
           initial_board_state: generatedBoardState
         });
         generateGrid();
-        await swalCornerSuccess('New game', 'The game has restarted');
+        swalCornerSuccess('New game', 'The game has restarted');
+        if (!readyState) setShowGameInfo(true);
       }
       setTimeout(() => {
         roomDetails(detailsRoomEndpoint, roomName, true)
           .then((data) => {
+            const player = data.players.find((p) => p.username === username);
             setTotalPlayers(data.total_players);
             setPlayersTurn(data.players_turn);
+            setPlayers(data.players);
+            setReadyState(player.is_ready);
+            if (player.is_ready && user === username) setShowGameInfo(false);
           })
           .catch(() => {
             navigate(PATHS.bingo);
@@ -106,18 +123,12 @@ const Bingo = () => {
   const checkBingo = async (boardStateIndexes, gameState) => {
     const bingoState = [];
     const playerData = { username };
-    for (let i = 0; i < BINGO.winRows.length && bingoState.length < 5; i++) {
+    for (let i = 0; i < BINGO.winRows.length; i++) {
       const row = BINGO.winRows[i];
       const isBingo = row.every((index) => boardStateIndexes.includes(index));
       if (isBingo) {
         bingoState.push(BINGO.winState[bingoState.length]);
-        row.forEach((value, index) => {
-          setTimeout(() => {
-            const item = document.getElementById(value);
-            item.classList.remove('clicked');
-            item.classList.add('success-row');
-          }, index * 80);
-        });
+        highlightBingo(boardStateIndexes, username);
       }
     }
     playerData.is_winner = bingoState.length >= 5;
@@ -128,12 +139,16 @@ const Bingo = () => {
       setGameState(false);
       sendJsonMessage(WEBSOCKET_MESSAGES.win(username));
       await swalSuccess('BINGO!', 'You won the game');
+      setShowGameInfo(true);
     }
   };
 
   const handleGridClick = async (key, index) => {
     if (!gameState) return swalWarning('Game finished', 'Restart to play again');
     if (totalPlayers !== playersLimit) return swalWarning('Wait', 'Not enough players');
+    if (!readyState) return swalWarning('Wait', "You aren't ready");
+    if (!players.every((player) => player.is_ready))
+      return swalWarning('Wait', 'Not everyone is ready');
     if (playersTurn !== username) return swalWarning('Wait', "It's not your turn");
     if (boardState.includes(key)) return swalWarning('Oops...', 'Already selected');
     sendJsonMessage(WEBSOCKET_MESSAGES.click(username, key));
@@ -154,7 +169,7 @@ const Bingo = () => {
         {initialBoardState.map((key, index) => (
           <span
             key={key}
-            id={index}
+            id={`${username}-${index}`}
             onClick={() => handleGridClick(key, index)}
             className={boardState.includes(key) ? 'clicked' : 'animated-data'}>
             {key}
@@ -181,28 +196,44 @@ const Bingo = () => {
         value="Restart"
         onClick={() => sendJsonMessage(WEBSOCKET_MESSAGES.restart(username))}
       />
+      <GameButton
+        className="btn-danger"
+        value={showGameInfo ? 'Board' : 'Details'}
+        onClick={() => setShowGameInfo(!showGameInfo)}
+      />
       <div className="bingo-wrapper">
-        <div className="bingo">
-          <div className="scoreboard">
-            <div className="username">{username}</div>
-            <div className="d-flex">
-              Total players:
-              <div key={totalPlayers} className="total-players">
-                {totalPlayers}
+        {showGameInfo ? (
+          <GameInfoForm
+            players={players}
+            username={username}
+            roomName={roomName}
+            endpoint={detailsPlayerEndpoint}
+            sendJsonMessage={sendJsonMessage}
+            className="btn-outline-success"
+          />
+        ) : (
+          <div className="bingo">
+            <div className="scoreboard">
+              <div className="username">{username}</div>
+              <div className="d-flex">
+                Total players:
+                <div key={totalPlayers} className="total-players">
+                  {totalPlayers}
+                </div>
+              </div>
+              <div className="room-info">
+                <div>Players limit: {playersLimit}</div>
+                <div key={playersTurn} className="players-turn">
+                  {playersTurn}&apos;s turn
+                </div>
               </div>
             </div>
-            <div className="room-info">
-              <div>Players limit: {playersLimit}</div>
-              <div key={playersTurn} className="players-turn">
-                {playersTurn}&apos;s turn
-              </div>
+            <div>{generateGrid()}</div>
+            <div key={bingoState} className="bingo-state">
+              {bingoState}
             </div>
           </div>
-          <div>{generateGrid()}</div>
-          <div key={bingoState} className="bingo-state">
-            {bingoState}
-          </div>
-        </div>
+        )}
         <Chat websocket={websocket} username={username} />
       </div>
     </div>

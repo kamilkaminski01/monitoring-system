@@ -78,12 +78,12 @@ class BingoRoomDetailsAPIView(RetrieveUpdateAPIView):
 
     def perform_update(self, serializer: BingoRoomDetailsSerializer) -> None:
         instance = serializer.instance
-        players: list = list(instance.players.all().order_by("id"))
-        next_turn_player_index = (players.index(instance.players_turn) + 1) % len(
-            players
-        )
-        next_turn_player = players[next_turn_player_index]
-        instance.players_turn = next_turn_player
+        players_queue = instance.players_queue
+        current_player = BingoPlayer.objects.get(username=instance.players_turn)
+        current_player_index = players_queue.index(current_player.username)
+        next_player_index = (current_player_index + 1) % len(players_queue)
+        next_player = players_queue[next_player_index]
+        instance.players_turn = BingoPlayer.objects.get(username=next_player)
         serializer.save()
 
     def get_serializer_class(self) -> ModelSerializer:
@@ -110,6 +110,22 @@ class BingoPlayerAPIView(RetrieveUpdateAPIView):
                 },
                 status=status.HTTP_404_NOT_FOUND,
             )
+
+    def perform_update(self, serializer: BingoPlayerSerializer) -> None:
+        if "is_ready" in self.request.data:
+            instance = serializer.instance
+            room = instance.room
+            if room.players_limit == len(room.players_queue):
+                room.players_queue = []
+            if not room.players_queue:
+                room.players_queue = [instance.username]
+                room.players_turn = instance
+                updated_fields = ["players_queue", "players_turn"]
+            else:
+                room.players_queue.append(instance.username)
+                updated_fields = ["players_queue"]
+            room.save(update_fields=updated_fields)
+        serializer.save()
 
 
 class BingoMonitoringAPIView(RetrieveDestroyAPIView):

@@ -1,3 +1,5 @@
+import { BINGO } from 'utils/consts';
+
 export const generateBoardState = () => {
   const boardState = [];
   for (let i = 1; i < 26; i++) {
@@ -13,6 +15,24 @@ export const generateBoardState = () => {
 
 export const getBoardStateIndexes = (boardState, initialBoardState) => {
   return boardState.map((value) => initialBoardState.indexOf(value));
+};
+
+export const highlightBingo = (boardStateIndexes, username) => {
+  for (let i = 0; i < BINGO.winRows.length; i++) {
+    const row = BINGO.winRows[i];
+    const isBingo = row.every((index) => boardStateIndexes.includes(index));
+    if (isBingo) {
+      row.forEach((value, index) => {
+        setTimeout(() => {
+          const item = document.getElementById(`${username}-${value}`);
+          if (item) {
+            item.classList.remove('clicked');
+            item.classList.add('success-row');
+          }
+        }, index * 80);
+      });
+    }
+  }
 };
 
 export const generatePuzzleState = () => {

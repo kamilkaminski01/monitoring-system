@@ -8,7 +8,7 @@ class TicTacToePlayersAdmin(admin.TabularInline):
     model = TicTacToePlayer
 
     def get_readonly_fields(self, request: HttpRequest, obj=None):
-        return "room", "username", "is_active", "is_winner", "figure"
+        return "room", "username", "is_active", "is_winner", "is_ready", "figure"
 
     def has_add_permission(self, request: HttpRequest, obj=None):
         return False

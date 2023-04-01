@@ -26,6 +26,15 @@ const MonitoringPlayerInfo = ({ player }) => {
             className="animate-data"
           />
         </div>
+        <div>
+          Ready:
+          <img
+            key={player.isReady}
+            src={player.isReady ? Checkmark : Cancel}
+            alt="Is ready"
+            className="animate-data"
+          />
+        </div>
         {player.figure && (
           <div>
             Figure:

@@ -13,6 +13,7 @@ class BingoPlayersAdmin(admin.TabularInline):
             "username",
             "is_active",
             "is_winner",
+            "is_ready",
             "initial_board_state",
             "bingo_state",
         )
@@ -30,6 +31,7 @@ class BingoRoomAdmin(admin.ModelAdmin):
             "game_state",
             "total_players",
             "players_limit",
+            "players_queue",
             "players",
             "players_turn",
             "board_state",

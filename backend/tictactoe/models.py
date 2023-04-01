@@ -34,6 +34,7 @@ class TicTacToePlayer(models.Model):
     figure = models.CharField(max_length=1, null=True, blank=True)
     is_active = models.BooleanField(default=True)
     is_winner = models.BooleanField(default=False)
+    is_ready = models.BooleanField(default=False)
 
     def __str__(self) -> str:
         return self.username

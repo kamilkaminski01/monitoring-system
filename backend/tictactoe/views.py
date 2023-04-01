@@ -116,6 +116,15 @@ class TicTacToePlayerAPIView(RetrieveUpdateAPIView):
                 status=status.HTTP_404_NOT_FOUND,
             )
 
+    def perform_update(self, serializer: TicTacToePlayerSerializer) -> None:
+        instance = serializer.instance
+        room = instance.room
+        if "is_ready" in self.request.data:
+            if not room.players_turn.is_ready:
+                room.players_turn = instance
+                room.save(update_fields=["players_turn"])
+        serializer.save()
+
 
 class TicTacToeMonitoringAPIView(RetrieveDestroyAPIView):
     serializer_class = TicTacToeRoomDetailsSerializer

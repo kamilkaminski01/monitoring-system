@@ -13,12 +13,16 @@
     justify-content: center;
     align-items: center;
     .tictactoe {
+      animation: fadeIn;
+      animation-duration: 0.5s;
       width: 100%;
       max-width: 400px;
       margin: 8rem;
       .scoreboard {
         font-size: 17px;
         display: grid;
+        border-radius: 3px;
+        margin-bottom: 0.1rem;
         grid-template-columns: $tictactoe-grid-columns;
         justify-content: center;
         background-color: $scoreboard-bg-color;
@@ -45,6 +49,7 @@
           grid-column-gap: 2px;
           grid-row-gap: 2px;
           .space {
+            border-radius: 3px;
             background-color: $tictactoe-board-color;
             display: flex;
             align-items: center;
@@ -70,6 +75,7 @@
     }
     @include for-phone {
       .tictactoe {
+        width: 90%;
         .scoreboard {
           font-size: 15px;
         }

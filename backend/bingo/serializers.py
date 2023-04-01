@@ -26,6 +26,7 @@ class BingoPlayerSerializer(serializers.ModelSerializer):
             "username",
             "is_active",
             "is_winner",
+            "is_ready",
             "bingo_state",
             "initial_board_state",
         )
@@ -48,6 +49,7 @@ class BingoRoomDetailsSerializer(serializers.ModelSerializer):
             "room_name",
             "total_players",
             "players_limit",
+            "players_queue",
             "players",
         )
         fields = (
@@ -55,6 +57,7 @@ class BingoRoomDetailsSerializer(serializers.ModelSerializer):
             "game_state",
             "total_players",
             "players_limit",
+            "players_queue",
             "players_turn",
             "board_state",
             "players",

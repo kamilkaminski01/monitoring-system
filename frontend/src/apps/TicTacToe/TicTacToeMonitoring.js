@@ -43,6 +43,7 @@ const TicTacToeMonitoring = () => {
                 username: player.username,
                 isActive: player.is_active,
                 isWinner: player.is_winner,
+                isReady: player.is_ready,
                 figure: player.figure
               };
             });
