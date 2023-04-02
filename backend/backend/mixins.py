@@ -47,6 +47,7 @@ class GameConsumerMixin(AsyncJsonWebsocketConsumer):
             await self.restart_game()
         elif self.command == "ready":
             if await self.check_players_ready_state():
+                await self.restart_game()
                 self.data["command"] = "restart"
                 self.data["message"] = "The game has restarted"
         if self.command == "win" or self.command == "over":
