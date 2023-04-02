@@ -1,5 +1,5 @@
 import React from 'react';
-import './GameInfoForm.scss';
+import './GameInfo.scss';
 import Ready from 'assets/icons/ready.png';
 import NotReady from 'assets/icons/not-ready.png';
 import InfoBlack from 'assets/icons/info-black.png';
@@ -7,7 +7,7 @@ import InfoWhite from 'assets/icons/info-white.png';
 import { putRoomDetailsPlayer } from 'utils/requests';
 import { WEBSOCKET_MESSAGES } from 'utils/consts';
 
-const GameInfoForm = ({ players, username, roomName, endpoint, sendJsonMessage, className }) => {
+const GameInfo = ({ players, username, roomName, endpoint, sendJsonMessage, className }) => {
   const handleSetReady = async () => {
     await putRoomDetailsPlayer(endpoint, roomName, username, { is_ready: true });
     sendJsonMessage(WEBSOCKET_MESSAGES.ready(username));
@@ -43,4 +43,4 @@ const GameInfoForm = ({ players, username, roomName, endpoint, sendJsonMessage, 
   );
 };
 
-export default GameInfoForm;
+export default GameInfo;

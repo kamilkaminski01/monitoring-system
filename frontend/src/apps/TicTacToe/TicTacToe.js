@@ -11,7 +11,7 @@ import { useTicTacToeData } from 'hooks/useTicTacToeData';
 import { putRoomDetails, putRoomDetailsPlayer, roomDetails } from 'utils/requests';
 import { swalCornerSuccess, swalError, swalSuccess, swalWarning } from 'utils/swal';
 import { useSocketLeave } from 'hooks/useSocketLeave';
-import GameInfoForm from 'components/molecules/GameInfoForm/GameInfoForm';
+import GameInfo from 'components/molecules/GameInfo/GameInfo';
 
 const TicTacToe = () => {
   const { isUsernameSet } = useContext(UsernameContext);
@@ -146,7 +146,7 @@ const TicTacToe = () => {
       />
       <div className="tictactoe-wrapper">
         {showGameInfo ? (
-          <GameInfoForm
+          <GameInfo
             players={players}
             username={username}
             roomName={roomName}

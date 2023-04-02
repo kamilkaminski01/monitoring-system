@@ -12,7 +12,7 @@ import { swalCornerSuccess, swalError, swalSuccess, swalWarning } from 'utils/sw
 import { putRoomDetailsPlayer, roomDetails, putRoomDetails } from 'utils/requests';
 import { useBingoData } from 'hooks/useBingoData';
 import { useSocketLeave } from 'hooks/useSocketLeave';
-import GameInfoForm from 'components/molecules/GameInfoForm/GameInfoForm';
+import GameInfo from 'components/molecules/GameInfo/GameInfo';
 
 const Bingo = () => {
   const { isUsernameSet } = useContext(UsernameContext);
@@ -202,7 +202,7 @@ const Bingo = () => {
       />
       <div className="bingo-wrapper">
         {showGameInfo ? (
-          <GameInfoForm
+          <GameInfo
             players={players}
             username={username}
             roomName={roomName}

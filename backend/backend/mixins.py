@@ -39,19 +39,23 @@ class GameConsumerMixin(AsyncJsonWebsocketConsumer):
             "message": self.message,
             "value": self.value,
         }
-        if self.scope_user.is_anonymous:
-            if self.command == "join":
-                await self.set_player_inactive_or_active(True)
-            elif self.command == "leave":
-                await self.set_player_inactive_or_active(False)
+        if self.command == "join":
+            await self.set_player_inactive_or_active(True)
+        elif self.command == "leave":
+            await self.set_player_inactive_or_active(False)
+        elif self.command == "restart":
+            await self.restart_game()
+        elif self.command == "ready":
+            if await self.check_players_ready_state():
+                self.data["command"] = "restart"
+                self.data["message"] = "The game has restarted"
         if self.command == "win" or self.command == "over":
             await self.set_game_state_off()
             await self.set_users_ready_state_off()
-        elif self.command == "message":
-            try:
-                await self.channel_layer.group_send(self.room_name, self.data)
-            except TypeError:
-                print(f"failed sending to {self.game_model.__name__}")
+        try:
+            await self.channel_layer.group_send(self.room_name, self.data)
+        except TypeError:
+            print(f"failed sending to {self.game_model.__name__}")
 
     async def websocket_message(self, event: dict) -> None:
         field_names = ["command", "user", "message", "value"]
@@ -81,6 +85,19 @@ class GameConsumerMixin(AsyncJsonWebsocketConsumer):
         self.game_model.objects.get(
             room_name=self.scope_room_name
         ).players.all().update(is_ready=False)
+
+    @database_sync_to_async
+    def check_players_ready_state(self) -> bool:
+        if not self.game_model.objects.filter(
+            room_name=self.scope_room_name, game_state=False
+        ).exists():
+            return False
+        for player in self.player_model.objects.filter(
+            room__room_name=self.scope_room_name
+        ):
+            if not player.is_ready:
+                return False
+        return True
 
 
 class OnlineRoomsConsumerMixin(AsyncJsonWebsocketConsumer):
