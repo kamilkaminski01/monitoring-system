@@ -18,22 +18,20 @@ export const useBingoData = (endpoint, roomName, username) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    setTimeout(() => {
-      roomDetails(endpoint, roomName, true)
-        .then((data) => {
-          const player = data.players.find((p) => p.username === username);
-          setPlayers(data.players);
-          setGameState(data.game_state);
-          setPlayersLimit(data.players_limit);
-          setTotalPlayers(data.total_players);
-          setPlayersTurn(data.players_turn);
-          setBoardState(data.board_state);
-          setReadyState(player.is_ready);
-        })
-        .catch(() => {
-          navigate(PATHS.bingo);
-        });
-    }, 100);
+    roomDetails(endpoint, roomName, true)
+      .then((data) => {
+        const player = data.players.find((p) => p.username === username);
+        setPlayers(data.players);
+        setGameState(data.game_state);
+        setPlayersLimit(data.players_limit);
+        setTotalPlayers(data.total_players);
+        setPlayersTurn(data.players_turn);
+        setBoardState(data.board_state);
+        setReadyState(player.is_ready);
+      })
+      .catch(() => {
+        navigate(PATHS.bingo);
+      });
   }, [endpoint, roomName, username, navigate]);
 
   return {

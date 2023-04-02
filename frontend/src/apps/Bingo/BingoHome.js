@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { ENDPOINTS, PATHS, WEBSOCKETS } from 'utils/consts';
+import { ENDPOINTS, GAME_TYPE, WEBSOCKETS } from 'utils/consts';
 import './BingoHome.scss';
 import { UsernameContext } from 'providers/UsernameContextProvider';
 import { handleCreateRoom, handleJoinRoom } from 'utils/handleRooms';
@@ -7,7 +7,7 @@ import { useSocketRoomsAndUsers } from 'hooks/useSocketRoomsAndUsers';
 import Checkbox from 'components/atoms/Checkbox/Checkbox';
 import Input from 'components/atoms/Input/Input';
 import HomeButton from 'components/atoms/HomeButton';
-import OnlineRooms from 'components/molecules/OnlineRooms/OnlineRooms';
+import OnlineContent from 'components/molecules/OnlineContent/OnlineContent';
 
 const BingoHome = () => {
   const { username, setUsername } = useContext(UsernameContext);
@@ -51,7 +51,7 @@ const BingoHome = () => {
             </button>
             <HomeButton className="btn-success" />
           </div>
-          <OnlineRooms rooms={bingoRooms} path={PATHS.bingo} />
+          <OnlineContent content={bingoRooms} type={GAME_TYPE.rooms} />
         </div>
       </div>
       <div className={`popup ${isPopupOpen ? 'active' : ''}`}>

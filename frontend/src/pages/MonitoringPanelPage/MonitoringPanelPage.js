@@ -1,5 +1,5 @@
 import React from 'react';
-import { ENDPOINTS, PATHS, WEBSOCKETS } from 'utils/consts';
+import { ENDPOINTS, GAME_TYPE, PATHS, WEBSOCKETS } from 'utils/consts';
 import { useSocketRoomsAndUsers } from 'hooks/useSocketRoomsAndUsers';
 import './MonitoringPanelPage.scss';
 import OnlinePanel from 'components/molecules/OnlinePanel/OnlinePanel';
@@ -16,21 +16,21 @@ const MonitoringPanelPage = () => {
         items={fifteenUsers}
         path={PATHS.monitoringFifteen}
         endpoint={ENDPOINTS.monitoringFifteenPuzzle}
-        panelType={'users'}
+        panelType={GAME_TYPE.users}
       />
       <OnlinePanel
         gameName="Tic Tac Toe"
         items={tictactoeRooms}
         path={PATHS.monitoringTicTacToe}
         endpoint={ENDPOINTS.monitoringTicTacToeRoom}
-        panelType={'rooms'}
+        panelType={GAME_TYPE.rooms}
       />
       <OnlinePanel
         gameName="Bingo"
         items={bingoRooms}
         path={PATHS.monitoringBingo}
         endpoint={ENDPOINTS.monitoringBingoRoom}
-        panelType={'rooms'}
+        panelType={GAME_TYPE.rooms}
       />
     </div>
   );

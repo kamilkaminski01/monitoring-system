@@ -35,41 +35,34 @@ async function joinRoom(detailsEndpoint, createEndpoint, username, roomName) {
       room_name: roomName,
       player: username
     };
-    if (
-      (await checkRoomLimit(detailsEndpoint, roomName)) &&
-      (await checkRoomPlayers(detailsEndpoint, roomName, username))
-    ) {
-      await postRoomDetails(createEndpoint, roomName, data);
+    const room = await roomDetails(detailsEndpoint, roomName, true);
+    if (await checkRoomPlayersAndLimit(room, username)) {
+      const isPlayerCreated = room.players.some((player) => player.username === username);
+      if (!isPlayerCreated) await postRoomDetails(createEndpoint, roomName, data);
       redirectToLocation(roomName);
     }
   } catch (error) {}
 }
 
-async function checkRoomPlayers(endpoint, roomName, username) {
-  const room = await roomDetails(endpoint, roomName, true);
-  const isUsernameTaken = room.players.some((player) => player.username === username);
-  if (isUsernameTaken) {
-    await swalCornerError('Username error', 'Username is taken');
+async function checkRoomPlayersAndLimit(room, username) {
+  const { players, players_limit: playersLimit = 2 } = room;
+  const player = players.find((player) => player.username === username);
+  if (players.length >= playersLimit) {
+    if (player && !player.is_active) {
+      return true;
+    }
+    swalCornerError('Room error', 'Room is full');
     return false;
-  } else {
-    return true;
   }
+  if (player && player.is_active) {
+    swalCornerError('Username error', 'Username is taken');
+    return false;
+  }
+  return true;
 }
 
 export function redirectToLocation(location) {
   window.location.href = `${window.location.href}/${location}`;
-}
-
-export async function checkRoomLimit(endpoint, roomName) {
-  const room = await roomDetails(endpoint, roomName, true);
-  const playersAmount = room.players.length;
-  const maxPlayers = room.players_limit ? room.players_limit : 2;
-  if (playersAmount >= maxPlayers) {
-    await swalCornerError('Room error', 'Room is full');
-    return false;
-  } else {
-    return true;
-  }
 }
 
 export const handleCreateRoom = async (

@@ -1,0 +1,53 @@
+@import 'utils/mixins.scss';
+@import 'utils/variables.scss';
+
+.online-content {
+  display: flex;
+  flex-wrap: wrap;
+  max-width: 25rem;
+  animation: fadeIn;
+  animation-duration: 2s;
+
+  .online-child {
+    color: white;
+    width: fit-content;
+    padding: 0.65rem;
+    margin: 0.25rem;
+    border-radius: 3px;
+    animation: fadeIn;
+    animation-duration: 0.5s;
+
+    p {
+      margin: 0;
+    }
+
+    .bingo-body & {
+      background-color: $bingo-primary-color;
+
+      &:hover {
+        background-color: $bingo-secondary-color;
+      }
+    }
+
+    .tictactoe-body & {
+      background-color: $tictactoe-primary-color;
+
+      &:hover {
+        background-color: $tictactoe-secondary-color;
+      }
+    }
+
+    .fifteen-body & {
+      background-color: $fifteen-secondary-color;
+      cursor: unset;
+
+      &:hover {
+        background-color: $fifteen-hover-color;
+      }
+    }
+
+    @include for-desktop {
+      padding: 0.4rem;
+    }
+  }
+}

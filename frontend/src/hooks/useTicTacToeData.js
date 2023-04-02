@@ -13,18 +13,16 @@ export const useTicTacToeData = (endpoint, roomName, username) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    setTimeout(() => {
-      roomDetails(endpoint, roomName, true).then((data) => {
-        const player = data.players.find((p) => p.username === username);
-        setPlayers(data.players);
-        setGameState(data.game_state);
-        setTotalPlayers(data.total_players);
-        setPlayersTurn(data.players_turn);
-        setBoardState(data.board_state);
-        setReadyState(player.is_ready);
-        player ? setFigure(player.figure) : setFigure('X');
-      });
-    }, 100);
+    roomDetails(endpoint, roomName, true).then((data) => {
+      const player = data.players.find((p) => p.username === username);
+      setPlayers(data.players);
+      setGameState(data.game_state);
+      setTotalPlayers(data.total_players);
+      setPlayersTurn(data.players_turn);
+      setBoardState(data.board_state);
+      setReadyState(player.is_ready);
+      setFigure(player.figure);
+    });
   }, [endpoint, roomName, username]);
 
   return {

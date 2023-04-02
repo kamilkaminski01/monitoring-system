@@ -4,9 +4,9 @@ import { UsernameContext } from 'providers/UsernameContextProvider';
 import Input from 'components/atoms/Input/Input';
 import HomeButton from 'components/atoms/HomeButton';
 import { useSocketRoomsAndUsers } from 'hooks/useSocketRoomsAndUsers';
-import { ENDPOINTS, WEBSOCKETS } from 'utils/consts';
+import { ENDPOINTS, GAME_TYPE, WEBSOCKETS } from 'utils/consts';
 import { handleCreateGame } from 'utils/handleRooms';
-import OnlineUsers from 'components/molecules/OnlineUsers/OnlineUsers';
+import OnlineContent from 'components/molecules/OnlineContent/OnlineContent';
 
 const FifteenHome = () => {
   const { username, setUsername } = useContext(UsernameContext);
@@ -37,7 +37,7 @@ const FifteenHome = () => {
             </button>
             <HomeButton className="btn-outline-primary" />
           </div>
-          <OnlineUsers users={users} />
+          <OnlineContent content={users} type={GAME_TYPE.users} />
         </div>
       </div>
     </div>

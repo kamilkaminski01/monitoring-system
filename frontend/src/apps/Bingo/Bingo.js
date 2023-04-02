@@ -53,9 +53,8 @@ const Bingo = () => {
   const { sendJsonMessage } = useWebSocket(websocket, {
     onOpen: async () => {
       roomDetails(detailsRoomEndpoint, roomName, true).then(async (data) => {
-        const isNewPlayer = !data.players.some((player) => player.username === username);
         const currentPlayer = data.players.find((player) => player.username === username);
-        if (isNewPlayer || currentPlayer.initial_board_state.length === 0) {
+        if (currentPlayer.initial_board_state.length === 0) {
           await putRoomDetailsPlayer(detailsPlayerEndpoint, roomName, username, {
             initial_board_state: initialBoardState
           });

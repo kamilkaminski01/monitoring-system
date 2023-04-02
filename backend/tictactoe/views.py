@@ -1,3 +1,4 @@
+from django.db.models import QuerySet
 from django.http import Http404
 from rest_framework import status
 from rest_framework.generics import (
@@ -99,8 +100,12 @@ class TicTacToeRoomDetailsAPIView(RetrieveUpdateAPIView):
 
 class TicTacToePlayerAPIView(RetrieveUpdateAPIView):
     serializer_class = TicTacToePlayerSerializer
-    queryset = TicTacToePlayer.objects.all()
     lookup_field = "username"
+
+    def get_queryset(self) -> QuerySet[TicTacToePlayer]:
+        room_name = self.kwargs["room_name"]
+        room = TicTacToeRoom.objects.get(room_name=room_name)
+        return TicTacToePlayer.objects.filter(room=room)
 
     def get(self, request: Request, *args, **kwargs) -> Response:
         try:

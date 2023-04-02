@@ -39,6 +39,11 @@ class GameConsumerMixin(AsyncJsonWebsocketConsumer):
             "message": self.message,
             "value": self.value,
         }
+        if self.scope_user.is_anonymous:
+            if self.command == "join":
+                await self.set_player_inactive_or_active(True)
+            elif self.command == "leave":
+                await self.set_player_inactive_or_active(False)
         if self.command == "win" or self.command == "over":
             await self.set_game_state_off()
             await self.set_users_ready_state_off()
@@ -54,6 +59,16 @@ class GameConsumerMixin(AsyncJsonWebsocketConsumer):
             await websocket_send_event(self, event, field_names)
         except Disconnected:
             pass
+
+    @database_sync_to_async
+    def set_player_inactive_or_active(self, status: bool) -> None:
+        try:
+            room = self.game_model.objects.get(room_name=self.scope_room_name)
+            player = self.player_model.objects.get(username=self.user, room=room)
+            player.is_active = status
+            player.save()
+        except self.game_model.DoesNotExist:
+            print(f"{self.game_model.__name__} does not exist")
 
     @database_sync_to_async
     def set_game_state_off(self) -> None:

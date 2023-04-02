@@ -95,6 +95,11 @@ export const WEBSOCKET_MESSAGES = {
   })
 };
 
+export const GAME_TYPE = {
+  rooms: 'rooms',
+  users: 'users'
+};
+
 export const BINGO = {
   winRows: [
     [0, 1, 2, 3, 4],

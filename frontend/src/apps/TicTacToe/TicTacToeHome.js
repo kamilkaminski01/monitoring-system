@@ -1,12 +1,12 @@
 import React, { useContext, useState } from 'react';
 import './TicTacToeHome.scss';
 import { handleCreateRoom, handleJoinRoom } from 'utils/handleRooms';
-import { ENDPOINTS, PATHS, WEBSOCKETS } from 'utils/consts';
+import { ENDPOINTS, GAME_TYPE, WEBSOCKETS } from 'utils/consts';
 import { UsernameContext } from 'providers/UsernameContextProvider';
 import { useSocketRoomsAndUsers } from 'hooks/useSocketRoomsAndUsers';
 import Input from 'components/atoms/Input/Input';
 import HomeButton from 'components/atoms/HomeButton';
-import OnlineRooms from 'components/molecules/OnlineRooms/OnlineRooms';
+import OnlineContent from 'components/molecules/OnlineContent/OnlineContent';
 
 const TicTacToeHome = () => {
   const { username, setUsername } = useContext(UsernameContext);
@@ -57,7 +57,7 @@ const TicTacToeHome = () => {
             </button>
             <HomeButton className="btn-light" />
           </div>
-          <OnlineRooms rooms={tictactoeRooms} path={PATHS.tictactoe} />
+          <OnlineContent content={tictactoeRooms} type={GAME_TYPE.rooms} />
         </div>
       </div>
     </div>
