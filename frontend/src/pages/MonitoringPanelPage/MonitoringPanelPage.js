@@ -8,9 +8,18 @@ const MonitoringPanelPage = () => {
   const [bingoRooms] = useSocketRoomsAndUsers(WEBSOCKETS.bingoOnlineRooms);
   const [tictactoeRooms] = useSocketRoomsAndUsers(WEBSOCKETS.tictactoeOnlineRooms);
   const [, fifteenUsers] = useSocketRoomsAndUsers(WEBSOCKETS.fifteenOnlineUsers);
+  const [whiteboards] = useSocketRoomsAndUsers(WEBSOCKETS.whiteboardOnlineRooms);
 
   return (
     <div className="monitoring-container">
+      <OnlinePanel
+        gameName="Whiteboard"
+        items={whiteboards}
+        path={PATHS.whiteboard}
+        endpoint={ENDPOINTS.monitoringWhiteboard}
+        panelType={GAME_TYPE.rooms}
+        panelTypeName={'whiteboards'}
+      />
       <OnlinePanel
         gameName="Fifteen Puzzle"
         items={fifteenUsers}

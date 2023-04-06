@@ -10,7 +10,7 @@ function HomePage() {
         <Card
           title="Whiteboard"
           imageUrl="https://img.icons8.com/ios/400/null/whiteboard.png"
-          body="Simple drawing board application in which users can draw in real time for those who are present in the app."
+          body="Drawing board app where users can create whiteboards and draw in real time for users within a whiteboard."
           link={PATHS.whiteboard}
         />
         <Card

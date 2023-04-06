@@ -1,4 +1,5 @@
 import React from 'react';
+import './App.scss';
 import { Route, Routes } from 'react-router-dom';
 import { PATHS } from 'utils/consts';
 import HomePage from './pages/HomePage/HomePage';
@@ -9,14 +10,14 @@ import TicTacToe from 'apps/TicTacToe/TicTacToe';
 import LoginForm from 'components/molecules/LoginForm/LoginForm';
 import SharedLayout from './components/atoms/SharedLayout';
 import ProtectedRoutes from './components/atoms/ProtectedRoutes';
-import Whiteboard from './apps/Whiteboard/Whiteboard';
 import MonitoringPanelPage from './pages/MonitoringPanelPage/MonitoringPanelPage';
-import './App.scss';
 import BingoMonitoring from 'apps/Bingo/BingoMonitoring';
 import TicTacToeMonitoring from 'apps/TicTacToe/TicTacToeMonitoring';
 import FifteenHome from 'apps/Fifteen/FifteenHome';
 import Fifteen from 'apps/Fifteen/Fifteen';
 import FifteenMonitoring from 'apps/Fifteen/FifteenMonitoring';
+import WhiteboardHome from 'apps/Whiteboard/WhiteboardHome';
+import Whiteboard from './apps/Whiteboard/Whiteboard';
 
 function App() {
   return (
@@ -26,7 +27,8 @@ function App() {
         <Route element={<SharedLayout />}>
           <Route path={PATHS.home} element={<HomePage />} />
         </Route>
-        <Route path={PATHS.whiteboard} element={<Whiteboard />} />
+        <Route path={PATHS.whiteboard} element={<WhiteboardHome />} />
+        <Route path={`${PATHS.whiteboard}/:roomName`} element={<Whiteboard />} />
 
         <Route path={PATHS.bingo} element={<BingoHome />} />
         <Route path={`${PATHS.bingo}/:roomName`} element={<Bingo />} />

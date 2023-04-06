@@ -1,3 +1,4 @@
+@import 'utils/mixins.scss';
 @import 'utils/variables.scss';
 
 .monitoring-container {
@@ -5,4 +6,9 @@
   justify-content: center;
   min-height: $panel-page-height;
   margin: 4rem auto;
+  @include for-tablet {
+    flex-direction: column;
+    justify-content: unset;
+    align-items: center;
+  }
 }

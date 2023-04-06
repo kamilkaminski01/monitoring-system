@@ -50,6 +50,13 @@
     overflow: auto;
   }
 }
+@mixin whiteboard {
+  @import url('https://fonts.googleapis.com/css2?family=Alkatra&display=swap');
+  .whiteboard-body {
+    font-family: 'Alkatra', cursive;
+    overflow: auto;
+  }
+}
 @mixin home-page {
   .home-container {
     animation: fadeIn;
@@ -61,6 +68,10 @@
     margin: 0 5rem;
     h2, h4 {
       color: white;
+      .whiteboard-body & {
+        color: black;
+      }
+
     }
     h2 {
       font-size: 2.5rem;

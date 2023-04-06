@@ -1,10 +1,21 @@
 import React, { useEffect, useRef, useState } from 'react';
 import './Chat.scss';
-import { useSocketChat } from 'hooks/useSocketChat';
+import { WEBSOCKET_MESSAGES } from 'utils/consts';
+import useWebSocket from 'react-use-websocket';
 
 const Chat = ({ websocket, username }) => {
-  const { messages, sendMessage } = useSocketChat(websocket, username);
+  const [messages, setMessages] = useState([]);
+  const [newMessage, setNewMessage] = useState('');
   const chatRef = useRef(null);
+
+  const { sendJsonMessage } = useWebSocket(websocket, {
+    onMessage: (event) => {
+      const data = JSON.parse(event.data);
+      if (data.message) {
+        setMessages((prevMessages) => [...prevMessages, data]);
+      }
+    }
+  });
 
   useEffect(() => {
     if (chatRef.current) {
@@ -12,17 +23,13 @@ const Chat = ({ websocket, username }) => {
     }
   }, [messages]);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (!newMessage.trim()) return;
-    sendMessage(newMessage.trim());
-    setNewMessage('');
-  };
-
-  const [newMessage, setNewMessage] = useState('');
-
-  const handleNewMessage = (e) => {
-    setNewMessage(e.target.value);
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    const message = newMessage.trim();
+    if (message) {
+      sendJsonMessage(WEBSOCKET_MESSAGES.message(message, username));
+      setNewMessage('');
+    }
   };
 
   return (
@@ -51,7 +58,7 @@ const Chat = ({ websocket, username }) => {
           autoComplete="off"
           placeholder="send a message"
           value={newMessage}
-          onChange={handleNewMessage}
+          onChange={(event) => setNewMessage(event.target.value)}
         />
       </form>
     </div>

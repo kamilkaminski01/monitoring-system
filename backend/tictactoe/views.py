@@ -10,7 +10,6 @@ from rest_framework.generics import (
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.request import Request
 from rest_framework.response import Response
-from rest_framework.serializers import ModelSerializer
 
 from .models import TicTacToePlayer, TicTacToeRoom
 from .serializers import (
@@ -91,11 +90,6 @@ class TicTacToeRoomDetailsAPIView(RetrieveUpdateAPIView):
         if all(cell != "" for cell in self.request.data["board_state"]):
             instance.game_state = False
         serializer.save()
-
-    def get_serializer_class(self) -> ModelSerializer:
-        if self.request.method == "GET":
-            return TicTacToeRoomDetailsSerializer
-        return super().get_serializer_class()
 
 
 class TicTacToePlayerAPIView(RetrieveUpdateAPIView):

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { PATHS } from 'utils/consts';
 import useAuth from 'hooks/useAuth';
 import './LoginForm.scss';
+import { Link } from 'react-router-dom';
 
 const LoginForm = () => {
   const [email, setEmail] = useState('');
@@ -39,7 +40,7 @@ const LoginForm = () => {
       </form>
       {error && <p className="error-message">Incorrect email or password. Please try again.</p>}
       <div className="home">
-        <a href={PATHS.home}>Home</a>
+        <Link to={PATHS.home}>Home</Link>
       </div>
     </div>
   );

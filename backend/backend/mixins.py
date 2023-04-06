@@ -72,8 +72,11 @@ class GameConsumerMixin(AsyncJsonWebsocketConsumer):
             player = self.player_model.objects.get(username=self.user, room=room)
             player.is_active = status
             player.save()
-        except self.game_model.DoesNotExist:
-            print(f"{self.game_model.__name__} does not exist")
+        except (self.game_model.DoesNotExist, self.player_model.DoesNotExist):
+            print(
+                f"{self.game_model.__name__} or "
+                f"{self.player_model.__name__} doesn't exist"
+            )
 
     @database_sync_to_async
     def set_game_state_off(self) -> None:

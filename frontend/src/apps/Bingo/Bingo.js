@@ -100,20 +100,22 @@ const Bingo = () => {
         swalCornerSuccess('New game', 'The game has restarted');
         if (!readyState) setShowGameInfo(true);
       }
-      setTimeout(() => {
-        roomDetails(detailsRoomEndpoint, roomName, true)
-          .then((data) => {
-            const player = data.players.find((p) => p.username === username);
-            setTotalPlayers(data.total_players);
-            setPlayersTurn(data.players_turn);
-            setPlayers(data.players);
-            setReadyState(player.is_ready);
-            if (player.is_ready && user === username) setShowGameInfo(false);
-          })
-          .catch(() => {
-            navigate(PATHS.bingo);
-          });
-      }, 50);
+      if (command !== 'message') {
+        setTimeout(() => {
+          roomDetails(detailsRoomEndpoint, roomName, true)
+            .then((data) => {
+              const player = data.players.find((p) => p.username === username);
+              setTotalPlayers(data.total_players);
+              setPlayersTurn(data.players_turn);
+              setPlayers(data.players);
+              setReadyState(player.is_ready);
+              if (player.is_ready && user === username) setShowGameInfo(false);
+            })
+            .catch(() => {
+              navigate(PATHS.bingo);
+            });
+        }, 50);
+      }
     }
   });
 

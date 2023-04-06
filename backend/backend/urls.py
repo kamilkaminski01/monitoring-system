@@ -9,4 +9,5 @@ urlpatterns = [
     path("api/bingo/", include("bingo.urls")),
     path("api/tictactoe/", include("tictactoe.urls")),
     path("api/fifteen/", include("fifteen.urls")),
+    path("api/whiteboard/", include("whiteboard.urls")),
 ]

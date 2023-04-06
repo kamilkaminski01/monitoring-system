@@ -64,20 +64,23 @@ const TicTacToe = () => {
         await swalWarning('Game over!', 'No one won');
         setShowGameInfo(true);
       }
-      setTimeout(() => {
-        roomDetails(detailsRoomEndpoint, roomName, true)
-          .then((data) => {
-            const player = data.players.find((p) => p.username === username);
-            setTotalPlayers(data.total_players);
-            setPlayersTurn(data.players_turn);
-            setPlayers(data.players);
-            setReadyState(player.is_ready);
-            if (player.is_ready && user === username && command !== 'over') setShowGameInfo(false);
-          })
-          .catch(() => {
-            navigate(PATHS.tictactoe);
-          });
-      }, 50);
+      if (command !== 'message') {
+        setTimeout(() => {
+          roomDetails(detailsRoomEndpoint, roomName, true)
+            .then((data) => {
+              const player = data.players.find((p) => p.username === username);
+              setTotalPlayers(data.total_players);
+              setPlayersTurn(data.players_turn);
+              setPlayers(data.players);
+              setReadyState(player.is_ready);
+              if (player.is_ready && user === username && command !== 'over')
+                setShowGameInfo(false);
+            })
+            .catch(() => {
+              navigate(PATHS.tictactoe);
+            });
+        }, 50);
+      }
     }
   });
 

@@ -75,14 +75,8 @@
     margin: 1rem;
     text-align: right;
     font-size: 16px;
-
-    a {
-      color: $grey-light;
-
-      &:hover {
-        text-decoration: underline;
-      }
-    }
+    color: $grey-light;
+    text-decoration: underline;
   }
 
   .error-message {

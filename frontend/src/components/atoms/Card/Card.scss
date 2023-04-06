@@ -23,21 +23,6 @@
       margin-bottom: 1rem;
     }
   }
-  .btn-open {
-    padding: 0.5rem;
-    margin-bottom: 0.5rem;
-    border-radius: 10px;
-    font-weight: bold;
-    background-color: white;
-    color: $blue-txt;
-    border: none;
-    outline: none;
-    transition: 0.2s;
-    &:hover {
-      background: $hover-color;
-      transform: scale(1.1);
-    }
-  }
   @include for-tablet {
     width: 65%;
     margin: 2.5rem;

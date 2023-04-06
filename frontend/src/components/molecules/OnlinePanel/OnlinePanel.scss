@@ -44,12 +44,4 @@
     animation: fadeIn;
     animation-duration: 0.5s;
   }
-
-  @include for-tablet {
-    font-size: 0.75rem;
-
-    h2 {
-      font-size: 1.5rem;
-    }
-  }
 }

@@ -3,7 +3,7 @@ import './OnlinePanel.scss';
 import { deleteAuthGame, deleteAuthRoom } from 'utils/requests';
 import { GAME_TYPE } from 'utils/consts';
 
-const OnlinePanel = ({ gameName, items, path, endpoint, panelType }) => {
+const OnlinePanel = ({ gameName, items, path, endpoint, panelType, panelTypeName = null }) => {
   const handleClick = (event, gameName, path, item) => {
     event.preventDefault();
     const location = panelType === GAME_TYPE.users ? item.username : item.room_name;
@@ -33,7 +33,7 @@ const OnlinePanel = ({ gameName, items, path, endpoint, panelType }) => {
           </div>
         ))
       ) : (
-        <p className="no-online">No online {panelType}</p>
+        <p className="no-online">No online {panelTypeName || panelType}</p>
       )}
     </div>
   );

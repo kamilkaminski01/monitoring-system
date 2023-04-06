@@ -26,7 +26,12 @@ export const ENDPOINTS = {
   checkFifteenPuzzle: 'fifteen/check/:username/',
   createFifteenPuzzle: 'fifteen/details/',
   detailsFifteenPuzzle: 'fifteen/details/:username/',
-  monitoringFifteenPuzzle: 'fifteen/monitoring/details/:username/'
+  monitoringFifteenPuzzle: 'fifteen/monitoring/details/:username/',
+
+  createWhiteboard: 'whiteboard/details/',
+  checkWhiteboard: 'whiteboard/check/:room_name',
+  detailsWhiteboard: 'whiteboard/details/:room_name/',
+  monitoringWhiteboard: 'whiteboard/monitoring/details/:room_name/'
 };
 
 export const WEBSOCKETS = {
@@ -36,7 +41,8 @@ export const WEBSOCKETS = {
   fifteen: `${SOCKET_URL}/fifteen`,
   bingoOnlineRooms: `${SOCKET_URL}/online-rooms/bingo/`,
   tictactoeOnlineRooms: `${SOCKET_URL}/online-rooms/tictactoe/`,
-  fifteenOnlineUsers: `${SOCKET_URL}/online-users/fifteen/`
+  fifteenOnlineUsers: `${SOCKET_URL}/online-users/fifteen/`,
+  whiteboardOnlineRooms: `${SOCKET_URL}/online-rooms/whiteboard/`
 };
 
 export const PATHS = {
@@ -91,6 +97,11 @@ export const WEBSOCKET_MESSAGES = {
   }),
   ready: (username) => ({
     command: 'ready',
+    user: username
+  }),
+  message: (message, username) => ({
+    command: 'message',
+    message,
     user: username
   })
 };

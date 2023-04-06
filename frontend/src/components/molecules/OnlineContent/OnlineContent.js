@@ -1,10 +1,10 @@
 import './OnlineContent.scss';
 import { GAME_TYPE } from 'utils/consts';
 
-const OnlineContent = ({ content, type }) => {
+const OnlineContent = ({ content, type, typeName = null }) => {
   return (
     <div className="my-3">
-      <h4>Online {type}:</h4>
+      <h4>Online {typeName || type}:</h4>
       <div className="online-content">
         {content.length ? (
           content.map((child) => (
@@ -15,7 +15,7 @@ const OnlineContent = ({ content, type }) => {
             </p>
           ))
         ) : (
-          <p className="online-child">No online {type}</p>
+          <p className="online-child">No online {typeName || type}</p>
         )}
       </div>
     </div>

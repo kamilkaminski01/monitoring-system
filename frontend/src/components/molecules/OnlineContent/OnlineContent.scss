@@ -39,10 +39,17 @@
 
     .fifteen-body & {
       background-color: $fifteen-secondary-color;
-      cursor: unset;
 
       &:hover {
         background-color: $fifteen-hover-color;
+      }
+    }
+
+    .whiteboard-body & {
+      background-color: $tictactoe-primary-color;
+
+      &:hover {
+        background-color: $tictactoe-secondary-color;
       }
     }
 

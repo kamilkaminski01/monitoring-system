@@ -10,7 +10,6 @@ from rest_framework.generics import (
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.request import Request
 from rest_framework.response import Response
-from rest_framework.serializers import ModelSerializer
 
 from .models import BingoPlayer, BingoRoom
 from .serializers import (
@@ -86,11 +85,6 @@ class BingoRoomDetailsAPIView(RetrieveUpdateAPIView):
         next_player = players_queue[next_player_index]
         instance.players_turn = BingoPlayer.objects.get(username=next_player)
         serializer.save()
-
-    def get_serializer_class(self) -> ModelSerializer:
-        if self.request.method == "GET":
-            return BingoRoomDetailsSerializer
-        return super().get_serializer_class()
 
 
 class BingoPlayerAPIView(RetrieveUpdateAPIView):

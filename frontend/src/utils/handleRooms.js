@@ -45,7 +45,8 @@ async function joinRoom(detailsEndpoint, createEndpoint, username, roomName) {
 }
 
 async function checkRoomPlayersAndLimit(room, username) {
-  const { players, players_limit: playersLimit = 2 } = room;
+  const playersLimit = room.players_limit || (room.game_state ? 2 : 5);
+  const { players } = room;
   const player = players.find((player) => player.username === username);
   if (players.length >= playersLimit) {
     if (player && !player.is_active) {
