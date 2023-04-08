@@ -1,79 +1,108 @@
 @import 'utils/mixins.scss';
 @import 'utils/variables.scss';
 
-.whiteboard {
-  height: 100%;
-  width: 100%;
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 0;
-  bottom: 0;
-  touch-action: none;
-}
+@include whiteboard;
 
-.colors {
-  position: fixed;
-  margin: 2px;
-}
-
-.color {
-  display: inline-block;
-  border-radius: 5px;
-  height: 48px;
-  width: 48px;
-  border: 1px solid $border-color;
-  margin: 1px;
-
-  &.black {
-    background-color: black;
+.whiteboard-body {
+  .whiteboard {
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    touch-action: none;
   }
+  .menu {
+    position: fixed;
+    margin: 2px;
 
-  &.red {
-    background-color: red;
-  }
+    .dropdown {
+      display: flex;
+      flex-direction: column;
 
-  &.green {
-    background-color: green;
-  }
+      button {
+        background-color: white;
+        color: $blue-txt;
+        font-size: 15px;
+        border: 1px solid $border-color;
+        border-radius: 10px;
+        padding: 12px 23px;
+        outline: none;
 
-  &.blue {
-    background-color: blue;
-  }
+        &:hover {
+          background-color: $hover-color;
+        }
+      }
 
-  &.yellow {
-    background-color: yellow;
-  }
+      .dropdown-content {
+        button {
+          margin: 3px;
+          padding: 8px 17px;
+          width: 50%;
+        }
 
-  &.white {
-    background-color: white;
-  }
-}
+        .options {
+          display: flex;
+          justify-content: center;
+        }
 
-.whiteboard-container {
-  btn {
-    display: flex;
-    justify-content: center;
-  }
+        .players {
+          background-color: white;
+          border: 1px solid $hover-color;
+          border-radius: 5px;
+          margin: 3px 4px;
 
-  button {
-    background-color: white;
-    color: $blue-txt;
-    font-size: 16px;
-    font-weight: 700;
-    border: 1px solid $border-color;
-    border-radius: 10px;
-    padding: 12px 32px;
-    float: right;
-    outline: none;
+          .player-info {
+            display: flex;
+            align-items: center;
+            padding: 0 5rem;
+            margin: 0.25rem 0;
 
-    &:hover {
-      background: $hover-color;
+            .username {
+              margin-right: auto;
+            }
+
+            .is-active {
+              margin-right: 0.5rem;
+            }
+          }
+        }
+      }
     }
-  }
-  @include for-phone {
-    button {
-      float: left;
+    .color {
+      display: inline-block;
+      border-radius: 5px;
+      height: 48px;
+      width: 48px;
+      border: 1px solid $border-color;
+      margin: 1px;
+
+      &.black {
+        background-color: black;
+      }
+
+      &.red {
+        background-color: red;
+      }
+
+      &.green {
+        background-color: green;
+      }
+
+      &.blue {
+        background-color: blue;
+      }
+
+      &.yellow {
+        background-color: yellow;
+      }
+
+      &.active {
+        border: 5px solid white;
+        border-radius: 10px;
+      }
     }
   }
 }

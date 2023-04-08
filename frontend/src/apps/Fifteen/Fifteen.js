@@ -10,7 +10,6 @@ import GameButton from 'components/atoms/GameButton';
 import { swalSuccess, swalWarning } from 'utils/swal';
 import { putGameDetails } from 'utils/requests';
 import { useFifteenData } from 'hooks/useFifteenData';
-import { useNavigate } from 'react-router-dom';
 import { generatePuzzleState } from 'utils/boards';
 
 const Fifteen = () => {
@@ -18,21 +17,20 @@ const Fifteen = () => {
   const username = useUsername();
   const websocket = `${WEBSOCKETS.fifteen}/${username}/`;
   const endpoint = ENDPOINTS.detailsFifteenPuzzle;
-  const { puzzleState, gameState, moves, setPuzzleState, setGameState, setMoves } = useFifteenData(
-    endpoint,
-    username
-  );
-  const navigate = useNavigate();
+  const { puzzleState, gameState, moves, setPuzzleState, setGameState, setMoves, navigate } =
+    useFifteenData(endpoint, username);
 
   const { sendJsonMessage } = useWebSocket(websocket, {
     onOpen: () => {
-      putGameDetails(endpoint, username, {
-        board_state: puzzleState
-      }).then((response) => {
-        try {
+      if (username) {
+        putGameDetails(endpoint, username, {
+          board_state: puzzleState
+        }).then((response) => {
           if (response.response.status === 404) navigate(PATHS.fifteen);
-        } catch {}
-      });
+        });
+      } else {
+        navigate(PATHS.fifteen);
+      }
       if (isUsernameSet) sendJsonMessage(WEBSOCKET_MESSAGES.join(username));
     }
   });

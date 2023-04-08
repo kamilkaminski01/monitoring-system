@@ -32,7 +32,8 @@ export const useBingoData = (endpoint, roomName, username) => {
       .catch(() => {
         navigate(PATHS.bingo);
       });
-  }, [endpoint, roomName, username, navigate]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [endpoint, roomName, username]);
 
   return {
     gameState,

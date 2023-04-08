@@ -14,7 +14,7 @@ const useValidUsername = () => {
   if (isLogged) return;
 
   navigate(PATHS.home);
-  swalCornerError(null, 'You must provide a username before joining a game.');
+  swalCornerError(null, 'You must provide a username before joining a game');
 };
 
 export default useValidUsername;

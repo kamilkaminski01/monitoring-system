@@ -48,3 +48,15 @@ export const swalWarning = (title = 'Warning', text = 'Warning event') => {
   };
   return Swal.fire(config);
 };
+
+export const swalTimedCornerSuccess = (text = 'Successfull event') => {
+  const config = {
+    icon: 'success',
+    position: 'top-right',
+    toast: true,
+    showConfirmButton: false,
+    timer: 1000,
+    text
+  };
+  return Swal.fire(config);
+};

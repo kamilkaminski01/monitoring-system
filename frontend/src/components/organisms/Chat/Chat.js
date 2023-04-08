@@ -45,7 +45,7 @@ const Chat = ({ websocket, username }) => {
             ) : (
               <div className="message">
                 <span> {message.message} </span>
-                <span className="message-user"> {message.user} </span>
+                <span className="message-user"> {message.user ? message.user : 'admin'} </span>
               </div>
             )}
           </div>

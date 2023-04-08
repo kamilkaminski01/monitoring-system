@@ -111,6 +111,10 @@ export const GAME_TYPE = {
   users: 'users'
 };
 
+export const WHITEBOARD = {
+  colors: ['black', 'red', 'green', 'blue', 'yellow']
+};
+
 export const BINGO = {
   winRows: [
     [0, 1, 2, 3, 4],
