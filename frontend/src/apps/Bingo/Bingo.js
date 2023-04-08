@@ -4,7 +4,7 @@ import './Bingo.scss';
 import useUsername from 'hooks/useUsername';
 import { UsernameContext } from 'providers/UsernameContextProvider';
 import Chat from 'components/organisms/Chat/Chat';
-import GameButton from 'components/atoms/GameButton';
+import GameButton from 'components/atoms/GameButton/GameButton';
 import { BINGO, ENDPOINTS, PATHS, WEBSOCKET_MESSAGES, WEBSOCKETS } from 'utils/consts';
 import { generateBoardState, getBoardStateIndexes, highlightBingo } from 'utils/boards';
 import useWebSocket from 'react-use-websocket';
@@ -182,23 +182,13 @@ const Bingo = () => {
 
   return (
     <div className="bingo-body">
+      <GameButton value="Home" onClick={() => (window.location.href = PATHS.home)} />
+      <GameButton value="Menu" onClick={() => (window.location.href = PATHS.bingo)} />
       <GameButton
-        className="btn-danger"
-        value="Home"
-        onClick={() => (window.location.href = PATHS.home)}
-      />
-      <GameButton
-        className="btn-danger"
-        value="Menu"
-        onClick={() => (window.location.href = PATHS.bingo)}
-      />
-      <GameButton
-        className="btn-danger"
         value="Restart"
         onClick={() => sendJsonMessage(WEBSOCKET_MESSAGES.restart(username))}
       />
       <GameButton
-        className="btn-danger"
         value={showGameInfo ? 'Board' : 'Details'}
         onClick={() => setShowGameInfo(!showGameInfo)}
       />
@@ -210,7 +200,6 @@ const Bingo = () => {
             roomName={roomName}
             endpoint={detailsPlayerEndpoint}
             sendJsonMessage={sendJsonMessage}
-            className="btn-outline-success"
           />
         ) : (
           <div className="bingo">

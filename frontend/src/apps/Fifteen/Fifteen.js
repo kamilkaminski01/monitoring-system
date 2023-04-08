@@ -6,7 +6,7 @@ import { ENDPOINTS, PATHS, WEBSOCKET_MESSAGES, WEBSOCKETS } from 'utils/consts';
 import useWebSocket from 'react-use-websocket';
 import { useSocketLeave } from 'hooks/useSocketLeave';
 import Chat from 'components/organisms/Chat/Chat';
-import GameButton from 'components/atoms/GameButton';
+import GameButton from 'components/atoms/GameButton/GameButton';
 import { swalSuccess, swalWarning } from 'utils/swal';
 import { putGameDetails } from 'utils/requests';
 import { useFifteenData } from 'hooks/useFifteenData';

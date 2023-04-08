@@ -11,6 +11,7 @@ import { roomDetails } from 'utils/requests';
 import Active from 'assets/icons/active.png';
 import Inactive from 'assets/icons/inactive.png';
 import Dropdown from 'assets/icons/dropdown.png';
+import Dropup from 'assets/icons/dropup.png';
 import Link from 'assets/icons/link.png';
 import { swalTimedCornerSuccess } from 'utils/swal';
 
@@ -194,7 +195,7 @@ const Whiteboard = () => {
         ))}
         <div className="dropdown">
           <button onClick={() => setShowDropdown(!showDropdown)}>
-            <img src={Dropdown} alt="Dropdown" />
+            <img src={showDropdown ? Dropup : Dropdown} alt="Dropdown" />
           </button>
           {showDropdown && (
             <div className="dropdown-content">

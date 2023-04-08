@@ -6,7 +6,7 @@ import { handleCreateRoom, handleJoinRoom } from 'utils/handleRooms';
 import { useSocketRoomsAndUsers } from 'hooks/useSocketRoomsAndUsers';
 import Checkbox from 'components/atoms/Checkbox/Checkbox';
 import Input from 'components/atoms/Input/Input';
-import HomeButton from 'components/atoms/HomeButton';
+import HomeButton from 'components/atoms/HomeButton/HomeButton';
 import OnlineContent from 'components/molecules/OnlineContent/OnlineContent';
 
 const BingoHome = () => {
@@ -19,7 +19,7 @@ const BingoHome = () => {
   return (
     <div className="bingo-body">
       <div className="home-container">
-        <div>
+        <div className="home-content">
           <div>
             <h2>Bingo</h2>
             <Input
@@ -32,24 +32,26 @@ const BingoHome = () => {
               value={roomName}
               onChange={(event) => setRoomName(event.target.value)}
             />
-            <button className="my-3 btn btn-success btn-home" onClick={() => setIsPopupOpen(true)}>
-              Create Room
-            </button>
-            <button
-              className="my-2 btn btn-success btn-home"
-              disabled={!roomName}
-              onClick={() =>
-                handleJoinRoom(
-                  ENDPOINTS.checkBingoRoom,
-                  ENDPOINTS.detailsBingoRoom,
-                  ENDPOINTS.createBingoRoom,
-                  username,
-                  roomName
-                )
-              }>
-              Join Room
-            </button>
-            <HomeButton className="btn-success" />
+            <div className="room-options">
+              <button className="btn" onClick={() => setIsPopupOpen(true)}>
+                Create Room
+              </button>
+              <button
+                className="btn"
+                disabled={!roomName}
+                onClick={() =>
+                  handleJoinRoom(
+                    ENDPOINTS.checkBingoRoom,
+                    ENDPOINTS.detailsBingoRoom,
+                    ENDPOINTS.createBingoRoom,
+                    username,
+                    roomName
+                  )
+                }>
+                Join Room
+              </button>
+            </div>
+            <HomeButton />
           </div>
           <OnlineContent content={bingoRooms} type={GAME_TYPE.rooms} />
         </div>

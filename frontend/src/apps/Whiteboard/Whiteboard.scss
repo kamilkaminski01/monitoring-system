@@ -30,7 +30,9 @@
         border-radius: 10px;
         padding: 12px 23px;
         outline: none;
-
+        img {
+          margin-bottom: 3px;
+        }
         &:hover {
           background-color: $hover-color;
         }
@@ -78,6 +80,7 @@
       width: 48px;
       border: 1px solid $border-color;
       margin: 1px;
+      cursor: pointer;
 
       &.black {
         background-color: black;

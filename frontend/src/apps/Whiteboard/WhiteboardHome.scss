@@ -2,12 +2,3 @@
 
 @include whiteboard;
 @include home-page;
-
-.whiteboard-home-wrapper{
-  @include for-desktop {
-    width: 19rem;
-  }
-  h2 {
-    text-align: center;
-  }
-}

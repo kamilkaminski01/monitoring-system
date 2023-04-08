@@ -7,7 +7,7 @@ import InfoWhite from 'assets/icons/info-white.png';
 import { putRoomDetailsPlayer } from 'utils/requests';
 import { WEBSOCKET_MESSAGES } from 'utils/consts';
 
-const GameInfo = ({ players, username, roomName, endpoint, sendJsonMessage, className }) => {
+const GameInfo = ({ players, username, roomName, endpoint, sendJsonMessage, className = null }) => {
   const handleSetReady = async () => {
     await putRoomDetailsPlayer(endpoint, roomName, username, { is_ready: true });
     sendJsonMessage(WEBSOCKET_MESSAGES.ready(username));
@@ -21,7 +21,9 @@ const GameInfo = ({ players, username, roomName, endpoint, sendJsonMessage, clas
           <div key={player.username} className="player-info">
             <div>{player.username}</div>
             {player.username === username && !player.is_ready ? (
-              <button className={`btn ${className} ready-state`} onClick={() => handleSetReady()}>
+              <button
+                className={`btn ${className || ''} ready-state`}
+                onClick={() => handleSetReady()}>
                 Ready?
               </button>
             ) : (

@@ -4,11 +4,13 @@ import Input from 'components/atoms/Input/Input';
 import { UsernameContext } from 'providers/UsernameContextProvider';
 import { handleCreateRoom, handleJoinRoom } from 'utils/handleRooms';
 import { ENDPOINTS, GAME_TYPE, WEBSOCKETS } from 'utils/consts';
-import HomeButton from 'components/atoms/HomeButton';
+import HomeButton from 'components/atoms/HomeButton/HomeButton';
 import OnlineContent from 'components/molecules/OnlineContent/OnlineContent';
 import { useSocketRoomsAndUsers } from 'hooks/useSocketRoomsAndUsers';
+import { AuthContext } from 'providers/AuthContextProvider';
 
 const WhiteboardHome = () => {
+  const { isLogged } = useContext(AuthContext);
   const { username, setUsername } = useContext(UsernameContext);
   const [roomName, setRoomName] = useState('');
   const [whiteboardRooms] = useSocketRoomsAndUsers(WEBSOCKETS.whiteboardOnlineRooms);
@@ -16,8 +18,8 @@ const WhiteboardHome = () => {
   return (
     <div className="whiteboard-body">
       <div className="home-container">
-        <div>
-          <div className="whiteboard-home-wrapper">
+        <div className="home-content">
+          <div>
             <h2>Whiteboard</h2>
             <Input
               placeholder={'Your username'}
@@ -29,32 +31,35 @@ const WhiteboardHome = () => {
               value={roomName}
               onChange={(event) => setRoomName(event.target.value)}
             />
-            <button
-              className="my-3 btn btn-light btn-home"
-              onClick={() =>
-                handleCreateRoom(
-                  ENDPOINTS.checkWhiteboard,
-                  ENDPOINTS.createWhiteboard,
-                  username,
-                  roomName
-                )
-              }>
-              Create whiteboard
-            </button>
-            <button
-              className="my-2 btn btn-light btn-home"
-              disabled={!roomName}
-              onClick={() =>
-                handleJoinRoom(
-                  ENDPOINTS.checkWhiteboard,
-                  ENDPOINTS.detailsWhiteboard,
-                  ENDPOINTS.createWhiteboard,
-                  username,
-                  roomName
-                )
-              }>
-              Join whiteboard
-            </button>
+            <div className="room-options">
+              <button
+                className="btn btn-light"
+                disabled={isLogged}
+                onClick={() =>
+                  handleCreateRoom(
+                    ENDPOINTS.checkWhiteboard,
+                    ENDPOINTS.createWhiteboard,
+                    username,
+                    roomName
+                  )
+                }>
+                Create whiteboard
+              </button>
+              <button
+                className="btn btn-light"
+                disabled={!roomName}
+                onClick={() =>
+                  handleJoinRoom(
+                    ENDPOINTS.checkWhiteboard,
+                    ENDPOINTS.detailsWhiteboard,
+                    ENDPOINTS.createWhiteboard,
+                    username,
+                    roomName
+                  )
+                }>
+                Join whiteboard
+              </button>
+            </div>
             <HomeButton className="btn-light" />
           </div>
           <OnlineContent

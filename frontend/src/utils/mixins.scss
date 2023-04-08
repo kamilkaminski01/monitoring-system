@@ -57,6 +57,43 @@
     overflow: auto;
   }
 }
+@mixin buttons {
+  .home-container {
+    .home-content {
+      button {
+        font-size: 1rem;
+        padding: 0.5rem 0.5rem;
+        .whiteboard-body & {
+          font-size: 0.9rem;
+        }
+        .fifteen-body & {
+          font-size: 1.2rem;
+          width: 100%;
+        }
+      }
+    }
+  }
+  .btn-game {
+    padding: 0.7rem;
+    margin: 0.6rem 0.2rem 0.6rem 0.6rem;
+
+    .info-container & {
+      padding: 0.4rem;
+      margin: 1rem;
+    }
+  }
+  button {
+    .bingo-body & {
+      color: white;
+      background-color: $bingo-primary-color;
+
+      &:hover {
+        color: white;
+        background-color: $bingo-secondary-color;
+      }
+    }
+  }
+}
 @mixin home-page {
   .home-container {
     animation: fadeIn;
@@ -65,42 +102,32 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    margin: 0 5rem;
     h2, h4 {
       color: white;
       .whiteboard-body & {
         color: black;
       }
-
     }
     h2 {
+      text-align: center;
       font-size: 2.5rem;
     }
-    .btn-home {
-      font-size: 1.2rem;
-      padding: 0.25em 0.5em;
-      margin-right: 0.5rem;
-    }
-    @include for-desktop {
-      margin: 0 4rem;
-      .btn-home {
-        font-size: 0.85rem;
-        .fifteen-body & {
-          font-size: 1.25rem;
+    .home-content {
+      width: 20rem;
+
+      .room-options {
+        display: flex;
+        justify-content: space-between;
+
+        button {
+          width: 100%;
+          margin: 0.75rem 0.4rem;
         }
       }
     }
   }
 }
 @mixin game-page {
-  .btn-game {
-    padding: 0.7rem;
-    margin: 0.6rem 0.2rem 0.6rem 0.6rem;
-    .info-container & {
-      padding: 0.4rem;
-      margin: 1rem;
-    }
-  }
   .players-turn {
     animation: fadeIn;
     animation-duration: 0.2s;

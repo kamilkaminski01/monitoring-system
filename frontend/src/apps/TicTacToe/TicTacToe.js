@@ -2,7 +2,7 @@ import React, { useContext, useState } from 'react';
 import './TicTacToe.scss';
 import { ENDPOINTS, PATHS, TICTACTOE, WEBSOCKET_MESSAGES, WEBSOCKETS } from 'utils/consts';
 import { UsernameContext } from 'providers/UsernameContextProvider';
-import GameButton from 'components/atoms/GameButton';
+import GameButton from 'components/atoms/GameButton/GameButton';
 import Chat from 'components/organisms/Chat/Chat';
 import { useParams } from 'react-router-dom';
 import useWebSocket from 'react-use-websocket';

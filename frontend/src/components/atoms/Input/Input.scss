@@ -1,14 +1,19 @@
 @import 'utils/mixins.scss';
 
-.home-input {
-  font-size: 1.25rem;
-  .fifteen-body & {
-    text-align: center;
-    font-size: 1.25rem;
-  }
+.home-container {
+  .home-content {
+    .home-input {
+      font-size: 1.1rem !important;
+      text-align: center;
 
-  @include for-desktop {
-    font-size: 0.9rem;
-    max-width: 20rem;
+      .fifteen-body & {
+        font-size: 1.3rem !important;
+      }
+
+      @include for-desktop {
+        font-size: 0.9rem;
+        max-width: 20rem;
+      }
+    }
   }
 }
