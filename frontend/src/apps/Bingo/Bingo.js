@@ -8,7 +8,7 @@ import GameButton from 'components/atoms/GameButton/GameButton';
 import { BINGO, ENDPOINTS, PATHS, WEBSOCKET_MESSAGES, WEBSOCKETS } from 'utils/consts';
 import { generateBoardState, getBoardStateIndexes, highlightBingo } from 'utils/boards';
 import useWebSocket from 'react-use-websocket';
-import { swalCornerSuccess, swalError, swalSuccess, swalWarning } from 'utils/swal';
+import { swalError, swalSuccess, swalTimedCornerSuccess, swalWarning } from 'utils/swal';
 import { putRoomDetailsPlayer, roomDetails, putRoomDetails } from 'utils/requests';
 import { useBingoData } from 'hooks/useBingoData';
 import { useSocketLeave } from 'hooks/useSocketLeave';
@@ -97,7 +97,7 @@ const Bingo = () => {
           initial_board_state: generatedBoardState
         });
         generateGrid();
-        swalCornerSuccess('New game', 'The game has restarted');
+        swalTimedCornerSuccess('The game has restarted', 'New game');
         if (!readyState) setShowGameInfo(true);
       }
       if (command !== 'message') {

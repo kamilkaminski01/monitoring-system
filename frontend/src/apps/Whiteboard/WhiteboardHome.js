@@ -31,35 +31,40 @@ const WhiteboardHome = () => {
               value={roomName}
               onChange={(event) => setRoomName(event.target.value)}
             />
-            <div className="game-home-room-options">
-              <button
-                className="btn btn-light"
-                disabled={isLogged}
-                onClick={() =>
-                  handleCreateRoom(
-                    ENDPOINTS.checkWhiteboard,
-                    ENDPOINTS.createWhiteboard,
-                    username,
-                    roomName
-                  )
-                }>
-                Create whiteboard
-              </button>
-              <button
-                className="btn btn-light"
-                disabled={!roomName}
-                onClick={() =>
-                  handleJoinRoom(
-                    ENDPOINTS.checkWhiteboard,
-                    ENDPOINTS.detailsWhiteboard,
-                    ENDPOINTS.createWhiteboard,
-                    username,
-                    roomName
-                  )
-                }>
-                Join whiteboard
-              </button>
-            </div>
+            {!isLogged ? (
+              <div className="game-home-room-options">
+                <button
+                  className="btn btn-light"
+                  onClick={() =>
+                    handleCreateRoom(
+                      ENDPOINTS.checkWhiteboard,
+                      ENDPOINTS.createWhiteboard,
+                      username,
+                      roomName
+                    )
+                  }>
+                  Create whiteboard
+                </button>
+                <button
+                  className="btn btn-light"
+                  disabled={!roomName}
+                  onClick={() =>
+                    handleJoinRoom(
+                      ENDPOINTS.checkWhiteboard,
+                      ENDPOINTS.detailsWhiteboard,
+                      ENDPOINTS.createWhiteboard,
+                      username,
+                      roomName
+                    )
+                  }>
+                  Join whiteboard
+                </button>
+              </div>
+            ) : (
+              <p className="no-room-options">
+                To create or join whiteboards you should be logged out
+              </p>
+            )}
             <HomeButton className="btn-light" />
           </div>
           <OnlineContent

@@ -9,7 +9,7 @@ import useWebSocket from 'react-use-websocket';
 import useUsername from 'hooks/useUsername';
 import { useTicTacToeData } from 'hooks/useTicTacToeData';
 import { putRoomDetails, putRoomDetailsPlayer, roomDetails } from 'utils/requests';
-import { swalCornerSuccess, swalError, swalSuccess, swalWarning } from 'utils/swal';
+import { swalError, swalSuccess, swalTimedCornerSuccess, swalWarning } from 'utils/swal';
 import { useSocketLeave } from 'hooks/useSocketLeave';
 import GameInfo from 'components/molecules/GameInfo/GameInfo';
 
@@ -51,7 +51,7 @@ const TicTacToe = () => {
       } else if (command === 'restart') {
         setBoardState(TICTACTOE.defaultBoardState);
         setGameState(true);
-        swalCornerSuccess('New game', 'The game has restarted');
+        swalTimedCornerSuccess('The game has restarted', 'New game');
         if (!readyState) setShowGameInfo(true);
       } else if (command === 'win') {
         setGameState(false);

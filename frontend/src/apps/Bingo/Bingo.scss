@@ -13,7 +13,7 @@
     align-items: center;
 
     .bingo {
-      margin: 8rem;
+      margin: 8.01rem;
       font-weight: bolder;
       .animated-data {
         animation: fadeIn;
@@ -46,6 +46,7 @@
           border: 2px solid $bingo-clicked-item;
           font-size: 1.5em;
           margin: 0.2rem;
+          user-select: none;
           &.clicked {
             background: $bingo-clicked-item;
           }
