@@ -18,8 +18,8 @@ const BingoHome = () => {
 
   return (
     <div className="bingo-body">
-      <div className="home-container">
-        <div className="home-content">
+      <div className="game-home-container">
+        <div className="game-home-content">
           <div>
             <h2>Bingo</h2>
             <Input

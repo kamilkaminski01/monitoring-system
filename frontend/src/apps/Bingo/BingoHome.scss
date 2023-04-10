@@ -2,7 +2,7 @@
 @import 'utils/variables.scss';
 
 @include bingo;
-@include home-page;
+@include game-home-page;
 
 .bingo-body {
   .popup {

@@ -7,7 +7,7 @@ const OnlinePanel = ({ gameName, items, path, endpoint, panelType, panelTypeName
   const handleClick = (event, gameName, path, item) => {
     event.preventDefault();
     const location = panelType === GAME_TYPE.users ? item.username : item.room_name;
-    window.open(`${path}/${location}`, `${gameName}/${location}`, 'height=900,width=1435');
+    window.open(`${path}/${location}`, `${gameName}/${location}`, 'height=900,width=1440');
   };
 
   const handleDelete = async (event, item) => {

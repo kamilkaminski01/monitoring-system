@@ -8,7 +8,7 @@ import Bingo from 'apps/Bingo/Bingo';
 import TicTacToeHome from 'apps/TicTacToe/TicTacToeHome';
 import TicTacToe from 'apps/TicTacToe/TicTacToe';
 import LoginForm from 'components/molecules/LoginForm/LoginForm';
-import SharedLayout from './components/atoms/SharedLayout';
+import SharedLayout from 'components/atoms/SharedLayout/SharedLayout';
 import ProtectedRoutes from './components/atoms/ProtectedRoutes';
 import MonitoringPanelPage from './pages/MonitoringPanelPage/MonitoringPanelPage';
 import BingoMonitoring from 'apps/Bingo/BingoMonitoring';

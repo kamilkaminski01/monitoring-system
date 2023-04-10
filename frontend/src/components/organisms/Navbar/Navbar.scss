@@ -46,5 +46,6 @@ nav {
   @include for-nav {
     flex-wrap: wrap;
     justify-content: center;
+    text-align: center;
   }
 }

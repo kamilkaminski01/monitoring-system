@@ -15,8 +15,8 @@ const TicTacToeHome = () => {
 
   return (
     <div className="tictactoe-body">
-      <div className="home-container">
-        <div className="home-content">
+      <div className="game-home-container">
+        <div className="game-home-content">
           <div>
             <h2>Tic Tac Toe</h2>
             <Input

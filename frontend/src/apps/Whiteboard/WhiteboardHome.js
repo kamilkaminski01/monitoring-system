@@ -17,8 +17,8 @@ const WhiteboardHome = () => {
 
   return (
     <div className="whiteboard-body">
-      <div className="home-container">
-        <div className="home-content">
+      <div className="game-home-container">
+        <div className="game-home-content">
           <div>
             <h2>Whiteboard</h2>
             <Input

@@ -7,26 +7,29 @@ const AuthContext = React.createContext({
   logout: () => {}
 });
 
-const accessToken = localStorage.getItem(LOCAL_STORAGE.accessToken);
-
 const AuthContextProvider = ({ children }) => {
   const [isLogged, setIsLogged] = useState(!!localStorage.getItem(LOCAL_STORAGE.accessToken));
 
-  const login = useCallback(async () => {
+  const login = useCallback(() => {
     setIsLogged(true);
   }, []);
 
-  useEffect(() => {
-    if (accessToken) {
-      login();
-    }
-  }, [login]);
-
-  const logout = () => {
+  const logout = useCallback(() => {
     localStorage.removeItem(LOCAL_STORAGE.accessToken);
     localStorage.removeItem(LOCAL_STORAGE.refreshToken);
     setIsLogged(false);
-  };
+  }, []);
+
+  useEffect(() => {
+    const onStorageChange = () => {
+      const newAccessToken = localStorage.getItem(LOCAL_STORAGE.accessToken);
+      if (!newAccessToken) setIsLogged(false);
+    };
+    window.addEventListener('storage', onStorageChange);
+    return () => {
+      window.removeEventListener('storage', onStorageChange);
+    };
+  }, []);
 
   return (
     <AuthContext.Provider value={{ isLogged, login, logout }}>{children}</AuthContext.Provider>

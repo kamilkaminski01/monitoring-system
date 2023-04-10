@@ -2,9 +2,10 @@ import './OnlineContent.scss';
 import { GAME_TYPE } from 'utils/consts';
 
 const OnlineContent = ({ content, type, typeName = null }) => {
+  const formattedType = (typeName || type).charAt(0).toUpperCase() + (typeName || type).slice(1);
   return (
     <div className="my-3">
-      <h4>Online {typeName || type}:</h4>
+      <h4>Online {formattedType}</h4>
       <div className="online-content">
         {content.length ? (
           content.map((child) => (

@@ -14,8 +14,8 @@ const FifteenHome = () => {
 
   return (
     <div className="fifteen-body">
-      <div className="home-container">
-        <div className="home-content">
+      <div className="game-home-container">
+        <div className="game-home-content">
           <h2 className="my-3 text-center">Fifteen Puzzle</h2>
           <Input
             placeholder={'Your username'}

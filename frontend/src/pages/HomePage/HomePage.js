@@ -5,8 +5,8 @@ import './HomePage.scss';
 
 function HomePage() {
   return (
-    <div>
-      <div className="home-wrapper">
+    <div className="home-container">
+      <div className="home-content">
         <Card
           title="Whiteboard"
           imageUrl="https://img.icons8.com/ios/400/null/whiteboard.png"

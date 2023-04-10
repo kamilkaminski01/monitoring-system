@@ -58,8 +58,8 @@
   }
 }
 @mixin buttons {
-  .home-container {
-    .home-content {
+  .game-home-container {
+    .game-home-content {
       button {
         font-size: 1rem;
         padding: 0.5rem 0.5rem;
@@ -94,8 +94,8 @@
     }
   }
 }
-@mixin home-page {
-  .home-container {
+@mixin game-home-page {
+  .game-home-container {
     animation: fadeIn;
     animation-duration: 0.4s;
     min-height: $game-home-page-height;
@@ -112,7 +112,7 @@
       text-align: center;
       font-size: 2.5rem;
     }
-    .home-content {
+    .game-home-content {
       width: 20rem;
 
       .room-options {

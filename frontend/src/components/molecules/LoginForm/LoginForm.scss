@@ -34,6 +34,7 @@
         border: none;
         outline: none;
         margin-right: auto;
+        border-radius: 10px;
       }
 
       label {
@@ -50,11 +51,6 @@
       input:valid ~ label {
         top: -5px;
         color: #adadad;
-      }
-
-      input:focus ~ span::before,
-      input:valid ~ span::before {
-        width: 100%;
       }
     }
 
@@ -87,5 +83,8 @@
   @include for-desktop {
     width: 70%;
     max-width: 30rem;
+  }
+  @include for-phone {
+    width: 90%;
   }
 }

@@ -171,19 +171,7 @@ const Whiteboard = () => {
   };
 
   const onUp = (e) => {
-    if (!drawing) return;
     drawing = false;
-    try {
-      draw(
-        canvasRef.current,
-        data.x,
-        data.y,
-        e.clientX || e.touches[0].clientX,
-        e.clientY || e.touches[0].clientY,
-        data.color,
-        true
-      );
-    } catch {}
   };
 
   return (
