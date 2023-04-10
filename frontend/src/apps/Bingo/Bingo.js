@@ -182,16 +182,18 @@ const Bingo = () => {
 
   return (
     <div className="bingo-body">
-      <GameButton value="Home" onClick={() => (window.location.href = PATHS.home)} />
-      <GameButton value="Menu" onClick={() => (window.location.href = PATHS.bingo)} />
-      <GameButton
-        value="Restart"
-        onClick={() => sendJsonMessage(WEBSOCKET_MESSAGES.restart(username))}
-      />
-      <GameButton
-        value={showGameInfo ? 'Board' : 'Details'}
-        onClick={() => setShowGameInfo(!showGameInfo)}
-      />
+      <div className="game-room-options">
+        <GameButton value="Home" onClick={() => (window.location.href = PATHS.home)} />
+        <GameButton value="Menu" onClick={() => (window.location.href = PATHS.bingo)} />
+        <GameButton
+          value="Restart"
+          onClick={() => sendJsonMessage(WEBSOCKET_MESSAGES.restart(username))}
+        />
+        <GameButton
+          value={showGameInfo ? 'Board' : 'Details'}
+          onClick={() => setShowGameInfo(!showGameInfo)}
+        />
+      </div>
       <div className="bingo-wrapper">
         {showGameInfo ? (
           <GameInfo

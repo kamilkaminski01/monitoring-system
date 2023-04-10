@@ -26,7 +26,9 @@ const Fifteen = () => {
         putGameDetails(endpoint, username, {
           board_state: puzzleState
         }).then((response) => {
-          if (response.response.status === 404) navigate(PATHS.fifteen);
+          try {
+            if (response.response.status === 404) navigate(PATHS.fifteen);
+          } catch {}
         });
       } else {
         navigate(PATHS.fifteen);
@@ -79,6 +81,10 @@ const Fifteen = () => {
       await putGameDetails(ENDPOINTS.detailsFifteenPuzzle, username, {
         board_state: newPuzzleState,
         moves: movesValue
+      }).then((response) => {
+        try {
+          if (response.response.status === 404) navigate(PATHS.fifteen);
+        } catch {}
       });
       sendJsonMessage(WEBSOCKET_MESSAGES.click(username, newPuzzleState));
       if (isPuzzleSolved(newPuzzleState)) {
@@ -91,16 +97,18 @@ const Fifteen = () => {
 
   return (
     <div className="fifteen-body">
-      <GameButton
-        className="btn-outline-primary"
-        value="Home"
-        onClick={() => (window.location.href = PATHS.home)}
-      />
-      <GameButton
-        className="btn-outline-primary"
-        value="Menu"
-        onClick={() => (window.location.href = PATHS.fifteen)}
-      />
+      <div className="game-room-options">
+        <GameButton
+          className="btn-outline-primary"
+          value="Home"
+          onClick={() => (window.location.href = PATHS.home)}
+        />
+        <GameButton
+          className="btn-outline-primary"
+          value="Menu"
+          onClick={() => (window.location.href = PATHS.fifteen)}
+        />
+      </div>
       <div className="fifteen-wrapper">
         <div className="fifteen">
           <div className="puzzle-container">

@@ -31,7 +31,7 @@ const WhiteboardHome = () => {
               value={roomName}
               onChange={(event) => setRoomName(event.target.value)}
             />
-            <div className="room-options">
+            <div className="game-home-room-options">
               <button
                 className="btn btn-light"
                 disabled={isLogged}

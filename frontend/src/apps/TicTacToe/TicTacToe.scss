@@ -12,6 +12,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+
     .tictactoe {
       animation: fadeIn;
       animation-duration: 0.5s;
@@ -23,12 +24,10 @@
         display: grid;
         border-radius: 3px;
         margin-bottom: 0.1rem;
-        grid-template-columns: $tictactoe-grid-columns;
-        justify-content: center;
+        grid-template-columns: 1fr 1fr 1fr;
         background-color: $scoreboard-bg-color;
         padding: 0.5rem;
         > div {
-          flex: 1 1 auto;
           display: flex;
           justify-content: center;
           flex-wrap: wrap;
@@ -44,8 +43,8 @@
           bottom: 0;
           right: 0;
           display: grid;
-          grid-template-columns: $tictactoe-grid-columns;
-          grid-template-rows: $tictactoe-grid-rows;
+          grid-template-columns: 1fr 1fr 1fr;
+          grid-template-rows: 1fr 1fr 1fr;
           grid-column-gap: 2px;
           grid-row-gap: 2px;
           .space {
@@ -66,8 +65,8 @@
     }
     @include for-desktop {
       flex-direction: column;
+      margin-top: 4rem;
       .tictactoe {
-        flex: none;
         width: 80%;
         margin: 3rem;
       }
@@ -75,9 +74,6 @@
     @include for-phone {
       .tictactoe {
         width: 90%;
-        .scoreboard {
-          font-size: 15px;
-        }
       }
     }
   }

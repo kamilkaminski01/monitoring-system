@@ -4,7 +4,7 @@
 @include fifteen;
 
 .fifteen-monitoring {
-  min-height: $monitoring-height;
+  min-height: $game-height;
   .fifteen-wrapper {
     min-height: unset;
   }

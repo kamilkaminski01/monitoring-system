@@ -26,7 +26,7 @@
         background-color: white;
         color: $blue-txt;
         font-size: 15px;
-        border: 1px solid $border-color;
+        border: 1px solid $grey-light-border;
         border-radius: 10px;
         padding: 12px 23px;
         outline: none;
@@ -34,7 +34,7 @@
           margin-bottom: 3px;
         }
         &:hover {
-          background-color: $hover-color;
+          background-color: $light-blue;
         }
       }
 
@@ -52,7 +52,7 @@
 
         .players {
           background-color: white;
-          border: 1px solid $border-color;
+          border: 1px solid $grey-light-border;
           border-radius: 5px;
           margin: 3px 4px;
 
@@ -78,7 +78,7 @@
       border-radius: 5px;
       height: 48px;
       width: 48px;
-      border: 1px solid $border-color;
+      border: 1px solid $grey-light-border;
       margin: 1px;
       cursor: pointer;
 

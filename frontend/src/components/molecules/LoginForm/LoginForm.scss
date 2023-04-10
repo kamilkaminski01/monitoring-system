@@ -7,13 +7,13 @@
   left: 50%;
   transform: translate(-50%, -50%);
   width: 30rem;
-  border: $border-color solid 1px;
+  border: $grey-light-border solid 1px;
   border-radius: 1rem;
 
   h1 {
     text-align: center;
     padding: 1rem 1rem;
-    border-bottom: $border-color solid 1px;
+    border-bottom: $grey-light-border solid 1px;
   }
 
   form {
@@ -62,7 +62,7 @@
       background: $grey-light;
       border-radius: 25px;
       font-size: 18px;
-      color: $border-color;
+      color: $grey-light-border;
       cursor: pointer;
     }
   }

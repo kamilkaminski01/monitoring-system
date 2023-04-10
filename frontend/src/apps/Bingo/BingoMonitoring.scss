@@ -2,7 +2,7 @@
 @import 'utils/variables.scss';
 
 .bingo-monitoring {
-  min-height: $monitoring-height;
+  min-height: $game-height;
   .bingo-wrapper {
     min-height: unset;
     .bingo {

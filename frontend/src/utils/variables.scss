@@ -1,21 +1,20 @@
-$blue-txt: #1b9cfc;
+$black-bg: #121213;
 $grey-light: #777777;
+$grey-light-border: #e7e7e7;
 $grey-dark: #333333;
 $red-light-error: #f04e4e;
-$hover-color: #EFF9FE;
-$border-color: #e7e7e7;
-$black-bg: #121213;
+$blue-txt: #1b9cfc;
+$light-blue: #EFF9FE;
 $violet: #6d5baf;
 
 $home-page-content-height: 87.7vh;
-$game-home-page-height: 100vh;
-$game-height: 95.2vh;
-$monitoring-height: 100vh;
+$game-height: 100vh;
 
 $bingo-primary-color: #262350;
 $bingo-secondary-color: #363263;
 $bingo-chat-primary-color: #1b1b21;
 $bingo-success-row: #5baf5b;
+$bingo-clicked-item: #3a3a3c;
 
 $tictactoe-primary-color: #C0C0C0;
 $tictactoe-secondary-color: #808080;
@@ -24,9 +23,6 @@ $tictactoe-hover-color: #bbb;
 $scoreboard-bg-color: #f0f0f0;
 $tictactoe-font-family: 'Quicksand';
 $tictactoe-chat-color: #212529;
-
-$tictactoe-grid-columns: 1fr 1fr 1fr;
-$tictactoe-grid-rows: 1fr 1fr 1fr;
 
 $fifteen-primary-color: #37474F;
 $fifteen-secondary-color: #1976D2;

@@ -29,9 +29,9 @@ const TicTacToeHome = () => {
               value={roomName}
               onChange={(event) => setRoomName(event.target.value)}
             />
-            <div className="room-options">
+            <div className="game-home-room-options">
               <button
-                className="btn btn-light"
+                className="btn btn-outline-light"
                 onClick={() =>
                   handleCreateRoom(
                     ENDPOINTS.checkTicTacToeRoom,
@@ -43,7 +43,7 @@ const TicTacToeHome = () => {
                 Create Room
               </button>
               <button
-                className="btn btn-light"
+                className="btn btn-outline-light"
                 disabled={!roomName}
                 onClick={() =>
                   handleJoinRoom(
@@ -57,7 +57,7 @@ const TicTacToeHome = () => {
                 Join Room
               </button>
             </div>
-            <HomeButton className="btn-light" />
+            <HomeButton className="btn-outline-light" />
           </div>
           <OnlineContent content={tictactoeRooms} type={GAME_TYPE.rooms} />
         </div>

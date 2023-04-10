@@ -35,29 +35,32 @@ const TicTacToeMonitoring = () => {
     onOpen: () => {},
     onMessage: (message) => {
       const data = JSON.parse(message.data);
-      setTimeout(() => {
-        getAuthRoomDetails(detailsRoomEndpoint, roomName)
-          .then((data) => {
-            const playersData = data.players.map((player) => {
-              return {
-                username: player.username,
-                isActive: player.is_active,
-                isWinner: player.is_winner,
-                isReady: player.is_ready,
-                figure: player.figure
-              };
+      const command = data.command;
+      if (command !== 'message') {
+        setTimeout(() => {
+          getAuthRoomDetails(detailsRoomEndpoint, roomName)
+            .then((data) => {
+              const playersData = data.players.map((player) => {
+                return {
+                  username: player.username,
+                  isActive: player.is_active,
+                  isWinner: player.is_winner,
+                  isReady: player.is_ready,
+                  figure: player.figure
+                };
+              });
+              setRoomPlayers(playersData);
+              setTotalPlayers(data.total_players);
+              setPlayersTurn(data.players_turn);
+              setBoardState(data.board_state);
+              setGameState(data.game_state);
+            })
+            .catch(() => {
+              window.close();
             });
-            setRoomPlayers(playersData);
-            setTotalPlayers(data.total_players);
-            setPlayersTurn(data.players_turn);
-            setBoardState(data.board_state);
-            setGameState(data.game_state);
-          })
-          .catch(() => {
-            window.close();
-          });
-      }, 50);
-      if (data.command === 'click' && data.command !== 'restart') {
+        }, 50);
+      }
+      if (command === 'click' && command !== 'restart') {
         setBoardState(data.value);
       }
     }

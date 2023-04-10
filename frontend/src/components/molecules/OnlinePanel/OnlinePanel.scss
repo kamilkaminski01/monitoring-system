@@ -14,7 +14,7 @@
     position: relative;
     margin: 10px auto;
     padding: 1.5rem;
-    border: 1px solid $border-color;
+    border: 1px solid $grey-light-border;
     border-radius: 5px;
     animation: fadeIn;
     animation-duration: 0.5s;
@@ -28,7 +28,7 @@
       padding: 0.03rem;
       font-size: 14px;
       &:hover {
-        background-color: $border-color;
+        background-color: $grey-light-border;
         border-radius: 4px;
       }
     }

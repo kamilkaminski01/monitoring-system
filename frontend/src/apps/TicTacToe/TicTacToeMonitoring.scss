@@ -4,7 +4,7 @@
 @include tictactoe;
 
 .tictactoe-monitoring {
-  min-height: $monitoring-height;
+  min-height: $game-height;
   .tictactoe-players {
     display: flex;
     justify-content: center;

@@ -32,7 +32,7 @@ const BingoHome = () => {
               value={roomName}
               onChange={(event) => setRoomName(event.target.value)}
             />
-            <div className="room-options">
+            <div className="game-home-room-options">
               <button className="btn" onClick={() => setIsPopupOpen(true)}>
                 Create Room
               </button>

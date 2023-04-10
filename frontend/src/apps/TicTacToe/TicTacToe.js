@@ -127,26 +127,28 @@ const TicTacToe = () => {
 
   return (
     <div className="tictactoe-body">
-      <GameButton
-        className="btn-light"
-        value="Home"
-        onClick={() => (window.location.href = PATHS.home)}
-      />
-      <GameButton
-        className="btn-light"
-        value="Menu"
-        onClick={() => (window.location.href = PATHS.tictactoe)}
-      />
-      <GameButton
-        className="btn-light"
-        value="Restart"
-        onClick={() => sendJsonMessage(WEBSOCKET_MESSAGES.restart(username))}
-      />
-      <GameButton
-        className="btn-light"
-        value={showGameInfo ? 'Board' : 'Details'}
-        onClick={() => setShowGameInfo(!showGameInfo)}
-      />
+      <div className="game-room-options">
+        <GameButton
+          className="btn-light"
+          value="Home"
+          onClick={() => (window.location.href = PATHS.home)}
+        />
+        <GameButton
+          className="btn-light"
+          value="Menu"
+          onClick={() => (window.location.href = PATHS.tictactoe)}
+        />
+        <GameButton
+          className="btn-light"
+          value="Restart"
+          onClick={() => sendJsonMessage(WEBSOCKET_MESSAGES.restart(username))}
+        />
+        <GameButton
+          className="btn-light"
+          value={showGameInfo ? 'Board' : 'Details'}
+          onClick={() => setShowGameInfo(!showGameInfo)}
+        />
+      </div>
       <div className="tictactoe-wrapper">
         {showGameInfo ? (
           <GameInfo

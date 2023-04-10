@@ -36,13 +36,12 @@
           border-radius: 4px;
           font-size: 65px;
           font-weight: bold;
-          text-align: center;
           cursor: pointer;
+          user-select: none;
         }
       }
       .info-container {
         display: flex;
-        flex-direction: row;
         justify-content: space-between;
         align-items: center;
         width: 100%;
@@ -67,6 +66,7 @@
     @include for-desktop {
       flex-direction: column;
       align-items: center;
+      margin-top: 4rem;
       .fifteen {
         margin: 2rem;
         .puzzle-container {
@@ -81,6 +81,7 @@
     }
     @include for-phone {
       .fifteen {
+        margin: 1.5rem;
         .puzzle-container {
           height: 330px;
           .puzzle-block {

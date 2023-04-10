@@ -42,28 +42,30 @@ const BingoMonitoring = () => {
     onMessage: (message) => {
       const data = JSON.parse(message.data);
       const command = data.command;
-      setTimeout(() => {
-        getAuthRoomDetails(detailsRoomEndpoint, roomName)
-          .then((data) => {
-            const playersData = data.players.map((player) => {
-              return {
-                username: player.username,
-                isActive: player.is_active,
-                isWinner: player.is_winner,
-                isReady: player.is_ready,
-                bingoState: player.bingo_state,
-                initialBoardState: player.initial_board_state
-              };
+      if (command !== 'message') {
+        setTimeout(() => {
+          getAuthRoomDetails(detailsRoomEndpoint, roomName)
+            .then((data) => {
+              const playersData = data.players.map((player) => {
+                return {
+                  username: player.username,
+                  isActive: player.is_active,
+                  isWinner: player.is_winner,
+                  isReady: player.is_ready,
+                  bingoState: player.bingo_state,
+                  initialBoardState: player.initial_board_state
+                };
+              });
+              setRoomPlayers(playersData);
+              setTotalPlayers(data.total_players);
+              setPlayersTurn(data.players_turn);
+              setGameState(data.game_state);
+            })
+            .catch(() => {
+              window.close();
             });
-            setRoomPlayers(playersData);
-            setTotalPlayers(data.total_players);
-            setPlayersTurn(data.players_turn);
-            setGameState(data.game_state);
-          })
-          .catch(() => {
-            window.close();
-          });
-      }, 100);
+        }, 50);
+      }
       if (command === 'click') {
         const updatedBoardState = [...boardState, data.value];
         setBoardState(updatedBoardState);
