@@ -141,6 +141,7 @@ const TicTacToe = () => {
         <GameButton
           className="btn-light"
           value="Restart"
+          disabled={gameState}
           onClick={() => sendJsonMessage(WEBSOCKET_MESSAGES.restart(username))}
         />
         <GameButton
