@@ -4,6 +4,19 @@
 @include whiteboard;
 
 .whiteboard-body {
+  .spinner-border {
+    position: fixed;
+    top: 48%;
+    left: 47%;
+    width: 4rem;
+    height: 4rem;
+    color: $blue-txt !important;
+    z-index: 9999;
+    @include for-phone {
+      top: 47%;
+      left: 42%;
+    }
+  }
   .whiteboard {
     height: 100%;
     width: 100%;
@@ -53,8 +66,8 @@
         .players {
           background-color: white;
           border: 1px solid $grey-light-border;
-          border-radius: 5px;
-          margin: 3px 4px;
+          border-radius: 10px;
+          margin: 0 4px;
 
           .player-info {
             display: flex;

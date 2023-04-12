@@ -23,6 +23,7 @@ const Whiteboard = () => {
   const { players, setPlayers } = useWhiteboardData(ENDPOINTS.detailsWhiteboard, roomName);
   const [showDropdown, setShowDropdown] = useState(false);
   const [activeColor, setActiveColor] = useState('black');
+  const [loading, setLoading] = useState(true);
   const canvasRef = useRef(null);
   const data = { color: 'black' };
   let drawing = false;
@@ -37,10 +38,14 @@ const Whiteboard = () => {
       const command = data.command;
       const user = data.user;
       const value = data.value;
-      if (command === 'join' || command === 'leave') {
-        roomDetails(ENDPOINTS.detailsWhiteboard, roomName, true).then((data) => {
-          setPlayers(data.players);
-        });
+      if ((command === 'join' || command === 'leave') && user !== username) {
+        roomDetails(ENDPOINTS.detailsWhiteboard, roomName, true)
+          .then((data) => {
+            setPlayers(data.players);
+          })
+          .catch(() => {
+            window.close();
+          });
       } else if (command === 'click' && (user !== username || username === null)) {
         const w = canvasRef.current.width;
         const h = canvasRef.current.height;
@@ -68,6 +73,26 @@ const Whiteboard = () => {
     const colors = document.querySelectorAll('.color');
     const canvas = canvasRef.current;
     onResize(canvas);
+
+    roomDetails(ENDPOINTS.detailsWhiteboard, roomName, true).then((data) => {
+      const w = canvasRef.current.width;
+      const h = canvasRef.current.height;
+      data.board_state.forEach((value) => {
+        try {
+          draw(
+            canvasRef.current,
+            value.x0 * w,
+            value.y0 * h,
+            value.x1 * w,
+            value.y1 * h,
+            value.color,
+            false
+          );
+        } catch {}
+      });
+      setLoading(false);
+    });
+
     colors.forEach((color) => {
       color.addEventListener('click', onColorChange);
     });
@@ -111,7 +136,7 @@ const Whiteboard = () => {
     context.stroke();
     context.closePath();
     context.save();
-    url = canvasRef.current.toDataURL('image/png');
+    url = canvas.toDataURL('image/png');
     if (send) {
       const w = canvas.width;
       const h = canvas.height;
@@ -176,6 +201,7 @@ const Whiteboard = () => {
 
   return (
     <div className="whiteboard-body">
+      {loading && <div className="spinner-border text-primary" role="status" />}
       <canvas ref={canvasRef} className="whiteboard" />
       <div className="menu">
         {WHITEBOARD.colors.map((c) => (

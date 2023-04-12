@@ -26,5 +26,5 @@ class WhiteboardRoomDetailsSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Whiteboard
-        read_only_fields = ["room_name", "total_players", "players"]
-        fields = ["room_name", "total_players", "players"]
+        read_only_fields = ["room_name", "total_players", "players", "board_state"]
+        fields = ["room_name", "total_players", "players", "board_state"]
