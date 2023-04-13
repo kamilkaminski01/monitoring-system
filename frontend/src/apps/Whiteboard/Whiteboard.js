@@ -1,7 +1,7 @@
 import React, { useEffect, useContext, useState, useRef } from 'react';
 import { ENDPOINTS, PATHS, WEBSOCKET_MESSAGES, WEBSOCKETS, WHITEBOARD } from 'utils/consts';
 import 'apps/Whiteboard/Whiteboard.scss';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import useWebSocket from 'react-use-websocket';
 import useUsername from 'hooks/useUsername';
 import { useSocketLeave } from 'hooks/useSocketLeave';
@@ -24,6 +24,7 @@ const Whiteboard = () => {
   const [showDropdown, setShowDropdown] = useState(false);
   const [activeColor, setActiveColor] = useState('black');
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
   const canvasRef = useRef(null);
   const data = { color: 'black' };
   let drawing = false;
@@ -38,13 +39,13 @@ const Whiteboard = () => {
       const command = data.command;
       const user = data.user;
       const value = data.value;
-      if ((command === 'join' || command === 'leave') && user !== username) {
+      if (command === 'join' || command === 'leave') {
         roomDetails(ENDPOINTS.detailsWhiteboard, roomName, true)
           .then((data) => {
             setPlayers(data.players);
           })
           .catch(() => {
-            window.close();
+            navigate(PATHS.whiteboard);
           });
       } else if (command === 'click' && (user !== username || username === null)) {
         const w = canvasRef.current.width;

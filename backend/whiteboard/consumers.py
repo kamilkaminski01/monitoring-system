@@ -9,10 +9,6 @@ class WhiteboardConsumer(GameConsumerMixin):
     game_model = Whiteboard
     player_model = WhiteboardPlayer
 
-    async def connect(self) -> None:
-        await super().connect()
-        self.whiteboard = await self.get_whiteboard()
-
     async def receive_json(self, content: dict, **kwargs) -> None:
         await super().receive_json(content=content, **kwargs)
         if self.value:
@@ -22,17 +18,15 @@ class WhiteboardConsumer(GameConsumerMixin):
 
     @database_sync_to_async
     def update_whiteboard_state(self) -> None:
-        self.whiteboard.board_state.append(self.value)
-        self.whiteboard.save(update_fields=["board_state"])
+        whiteboard = Whiteboard.objects.get(room_name=self.scope_room_name)
+        whiteboard.board_state.append(self.value)
+        whiteboard.save(update_fields=["board_state"])
 
     @database_sync_to_async
     def clear_whiteboard_state(self) -> None:
-        self.whiteboard.board_state.clear()
-        self.whiteboard.save(update_fields=["board_state"])
-
-    @database_sync_to_async
-    def get_whiteboard(self) -> Whiteboard:
-        return Whiteboard.objects.get(room_name=self.scope_room_name)
+        whiteboard = Whiteboard.objects.get(room_name=self.scope_room_name)
+        whiteboard.board_state.clear()
+        whiteboard.save(update_fields=["board_state"])
 
 
 class WhiteboardOnlineRoomsConsumer(OnlineRoomsConsumerMixin):
