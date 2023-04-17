@@ -16,6 +16,7 @@
     border-radius: 3px;
     animation: fadeIn;
     animation-duration: 0.5s;
+    transition: background-color 0.2s ease-in-out;
 
     p {
       margin: 0;
@@ -30,10 +31,12 @@
     }
 
     .tictactoe-body & {
-      background-color: $tictactoe-primary-color;
+      box-shadow: 0 0 0 1px white;
+      transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
 
       &:hover {
-        background-color: $tictactoe-secondary-color;
+        background-color: $whiteboard-light-grey;
+        color: black;
       }
     }
 

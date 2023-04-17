@@ -14,9 +14,11 @@ import Dropdown from 'assets/icons/dropdown.png';
 import Dropup from 'assets/icons/dropup.png';
 import Link from 'assets/icons/link.png';
 import { swalTimedCornerSuccess } from 'utils/swal';
+import { AuthContext } from 'providers/AuthContextProvider';
 
 const Whiteboard = () => {
   const { isUsernameSet } = useContext(UsernameContext);
+  const { isLogged } = useContext(AuthContext);
   const { roomName } = useParams();
   const username = useUsername();
   const websocket = `${WEBSOCKETS.whiteboard}/${roomName}/`;
@@ -32,7 +34,7 @@ const Whiteboard = () => {
 
   const { sendJsonMessage } = useWebSocket(websocket, {
     onOpen: () => {
-      if (isUsernameSet) sendJsonMessage(WEBSOCKET_MESSAGES.join(username));
+      if (isUsernameSet && !isLogged) sendJsonMessage(WEBSOCKET_MESSAGES.join(username));
     },
     onMessage: (message) => {
       const data = JSON.parse(message.data);

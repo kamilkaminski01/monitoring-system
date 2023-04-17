@@ -20,14 +20,9 @@
     @content;
   }
 }
-@mixin for-nav {
-  @media (max-width: 575px) {
-    @content;
-  }
-}
 @mixin tictactoe {
   @import url('https://fonts.googleapis.com/css?family=Catamaran&display=swap');
-  @import url('https://fonts.googleapis.com/css?family=Quicksand');
+  @import url('https://fonts.googleapis.com/css?family=Quicksand&display=swap');
   .tictactoe-body {
     background-color: $grey-dark;
     font-family: 'Catamaran', sans-serif;

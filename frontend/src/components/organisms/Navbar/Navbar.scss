@@ -15,11 +15,15 @@ nav {
     display: flex;
     align-items: center;
     padding: 0 0.5rem;
+    text-align: center;
   }
 
-  li:hover {
-    background-color: $grey-light;
+  li {
+    transition: background-color 0.2s ease-in-out;
     border-radius: 4px;
+    &:hover {
+      background-color: $grey-light;
+    }
   }
 
   .active-link {
@@ -33,6 +37,7 @@ nav {
 
   .site-title {
     font-size: 2rem;
+    padding: 0;
   }
 
   ul {
@@ -43,9 +48,9 @@ nav {
     gap: 1rem;
   }
 
-  @include for-nav {
-    flex-wrap: wrap;
+  @include for-tablet {
+    flex-direction: column;
     justify-content: center;
-    text-align: center;
+    align-items: center;
   }
 }

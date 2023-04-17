@@ -15,7 +15,7 @@ class WhiteboardAdmin(admin.ModelAdmin):
     inlines = [WhiteboardPlayerAdmin]
 
     def get_readonly_fields(self, request: HttpRequest, obj=None):
-        return "room_name", "total_players", "players"
+        return "room_name", "total_players", "players", "board_state"
 
 
 admin.site.register(Whiteboard, WhiteboardAdmin)
