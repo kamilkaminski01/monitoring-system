@@ -24,7 +24,10 @@ class GameConsumerMixin(AsyncJsonWebsocketConsumer):
         await self.accept()
 
     async def disconnect(self, close_code: int) -> None:
-        await self.channel_layer.group_discard(self.room_name, self.channel_name)
+        try:
+            await self.channel_layer.group_discard(self.room_name, self.channel_name)
+        except TypeError:
+            print("failed disconnecting from game")
         await super().disconnect(close_code)
 
     async def receive_json(self, content: dict, **kwargs) -> None:
@@ -134,7 +137,10 @@ class OnlineRoomsConsumerMixin(AsyncJsonWebsocketConsumer):
         await websocket_send_event(self, event, field_names)
 
     async def disconnect(self, code: int) -> None:
-        await self.channel_layer.group_discard(self.rooms, self.channel_name)
+        try:
+            await self.channel_layer.group_discard(self.rooms, self.channel_name)
+        except TypeError:
+            print("failed disconnecting from online rooms")
         await super().disconnect(code)
 
     @database_sync_to_async
@@ -175,7 +181,10 @@ class OnlineUsersConsumerMixin(AsyncJsonWebsocketConsumer):
         await websocket_send_event(self, event, field_names)
 
     async def disconnect(self, code: int) -> None:
-        await self.channel_layer.group_discard(self.users, self.channel_name)
+        try:
+            await self.channel_layer.group_discard(self.users, self.channel_name)
+        except TypeError:
+            print("failed disconnecting from online users")
         await super().disconnect(code)
 
     @database_sync_to_async

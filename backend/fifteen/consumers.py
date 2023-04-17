@@ -11,19 +11,20 @@ from .models import FifteenPuzzle
 class FifteenPuzzleConsumer(AsyncJsonWebsocketConsumer):
     async def connect(self) -> None:
         self.scope_user = self.scope["user"]
-        self.scope_user_puzzle = self.scope["url_route"]["kwargs"]["username"]
+        self.scope_username = self.scope["url_route"]["kwargs"]["username"]
         try:
-            await self.channel_layer.group_add(
-                self.scope_user_puzzle, self.channel_name
-            )
+            await self.channel_layer.group_add(self.scope_username, self.channel_name)
         except TypeError:
-            print("failed adding users fifteen puzzle")
+            print("failed adding user to fifteen puzzle")
         await self.accept()
 
     async def disconnect(self, close_code: int) -> None:
-        await self.channel_layer.group_discard(
-            self.scope_user_puzzle, self.channel_name
-        )
+        try:
+            await self.channel_layer.group_discard(
+                self.scope_username, self.channel_name
+            )
+        except TypeError:
+            print("failed disconnecting from fifteen puzzle")
         await super().disconnect(close_code)
 
     async def receive_json(self, content: dict, **kwargs) -> None:
@@ -38,13 +39,12 @@ class FifteenPuzzleConsumer(AsyncJsonWebsocketConsumer):
             "message": self.message,
             "value": self.value,
         }
-        if self.scope_user.is_anonymous:
-            if self.command == "leave":
-                await self.delete_game()
-            elif self.command == "win":
-                await self.set_game_state_off()
+        if self.command == "leave":
+            await self.delete_game()
+        elif self.command == "win":
+            await self.set_game_state_off()
         try:
-            await self.channel_layer.group_send(self.scope_user_puzzle, data)
+            await self.channel_layer.group_send(self.scope_username, data)
         except TypeError:
             print("failed sending to fifteen puzzle user")
 
@@ -65,7 +65,7 @@ class FifteenPuzzleConsumer(AsyncJsonWebsocketConsumer):
 
     @database_sync_to_async
     def set_game_state_off(self) -> None:
-        FifteenPuzzle.objects.filter(username=self.scope_user_puzzle).update(
+        FifteenPuzzle.objects.filter(username=self.scope_username).update(
             game_state=False
         )
 

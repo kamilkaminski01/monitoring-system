@@ -18,15 +18,21 @@ class WhiteboardConsumer(GameConsumerMixin):
 
     @database_sync_to_async
     def update_whiteboard_state(self) -> None:
-        whiteboard = Whiteboard.objects.get(room_name=self.scope_room_name)
-        whiteboard.board_state.append(self.value)
-        whiteboard.save(update_fields=["board_state"])
+        try:
+            whiteboard = Whiteboard.objects.get(room_name=self.scope_room_name)
+            whiteboard.board_state.append(self.value)
+            whiteboard.save(update_fields=["board_state"])
+        except Whiteboard.DoesNotExist:
+            print("whiteboard doesn't exist")
 
     @database_sync_to_async
     def clear_whiteboard_state(self) -> None:
-        whiteboard = Whiteboard.objects.get(room_name=self.scope_room_name)
-        whiteboard.board_state.clear()
-        whiteboard.save(update_fields=["board_state"])
+        try:
+            whiteboard = Whiteboard.objects.get(room_name=self.scope_room_name)
+            whiteboard.board_state.clear()
+            whiteboard.save(update_fields=["board_state"])
+        except Whiteboard.DoesNotExist:
+            print("whiteboard doesn't exist")
 
 
 class WhiteboardOnlineRoomsConsumer(OnlineRoomsConsumerMixin):
