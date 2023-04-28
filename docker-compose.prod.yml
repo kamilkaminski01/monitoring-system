@@ -6,7 +6,7 @@ services:
   db:
     image: postgres:13.3-alpine
     env_file:
-      - .env
+      - .envs/.postgres
     volumes:
       - postgres_data:/var/lib/postgresql/data/
     ports:
@@ -22,7 +22,8 @@ services:
       context: ./backend
       dockerfile: Dockerfile
     env_file:
-      - .env
+      - .envs/.django
+      - .envs/.postgres
     volumes:
       - staticfiles:/backend/staticfiles
     ports:
