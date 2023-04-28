@@ -39,8 +39,7 @@ build, run, and test the project. The most important commands include:
 
 When using a local Python environment, [`pre-commit`](https://pre-commit.com/)
 is installed and ran on staged files to ensure that the code
-quality standards are met. During frontend development, Git hooks are handled
-by [`husky`](https://github.com/typicode/husky).
+quality standards are met.
 
 #### Troubleshooting
 
