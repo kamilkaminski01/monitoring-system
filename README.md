@@ -2,8 +2,8 @@
 
 This project is used for monitoring web apps in real-time.
 It allows users to interact within a chosen web application and
-in addition a third party admin can observe the taken actions of users
-and communicate with them through a chat.
+in addition a third party, authenticated user can observe the taken actions of users
+in a game and communicate with them through a chat.
 
 ## Resources
 
@@ -11,6 +11,8 @@ The code repository is hosted on
 [GitHub](https://github.com/kamilkaminski01/monitoring-system).
 
 WebSockets are handled by the `django-channels` framework.
+
+Channel layers are handled by [Redis](https://redis.io/).
 
 ## Running from sources
 
@@ -28,7 +30,7 @@ for reproducible builds and consistent local development environments.
 The default [`docker-compose.yml`](docker-compose.yml) file is set up
 to support local development with code reload and debug mode.
 
-The [`Makefile`](Makefile) contains common commands that can be used to
+[`Makefile`](Makefile) contains common commands that can be used to
 build, run, and test the project. The most important commands include:
 - `build`: builds the project with Docker Compose.
 - `run`: runs the project with Docker Compose.
@@ -39,7 +41,8 @@ build, run, and test the project. The most important commands include:
 
 When using a local Python environment, [`pre-commit`](https://pre-commit.com/)
 is installed and ran on staged files to ensure that the code
-quality standards are met.
+quality standards are met. During frontend development, Git hooks are handled
+by [`husky`](https://github.com/typicode/husky).
 
 #### Troubleshooting
 
@@ -63,7 +66,7 @@ docker-compose run
 
 ## Code quality standards
 
-The `master` branch is the stable branch used for releases.
+The `master` branch is a stable branch used for releases.
 
 Git branches are named according to the
 [Git Flow](https://danielkummer.github.io/git-flow-cheatsheet/) methodology.
