@@ -51,7 +51,7 @@ Docker images:
 
 ```bash
 make clear
-docker-compose up --build --force-recreate
+docker compose up --build --force-recreate
 ```
 
 If `make` is not supported, the associated Docker Compose commands can be
@@ -60,8 +60,8 @@ used directly in order to build and run the project:
 ```bash
 git clone https://github.com/kamilkaminski01/monitoring-system
 cd monitoring-system/
-docker-compose build
-docker-compose run
+docker compose build
+docker compose run
 ```
 
 ## Code quality standards
