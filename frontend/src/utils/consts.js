@@ -1,21 +1,27 @@
 const url = window.location;
-const isSecure = url.protocol === 'https:' ? 'wss:' : 'ws:';
+const socketProtocol = url.protocol === 'https:' ? 'wss:' : 'ws:';
 
 export const API_URL =
   url.port !== '' ? `${url.protocol}//${url.hostname}:8000/api/` : `${url.origin}/api/`;
 
 export const SOCKET_URL =
-  url.port !== '' ? `${isSecure}//${url.hostname}:8000/ws` : `${isSecure}//${url.hostname}/ws`;
+  url.port !== ''
+    ? `${socketProtocol}//${url.hostname}:8000/ws`
+    : `${socketProtocol}//${url.hostname}/ws`;
 
 export const ENDPOINTS = {
   getToken: 'token/',
   refreshToken: 'token/refresh/',
 
-  createBingoRoom: 'bingo/details/',
-  detailsBingoRoom: 'bingo/details/:room_name/',
-  detailsBingoPlayer: 'bingo/details/:room_name/:username/',
-  checkBingoRoom: 'bingo/check/:room_name/',
-  monitoringBingoRoom: 'bingo/monitoring/details/:room_name/',
+  createWhiteboard: 'whiteboard/details/',
+  checkWhiteboard: 'whiteboard/check/:room_name',
+  detailsWhiteboard: 'whiteboard/details/:room_name/',
+  monitoringWhiteboard: 'whiteboard/monitoring/details/:room_name/',
+
+  checkFifteenPuzzle: 'fifteen/check/:username/',
+  createFifteenPuzzle: 'fifteen/details/',
+  detailsFifteenPuzzle: 'fifteen/details/:username/',
+  monitoringFifteenPuzzle: 'fifteen/monitoring/details/:username/',
 
   createTicTacToeRoom: 'tictactoe/details/',
   detailsTicTacToeRoom: 'tictactoe/details/:room_name/',
@@ -23,39 +29,49 @@ export const ENDPOINTS = {
   checkTicTacToeRoom: 'tictactoe/check/:room_name/',
   monitoringTicTacToeRoom: 'tictactoe/monitoring/details/:room_name/',
 
-  checkFifteenPuzzle: 'fifteen/check/:username/',
-  createFifteenPuzzle: 'fifteen/details/',
-  detailsFifteenPuzzle: 'fifteen/details/:username/',
-  monitoringFifteenPuzzle: 'fifteen/monitoring/details/:username/',
-
-  createWhiteboard: 'whiteboard/details/',
-  checkWhiteboard: 'whiteboard/check/:room_name',
-  detailsWhiteboard: 'whiteboard/details/:room_name/',
-  monitoringWhiteboard: 'whiteboard/monitoring/details/:room_name/'
+  createBingoRoom: 'bingo/details/',
+  detailsBingoRoom: 'bingo/details/:room_name/',
+  detailsBingoPlayer: 'bingo/details/:room_name/:username/',
+  checkBingoRoom: 'bingo/check/:room_name/',
+  monitoringBingoRoom: 'bingo/monitoring/details/:room_name/'
 };
 
 export const WEBSOCKETS = {
   whiteboard: `${SOCKET_URL}/whiteboard`,
-  bingo: `${SOCKET_URL}/bingo`,
-  tictactoe: `${SOCKET_URL}/tictactoe`,
+  whiteboardOnlineRooms: `${SOCKET_URL}/online-rooms/whiteboard/`,
+
   fifteen: `${SOCKET_URL}/fifteen`,
-  bingoOnlineRooms: `${SOCKET_URL}/online-rooms/bingo/`,
-  tictactoeOnlineRooms: `${SOCKET_URL}/online-rooms/tictactoe/`,
   fifteenOnlineUsers: `${SOCKET_URL}/online-users/fifteen/`,
-  whiteboardOnlineRooms: `${SOCKET_URL}/online-rooms/whiteboard/`
+
+  tictactoe: `${SOCKET_URL}/tictactoe`,
+  tictactoeOnlineRooms: `${SOCKET_URL}/online-rooms/tictactoe/`,
+
+  bingo: `${SOCKET_URL}/bingo`,
+  bingoOnlineRooms: `${SOCKET_URL}/online-rooms/bingo/`
 };
 
 export const PATHS = {
   home: '/',
   login: '/login',
   monitoring: '/monitoring',
+
   whiteboard: '/whiteboard',
+  whiteboardRoom: '/whiteboard/:roomName',
+
   fifteen: '/fifteen',
-  bingo: '/bingo',
+  fifteenUser: '/fifteen/:userName',
+  monitoringFifteen: '/fifteen/monitoring',
+  monitoringFifteenUser: '/fifteen/monitoring/:userName',
+
   tictactoe: '/tictactoe',
-  monitoringBingo: '/bingo/monitoring',
+  tictactoeRoom: '/tictactoe/:roomName',
   monitoringTicTacToe: '/tictactoe/monitoring',
-  monitoringFifteen: '/fifteen/monitoring'
+  monitoringTicTacToeRoom: '/tictactoe/monitoring/:roomName',
+
+  bingo: '/bingo',
+  bingoRoom: '/bingo/:roomName',
+  monitoringBingo: '/bingo/monitoring',
+  monitoringBingoRoom: '/bingo/monitoring/:roomName'
 };
 
 export const LOCAL_STORAGE = {

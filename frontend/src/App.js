@@ -28,27 +28,24 @@ function App() {
           <Route path={PATHS.home} element={<HomePage />} />
         </Route>
         <Route path={PATHS.whiteboard} element={<WhiteboardHome />} />
-        <Route path={`${PATHS.whiteboard}/:roomName`} element={<Whiteboard />} />
-
-        <Route path={PATHS.bingo} element={<BingoHome />} />
-        <Route path={`${PATHS.bingo}/:roomName`} element={<Bingo />} />
-
-        <Route path={PATHS.tictactoe} element={<TicTacToeHome />} />
-        <Route path={`${PATHS.tictactoe}/:roomName`} element={<TicTacToe />} />
+        <Route path={PATHS.whiteboardRoom} element={<Whiteboard />} />
 
         <Route path={PATHS.fifteen} element={<FifteenHome />} />
-        <Route path={`${PATHS.fifteen}/:username`} element={<Fifteen />} />
+        <Route path={PATHS.fifteenUser} element={<Fifteen />} />
+
+        <Route path={PATHS.tictactoe} element={<TicTacToeHome />} />
+        <Route path={PATHS.tictactoeRoom} element={<TicTacToe />} />
+
+        <Route path={PATHS.bingo} element={<BingoHome />} />
+        <Route path={PATHS.bingoRoom} element={<Bingo />} />
 
         <Route element={<ProtectedRoutes />}>
           <Route element={<SharedLayout />}>
             <Route path={PATHS.monitoring} element={<MonitoringPanelPage />} />
           </Route>
-          <Route path={`${PATHS.monitoringBingo}/:roomName`} element={<BingoMonitoring />} />
-          <Route
-            path={`${PATHS.monitoringTicTacToe}/:roomName`}
-            element={<TicTacToeMonitoring />}
-          />
-          <Route path={`${PATHS.monitoringFifteen}/:userName`} element={<FifteenMonitoring />} />
+          <Route path={PATHS.monitoringFifteenUser} element={<FifteenMonitoring />} />
+          <Route path={PATHS.monitoringTicTacToeRoom} element={<TicTacToeMonitoring />} />
+          <Route path={PATHS.monitoringBingoRoom} element={<BingoMonitoring />} />
         </Route>
       </Routes>
     </div>
