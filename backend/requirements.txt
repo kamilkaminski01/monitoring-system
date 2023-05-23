@@ -9,8 +9,10 @@ django-stubs==v1.11.0
 djangorestframework==3.14.0
 djangorestframework-simplejwt==5.2.2
 environs==9.5.0
+factory-boy==3.2.1
 flake8==4.0.1
 isort==5.10.1
 mypy==v0.931
 psycopg2-binary==2.9.3
+pytest-django==4.5.2
 sqlparse==0.4.3

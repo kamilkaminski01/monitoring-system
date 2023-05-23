@@ -45,6 +45,12 @@ flake8:
 mypy:
 	docker compose -f $(COMPOSE_FILE) run --rm $(FLAGS) backend mypy .
 
+pytest:
+	docker compose -f $(COMPOSE_FILE) run --rm backend pytest
+
+pytest_module:
+	docker compose -f $(COMPOSE_FILE) run --rm backend pytest $(module)/
+
 migrations:
 	docker compose -f $(COMPOSE_FILE) run --rm backend python manage.py makemigrations
 
