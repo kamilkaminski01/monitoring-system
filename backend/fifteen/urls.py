@@ -8,10 +8,20 @@ from .views import (
 )
 
 urlpatterns = [
-    path("check/<str:username>/", FifteenPuzzleCheckAPIView.as_view()),
-    path("details/", FifteenPuzzleAPIView.as_view()),
-    path("details/<str:username>/", FifteenPuzzleDetailsAPIView.as_view()),
     path(
-        "monitoring/details/<str:username>/", FifteenPuzzleMonitoringAPIView.as_view()
+        "check/<str:username>/",
+        FifteenPuzzleCheckAPIView.as_view(),
+        name="check_existing_fifteen_puzzle",
+    ),
+    path("details/", FifteenPuzzleAPIView.as_view(), name="create_fifteen_puzzle"),
+    path(
+        "details/<str:username>/",
+        FifteenPuzzleDetailsAPIView.as_view(),
+        name="fifteen_puzzle_details",
+    ),
+    path(
+        "monitoring/details/<str:username>/",
+        FifteenPuzzleMonitoringAPIView.as_view(),
+        name="monitoring_fifteen_puzzle",
     ),
 ]
