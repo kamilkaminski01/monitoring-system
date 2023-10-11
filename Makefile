@@ -1,7 +1,7 @@
 # Set the COMPOSE_FILE variable to the appropriate file based on the environment
 
 ifeq ($(ENV),prod)
-	COMPOSE_FILE=docker-compose.prod.yml
+	COMPOSE_FILE=docker-compose-prod.yml
 else
 	COMPOSE_FILE=docker-compose.yml
 endif
@@ -20,6 +20,9 @@ recreate:
 
 superuser:
 	docker compose -f $(COMPOSE_FILE) run --rm backend python manage.py createsuperuser
+
+initial-data:
+	docker compose -f $(COMPOSE_FILE) run --rm backend python manage.py initialize_data
 
 flush:
 	docker compose -f $(COMPOSE_FILE) run --rm backend python manage.py flush
