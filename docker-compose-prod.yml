@@ -30,7 +30,7 @@ services:
       - web
 
   db:
-    image: postgres:13.3-alpine
+    image: postgres:15.3-alpine
     env_file:
       - .envs/.postgres
     volumes:
