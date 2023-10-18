@@ -19,46 +19,52 @@ recreate:
 	docker compose -f $(COMPOSE_FILE) up --build --force-recreate $(if $(filter prod,$(ENV)), -d)
 
 superuser:
-	docker compose -f $(COMPOSE_FILE) run --rm backend python manage.py createsuperuser
+	docker compose -f $(COMPOSE_FILE) run --rm web python manage.py createsuperuser
 
 initial-data:
-	docker compose -f $(COMPOSE_FILE) run --rm backend python manage.py initialize_data
+	docker compose -f $(COMPOSE_FILE) run --rm web python manage.py initialize_data
 
 flush:
-	docker compose -f $(COMPOSE_FILE) run --rm backend python manage.py flush
+	docker compose -f $(COMPOSE_FILE) run --rm web python manage.py flush
+
+lint:
+	docker compose -f $(COMPOSE_FILE) run --rm -T web isort .
+	docker compose -f $(COMPOSE_FILE) run --rm -T web black .
+	docker compose -f $(COMPOSE_FILE) run --rm -T web flake8 .
+	docker compose -f $(COMPOSE_FILE) run --rm -T web mypy .
 
 check:
-	docker compose -f $(COMPOSE_FILE) run --rm backend isort --check-only .
-	docker compose -f $(COMPOSE_FILE) run --rm backend black --check .
-	docker compose -f $(COMPOSE_FILE) run --rm backend flake8 .
-	docker compose -f $(COMPOSE_FILE) run --rm backend mypy .
+	docker compose -f $(COMPOSE_FILE) run --rm web isort --check-only .
+	docker compose -f $(COMPOSE_FILE) run --rm web black --check .
+	docker compose -f $(COMPOSE_FILE) run --rm web flake8 .
+	docker compose -f $(COMPOSE_FILE) run --rm web mypy .
 
 frontcheck:
-	docker compose -f $(COMPOSE_FILE) run --rm $(FLAGS) frontend npm run check
+	docker compose -f $(COMPOSE_FILE) run --rm -T frontend npm run check
 
 isort:
-	docker compose -f $(COMPOSE_FILE) run --rm $(FLAGS) backend isort .
+	docker compose -f $(COMPOSE_FILE) run --rm -T web isort .
 
 black:
-	docker compose -f $(COMPOSE_FILE) run --rm $(FLAGS) backend black .
+	docker compose -f $(COMPOSE_FILE) run --rm -T web black .
 
 flake8:
-	docker compose -f $(COMPOSE_FILE) run --rm $(FLAGS) backend flake8 .
+	docker compose -f $(COMPOSE_FILE) run --rm -T web flake8 .
 
 mypy:
-	docker compose -f $(COMPOSE_FILE) run --rm $(FLAGS) backend mypy .
+	docker compose -f $(COMPOSE_FILE) run --rm -T  web mypy .
 
 pytest:
-	docker compose -f $(COMPOSE_FILE) run --rm backend pytest
+	docker compose -f $(COMPOSE_FILE) run --rm web pytest
 
 pytest_module:
-	docker compose -f $(COMPOSE_FILE) run --rm backend pytest $(module)/
+	docker compose -f $(COMPOSE_FILE) run --rm web pytest $(module)/
 
 migrations:
-	docker compose -f $(COMPOSE_FILE) run --rm backend python manage.py makemigrations
+	docker compose -f $(COMPOSE_FILE) run --rm web python manage.py makemigrations
 
 migrate:
-	docker compose -f $(COMPOSE_FILE) run --rm backend python manage.py migrate
+	docker compose -f $(COMPOSE_FILE) run --rm web python manage.py migrate
 
 clear:
 	docker compose -f $(COMPOSE_FILE) down -v

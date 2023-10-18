@@ -10,30 +10,15 @@ repos:
         -   id: check-added-large-files
         -   id: debug-statements
 
--   repo: local
-    hooks:
-    -   id: isort
-        name: isort
-        entry: bash -c 'make isort FLAGS="-T"'
+- repo: local
+  hooks:
+      - id: lint
+        name: lint
+        entry: bash -c 'make lint'
         language: system
         require_serial: true
-    -   id: black
-        name: black
-        entry: bash -c 'make black FLAGS="-T"'
-        language: system
-        require_serial: true
-    -   id: flake8
-        name: flake8
-        entry: bash -c 'make flake8 FLAGS="-T"'
-        language: system
-        require_serial: true
-    -   id: mypy
-        name: mypy
-        entry: bash -c 'make mypy FLAGS="-T"'
-        language: system
-        require_serial: true
-    -   id: frontcheck
+      - id: frontcheck
         name: frontcheck
-        entry: bash -c 'make frontcheck FLAGS="-T"'
+        entry: bash -c 'make frontcheck'
         language: system
         require_serial: true
