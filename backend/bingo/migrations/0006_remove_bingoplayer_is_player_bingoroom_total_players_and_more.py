@@ -4,7 +4,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("bingo", "0005_bingoplayer_is_player_bingoroom_players_and_more"),
     ]

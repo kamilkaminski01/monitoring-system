@@ -4,7 +4,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("fifteen", "0002_remove_fifteenpuzzle_game_state"),
     ]

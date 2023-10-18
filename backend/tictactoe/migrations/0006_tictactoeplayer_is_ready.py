@@ -4,7 +4,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("tictactoe", "0005_tictactoeplayer_figure"),
     ]

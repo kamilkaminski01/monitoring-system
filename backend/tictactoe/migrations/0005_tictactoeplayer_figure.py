@@ -4,7 +4,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("tictactoe", "0004_remove_tictactoeplayer_is_player_and_more"),
     ]
