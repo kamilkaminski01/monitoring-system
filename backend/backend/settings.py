@@ -1,7 +1,9 @@
 import os
 from pathlib import Path
 
+import sentry_sdk
 from environs import Env
+from sentry_sdk.integrations.django import DjangoIntegration
 
 env = Env()
 env.read_env()
@@ -115,7 +117,6 @@ AUTH_PASSWORD_VALIDATORS = [
 
 AUTH_USER_MODEL = "users.User"
 
-
 LANGUAGE_CODE = "en-us"
 
 TIME_ZONE = "UTC"
@@ -131,12 +132,19 @@ STATICFILES_DIRS = ("./backend/static",)
 MEDIA_ROOT = os.path.join(BASE_DIR, "/media/")
 MEDIA_URL = "/media/"
 
+if env("SENTRY_DSN", None):
+    sentry_sdk.init(
+        dsn=env("SENTRY_DSN"),
+        integrations=[DjangoIntegration()],
+        traces_sample_rate=0.01,
+        send_default_pii=True,
+    )
+
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
         "rest_framework_simplejwt.authentication.JWTAuthentication",
     ),
     "EXCEPTION_HANDLER": "backend.exception_handler.full_details_exception_handler",
 }
-
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
