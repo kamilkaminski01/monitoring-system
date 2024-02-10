@@ -1,18 +1,25 @@
-# Monitoring System for interactive web applications
+<h1 align="center">Monitoring System</h1>
 
-This project is used for monitoring web apps in real-time.
-It allows users to interact within a chosen web application and
-in addition a third party, authenticated user can observe the taken actions of users
-in a game and communicate with them through a chat.
+This project contains multiplayer apps such as bingo, tic-tac-toe and a whiteboard.
+The core feature allows authenticated users to monitor games in real-time
+and communicate with each other through a chat.
+
+![demo](https://raw.githubusercontent.com/kamilkaminski01/monitoring-system/master/frontend/src/assets/images/demo.png)
 
 ## Resources
 
 The code repository is hosted on
 [GitHub](https://github.com/kamilkaminski01/monitoring-system).
 
-WebSockets are handled by the `django-channels` framework.
+The server side application is written in the `Django` framework.
+
+WebSockets are handled by the [Django Channels](https://channels.readthedocs.io/en/latest/) framework.
 
 Channel layers are handled by [Redis](https://redis.io/).
+
+User interface is written in the `React` framework.
+
+Containerized with `Docker` and deployed to [AWS EC2](https://aws.amazon.com/ec2/)
 
 ## Running from sources
 
