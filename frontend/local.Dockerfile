@@ -1,4 +1,4 @@
-FROM node:13.12.0-alpine
+FROM node:20.3.1-alpine
 
 ENV PATH /app/node_modules/.bin:$PATH
 
@@ -8,8 +8,8 @@ WORKDIR /app
 
 COPY package.json ./
 COPY package-lock.json ./
-RUN npm install
+RUN npm install --silent
 
 COPY . ./
 
-CMD ["npm", "start"]
+CMD ["npm", "run", "dev"]

@@ -1,0 +1,95 @@
+.game-info-form {
+  color: white;
+
+  .tictactoe-body & {
+    background: $tictactoe-primary-color;
+    color: $tictactoe-chat-color;
+    h2 {
+      border-bottom: 1px solid $tictactoe-chat-color;
+    }
+  }
+
+  .bingo-body & {
+    background: $bingo-chat-primary-color;
+    margin: 7.75rem;
+  }
+
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  border-radius: 5px;
+  height: 27.7rem;
+  width: 100%;
+  max-width: 25rem;
+  animation: fadeIn;
+  animation-duration: 0.5s;
+  margin: 8rem;
+
+  h2 {
+    text-align: center;
+    margin-top: 1rem;
+    padding: 0.5rem;
+    width: 80%;
+    border-bottom: 1px solid white;
+  }
+
+  .info {
+    margin: auto;
+    padding: 1rem;
+    text-align: center;
+    img {
+      margin-right: 3px;
+    }
+  }
+
+  .game-info {
+    font-size: 1.75rem;
+    height: 50%;
+    width: 80%;
+    padding: 1rem;
+    margin-top: 2rem;
+
+    .player-info {
+      display: flex;
+      align-items: center;
+      margin-bottom: 1rem;
+
+      .ready-state {
+        margin-left: auto;
+      }
+      button {
+        padding: 0.2rem 0.5rem;
+      }
+    }
+    .animate_data {
+      animation: fadeIn;
+      animation-duration: 0.2s;
+    }
+  }
+
+  @include for-desktop {
+    .bingo-body & {
+      background: $bingo-chat-primary-color;
+      margin: 2.95rem;
+    }
+    margin: 3rem;
+    width: 80%;
+    .info {
+      font-size: 15px;
+    }
+  }
+  @include for-phone {
+    width: 90%;
+    height: 24.45rem;
+    .bingo-body & {
+      height: 25.15rem;
+      .info {
+        padding-top: 2rem;
+        font-size: 13px;
+      }
+      .game-info {
+        font-size: 1.5rem;
+      }
+    }
+  }
+}

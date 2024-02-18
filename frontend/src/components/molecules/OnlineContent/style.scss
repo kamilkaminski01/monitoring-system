@@ -1,0 +1,56 @@
+.online-content {
+  display: flex;
+  flex-wrap: wrap;
+  max-width: 25rem;
+  animation: fadeIn;
+  animation-duration: 2s;
+
+  .online-child {
+    color: white;
+    width: fit-content;
+    padding: 0.65rem;
+    margin: 0.25rem;
+    border-radius: 3px;
+    animation: fadeIn;
+    animation-duration: 0.5s;
+    transition: background-color 0.2s ease-in-out;
+
+    p {
+      margin: 0;
+    }
+
+    .bingo-body & {
+      background-color: $bingo-primary-color;
+
+      &:hover {
+        background-color: $bingo-secondary-color;
+      }
+    }
+
+    .tictactoe-body & {
+      box-shadow: 0 0 0 1px white;
+      transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+
+      &:hover {
+        background-color: $whiteboard-light-grey;
+        color: black;
+      }
+    }
+
+    .fifteen-body & {
+      background-color: $fifteen-secondary-color;
+
+      &:hover {
+        background-color: $fifteen-hover-color;
+      }
+    }
+
+    .whiteboard-body & {
+      background-color: $tictactoe-primary-color;
+
+      &:hover {
+        background-color: $tictactoe-secondary-color;
+      }
+    }
+  }
+}

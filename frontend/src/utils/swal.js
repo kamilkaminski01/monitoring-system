@@ -1,4 +1,4 @@
-import Swal from 'sweetalert2';
+import Swal from 'sweetalert2'
 
 export const swalCornerError = (title = 'Error', text = 'Error event') => {
   const config = {
@@ -7,36 +7,36 @@ export const swalCornerError = (title = 'Error', text = 'Error event') => {
     toast: true,
     title,
     text
-  };
-  return Swal.fire(config);
-};
+  }
+  return Swal.fire(config)
+}
 
 export const swalError = (title = 'Error', text = 'Error event') => {
   const config = {
     icon: 'error',
     title,
     text
-  };
-  return Swal.fire(config);
-};
+  }
+  return Swal.fire(config)
+}
 
 export const swalSuccess = (title = 'Success', text = 'Successfull event') => {
   const config = {
     icon: 'success',
     title,
     text
-  };
-  return Swal.fire(config);
-};
+  }
+  return Swal.fire(config)
+}
 
 export const swalWarning = (title = 'Warning', text = 'Warning event') => {
   const config = {
     icon: 'warning',
     title,
     text
-  };
-  return Swal.fire(config);
-};
+  }
+  return Swal.fire(config)
+}
 
 export const swalTimedCornerSuccess = (text = 'Successfull event', title = null) => {
   const config = {
@@ -47,6 +47,6 @@ export const swalTimedCornerSuccess = (text = 'Successfull event', title = null)
     timer: 1000,
     text,
     title: title || ''
-  };
-  return Swal.fire(config);
-};
+  }
+  return Swal.fire(config)
+}
