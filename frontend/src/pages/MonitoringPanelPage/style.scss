@@ -1,0 +1,12 @@
+.monitoring-container {
+  flex: 1;
+  .monitoring-panels {
+    display: flex;
+    justify-content: center;
+    margin: 4rem auto;
+    @include for-tablet {
+      flex-direction: column;
+      align-items: center;
+    }
+  }
+}

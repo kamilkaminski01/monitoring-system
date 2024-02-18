@@ -1,0 +1,15 @@
+@include tictactoe;
+
+.tictactoe-monitoring {
+  min-height: $game-height;
+  .tictactoe-players {
+    display: flex;
+    justify-content: center;
+  }
+  .tictactoe-wrapper {
+    min-height: unset;
+    .tictactoe {
+      margin: 1.5rem;
+    }
+  }
+}
