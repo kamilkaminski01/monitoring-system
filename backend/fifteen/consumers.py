@@ -32,10 +32,10 @@ class FifteenPuzzleConsumer(AsyncJsonWebsocketConsumer):
         await super().disconnect(close_code)
 
     async def receive_json(self, content: dict, **kwargs) -> None:
-        self.command = content.get("command", None)
-        self.message = content.get("message", None)
-        self.user = content.get("user", None)
-        self.value = content.get("value", None)
+        self.command = content.get("command")
+        self.message = content.get("message")
+        self.user = content.get("user")
+        self.value = content.get("value")
         data = {
             "type": "websocket_message",
             "command": self.command,
