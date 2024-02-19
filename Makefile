@@ -1,6 +1,8 @@
 # Set the COMPOSE_FILE variable to the appropriate file based on the environment
+# without env for development
+# env=prod for production
 
-ifeq ($(ENV),prod)
+ifeq ($(env),prod)
 	COMPOSE_FILE=docker-compose-prod.yml
 else
 	COMPOSE_FILE=docker-compose.yml
@@ -10,13 +12,13 @@ build:
 	docker compose -f $(COMPOSE_FILE) build
 
 run:
-	docker compose -f $(COMPOSE_FILE) up $(if $(filter prod,$(ENV)), -d)
+	docker compose -f $(COMPOSE_FILE) up $(if $(filter prod,$(env)),-d)
 
 down:
 	docker compose -f $(COMPOSE_FILE) down
 
 recreate:
-	docker compose -f $(COMPOSE_FILE) up --build --force-recreate $(if $(filter prod,$(ENV)), -d)
+	docker compose -f $(COMPOSE_FILE) up --build --force-recreate $(if $(filter prod,$(env)),-d)
 
 superuser:
 	docker compose -f $(COMPOSE_FILE) run --rm web python manage.py createsuperuser
