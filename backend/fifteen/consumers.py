@@ -1,3 +1,5 @@
+import logging
+
 from autobahn.exception import Disconnected
 from channels.db import database_sync_to_async
 from channels.generic.websocket import AsyncJsonWebsocketConsumer
@@ -7,6 +9,8 @@ from backend.utils import websocket_send_event
 
 from .models import FifteenPuzzle
 
+logger = logging.getLogger(__name__)
+
 
 class FifteenPuzzleConsumer(AsyncJsonWebsocketConsumer):
     async def connect(self) -> None:
@@ -15,7 +19,7 @@ class FifteenPuzzleConsumer(AsyncJsonWebsocketConsumer):
         try:
             await self.channel_layer.group_add(self.scope_username, self.channel_name)
         except TypeError:
-            print("failed adding user to fifteen puzzle")
+            logger.error("Failed adding user to fifteen puzzle")
         await self.accept()
 
     async def disconnect(self, close_code: int) -> None:
@@ -24,7 +28,7 @@ class FifteenPuzzleConsumer(AsyncJsonWebsocketConsumer):
                 self.scope_username, self.channel_name
             )
         except TypeError:
-            print("failed disconnecting from fifteen puzzle")
+            logger.warning("Failed disconnecting from fifteen puzzle")
         await super().disconnect(close_code)
 
     async def receive_json(self, content: dict, **kwargs) -> None:
@@ -46,7 +50,7 @@ class FifteenPuzzleConsumer(AsyncJsonWebsocketConsumer):
         try:
             await self.channel_layer.group_send(self.scope_username, data)
         except TypeError:
-            print("failed sending to fifteen puzzle user")
+            logger.error("Failed sending to fifteen puzzle user")
 
     async def websocket_message(self, event: dict) -> None:
         field_names = ["command", "user", "message", "value"]
@@ -61,7 +65,7 @@ class FifteenPuzzleConsumer(AsyncJsonWebsocketConsumer):
             game = FifteenPuzzle.objects.get(username=self.user)
             game.delete()
         except FifteenPuzzle.DoesNotExist:
-            print("fifteen puzzle does not exist")
+            logger.warning("Fifteen puzzle doesn't exist")
 
     @database_sync_to_async
     def set_game_state_off(self) -> None:

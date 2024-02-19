@@ -1,8 +1,12 @@
+import logging
+
 from channels.db import database_sync_to_async
 
 from backend.mixins import GameConsumerMixin, OnlineRoomsConsumerMixin
 
 from .models import Whiteboard, WhiteboardPlayer
+
+logger = logging.getLogger(__name__)
 
 
 class WhiteboardConsumer(GameConsumerMixin):
@@ -23,7 +27,7 @@ class WhiteboardConsumer(GameConsumerMixin):
             whiteboard.board_state.append(self.value)
             whiteboard.save(update_fields=["board_state"])
         except Whiteboard.DoesNotExist:
-            print("whiteboard doesn't exist")
+            logger.warning("Whiteboard doesn't exist")
 
     @database_sync_to_async
     def clear_whiteboard_state(self) -> None:
@@ -32,7 +36,7 @@ class WhiteboardConsumer(GameConsumerMixin):
             whiteboard.board_state.clear()
             whiteboard.save(update_fields=["board_state"])
         except Whiteboard.DoesNotExist:
-            print("whiteboard doesn't exist")
+            logger.warning("Whiteboard doesn't exist")
 
 
 class WhiteboardOnlineRoomsConsumer(OnlineRoomsConsumerMixin):

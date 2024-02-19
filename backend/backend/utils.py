@@ -1,8 +1,10 @@
+import logging
 from typing import List
 
 from asgiref.sync import async_to_sync
 from channels.layers import get_channel_layer
 
+logger = logging.getLogger(__name__)
 channel_layer = get_channel_layer()
 
 
@@ -21,7 +23,7 @@ def send_room_signal(channel_name, instance, command):
     try:
         async_to_sync(channel_layer.group_send)(channel_name, data)
     except TypeError:
-        print(f"failed sending {command}")
+        logger.warning("Failed sending: %s", command)
 
 
 def send_user_signal(channel_name, instance, command):
@@ -33,7 +35,7 @@ def send_user_signal(channel_name, instance, command):
     try:
         async_to_sync(channel_layer.group_send)(channel_name, data)
     except TypeError:
-        print(f"failed sending {command}")
+        logger.warning("Failed sending: %s", command)
 
 
 def update_total_players(room_model, player_model, player_instance):

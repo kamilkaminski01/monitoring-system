@@ -21,7 +21,6 @@ class TestTicTacToeOnlineRoomsConsumer(TransactionTestCase):
         connected, subprotocol = await communicator.connect()
         assert connected
         response = await communicator.receive_json_from()
-        print(response)
         assert response == {
             "command": "online_rooms",
             "online_rooms": [{"room_name": "test", "room_id": 15}],

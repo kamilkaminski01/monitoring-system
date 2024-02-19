@@ -1,3 +1,4 @@
+import logging
 from typing import Type
 
 from autobahn.exception import Disconnected
@@ -5,6 +6,8 @@ from channels.db import database_sync_to_async
 from channels.generic.websocket import AsyncJsonWebsocketConsumer
 
 from .utils import websocket_send_event
+
+logger = logging.getLogger(__name__)
 
 
 class GameConsumerMixin(AsyncJsonWebsocketConsumer):
@@ -20,21 +23,21 @@ class GameConsumerMixin(AsyncJsonWebsocketConsumer):
         try:
             await self.channel_layer.group_add(self.room_name, self.channel_name)
         except TypeError:
-            print(f"failed adding {self.game_model.__name__}")
+            logger.error("Failed adding: %s", self.game_model.__name__)
         await self.accept()
 
     async def disconnect(self, close_code: int) -> None:
         try:
             await self.channel_layer.group_discard(self.room_name, self.channel_name)
         except TypeError:
-            print("failed disconnecting from game")
+            logger.warning("Failed disconnecting from game")
         await super().disconnect(close_code)
 
     async def receive_json(self, content: dict, **kwargs) -> None:
-        self.command = content.get("command", None)
-        self.message = content.get("message", None)
-        self.user = content.get("user", None)
-        self.value = content.get("value", None)
+        self.command = content.get("command")
+        self.message = content.get("message")
+        self.user = content.get("user")
+        self.value = content.get("value")
         self.data = {
             "type": "websocket_message",
             "command": self.command,
@@ -59,7 +62,7 @@ class GameConsumerMixin(AsyncJsonWebsocketConsumer):
         try:
             await self.channel_layer.group_send(self.room_name, self.data)
         except TypeError:
-            print(f"failed sending to {self.game_model.__name__}")
+            logger.error("Failed sending to: %s", self.game_model.__name__)
 
     async def websocket_message(self, event: dict) -> None:
         field_names = ["command", "user", "message", "value"]
@@ -76,9 +79,9 @@ class GameConsumerMixin(AsyncJsonWebsocketConsumer):
             player.is_active = status
             player.save()
         except (self.game_model.DoesNotExist, self.player_model.DoesNotExist):
-            print(
-                f"{self.game_model.__name__} or "
-                f"{self.player_model.__name__} doesn't exist"
+            logger.error(
+                "%s or %s doesn't exist"
+                % (self.game_model.__name__, self.player_model.__name__)
             )
 
     @database_sync_to_async
@@ -116,7 +119,7 @@ class OnlineRoomsConsumerMixin(AsyncJsonWebsocketConsumer):
         try:
             await self.channel_layer.group_add(self.rooms, self.channel_name)
         except TypeError:
-            print(f"failed adding {self.game} to group")
+            logger.error("Failed adding %s to group", self.game)
         await self.get_rooms()
         await self.channel_layer.group_send(
             self.rooms,
@@ -140,7 +143,7 @@ class OnlineRoomsConsumerMixin(AsyncJsonWebsocketConsumer):
         try:
             await self.channel_layer.group_discard(self.rooms, self.channel_name)
         except TypeError:
-            print("failed disconnecting from online rooms")
+            logger.warning("Failed disconnecting from online rooms")
         await super().disconnect(code)
 
     @database_sync_to_async
@@ -160,7 +163,7 @@ class OnlineUsersConsumerMixin(AsyncJsonWebsocketConsumer):
         try:
             await self.channel_layer.group_add(self.users, self.channel_name)
         except TypeError:
-            print(f"failed adding {self.users} to group")
+            logger.error("Failed adding %s to group", self.users)
         await self.get_users()
         await self.channel_layer.group_send(
             self.users,
@@ -184,7 +187,7 @@ class OnlineUsersConsumerMixin(AsyncJsonWebsocketConsumer):
         try:
             await self.channel_layer.group_discard(self.users, self.channel_name)
         except TypeError:
-            print("failed disconnecting from online users")
+            logger.warning("Failed disconnecting from online users")
         await super().disconnect(code)
 
     @database_sync_to_async
