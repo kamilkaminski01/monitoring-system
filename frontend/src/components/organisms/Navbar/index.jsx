@@ -4,7 +4,7 @@ import { PATHS } from 'utils/consts'
 import { AuthContext } from 'providers/auth/context'
 import { useContext } from 'react'
 
-export default function Navbar() {
+const Navbar = () => {
   const { isLogged, logout } = useContext(AuthContext)
 
   return (
@@ -23,7 +23,7 @@ export default function Navbar() {
               </NavLink>
             </li>
             <li>
-              <Link onClick={logout}>Logout</Link>
+              <span onClick={logout}>Logout</span>
             </li>
           </>
         ) : (
@@ -35,3 +35,5 @@ export default function Navbar() {
     </nav>
   )
 }
+
+export default Navbar

@@ -1,8 +1,10 @@
 import { useState, useEffect, useCallback } from 'react'
-import { LOCAL_STORAGE } from 'utils/consts'
+import { LOCAL_STORAGE, PATHS } from 'utils/consts'
 import { AuthContext } from './context'
+import { useNavigate } from 'react-router-dom'
 
 const AuthProvider = ({ children }) => {
+  const navigate = useNavigate()
   const [isLogged, setIsLogged] = useState(!!localStorage.getItem(LOCAL_STORAGE.accessToken))
 
   const login = useCallback(() => {
@@ -13,6 +15,7 @@ const AuthProvider = ({ children }) => {
     localStorage.removeItem(LOCAL_STORAGE.accessToken)
     localStorage.removeItem(LOCAL_STORAGE.refreshToken)
     setIsLogged(false)
+    navigate(PATHS.home)
   }, [])
 
   useEffect(() => {

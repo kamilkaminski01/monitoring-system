@@ -6,13 +6,15 @@ nav {
   align-items: stretch;
   gap: 2rem;
   padding: 1rem 1rem;
+  box-shadow: 0 15px 15px 0 #0000001a;
 
-  a {
+  a, span {
     height: 100%;
     display: flex;
     align-items: center;
     padding: 0 0.5rem;
     text-align: center;
+    cursor: pointer;
   }
 
   li {
