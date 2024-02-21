@@ -7,6 +7,7 @@
   @include for-tablet {
     margin: 0;
     flex-direction: column;
+    justify-content: unset;
     align-items: center;
   }
 }
