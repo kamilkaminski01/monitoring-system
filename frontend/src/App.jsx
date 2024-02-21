@@ -6,7 +6,7 @@ import BingoHome from 'apps/Bingo/Home'
 import Bingo from 'apps/Bingo/Game'
 import TicTacToeHome from 'apps/TicTacToe/Home'
 import TicTacToe from 'apps/TicTacToe/Game'
-import LoginForm from 'components/molecules/LoginForm'
+import LoginPage from 'pages/LoginPage'
 import SharedLayout from 'components/atoms/SharedLayout'
 import ProtectedRoutes from 'components/atoms/ProtectedRoutes'
 import MonitoringPanelPage from './pages/MonitoringPanelPage'
@@ -22,7 +22,7 @@ function App() {
   return (
     <div className="app">
       <Routes>
-        <Route path={PATHS.login} element={<LoginForm />} />
+        <Route path={PATHS.login} element={<LoginPage />} />
         <Route element={<SharedLayout />}>
           <Route path={PATHS.home} element={<HomePage />} />
         </Route>

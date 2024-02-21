@@ -16,6 +16,7 @@ const AuthProvider = ({ children }) => {
     localStorage.removeItem(LOCAL_STORAGE.refreshToken)
     setIsLogged(false)
     navigate(PATHS.home)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   useEffect(() => {

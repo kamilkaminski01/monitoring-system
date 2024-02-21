@@ -4,7 +4,7 @@ import useAuth from 'hooks/useAuth'
 import './style.scss'
 import { Link } from 'react-router-dom'
 
-const LoginForm = () => {
+const LoginPage = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const { login, error } = useAuth()
@@ -15,10 +15,10 @@ const LoginForm = () => {
   }
 
   return (
-    <div className="login-wrapper">
-      <h1>Login</h1>
+    <div className="login-form">
+      <h1 className="login-form__header">Login</h1>
       <form onSubmit={handleSubmit} noValidate>
-        <div className="txt-field">
+        <div className="login-form__input">
           <input
             type="text"
             required
@@ -27,7 +27,7 @@ const LoginForm = () => {
           />
           <label>E-mail</label>
         </div>
-        <div className="txt-field">
+        <div className="login-form__input">
           <input
             type="password"
             required
@@ -36,14 +36,14 @@ const LoginForm = () => {
           />
           <label>Password</label>
         </div>
-        <input type="submit" value="Confirm" />
+        <input className="login-form__btn" type="submit" value="Confirm" />
       </form>
-      {error && <p className="error-message">Incorrect email or password. Please try again.</p>}
-      <div className="home">
+      {error && <p className="login-form--error">Incorrect email or password. Please try again.</p>}
+      <div className="login-form__footer">
         <Link to={PATHS.home}>Home</Link>
       </div>
     </div>
   )
 }
 
-export default LoginForm
+export default LoginPage
