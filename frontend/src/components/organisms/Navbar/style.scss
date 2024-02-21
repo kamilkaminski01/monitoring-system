@@ -5,7 +5,7 @@ nav {
   justify-content: space-between;
   align-items: stretch;
   gap: 2rem;
-  padding: 1rem 1rem;
+  padding: $navbar-padding;
   box-shadow: 0 15px 15px 0 #0000001a;
 
   a, span {
