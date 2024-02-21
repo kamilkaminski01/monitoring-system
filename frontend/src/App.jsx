@@ -9,7 +9,7 @@ import TicTacToe from 'apps/TicTacToe/Game'
 import LoginPage from 'pages/LoginPage'
 import SharedLayout from 'components/atoms/SharedLayout'
 import ProtectedRoutes from 'components/atoms/ProtectedRoutes'
-import MonitoringPanelPage from './pages/MonitoringPanelPage'
+import MonitoringPage from './pages/MonitoringPage'
 import BingoMonitoring from 'apps/Bingo/Monitoring'
 import TicTacToeMonitoring from 'apps/TicTacToe/Monitoring'
 import FifteenHome from 'apps/Fifteen/Home'
@@ -40,7 +40,7 @@ function App() {
 
         <Route element={<ProtectedRoutes />}>
           <Route element={<SharedLayout />}>
-            <Route path={PATHS.monitoring} element={<MonitoringPanelPage />} />
+            <Route path={PATHS.monitoring} element={<MonitoringPage />} />
           </Route>
           <Route path={PATHS.monitoringFifteenUser} element={<FifteenMonitoring />} />
           <Route path={PATHS.monitoringTicTacToeRoom} element={<TicTacToeMonitoring />} />
