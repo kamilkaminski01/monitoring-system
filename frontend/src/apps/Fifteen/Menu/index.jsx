@@ -1,30 +1,31 @@
 import { useContext } from 'react'
-import './style.scss'
 import { UsernameContext } from 'providers/username/context'
+import GameLayout from 'components/atoms/GameLayout'
+import Button from 'components/atoms/Button'
 import Input from 'components/atoms/Input'
-import HomeButton from 'components/atoms/HomeButton'
+import HomeLink from 'components/atoms/HomeLink'
 import { useSocketRoomsAndUsers } from 'hooks/useSocketRoomsAndUsers'
 import { ENDPOINTS, GAME_TYPE, WEBSOCKETS } from 'utils/consts'
 import { handleCreateGame } from 'utils/handleRooms'
 import OnlineContent from 'components/molecules/OnlineContent'
 
-const FifteenHome = () => {
+const FifteenMenu = () => {
   const { username, setUsername } = useContext(UsernameContext)
   const [, users] = useSocketRoomsAndUsers(WEBSOCKETS.fifteenOnlineUsers)
 
   return (
-    <div className="fifteen-body">
-      <div className="game-home-container">
-        <div className="game-home-content">
-          <h2 className="my-3 text-center">Fifteen Puzzle</h2>
-          <Input
-            placeholder={'Your username'}
-            value={username}
-            onChange={(event) => setUsername(event.target.value)}
-          />
-          <button
-            className="my-3 btn btn-outline-primary"
-            disabled={!username}
+    <GameLayout className="fifteen game-menu">
+      <div className="game-menu__content">
+        <h2 className="content__title">Fifteen Puzzle</h2>
+        <Input
+          placeholder={'Your username'}
+          value={username}
+          onChange={(event) => setUsername(event.target.value)}
+        />
+        <div className="content__options">
+          <Button
+            className="home-btn"
+            disable={!username}
             onClick={() =>
               handleCreateGame(
                 ENDPOINTS.checkFifteenPuzzle,
@@ -33,13 +34,13 @@ const FifteenHome = () => {
               )
             }>
             Start
-          </button>
-          <HomeButton className="btn-outline-primary" />
-          <OnlineContent content={users} type={GAME_TYPE.users} />
+          </Button>
         </div>
+        <HomeLink className="fifteen" />
+        <OnlineContent content={users} type={GAME_TYPE.users} />
       </div>
-    </div>
+    </GameLayout>
   )
 }
 
-export default FifteenHome
+export default FifteenMenu

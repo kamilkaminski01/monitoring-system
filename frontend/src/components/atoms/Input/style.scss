@@ -1,17 +1,14 @@
-.game-home-container {
-  .game-home-content {
-    .home-input {
-      font-size: 1.1rem !important;
-      text-align: center;
+.home-input {
+  width: 100%;
+  font: inherit;
+  font-size: 1.1em;
+  text-align: center;
 
-      .fifteen-body & {
-        font-size: 1.3rem !important;
-      }
+  margin: 0.25em 0;
+  padding: 0.5em;
 
-      @include for-desktop {
-        font-size: 0.9rem;
-        max-width: 20rem;
-      }
-    }
-  }
+  border: 1px solid #ced4da;
+  border-radius: 0.25em;
+
+  outline: none;
 }

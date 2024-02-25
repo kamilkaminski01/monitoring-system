@@ -1,0 +1,20 @@
+.game-menu {
+  &.whiteboard {
+    .game-menu__content {
+      .content__title {
+        color: black;
+      }
+    }
+  }
+}
+
+.content__options--disabled {
+  margin-top: 0.75em;
+  padding: 0.375em;
+
+  font-size: 1em;
+  text-align: center;
+
+  background-color: $whiteboard-primary-color;
+  border-radius: 0.25em;
+}

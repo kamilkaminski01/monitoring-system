@@ -4,12 +4,14 @@ import './style.scss'
 import { UsernameContext } from 'providers/username/context'
 import { handleCreateRoom, handleJoinRoom } from 'utils/handleRooms'
 import { useSocketRoomsAndUsers } from 'hooks/useSocketRoomsAndUsers'
+import GameLayout from 'components/atoms/GameLayout'
+import Button from 'components/atoms/Button'
 import Checkbox from 'components/atoms/Checkbox'
 import Input from 'components/atoms/Input'
-import HomeButton from 'components/atoms/HomeButton'
+import HomeLink from 'components/atoms/HomeLink'
 import OnlineContent from 'components/molecules/OnlineContent'
 
-const BingoHome = () => {
+const BingoMenu = () => {
   const { username, setUsername } = useContext(UsernameContext)
   const [roomName, setRoomName] = useState('')
   const [playersLimit, setPlayersLimit] = useState('')
@@ -17,44 +19,40 @@ const BingoHome = () => {
   const [bingoRooms] = useSocketRoomsAndUsers(WEBSOCKETS.bingoOnlineRooms)
 
   return (
-    <div className="bingo-body">
-      <div className="game-home-container">
-        <div className="game-home-content">
-          <div>
-            <h2>Bingo</h2>
-            <Input
-              placeholder={'Your username'}
-              value={username}
-              onChange={(event) => setUsername(event.target.value)}
-            />
-            <Input
-              placeholder={'Room name'}
-              value={roomName}
-              onChange={(event) => setRoomName(event.target.value)}
-            />
-            <div className="game-home-room-options">
-              <button className="btn" onClick={() => setIsPopupOpen(true)}>
-                Create Room
-              </button>
-              <button
-                className="btn"
-                disabled={!roomName}
-                onClick={() =>
-                  handleJoinRoom(
-                    ENDPOINTS.checkBingoRoom,
-                    ENDPOINTS.detailsBingoRoom,
-                    ENDPOINTS.createBingoRoom,
-                    username,
-                    roomName
-                  )
-                }>
-                Join Room
-              </button>
-            </div>
-            <HomeButton />
-          </div>
-          <OnlineContent content={bingoRooms} type={GAME_TYPE.rooms} />
+    <GameLayout className="bingo game-menu">
+      <div className="game-menu__content">
+        <h2 className="content__title">Bingo</h2>
+        <Input
+          placeholder={'Your username'}
+          value={username}
+          onChange={(event) => setUsername(event.target.value)}
+        />
+        <Input
+          placeholder={'Room name'}
+          value={roomName}
+          onChange={(event) => setRoomName(event.target.value)}
+        />
+        <div className="content__options">
+          <Button className="home-btn" onClick={() => setIsPopupOpen(true)}>
+            Create Room
+          </Button>
+          <Button
+            className="home-btn"
+            disable={!roomName}
+            onClick={() =>
+              handleJoinRoom(
+                ENDPOINTS.checkBingoRoom,
+                ENDPOINTS.detailsBingoRoom,
+                ENDPOINTS.createBingoRoom,
+                username,
+                roomName
+              )
+            }>
+            Join Room
+          </Button>
         </div>
+        <HomeLink className="bingo" />
+        <OnlineContent content={bingoRooms} type={GAME_TYPE.rooms} className="bingo" />
       </div>
       <div className={`popup ${isPopupOpen ? 'active' : ''}`}>
         <div className="close-btn" onClick={() => setIsPopupOpen(false)}>
@@ -91,8 +89,8 @@ const BingoHome = () => {
           </button>
         </div>
       </div>
-    </div>
+    </GameLayout>
   )
 }
 
-export default BingoHome
+export default BingoMenu

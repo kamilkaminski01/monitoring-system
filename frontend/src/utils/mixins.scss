@@ -3,80 +3,91 @@
     @content;
   }
 }
+
 @mixin for-tablet {
   @media (max-width: 768px) {
     @content;
   }
 }
+
 @mixin for-phone {
   @media (max-width: 500px) {
     @content;
   }
 }
+
 @mixin for-extra-small-phone {
   @media (max-width: 400px) {
     @content;
   }
 }
-@mixin tictactoe {
-  @import url('https://fonts.googleapis.com/css?family=Catamaran&display=swap');
-  @import url('https://fonts.googleapis.com/css?family=Quicksand&display=swap');
-  .tictactoe-body {
-    background-color: $grey-dark;
-    font-family: 'Catamaran', sans-serif;
-    overflow: auto;
-  }
-}
-@mixin bingo {
-  @import url('https://fonts.googleapis.com/css2?family=Ubuntu&display=swap');
-  .bingo-body {
-    background-color: $black-bg;
-    font-family: 'Ubuntu', sans-serif;
-    overflow: auto;
-  }
-}
-@mixin fifteen {
-  @import url('https://fonts.googleapis.com/css2?family=Nunito&display=swap');
-  .fifteen-body {
-    background-color: $fifteen-primary-color;
-    font-family: 'Nunito', sans-serif;
-    overflow: auto;
-  }
-}
+
 @mixin whiteboard {
   @import url('https://fonts.googleapis.com/css2?family=Alkatra&display=swap');
-  .whiteboard-body {
-    font-family: 'Alkatra', cursive;
-    overflow: auto;
-  }
-}
-@mixin buttons {
-  .game-home-container {
-    .game-home-content {
-      button {
-        font-size: 1rem;
-        padding: 0.5rem 0.5rem;
-        .whiteboard-body & {
-          font-size: 0.9rem;
-        }
-        .fifteen-body & {
-          font-size: 1.2rem;
-          width: 100%;
-        }
+  .whiteboard {
+    font-family: 'Alkatra', sans-serif;
+
+    .home-link,
+    .home-btn {
+      background-color: $whiteboard-primary-color;
+
+      &:hover {
+        background-color: $whiteboard-light-grey;
       }
     }
   }
-  .btn-game {
-    padding: 0.7rem;
-    margin: 0.6rem 0.2rem 0.6rem 0.6rem;
+}
 
-    .info-container & {
-      padding: 0.4rem;
-      margin: 1rem;
+@mixin fifteen {
+  @import url('https://fonts.googleapis.com/css2?family=Nunito&display=swap');
+  .fifteen {
+    background-color: $fifteen-primary-color;
+    font-family: 'Nunito', sans-serif;
+
+    .home-link,
+    .home-btn,
+    .items__child {
+      color: white;
+      background-color: $fifteen-secondary-color;
+
+      &:hover {
+        color: white;
+        background-color: $fifteen-hover-color;
+      }
     }
   }
-  button {
-    .bingo-body & {
+}
+
+@mixin tictactoe {
+  @import url('https://fonts.googleapis.com/css?family=Catamaran&display=swap');
+  @import url('https://fonts.googleapis.com/css?family=Quicksand&display=swap');
+  .tictactoe {
+    background-color: $grey-dark;
+    font-family: 'Catamaran', sans-serif;
+
+    .home-link,
+    .home-btn,
+    .items__child {
+      color: white;
+      background-color: $tictactoe-primary-color;
+
+      &:hover {
+        color: white;
+        background-color: $tictactoe-secondary-color;
+      }
+    }
+  }
+}
+
+@mixin bingo {
+  @import url('https://fonts.googleapis.com/css2?family=Ubuntu&display=swap');
+  .bingo {
+    background-color: $black-bg;
+    font-family: 'Ubuntu', sans-serif;
+
+    .home-link,
+    .home-btn,
+    .items__child {
       color: white;
       background-color: $bingo-primary-color;
 
@@ -87,39 +98,19 @@
     }
   }
 }
-@mixin game-home-page {
-  .game-home-container {
-    animation: fadeIn;
-    animation-duration: 0.4s;
-    min-height: $game-height;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    h2, h4 {
-      color: white;
-      .whiteboard-body & {
-        color: black;
-      }
-    }
-    h2 {
-      text-align: center;
-      font-size: 2.5rem;
-    }
-    .game-home-content {
-      width: 20rem;
 
-      .game-home-room-options {
-        display: flex;
-        justify-content: space-between;
+@mixin buttons {
+  .btn-game {
+    padding: 0.7rem;
+    margin: 0.6rem 0.2rem 0.6rem 0.6rem;
 
-        button {
-          width: 100%;
-          margin: 0.75rem 0.4rem;
-        }
-      }
+    .info-container & {
+      padding: 0.4rem;
+      margin: 1rem;
     }
   }
 }
+
 @mixin game-page {
   .game-room-options {
     position: absolute;
@@ -136,6 +127,7 @@
     animation-duration: 0.2s;
   }
 }
+
 @mixin monitoring {
   .monitoring-info {
     display: flex;

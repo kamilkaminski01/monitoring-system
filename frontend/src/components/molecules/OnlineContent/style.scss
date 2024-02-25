@@ -1,55 +1,45 @@
 .online-content {
   display: flex;
-  flex-wrap: wrap;
-  max-width: 25rem;
-  animation: fadeIn;
-  animation-duration: 2s;
+  flex-direction: column;
+  margin-top: 1em;
 
-  .online-child {
+  .online-content__title {
+    margin-bottom: 0.25em;
+    font-size: 1.5em;
+    font-weight: 400;
     color: white;
-    width: fit-content;
-    padding: 0.65rem;
-    margin: 0.25rem;
-    border-radius: 3px;
+    text-transform: capitalize;
+    overflow: hidden;
+
+    &.whiteboard {
+      color: black;
+    }
+  }
+
+  .online-content__items {
+    display: flex;
+    flex-wrap: wrap;
     animation: fadeIn;
-    animation-duration: 0.5s;
-    transition: background-color 0.2s ease-in-out;
+    animation-duration: 1s;
 
-    p {
-      margin: 0;
-    }
+    .items__child {
+      color: white;
+      width: fit-content;
 
-    .bingo-body & {
-      background-color: $bingo-primary-color;
+      padding: 0.7em;
+      margin: 0.25em;
 
-      &:hover {
-        background-color: $bingo-secondary-color;
-      }
-    }
+      border-radius: 3px;
+      animation: fadeIn;
+      animation-duration: 0.5s;
+      transition: background-color 0.1s ease-in-out;
 
-    .tictactoe-body & {
-      box-shadow: 0 0 0 1px white;
-      transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+      .whiteboard & {
+        background-color: $tictactoe-primary-color;
 
-      &:hover {
-        background-color: $whiteboard-light-grey;
-        color: black;
-      }
-    }
-
-    .fifteen-body & {
-      background-color: $fifteen-secondary-color;
-
-      &:hover {
-        background-color: $fifteen-hover-color;
-      }
-    }
-
-    .whiteboard-body & {
-      background-color: $tictactoe-primary-color;
-
-      &:hover {
-        background-color: $tictactoe-secondary-color;
+        &:hover {
+          background-color: $tictactoe-secondary-color;
+        }
       }
     }
   }
