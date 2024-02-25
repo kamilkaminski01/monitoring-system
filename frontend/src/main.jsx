@@ -3,7 +3,8 @@ import ReactDOM from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
 import AuthContextProvider from 'providers/auth'
 import UsernameContextProvider from 'providers/username'
-import App from './App.jsx'
+import ModalsProvider from 'providers/modals'
+import App from './App'
 import './index.scss'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
@@ -11,7 +12,9 @@ ReactDOM.createRoot(document.getElementById('root')).render(
     <BrowserRouter>
       <AuthContextProvider>
         <UsernameContextProvider>
-          <App />
+          <ModalsProvider>
+            <App />
+          </ModalsProvider>
         </UsernameContextProvider>
       </AuthContextProvider>
     </BrowserRouter>

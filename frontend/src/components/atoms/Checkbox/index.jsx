@@ -2,10 +2,16 @@ import './style.scss'
 
 const Checkbox = ({ value, checked, onChange }) => {
   return (
-    <div className="checkbox-wrapper">
+    <div className="checkbox">
       <label>
-        <input type="checkbox" value={value} checked={checked} onChange={onChange} />
-        <span className="checkbox"></span>
+        <input
+          className="checkbox__input"
+          type="checkbox"
+          value={value}
+          checked={checked}
+          onChange={onChange}
+        />
+        <span className="checkbox__span"></span>
         {value}
       </label>
     </div>
