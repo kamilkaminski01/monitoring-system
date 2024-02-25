@@ -9,29 +9,23 @@ const Navbar = () => {
 
   return (
     <nav>
-      <Link to={PATHS.home} className="site-title">
+      <Link to={PATHS.home} className="nav__brand">
         Monitoring System
       </Link>
-      <ul>
+      <div className="nav__menu">
         {isLogged ? (
           <>
-            <li>
-              <NavLink
-                to={PATHS.monitoring}
-                className={({ isActive }) => (isActive ? 'active-link' : 'inactive-link')}>
-                Monitoring Panel
-              </NavLink>
-            </li>
-            <li>
-              <span onClick={logout}>Logout</span>
-            </li>
+            <NavLink
+              to={PATHS.monitoring}
+              className={({ isActive }) => (isActive ? 'active-link' : '')}>
+              Monitoring Panel
+            </NavLink>
+            <span onClick={logout}>Logout</span>
           </>
         ) : (
-          <li>
-            <NavLink to={PATHS.login}>Login</NavLink>
-          </li>
+          <NavLink to={PATHS.login}>Login</NavLink>
         )}
-      </ul>
+      </div>
     </nav>
   )
 }

@@ -1,55 +1,42 @@
 nav {
-  background: $grey-dark;
-  color: white;
   display: flex;
   justify-content: space-between;
-  align-items: stretch;
-  gap: 2rem;
   padding: $navbar-padding;
+
+  background: $grey-dark;
+  color: white;
+
   box-shadow: 0 15px 15px 0 #0000001a;
 
-  a, span {
-    height: 100%;
-    display: flex;
-    align-items: center;
-    padding: 0 0.5rem;
-    text-align: center;
-    cursor: pointer;
+  .nav__brand {
+    font-size: 2em;
   }
 
-  li {
-    transition: background-color 0.2s ease-in-out;
-    border-radius: 4px;
-    &:hover {
+  .nav__menu {
+    display: flex;
+    align-items: center;
+    gap: 1em;
+
+    & > * {
+      padding: 0.5em;
+      border-radius: 4px;
+
+      transition: background-color ease-in-out 0.1s;
+      cursor: pointer;
+
+      &:hover {
+        background-color: $grey-light;
+      }
+    }
+
+    .active-link {
       background-color: $grey-light;
     }
   }
 
-  .active-link {
-    background-color: $grey-light;
-    border-radius: 4px;
-  }
-
-  .inactive-link {
-    background-color: unset;
-  }
-
-  .site-title {
-    font-size: 2rem;
-    padding: 0;
-  }
-
-  ul {
-    padding: 0;
-    margin: 0;
-    list-style: none;
-    display: flex;
-    gap: 1rem;
-  }
-
   @include for-tablet {
+    gap: 1em;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
   }
 }
