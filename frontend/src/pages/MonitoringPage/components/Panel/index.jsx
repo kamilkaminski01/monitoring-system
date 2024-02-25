@@ -18,7 +18,7 @@ const Panel = ({ gameName, items, path, endpoint, panelType, panelTypeName = nul
 
   return (
     <div className="panel">
-      <h2>{gameName}</h2>
+      <h2 className="panel__title">{gameName}</h2>
       {items.length ? (
         items.map((item) => (
           <div

@@ -11,8 +11,9 @@
   max-width: 31em;
   height: fit-content;
 
-  h2 {
-    margin: 0;
+  .panel__title {
+    font-size: 2em;
+    font-weight: 500;
   }
 
   .panel__online-game {
@@ -53,9 +54,5 @@
     color: $grey-light;
     animation: fadeIn;
     animation-duration: 0.5s;
-  }
-
-  p {
-    margin: 0;
   }
 }

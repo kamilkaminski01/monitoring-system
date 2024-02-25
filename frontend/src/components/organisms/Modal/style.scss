@@ -12,9 +12,12 @@
   background-color: #fff;
   border-radius: 0.5em;
 
+  animation: fadeIn;
+  animation-duration: 0.4s;
+
   .modal__header {
     text-align: center;
-    padding: 2em;
+    padding: 1.5em;
 
     .modal__title {
       font-size: 2em;
@@ -44,7 +47,12 @@
       border-radius: 0.5em;
 
       color: white;
-      background: #222222;
+      background-color: #222222;
+      transition: background-color ease-in-out 0.1s;
+
+      &:hover {
+        background-color: #444444;
+      }
     }
   }
 

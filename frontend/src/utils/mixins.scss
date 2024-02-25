@@ -59,11 +59,10 @@
 }
 
 @mixin tictactoe {
-  @import url('https://fonts.googleapis.com/css?family=Catamaran&display=swap');
-  @import url('https://fonts.googleapis.com/css?family=Quicksand&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Quicksand&display=swap');
   .tictactoe {
     background-color: $grey-dark;
-    font-family: 'Catamaran', sans-serif;
+    font-family: 'Quicksand', sans-serif;
 
     .home-link,
     .home-btn,

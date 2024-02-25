@@ -17,7 +17,7 @@
       display: none;
 
       &:checked ~ .checkbox__span {
-        transform: rotate(45deg);
+        transform: rotate(45deg) translateX(-5px);
         width: 0.75em;
         margin-left: 0.75em;
         border-color: $violet;
