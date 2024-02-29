@@ -1,90 +1,63 @@
 @include bingo;
 @include game-page;
+@include animations;
 
-.bingo-body {
-  .bingo-wrapper {
-    animation: fadeIn;
-    animation-duration: 0.4s;
-    min-height: $game-height;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+.bingo__game {
+  .game__scoreboard {
+    color: white;
+    font-size: 1.2em;
 
-    .bingo {
-      margin: 8.01rem;
-      font-weight: bolder;
-      .animated-data {
-        animation: fadeIn;
-        animation-duration: 0.3s;
+    .scoreboard__username {
+      text-align: center;
+    }
+    .scoreboard__room-info {
+      display: flex;
+      justify-content: space-between;
+    }
+  }
+
+  .bingo__game-grid {
+    display: grid;
+    grid-template-columns: repeat(5, auto);
+
+    span {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 3em;
+      height: 3em;
+      margin: 0.1em;
+
+      font-size: 1.5em;
+      color: white;
+      border: 2px solid $bingo-clicked-item;
+
+      cursor: pointer;
+      user-select: none;
+
+      &.clicked {
+        background: $bingo-clicked-item;
       }
-      .scoreboard {
-        color: white;
-        font-size: 18px;
-        .username {
-          text-align: center;
-        }
-        .room-info {
-          display: flex;
-          justify-content: space-between;
-        }
-      }
-      .grid {
-        display: grid;
-        grid-template-columns: repeat(5, auto);
-        animation: fadeIn;
-        animation-duration: 0.4s;
-        span {
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          cursor: pointer;
-          width: 4.5rem;
-          height: 4.5rem;
-          color: white;
-          border: 2px solid $bingo-clicked-item;
-          font-size: 1.5em;
-          margin: 0.2rem;
-          user-select: none;
-          &.clicked {
-            background: $bingo-clicked-item;
-          }
-        }
-      }
-      .success-row {
-        background: $bingo-success-row;
-        border: none;
-      }
-      .bingo-state {
-        height: 1rem;
-        font-size: 30px;
-        color: white;
-        padding: 0.2rem;
-        text-align: center;
-        animation: fadeInUp;
-        animation-duration: 1s;
+
+      @include for-desktop {
+        width: 2.5em;
+        height: 2.5em;
       }
     }
-    @include for-desktop {
-      flex-direction: column;
-      margin-top: 4rem;
-      .bingo {
-        margin: 2rem;
-        .grid {
-          span {
-            margin: 0.1rem;
-          }
-        }
-      }
+
+    .game-grid--success {
+      background: $bingo-success-row;
+      border: none;
     }
-    @include for-phone {
-      .bingo {
-        .grid {
-          span {
-            width: 4rem;
-            height: 4rem;
-          }
-        }
-      }
-    }
+  }
+
+  .bingo__state {
+    height: 0.75em;
+    padding: 0.25em;
+
+    font-size: 1.9em;
+    color: white;
+    text-align: center;
+    letter-spacing: 5px;
   }
 }

@@ -4,7 +4,7 @@ import './style.scss'
 import useUsername from 'hooks/useUsername'
 import { UsernameContext } from 'providers/username/context'
 import Chat from 'components/organisms/Chat'
-import GameButton from 'components/atoms/GameButton'
+import Button from 'components/atoms/Button'
 import { BINGO, ENDPOINTS, PATHS, WEBSOCKET_MESSAGES, WEBSOCKETS } from 'utils/consts'
 import { generateBoardState, getBoardStateIndexes, highlightBingo } from 'utils/boards'
 import useWebSocket from 'react-use-websocket'
@@ -13,6 +13,7 @@ import { putRoomDetailsPlayer, roomDetails, putRoomDetails } from 'utils/request
 import { useBingoData } from 'hooks/useBingoData'
 import { useSocketLeave } from 'hooks/useSocketLeave'
 import GameInfo from 'components/molecules/GameInfo'
+import GameLayout from 'components/atoms/GameLayout'
 
 const Bingo = () => {
   const { isUsernameSet } = useContext(UsernameContext)
@@ -166,13 +167,13 @@ const Bingo = () => {
 
   const generateGrid = () => {
     return (
-      <div className="grid">
+      <div className="bingo__game-grid animation--fade-in">
         {initialBoardState.map((key, index) => (
           <span
             key={key}
             id={`${username}-${index}`}
             onClick={() => handleGridClick(key, index)}
-            className={boardState.includes(key) ? 'clicked' : 'animated-data'}>
+            className={boardState.includes(key) ? 'clicked' : 'animation--fade-in'}>
             {key}
           </span>
         ))}
@@ -181,21 +182,21 @@ const Bingo = () => {
   }
 
   return (
-    <div className="bingo-body">
-      <div className="game-room-options">
-        <GameButton value="Home" onClick={() => (window.location.href = PATHS.home)} />
-        <GameButton value="Menu" onClick={() => (window.location.href = PATHS.bingo)} />
-        <GameButton
+    <GameLayout className="bingo game">
+      <div className="game__options">
+        <Button value="Home" onClick={() => (window.location.href = PATHS.home)} />
+        <Button value="Menu" onClick={() => (window.location.href = PATHS.bingo)} />
+        <Button
           value="Restart"
           disabled={gameState}
           onClick={() => sendJsonMessage(WEBSOCKET_MESSAGES.restart(username))}
         />
-        <GameButton
+        <Button
           value={showGameInfo ? 'Board' : 'Details'}
           onClick={() => setShowGameInfo(!showGameInfo)}
         />
       </div>
-      <div className="bingo-wrapper">
+      <div className="game__content">
         {showGameInfo ? (
           <GameInfo
             players={players}
@@ -205,31 +206,31 @@ const Bingo = () => {
             sendJsonMessage={sendJsonMessage}
           />
         ) : (
-          <div className="bingo">
-            <div className="scoreboard">
-              <div className="username">{username}</div>
-              <div className="d-flex">
-                Total players:
-                <div key={totalPlayers} className="total-players">
-                  {totalPlayers}
+          <div className="bingo__game animation--fade-in">
+            <div className="game__scoreboard">
+              <div className="scoreboard__username">{username}</div>
+              <div>Players limit: {playersLimit}</div>
+              <div className="scoreboard__room-info">
+                <div>
+                  Total players:{' '}
+                  <span key={totalPlayers} className="animation--fade-in">
+                    {totalPlayers}
+                  </span>
                 </div>
-              </div>
-              <div className="room-info">
-                <div>Players limit: {playersLimit}</div>
-                <div key={playersTurn} className="players-turn">
+                <div key={playersTurn} className="animation--fade-in">
                   {playersTurn}&apos;s turn
                 </div>
               </div>
             </div>
-            <div>{generateGrid()}</div>
-            <div key={bingoState} className="bingo-state">
+            {generateGrid()}
+            <div key={bingoState} className="bingo__state animation--fade-in-up">
               {bingoState}
             </div>
           </div>
         )}
         <Chat websocket={websocket} username={username} />
       </div>
-    </div>
+    </GameLayout>
   )
 }
 

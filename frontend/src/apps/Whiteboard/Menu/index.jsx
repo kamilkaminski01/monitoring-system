@@ -22,19 +22,21 @@ const WhiteboardMenu = () => {
       <div className="game-menu__content">
         <h2 className="content__title">Whiteboard</h2>
         <Input
-          placeholder={'Your username'}
+          placeholder="Your username"
           value={username}
+          className="input-menu"
           onChange={(event) => setUsername(event.target.value)}
         />
         <Input
-          placeholder={'Whiteboard name'}
+          placeholder="Whiteboard name"
           value={roomName}
+          className="input-menu"
           onChange={(event) => setRoomName(event.target.value)}
         />
         {!isLogged ? (
           <div className="content__options">
             <Button
-              className="home-btn"
+              className="btn-menu"
               onClick={() =>
                 handleCreateRoom(
                   ENDPOINTS.checkWhiteboard,
@@ -46,7 +48,7 @@ const WhiteboardMenu = () => {
               Create whiteboard
             </Button>
             <Button
-              className="home-btn"
+              className="btn-menu"
               disable={!roomName}
               onClick={() =>
                 handleJoinRoom(
@@ -69,7 +71,7 @@ const WhiteboardMenu = () => {
         <OnlineContent
           content={whiteboardRooms}
           type={GAME_TYPE.rooms}
-          typeName={'whiteboards'}
+          typeName="whiteboards"
           className="whiteboard"
         />
       </div>

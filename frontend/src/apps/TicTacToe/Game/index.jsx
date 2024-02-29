@@ -2,7 +2,7 @@ import { useContext, useState } from 'react'
 import './style.scss'
 import { ENDPOINTS, PATHS, TICTACTOE, WEBSOCKET_MESSAGES, WEBSOCKETS } from 'utils/consts'
 import { UsernameContext } from 'providers/username/context'
-import GameButton from 'components/atoms/GameButton'
+import Button from 'components/atoms/Button'
 import Chat from 'components/organisms/Chat'
 import { useParams } from 'react-router-dom'
 import useWebSocket from 'react-use-websocket'
@@ -12,6 +12,7 @@ import { putRoomDetails, putRoomDetailsPlayer, roomDetails } from 'utils/request
 import { swalError, swalSuccess, swalTimedCornerSuccess, swalWarning } from 'utils/swal'
 import { useSocketLeave } from 'hooks/useSocketLeave'
 import GameInfo from 'components/molecules/GameInfo'
+import GameLayout from 'components/atoms/GameLayout'
 
 const TicTacToe = () => {
   const { isUsernameSet } = useContext(UsernameContext)
@@ -119,37 +120,27 @@ const TicTacToe = () => {
   }
 
   const boardElements = boardState.map((value, index) => (
-    <div key={index} id={index} className="space" onClick={() => handleBoardClick(index)}>
+    <div key={index} id={index} className="game-grid__tile" onClick={() => handleBoardClick(index)}>
       {value}
     </div>
   ))
 
   return (
-    <div className="tictactoe-body">
-      <div className="game-room-options">
-        <GameButton
-          className="btn-light"
-          value="Home"
-          onClick={() => (window.location.href = PATHS.home)}
-        />
-        <GameButton
-          className="btn-light"
-          value="Menu"
-          onClick={() => (window.location.href = PATHS.tictactoe)}
-        />
-        <GameButton
-          className="btn-light"
+    <GameLayout className="tictactoe game">
+      <div className="game__options">
+        <Button value="Home" onClick={() => (window.location.href = PATHS.home)} />
+        <Button value="Menu" onClick={() => (window.location.href = PATHS.tictactoe)} />
+        <Button
           value="Restart"
           disabled={gameState}
           onClick={() => sendJsonMessage(WEBSOCKET_MESSAGES.restart(username))}
         />
-        <GameButton
-          className="btn-light"
+        <Button
           value={showGameInfo ? 'Board' : 'Details'}
           onClick={() => setShowGameInfo(!showGameInfo)}
         />
       </div>
-      <div className="tictactoe-wrapper">
+      <div className="game__content">
         {showGameInfo ? (
           <GameInfo
             players={players}
@@ -157,30 +148,27 @@ const TicTacToe = () => {
             roomName={roomName}
             endpoint={ENDPOINTS.detailsTicTacToePlayer}
             sendJsonMessage={sendJsonMessage}
-            className="btn-outline-dark"
           />
         ) : (
-          <div className="tictactoe">
-            <div className="scoreboard">
+          <div className="tictactoe__game animation--fade-in">
+            <div className="game__username">{username}</div>
+            <div className="game__scoreboard">
               <div>
-                Total players:
-                <div key={totalPlayers} className="total-players">
+                Total players:{' '}
+                <span key={totalPlayers} className="animation--fade-in">
                   {totalPlayers}
-                </div>
+                </span>
               </div>
-              <div>{username}</div>
-              <div key={playersTurn} className="players-turn">
+              <div key={playersTurn} className="animation--fade-in">
                 {playersTurn}&apos;s turn
               </div>
             </div>
-            <div className="board-wrapper">
-              <div className="board">{boardElements}</div>
-            </div>
+            <div className="tictactoe__game-grid">{boardElements}</div>
           </div>
         )}
         <Chat websocket={websocket} username={username} />
       </div>
-    </div>
+    </GameLayout>
   )
 }
 

@@ -1,90 +1,83 @@
 @include fifteen;
 @include game-page;
+@include animations;
 
-.fifteen-body {
-  .fifteen-wrapper {
-    animation: fadeIn;
-    animation-duration: 0.4s;
-    min-height: $game-height;
+.fifteen__game {
+  .fifteen__game-grid {
     display: flex;
-    justify-content: center;
-    align-items: center;
+    flex-wrap: wrap;
+    width: 28em;
+    height: 28em;
 
-    .fifteen {
-      margin: 5rem;
-      .puzzle-container {
-        display: flex;
-        flex-wrap: wrap;
-        width: 100%;
-        max-width: 450px;
-        height: 450px;
-        background-color: $fifteen-dark-color;
-        border-radius: 8px;
-        border: 1px solid $fifteen-hover-color;
-        .puzzle-block {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          width: 25%;
-          height: 25%;
-          background-color: $fifteen-puzzle-color;
-          color: $fifteen-puzzle-text-color;
-          border: 1px solid $fifteen-hover-color;
-          border-radius: 4px;
-          font-size: 65px;
-          font-weight: bold;
-          cursor: pointer;
-          user-select: none;
-        }
-      }
-      .info-container {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        width: 100%;
-        max-width: 28rem;
-        height: 5rem;
-        background-color: $fifteen-dark-color;
-        border-radius: 8px;
-        margin-top: 1rem;
-        .info {
-          background-color: inherit;
-          color: $fifteen-secondary-color;
-          text-align: center;
-          font-size: 28px;
-          font-weight: bold;
-          margin: 0.5rem;
-          .moves {
-            margin-left: 3px;
-          }
-        }
-      }
-    }
-    @include for-desktop {
-      flex-direction: column;
+    border: 1px solid $fifteen-hover-color;
+    border-radius: 0.5em;
+    background-color: $fifteen-puzzle-color;
+
+    .grid__tile {
+      display: flex;
       align-items: center;
-      margin-top: 4rem;
-      .fifteen {
-        margin: 2rem;
-        .puzzle-container {
-          margin: 0 auto;
-          width: 95%;
-        }
-        .info-container {
-          margin: 0.5rem auto;
-          width: 95%;
-        }
+      justify-content: center;
+      width: 25%;
+      height: 25%;
+
+      font-size: 4em;
+      font-weight: bold;
+      color: $fifteen-puzzle-text-color;
+      border: 1px solid $fifteen-hover-color;
+
+      cursor: pointer;
+      user-select: none;
+
+      &:first-child {
+        border-top-left-radius: 0.1em;
+      }
+
+      &:nth-child(4) {
+        border-top-right-radius: 0.1em;
+      }
+
+      &:nth-child(13) {
+        border-bottom-left-radius: 0.1em;
+      }
+
+      &:last-child {
+        border-bottom-right-radius: 0.1em;
+      }
+
+      @include for-desktop {
+        font-size: 3em;
       }
     }
-    @include for-phone {
-      .fifteen {
-        margin: 1.5rem;
-        .puzzle-container {
-          height: 330px;
-          .puzzle-block {
-            font-size: 50px;
-          }
-        }
+
+    @include for-desktop {
+      width: 21em;
+      height: 21em;
+    }
+  }
+
+  .game__scoreboard {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 0.5em;
+    padding: 0.75em;
+
+    border-radius: 0.5em;
+    background-color: $fifteen-dark-color;
+
+    .scoreboard__moves {
+      color: $fifteen-secondary-color;
+      font-size: 1.75em;
+      font-weight: bold;
+
+      @include for-desktop {
+        font-size: 1.5em;
+      }
+    }
+
+    @include for-desktop {
+      .btn {
+        padding: 0.4em;
       }
     }
   }

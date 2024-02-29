@@ -15,6 +15,10 @@ import Dropup from 'assets/icons/dropup.png'
 import Link from 'assets/icons/link.png'
 import { swalTimedCornerSuccess } from 'utils/swal'
 import { AuthContext } from 'providers/auth/context'
+import GameLayout from 'components/atoms/GameLayout'
+import classNames from 'classnames'
+import Button from 'components/atoms/Button'
+import Spinner from 'components/atoms/Spinner'
 
 const Whiteboard = () => {
   const { isUsernameSet } = useContext(UsernameContext)
@@ -203,39 +207,37 @@ const Whiteboard = () => {
   }
 
   return (
-    <div className="whiteboard-body">
-      {loading && <div className="spinner-border text-primary" role="status" />}
-      <canvas ref={canvasRef} className="whiteboard" />
-      <div className="menu">
-        {WHITEBOARD.colors.map((c) => (
-          <div key={c} className={`color ${c}${activeColor === c ? ' active' : ''}`} />
+    <GameLayout className="whiteboard">
+      {loading && <Spinner />}
+      <canvas ref={canvasRef} className="whiteboard__board" />
+      <div className="whiteboard__menu">
+        {WHITEBOARD.colors.map((color) => (
+          <div
+            key={color}
+            className={classNames('color', color, { active: activeColor === color })}
+          />
         ))}
-        <div className="dropdown">
-          <button onClick={() => setShowDropdown(!showDropdown)}>
-            <img src={showDropdown ? Dropup : Dropdown} alt="Dropdown" />
-          </button>
+        <div className="menu__dropdown">
+          <Button onClick={() => setShowDropdown(!showDropdown)}>
+            <img src={showDropdown ? Dropup : Dropdown} />
+          </Button>
           {showDropdown && (
-            <div className="dropdown-content">
-              <div className="options">
-                <button onClick={() => (window.location.href = PATHS.whiteboard)}>
-                  MENU
-                  <img src={Link} alt="Link" />
-                </button>
-                <button
+            <div className="dropdown__items">
+              <div className="dropdown__options">
+                <Button onClick={() => (window.location.href = PATHS.whiteboard)}>
+                  Menu
+                  <img src={Link} />
+                </Button>
+                <Button
                   onClick={() => sendJsonMessage(WEBSOCKET_MESSAGES.message('clear', username))}>
-                  CLEAR
-                </button>
+                  Clear
+                </Button>
               </div>
-              <div className="players">
+              <div className="dropdown__players">
                 {players.map((player) => (
-                  <div key={player.username} className="player-info">
-                    <img
-                      key={player.is_active}
-                      className="is-active"
-                      src={player.is_active ? Active : Inactive}
-                      alt="Is active"
-                    />
-                    <div className="username">{player.username}</div>
+                  <div key={player.username} className="players__username">
+                    <img key={player.is_active} src={player.is_active ? Active : Inactive} />
+                    {player.username}
                   </div>
                 ))}
               </div>
@@ -243,7 +245,7 @@ const Whiteboard = () => {
           )}
         </div>
       </div>
-    </div>
+    </GameLayout>
   )
 }
 

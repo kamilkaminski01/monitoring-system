@@ -1,120 +1,89 @@
 @include whiteboard;
 
-.whiteboard-body {
-  .spinner-border {
-    position: fixed;
-    top: 48%;
-    left: 47%;
-    width: 4rem;
-    height: 4rem;
-    color: $blue-txt !important;
-    z-index: 9999;
-    @include for-phone {
-      top: 47%;
-      left: 42%;
+.whiteboard {
+  .color {
+    display: inline-block;
+    border-radius: 0.5em;
+    height: 3em;
+    width: 3em;
+    margin-right: 1px;
+    border: 1px solid $grey-light-border;
+    cursor: pointer;
+
+    &.black {
+      background-color: black;
+    }
+
+    &.red {
+      background-color: red;
+    }
+
+    &.green {
+      background-color: green;
+    }
+
+    &.blue {
+      background-color: blue;
+    }
+
+    &.yellow {
+      background-color: yellow;
+    }
+
+    &.active {
+      border: 5px solid white;
+      border-radius: 12px;
     }
   }
-  .whiteboard {
-    height: 100%;
-    width: 100%;
+
+  .whiteboard__board {
     position: absolute;
-    left: 0;
-    right: 0;
-    top: 0;
-    bottom: 0;
+    inset: 0;
     touch-action: none;
   }
-  .menu {
-    position: fixed;
-    margin: 2px;
 
-    .dropdown {
+  .whiteboard__menu {
+    position: fixed;
+    padding: 0.1em;
+
+    .menu__dropdown {
       display: flex;
       flex-direction: column;
 
-      button {
-        background-color: white;
-        color: $blue-txt;
-        font-size: 15px;
-        border: 1px solid $grey-light-border;
-        border-radius: 10px;
-        padding: 12px 23px;
-        outline: none;
-        img {
-          margin-bottom: 3px;
-        }
-        &:hover {
-          background-color: $light-blue;
-        }
+      .btn {
+        display: flex;
+        justify-content: center;
+        padding: 0.5em;
       }
 
-      .dropdown-content {
-        button {
-          margin: 3px;
-          padding: 8px 17px;
-          width: 50%;
-        }
-
-        .options {
+      .dropdown__items {
+        .dropdown__options {
           display: flex;
-          justify-content: center;
-        }
+          justify-content: space-between;
+          gap: 0.5em;
+          margin: 0.25em 0;
 
-        .players {
-          background-color: white;
-          border: 1px solid $grey-light-border;
-          border-radius: 10px;
-          margin: 0 4px;
-
-          .player-info {
+          .btn {
             display: flex;
+            justify-content: center;
             align-items: center;
-            padding: 0 5rem;
-            margin: 0.25rem 0;
-
-            .username {
-              margin-right: auto;
-            }
-
-            .is-active {
-              margin-right: 0.5rem;
-            }
+            padding: 0.15em;
+            width: 100%;
           }
         }
-      }
-    }
-    .color {
-      display: inline-block;
-      border-radius: 5px;
-      height: 48px;
-      width: 48px;
-      border: 1px solid $grey-light-border;
-      margin: 1px;
-      cursor: pointer;
 
-      &.black {
-        background-color: black;
-      }
+        .dropdown__players {
+          border: 1px solid $grey-light-border;
+          border-radius: 0.25em;
 
-      &.red {
-        background-color: red;
-      }
-
-      &.green {
-        background-color: green;
-      }
-
-      &.blue {
-        background-color: blue;
-      }
-
-      &.yellow {
-        background-color: yellow;
-      }
-
-      &.active {
-        border: 5px solid white;
-        border-radius: 10px;
+          .players__username {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 0.2em;
+            margin: 0.25em 0;
+          }
+        }
       }
     }
   }

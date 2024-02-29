@@ -16,23 +16,29 @@
   }
 }
 
-@mixin for-extra-small-phone {
-  @media (max-width: 400px) {
-    @content;
-  }
-}
-
 @mixin whiteboard {
   @import url('https://fonts.googleapis.com/css2?family=Alkatra&display=swap');
   .whiteboard {
     font-family: 'Alkatra', sans-serif;
 
-    .home-link,
-    .home-btn {
+    .btn,
+    .home-link {
       background-color: $whiteboard-primary-color;
 
       &:hover {
         background-color: $whiteboard-light-grey;
+      }
+    }
+
+    .menu__dropdown {
+      .btn {
+        color: $blue-txt;
+        background-color: white;
+        border: 1px solid $grey-light-border;
+
+        &:hover {
+          background-color: $light-blue;
+        }
       }
     }
   }
@@ -44,8 +50,8 @@
     background-color: $fifteen-primary-color;
     font-family: 'Nunito', sans-serif;
 
+    .btn,
     .home-link,
-    .home-btn,
     .items__child {
       color: white;
       background-color: $fifteen-secondary-color;
@@ -55,17 +61,35 @@
         background-color: $fifteen-hover-color;
       }
     }
+
+    .chat__content,
+    .chat__input {
+      background-color: $fifteen-puzzle-color;
+      scrollbar-color: white $fifteen-puzzle-color;
+
+      &::placeholder {
+        color: white;
+      }
+    }
+
+    .message--centered {
+      background-color: $fifteen-primary-color;
+    }
+
+    .message__user {
+      border-bottom: 1px solid $fifteen-hover-color;
+    }
   }
 }
 
 @mixin tictactoe {
-  @import url('https://fonts.googleapis.com/css2?family=Quicksand&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@500&display=swap');
   .tictactoe {
     background-color: $grey-dark;
     font-family: 'Quicksand', sans-serif;
 
+    .btn,
     .home-link,
-    .home-btn,
     .items__child {
       color: white;
       background-color: $tictactoe-primary-color;
@@ -73,6 +97,31 @@
       &:hover {
         color: white;
         background-color: $tictactoe-secondary-color;
+      }
+    }
+
+    .game-info,
+    .chat__content,
+    .chat__input {
+      background-color: $tictactoe-primary-color;
+      scrollbar-color: white $tictactoe-primary-color;
+    }
+
+    .message--centered {
+      background-color: $tictactoe-secondary-color;
+    }
+
+    .message__user {
+      border-bottom: 1px solid $tictactoe-secondary-color;
+    }
+
+    .content__player-info {
+      .btn {
+        background-color: $tictactoe-secondary-color;
+
+        &:hover {
+          background-color: #A0A0A0;
+        }
       }
     }
   }
@@ -84,8 +133,8 @@
     background-color: $black-bg;
     font-family: 'Ubuntu', sans-serif;
 
+    .btn,
     .home-link,
-    .home-btn,
     .items__child {
       color: white;
       background-color: $bingo-primary-color;
@@ -95,35 +144,63 @@
         background-color: $bingo-secondary-color;
       }
     }
-  }
-}
 
-@mixin buttons {
-  .btn-game {
-    padding: 0.7rem;
-    margin: 0.6rem 0.2rem 0.6rem 0.6rem;
+    .game-info,
+    .chat__content,
+    .chat__input {
+      background-color: $bingo-chat-primary-color;
+      scrollbar-color: $bingo-clicked-item $bingo-chat-primary-color;
+    }
 
-    .info-container & {
-      padding: 0.4rem;
-      margin: 1rem;
+    .message--centered {
+      background-color: $bingo-primary-color;
+    }
+
+    .message__user {
+      border-bottom: 1px solid $bingo-primary-color;
     }
   }
 }
 
 @mixin game-page {
-  .game-room-options {
-    position: absolute;
-    top: 0;
-    left: 0;
-  }
-  .players-turn {
-    animation: fadeIn;
-    animation-duration: 0.2s;
-  }
-  .total-players {
-    margin-left: 3px;
-    animation: fadeIn;
-    animation-duration: 0.2s;
+  .game {
+    position: relative;
+    min-height: $game-height;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .game__options {
+      position: absolute;
+      top: 0;
+      left: 0;
+      display: flex;
+      gap: 0.8em;
+      margin-bottom: 1em;
+      padding: 0.75em;
+
+      @include for-desktop {
+        position: relative;
+      }
+    }
+
+    .game__content {
+      display: flex;
+      gap: 5em;
+
+      @include for-desktop {
+        align-items: center;
+        flex-direction: column;
+        gap: 2em;
+      }
+    }
+
+    @include for-desktop {
+      flex-direction: column;
+      justify-content: unset;
+      align-items: unset;
+    }
   }
 }
 
@@ -169,5 +246,22 @@
         }
       }
     }
+  }
+}
+
+@mixin animations {
+  .animation--fade-in {
+    animation: fadeIn;
+    animation-duration: 0.2s;
+  }
+
+  .animation--fade-in-1s {
+    animation: fadeIn;
+    animation-duration: 1s;
+  }
+
+  .animation--fade-in-up {
+    animation: fadeInUp;
+    animation-duration: 0.25s;
   }
 }

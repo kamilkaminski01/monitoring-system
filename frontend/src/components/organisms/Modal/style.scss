@@ -1,3 +1,5 @@
+@include animations;
+
 .modal {
   position: absolute;
   display: flex;
@@ -12,12 +14,18 @@
   background-color: #fff;
   border-radius: 0.5em;
 
-  animation: fadeIn;
-  animation-duration: 0.4s;
-
   .modal__header {
+    position: relative;
     text-align: center;
     padding: 1.5em;
+
+    .modal__close-btn {
+      position: absolute;
+      font-size: 2em;
+      top: 2px;
+      right: 8px;
+      cursor: pointer;
+    }
 
     .modal__title {
       font-size: 2em;

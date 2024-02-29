@@ -19,18 +19,20 @@ const TicTacToeMenu = () => {
       <div className="game-menu__content">
         <h2 className="content__title">Tic Tac Toe</h2>
         <Input
-          placeholder={'Your username'}
+          placeholder="Your username"
           value={username}
+          className="input-menu"
           onChange={(event) => setUsername(event.target.value)}
         />
         <Input
-          placeholder={'Room name'}
+          placeholder="Room name"
           value={roomName}
+          className="input-menu"
           onChange={(event) => setRoomName(event.target.value)}
         />
         <div className="content__options">
           <Button
-            className="home-btn"
+            className="btn-menu"
             onClick={() =>
               handleCreateRoom(
                 ENDPOINTS.checkTicTacToeRoom,
@@ -42,7 +44,7 @@ const TicTacToeMenu = () => {
             Create Room
           </Button>
           <Button
-            className="home-btn"
+            className="btn-menu"
             disable={!roomName}
             onClick={() =>
               handleJoinRoom(

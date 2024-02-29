@@ -27,7 +27,7 @@ export const highlightBingo = (boardStateIndexes, username) => {
           const item = document.getElementById(`${username}-${value}`)
           if (item) {
             item.classList.remove('clicked')
-            item.classList.add('success-row')
+            item.classList.add('game-grid--success')
           }
         }, index * 80)
       })

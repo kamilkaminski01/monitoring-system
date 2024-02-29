@@ -18,13 +18,14 @@ const FifteenMenu = () => {
       <div className="game-menu__content">
         <h2 className="content__title">Fifteen Puzzle</h2>
         <Input
-          placeholder={'Your username'}
+          placeholder="Your username"
           value={username}
+          className="input-menu"
           onChange={(event) => setUsername(event.target.value)}
         />
         <div className="content__options">
           <Button
-            className="home-btn"
+            className="btn-menu"
             disable={!username}
             onClick={() =>
               handleCreateGame(

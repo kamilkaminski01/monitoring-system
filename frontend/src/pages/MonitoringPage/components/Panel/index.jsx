@@ -22,7 +22,7 @@ const Panel = ({ gameName, items, path, endpoint, panelType, panelTypeName = nul
       {items.length ? (
         items.map((item) => (
           <div
-            className="panel__online-game"
+            className="panel__online-game animation--fade-in"
             key={panelType === GAME_TYPE.users ? item.username : item.room_id}
             onClick={(event) => handleClick(event, gameName, path, item)}>
             <p>{panelType === GAME_TYPE.users ? item.username : item.room_name}</p>
@@ -32,7 +32,7 @@ const Panel = ({ gameName, items, path, endpoint, panelType, panelTypeName = nul
           </div>
         ))
       ) : (
-        <p className="panel__info">No online {panelTypeName || panelType}</p>
+        <p className="panel__info animation--fade-in">No online {panelTypeName || panelType}</p>
       )}
     </div>
   )

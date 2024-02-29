@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import './style.scss'
 import { WEBSOCKET_MESSAGES } from 'utils/consts'
 import useWebSocket from 'react-use-websocket'
+import Input from 'components/atoms/Input'
 
 const Chat = ({ websocket, username }) => {
   const [messages, setMessages] = useState([])
@@ -33,31 +34,27 @@ const Chat = ({ websocket, username }) => {
   }
 
   return (
-    <div className="chat-wrapper">
-      <div className="chat" ref={chatRef}>
-        <h6>Room Activity</h6>
+    <div className="chat">
+      <div className="chat__content" ref={chatRef}>
+        <h4 className="chat__title">Room Activity</h4>
         {messages.map((message, index) => (
-          <div key={index}>
+          <div key={index} className="chat__message">
             {['join', 'leave', 'win', 'restart'].includes(message.command) ? (
-              <div className="centered-message">
-                <span> {message.message} </span>
-              </div>
+              <span className="message--centered">{message.message}</span>
             ) : (
-              <div className="message">
-                <span> {message.message} </span>
-                <span className="message-user"> {message.user ? message.user : 'admin'} </span>
+              <div className="message__user">
+                <span>{message.user ? message.user : 'admin'}:</span>
+                <span className="message__user-message">{message.message}</span>
               </div>
             )}
           </div>
         ))}
       </div>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          className="form-control my-1"
-          autoComplete="off"
+      <form className="chat__form" onSubmit={handleSubmit}>
+        <Input
           placeholder="send a message"
           value={newMessage}
+          className="chat__input"
           onChange={(event) => setNewMessage(event.target.value)}
         />
       </form>

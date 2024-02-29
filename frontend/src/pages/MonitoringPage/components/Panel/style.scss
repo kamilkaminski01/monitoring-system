@@ -1,3 +1,5 @@
+@include animations;
+
 .panel {
   display: flex;
   flex-direction: column;
@@ -28,9 +30,6 @@
     width: 70%;
     height: fit-content;
     padding: 1.5rem;
-
-    animation: fadeIn;
-    animation-duration: 0.4s;
     cursor: pointer;
 
     .online-game__close-btn {
@@ -52,7 +51,5 @@
     text-align: center;
     font-size: 1.2em;
     color: $grey-light;
-    animation: fadeIn;
-    animation-duration: 0.4s;
   }
 }

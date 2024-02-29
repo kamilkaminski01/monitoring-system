@@ -6,11 +6,12 @@ import { ENDPOINTS, PATHS, WEBSOCKET_MESSAGES, WEBSOCKETS } from 'utils/consts'
 import useWebSocket from 'react-use-websocket'
 import { useSocketLeave } from 'hooks/useSocketLeave'
 import Chat from 'components/organisms/Chat'
-import GameButton from 'components/atoms/GameButton'
-import { swalSuccess, swalWarning } from 'utils/swal'
+import { swalSuccess, swalTimedCornerSuccess, swalWarning } from 'utils/swal'
 import { putGameDetails } from 'utils/requests'
 import { useFifteenData } from 'hooks/useFifteenData'
 import { generatePuzzleState } from 'utils/boards'
+import Button from 'components/atoms/Button'
+import GameLayout from 'components/atoms/GameLayout'
 
 const Fifteen = () => {
   const { isUsernameSet } = useContext(UsernameContext)
@@ -50,6 +51,7 @@ const Fifteen = () => {
       game_state: true
     })
     sendJsonMessage(WEBSOCKET_MESSAGES.restart(username))
+    swalTimedCornerSuccess('The game has restarted', 'New game')
   }
 
   const isPuzzleSolved = (puzzleState) => {
@@ -96,47 +98,36 @@ const Fifteen = () => {
   }
 
   return (
-    <div className="fifteen-body">
-      <div className="game-room-options">
-        <GameButton
-          className="btn-outline-primary"
-          value="Home"
-          onClick={() => (window.location.href = PATHS.home)}
-        />
-        <GameButton
-          className="btn-outline-primary"
-          value="Menu"
-          onClick={() => (window.location.href = PATHS.fifteen)}
-        />
+    <GameLayout className="fifteen game">
+      <div className="game__options">
+        <Button value="Home" onClick={() => (window.location.href = PATHS.home)} />
+        <Button value="Menu" onClick={() => (window.location.href = PATHS.fifteen)} />
       </div>
-      <div className="fifteen-wrapper">
-        <div className="fifteen">
-          <div className="puzzle-container">
+      <div className="game__content">
+        <div className="fifteen__game animation--fade-in">
+          <div className="fifteen__game-grid">
             {puzzleState.map((row) =>
               row.map((value) => (
-                <div key={value} className="puzzle-block" onClick={() => handleTileClick(value)}>
+                <div key={value} className="grid__tile" onClick={() => handleTileClick(value)}>
                   {value}
                 </div>
               ))
             )}
           </div>
-          <div className="info-container">
-            <div className="info d-flex">
+          <div className="game__scoreboard">
+            <div className="scoreboard__moves">
               Moves:
-              <div key={moves} className="moves">
+              <span key={moves} className="animation--fade-in">
+                {' '}
                 {moves}
-              </div>
+              </span>
             </div>
-            <GameButton
-              className="btn-outline-primary"
-              value="Restart"
-              onClick={() => onRestart()}
-            />
+            <Button value="Restart" onClick={() => onRestart()} />
           </div>
         </div>
         <Chat websocket={websocket} username={username} />
       </div>
-    </div>
+    </GameLayout>
   )
 }
 
