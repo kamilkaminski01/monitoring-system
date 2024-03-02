@@ -9,7 +9,7 @@ const MonitoringChat = ({ websocket, username }) => {
     <div className="monitoring-chat">
       <img
         src="https://img.icons8.com/material-rounded/50/FFFFFF/talk-male.png"
-        alt="Monitoring chat"
+        alt="chat-icon"
         onClick={() => setVisible(!visible)}
       />
       <div

@@ -2,11 +2,12 @@ import './style.scss'
 import useUsername from 'hooks/useUsername'
 import { useParams } from 'react-router-dom'
 import { ENDPOINTS, LOCAL_STORAGE, WEBSOCKETS } from 'utils/consts'
-import MonitoringChat from 'components/atoms/MonitoringChat'
+import MonitoringChat from 'components/molecules/MonitoringChat'
 import { useFifteenMonitoringData } from 'hooks/useFifteenMonitoringData'
 import useWebSocket from 'react-use-websocket'
-import MonitoringGameInfo from 'components/atoms/MonitoringRoomInfo'
+import MonitoringGameInfo from 'components/molecules/MonitoringGameInfo'
 import { getAuthGameDetails } from 'utils/requests'
+import GameLayout from 'components/atoms/GameLayout'
 
 const FifteenMonitoring = () => {
   const { userName } = useParams()
@@ -41,23 +42,23 @@ const FifteenMonitoring = () => {
   })
 
   return (
-    <div className="fifteen-body fifteen-monitoring">
-      <MonitoringGameInfo roomName={userName} gameState={gameState} moves={moves} />
-      <div className="fifteen-wrapper">
-        <div className="fifteen">
-          <div className="puzzle-container">
+    <GameLayout className="fifteen monitoring">
+      <div className="fifteen__monitoring">
+        <MonitoringGameInfo roomName={userName} gameState={gameState} moves={moves} />
+        <div className="fifteen__game animation--fade-in">
+          <div className="fifteen__game-grid">
             {puzzleState.map((row) =>
               row.map((value) => (
-                <div key={value} className="puzzle-block">
+                <div key={value} className="grid__tile">
                   {value}
                 </div>
               ))
             )}
           </div>
         </div>
+        <MonitoringChat websocket={websocket} username={username} />
       </div>
-      <MonitoringChat websocket={websocket} username={username} />
-    </div>
+    </GameLayout>
   )
 }
 

@@ -152,6 +152,14 @@
       scrollbar-color: $bingo-clicked-item $bingo-chat-primary-color;
     }
 
+    .game-info {
+      min-height: 31.94em;
+
+      @include for-desktop {
+        min-height: 27.69em;
+      }
+    }
+
     .message--centered {
       background-color: $bingo-primary-color;
     }
@@ -205,47 +213,8 @@
 }
 
 @mixin monitoring {
-  .monitoring-info {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    color: white;
-    padding: 2rem;
-    .tictactoe-players & {
-      width: 16rem;
-      padding: 0;
-    }
-    .monitoring-data {
-      border: 1px solid $grey-light-border;
-      border-radius: 5px;
-      padding: 1rem;
-      font-size: 1.25rem;
-      &.room-data {
-        width: 40%;
-      }
-      &.player-data {
-        width: 60%;
-      }
-      div {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-      }
-      .animate-data {
-        animation: fadeIn;
-        animation-duration: 0.2s;
-      }
-    }
-    @include for-tablet {
-      .tictactoe-players & {
-        width: 12rem;
-      }
-      .monitoring-data {
-        &.room-data {
-          width: 80%;
-        }
-      }
-    }
+  .monitoring {
+    min-height: $game-height;
   }
 }
 

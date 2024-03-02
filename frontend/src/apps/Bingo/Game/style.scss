@@ -3,6 +3,8 @@
 @include animations;
 
 .bingo__game {
+  min-height: 31.94em;
+
   .game__scoreboard {
     color: white;
     font-size: 1.2em;
@@ -10,6 +12,7 @@
     .scoreboard__username {
       text-align: center;
     }
+
     .scoreboard__room-info {
       display: flex;
       justify-content: space-between;
@@ -24,11 +27,11 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      width: 3em;
-      height: 3em;
+      width: 2.3em;
+      height: 2.25em;
       margin: 0.1em;
 
-      font-size: 1.5em;
+      font-size: 2em;
       color: white;
       border: 2px solid $bingo-clicked-item;
 
@@ -40,6 +43,7 @@
       }
 
       @include for-desktop {
+        font-size: 1.5em;
         width: 2.5em;
         height: 2.5em;
       }
@@ -52,12 +56,16 @@
   }
 
   .bingo__state {
-    height: 0.75em;
+    height: fit-content;
     padding: 0.25em;
 
     font-size: 1.9em;
     color: white;
     text-align: center;
     letter-spacing: 5px;
+  }
+
+  @include for-desktop {
+    min-height: 27.69em;
   }
 }

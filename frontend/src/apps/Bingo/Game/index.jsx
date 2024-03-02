@@ -188,7 +188,7 @@ const Bingo = () => {
         <Button value="Menu" onClick={() => (window.location.href = PATHS.bingo)} />
         <Button
           value="Restart"
-          disabled={gameState}
+          disable={gameState}
           onClick={() => sendJsonMessage(WEBSOCKET_MESSAGES.restart(username))}
         />
         <Button

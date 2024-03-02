@@ -1,8 +1,17 @@
-@include fifteen;
+@include game-page;
+@include monitoring;
 
-.fifteen-monitoring {
-  min-height: $game-height;
-  .fifteen-wrapper {
-    min-height: unset;
+.fifteen__monitoring {
+  display: flex;
+  flex-direction: column;
+  gap: 4em;
+
+  .fifteen__game {
+    display: flex;
+    justify-content: center;
+  }
+
+  @include for-desktop {
+    gap: 2em;
   }
 }

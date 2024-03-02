@@ -5,9 +5,10 @@ import { useTicTacToeMonitoringData } from 'hooks/useTicTacToeMonitoringData'
 import useUsername from 'hooks/useUsername'
 import useWebSocket from 'react-use-websocket'
 import { getAuthRoomDetails } from 'utils/requests'
-import MonitoringGameInfo from 'components/atoms/MonitoringRoomInfo'
-import MonitoringPlayerInfo from 'components/atoms/MonitoringPlayerInfo'
-import MonitoringChat from 'components/atoms/MonitoringChat'
+import MonitoringGameInfo from 'components/molecules/MonitoringGameInfo'
+import MonitoringPlayerInfo from 'components/molecules/MonitoringPlayerInfo'
+import MonitoringChat from 'components/molecules/MonitoringChat'
+import GameLayout from 'components/atoms/GameLayout'
 
 const TicTacToeMonitoring = () => {
   const { roomName } = useParams()
@@ -65,35 +66,31 @@ const TicTacToeMonitoring = () => {
   })
 
   const boardElements = boardState.map((value, index) => (
-    <div key={index} id={index} className="space">
+    <div key={index} id={index} className="game-grid__tile">
       {value}
     </div>
   ))
 
   return (
-    <div className="tictactoe-body tictactoe-monitoring">
+    <GameLayout className="tictactoe monitoring">
       <MonitoringGameInfo
         roomName={roomName}
         gameState={gameState}
         totalPlayers={totalPlayers}
         playersTurn={playersTurn}
       />
-      <div className="tictactoe-players">
-        {roomPlayers.map((player) => (
-          <div key={player.username}>
-            <MonitoringPlayerInfo player={player} />
+      <div className="tictactoe__monitoring">
+        <div className="tictactoe__game">
+          <div className="monitoring__players-info">
+            {roomPlayers.map((player) => (
+              <MonitoringPlayerInfo key={player.username} player={player} />
+            ))}
           </div>
-        ))}
-      </div>
-      <div className="tictactoe-wrapper">
-        <div className="tictactoe">
-          <div className="board-wrapper">
-            <div className="board">{boardElements}</div>
-          </div>
+          <div className="tictactoe__game-grid">{boardElements}</div>
         </div>
-        <MonitoringChat websocket={websocket} username={username} />
       </div>
-    </div>
+      <MonitoringChat websocket={websocket} username={username} />
+    </GameLayout>
   )
 }
 

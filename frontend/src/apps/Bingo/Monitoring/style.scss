@@ -1,20 +1,26 @@
-.bingo-monitoring {
-  min-height: $game-height;
-  .bingo-wrapper {
-    min-height: unset;
-    .bingo {
-      margin: unset;
-      margin-bottom: 3rem;
-      display: flex;
-      flex-direction: row;
-      flex-flow: wrap;
-      justify-content: center;
-      .grid {
-        margin: 0 2rem 0;
-      }
-      @include for-desktop {
-        flex-direction: column;
-      }
+@include game-page;
+@include monitoring;
+
+.bingo__monitoring {
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 4em;
+
+  .bingo__game {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+
+    .monitoring-player-info {
+      max-width: 15em;
     }
+  }
+
+  @include for-desktop {
+    align-items: center;
+    flex-direction: column;
+    gap: unset;
   }
 }

@@ -6,9 +6,10 @@ import useWebSocket from 'react-use-websocket'
 import { getAuthRoomDetails } from 'utils/requests'
 import { useBingoMonitoringData } from 'hooks/useBingoMonitoringData'
 import { getBoardStateIndexes, highlightBingo } from 'utils/boards'
-import MonitoringGameInfo from 'components/atoms/MonitoringRoomInfo'
-import MonitoringPlayerInfo from 'components/atoms/MonitoringPlayerInfo'
-import MonitoringChat from 'components/atoms/MonitoringChat'
+import MonitoringGameInfo from 'components/molecules/MonitoringGameInfo'
+import MonitoringPlayerInfo from 'components/molecules/MonitoringPlayerInfo'
+import MonitoringChat from 'components/molecules/MonitoringChat'
+import GameLayout from 'components/atoms/GameLayout'
 
 const BingoMonitoring = () => {
   const { roomName } = useParams()
@@ -83,12 +84,12 @@ const BingoMonitoring = () => {
 
   function generateGrid(player) {
     return (
-      <div key={player.username} className="grid">
+      <div key={player.username} className="bingo__game-grid animation--fade-in">
         {player.initialBoardState.map((key, index) => (
           <span
             key={key}
             id={`${player.username}-${index}`}
-            className={boardState.includes(key) ? 'clicked' : 'animated-data'}>
+            className={boardState.includes(key) ? 'clicked' : 'animation--fade-in'}>
             {key}
           </span>
         ))}
@@ -97,7 +98,7 @@ const BingoMonitoring = () => {
   }
 
   return (
-    <div className="bingo-body bingo-monitoring">
+    <GameLayout className="bingo monitoring">
       <MonitoringGameInfo
         roomName={roomName}
         gameState={gameState}
@@ -105,21 +106,19 @@ const BingoMonitoring = () => {
         playersTurn={playersTurn}
         playersLimit={playersLimit}
       />
-      <div className="bingo-wrapper">
-        <div className="bingo">
-          {roomPlayers.map((player) => (
-            <div key={player.username}>
-              <MonitoringPlayerInfo player={player} />
-              {generateGrid(player)}
-              <div key={player.bingoState} className="bingo-state">
-                {player.bingoState}
-              </div>
+      <div className="bingo__monitoring">
+        {roomPlayers.map((player) => (
+          <div key={player.username} className="bingo__game">
+            <MonitoringPlayerInfo player={player} />
+            {generateGrid(player)}
+            <div key={player.bingoState} className="bingo__state animation--fade-in-up">
+              {player.bingoState}
             </div>
-          ))}
-        </div>
-        <MonitoringChat websocket={websocket} username={username} />
+          </div>
+        ))}
       </div>
-    </div>
+      <MonitoringChat websocket={websocket} username={username} />
+    </GameLayout>
   )
 }
 

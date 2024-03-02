@@ -3,9 +3,8 @@
 @include animations;
 
 .tictactoe__game {
-  font-size: 1.2em;
-
   .game__username {
+    font-size: 1.2em;
     text-align: center;
     color: white;
   }
@@ -14,6 +13,8 @@
     display: flex;
     justify-content: space-between;
     margin-bottom: 0.1em;
+
+    font-size: 1.2em;
     color: white;
   }
 
@@ -21,8 +22,8 @@
     display: grid;
     grid-template: repeat(3, 1fr) / repeat(3, 1fr);
     gap: 2px;
-    width: 22em;
-    height: 22em;
+    width: 25em;
+    height: 25em;
 
     .game-grid__tile {
       display: flex;

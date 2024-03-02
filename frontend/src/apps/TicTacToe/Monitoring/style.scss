@@ -1,15 +1,18 @@
-@include tictactoe;
+@include game-page;
+@include monitoring;
 
-.tictactoe-monitoring {
-  min-height: $game-height;
-  .tictactoe-players {
+.tictactoe__monitoring {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+
+  .monitoring__players-info {
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
+    gap: 2em;
   }
-  .tictactoe-wrapper {
-    min-height: unset;
-    .tictactoe {
-      margin: 1.5rem;
-    }
+
+  .tictactoe__game-grid {
+    margin-bottom: 2em;
   }
 }

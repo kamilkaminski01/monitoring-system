@@ -1,0 +1,28 @@
+@include animations;
+
+.monitoring-player-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25em;
+  padding: 1em;
+  margin: 1em 0;
+  width: 100%;
+
+  color: white;
+
+  border-radius: 0.25em;
+  border: 1px solid white;
+
+  .monitoring-player-info__username {
+    margin-bottom: 0.5em;
+
+    font-size: 1.2em;
+    text-align: center;
+    border-bottom: 1px solid white;
+  }
+
+  .monitoring-player-info__item {
+    display: flex;
+    justify-content: space-between;
+  }
+}
