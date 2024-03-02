@@ -1,4 +1,5 @@
 @include animations;
+@include icons;
 
 .monitoring-chat {
   position: absolute;
@@ -7,10 +8,6 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-
-  img {
-    cursor: pointer;
-  }
 
   .fade-on-open {
     animation-duration: 0.3s;

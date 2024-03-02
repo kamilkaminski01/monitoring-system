@@ -1,6 +1,5 @@
 import './style.scss'
-import Checkmark from 'assets/icons/checkmark.svg'
-import Cancel from 'assets/icons/cancel.svg'
+import { IoClose, IoCheckmark } from 'react-icons/io5'
 
 const MonitoringGameInfo = ({
   roomName,
@@ -16,12 +15,11 @@ const MonitoringGameInfo = ({
       <div className="monitoring-game-info__items">
         <div className="monitoring-game-info__item">
           Game state:
-          <img
-            key={gameState}
-            className="animation--fade-in"
-            src={gameState ? Checkmark : Cancel}
-            alt="game-state"
-          />
+          {gameState ? (
+            <IoCheckmark key={gameState} className="checkmark-icon animation--fade-in" />
+          ) : (
+            <IoClose key={gameState} className="cancel-icon animation--fade-in" />
+          )}
         </div>
         {playersLimit && (
           <div className="monitoring-game-info__item">

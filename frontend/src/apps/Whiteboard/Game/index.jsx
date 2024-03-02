@@ -8,11 +8,9 @@ import { useSocketLeave } from 'hooks/useSocketLeave'
 import { UsernameContext } from 'providers/username/context'
 import { useWhiteboardData } from 'hooks/useWhiteboardData'
 import { roomDetails } from 'utils/requests'
-import Active from 'assets/icons/active.png'
-import Inactive from 'assets/icons/inactive.png'
-import Dropdown from 'assets/icons/dropdown.png'
-import Dropup from 'assets/icons/dropup.png'
-import Link from 'assets/icons/link.png'
+import { FaCircle } from 'react-icons/fa'
+import { RiExternalLinkLine } from 'react-icons/ri'
+import { IoIosArrowDropdown, IoIosArrowDropup } from 'react-icons/io'
 import { swalTimedCornerSuccess } from 'utils/swal'
 import { AuthContext } from 'providers/auth/context'
 import GameLayout from 'components/atoms/GameLayout'
@@ -219,14 +217,14 @@ const Whiteboard = () => {
         ))}
         <div className="menu__dropdown">
           <Button onClick={() => setShowDropdown(!showDropdown)}>
-            <img src={showDropdown ? Dropup : Dropdown} />
+            {showDropdown ? <IoIosArrowDropup /> : <IoIosArrowDropdown />}
           </Button>
           {showDropdown && (
             <div className="dropdown__items">
               <div className="dropdown__options">
                 <Button onClick={() => (window.location.href = PATHS.whiteboard)}>
                   Menu
-                  <img src={Link} />
+                  <RiExternalLinkLine />
                 </Button>
                 <Button
                   onClick={() => sendJsonMessage(WEBSOCKET_MESSAGES.message('clear', username))}>
@@ -236,7 +234,15 @@ const Whiteboard = () => {
               <div className="dropdown__players">
                 {players.map((player) => (
                   <div key={player.username} className="players__username">
-                    <img key={player.is_active} src={player.is_active ? Active : Inactive} />
+                    {player.is_active ? (
+                      <FaCircle
+                        key={player.is_active}
+                        color="limegreen"
+                        className="animation--fade-in"
+                      />
+                    ) : (
+                      <FaCircle key={player.is_active} color="red" className="animation--fade-in" />
+                    )}
                     {player.username}
                   </div>
                 ))}

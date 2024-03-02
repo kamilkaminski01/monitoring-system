@@ -1,7 +1,6 @@
 import './style.scss'
-import Ready from 'assets/icons/ready.png'
-import NotReady from 'assets/icons/not-ready.png'
-import InfoWhite from 'assets/icons/info-white.png'
+import { IoClose, IoCheckmark } from 'react-icons/io5'
+import { FiInfo } from 'react-icons/fi'
 import { putRoomDetailsPlayer } from 'utils/requests'
 import { WEBSOCKET_MESSAGES } from 'utils/consts'
 import Button from 'components/atoms/Button'
@@ -21,14 +20,16 @@ const GameInfo = ({ players, username, roomName, endpoint, sendJsonMessage }) =>
             <div className="player-info__username">{player.username}</div>
             {player.username === username && !player.is_ready ? (
               <Button onClick={() => handleSetReady()}>Ready?</Button>
+            ) : player.is_ready ? (
+              <IoCheckmark key={player.is_ready} className="checkmark-icon animation--fade-in" />
             ) : (
-              <img key={player.is_ready} src={player.is_ready ? Ready : NotReady} />
+              <IoClose key={player.is_ready} className="cancel-icon animation--fade-in" />
             )}
           </div>
         ))}
       </div>
       <div className="info__footer">
-        <img src={InfoWhite} alt="info-icon" />
+        <FiInfo className="info-icon" />
         Your turn depends on who first marks &ldquo;Ready?&ldquo;
       </div>
     </div>

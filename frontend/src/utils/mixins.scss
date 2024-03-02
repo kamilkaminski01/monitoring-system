@@ -234,3 +234,32 @@
     animation-duration: 0.25s;
   }
 }
+
+@mixin icons {
+  .cancel-icon {
+    padding: 3px;
+    border-radius: 50%;
+    background-color: red;
+    color: white;
+  }
+
+  .checkmark-icon {
+    padding: 3px;
+    border-radius: 50%;
+    background-color: limegreen;
+    color: white;
+  }
+
+  .info-icon {
+    width: 20px;
+    height: 20px;
+    color: white;
+  }
+
+  .chat-icon {
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+    margin-bottom: 0.25em;
+  }
+}

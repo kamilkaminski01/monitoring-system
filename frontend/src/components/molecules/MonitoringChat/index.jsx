@@ -1,17 +1,14 @@
 import { useState } from 'react'
 import './style.scss'
 import Chat from 'components/organisms/Chat'
+import { BsChatFill } from 'react-icons/bs'
 
 const MonitoringChat = ({ websocket, username }) => {
   const [visible, setVisible] = useState(false)
 
   return (
     <div className="monitoring-chat">
-      <img
-        src="https://img.icons8.com/material-rounded/50/FFFFFF/talk-male.png"
-        alt="chat-icon"
-        onClick={() => setVisible(!visible)}
-      />
+      <BsChatFill color="white" className="chat-icon" onClick={() => setVisible(!visible)} />
       <div
         className={
           visible

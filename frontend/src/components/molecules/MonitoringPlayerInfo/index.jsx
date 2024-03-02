@@ -1,6 +1,5 @@
 import './style.scss'
-import Checkmark from 'assets/icons/checkmark.svg'
-import Cancel from 'assets/icons/cancel.svg'
+import { IoClose, IoCheckmark } from 'react-icons/io5'
 
 const MonitoringPlayerInfo = ({ player }) => {
   return (
@@ -8,30 +7,27 @@ const MonitoringPlayerInfo = ({ player }) => {
       <h4 className="monitoring-player-info__username">{player.username}</h4>
       <div className="monitoring-player-info__item">
         Active:
-        <img
-          key={player.isActive}
-          src={player.isActive ? Checkmark : Cancel}
-          alt="is-active"
-          className="animation--fade-in"
-        />
+        {player.isActive ? (
+          <IoCheckmark key={player.isActive} className="checkmark-icon animation--fade-in" />
+        ) : (
+          <IoClose key={player.isActive} className="cancel-icon animation--fade-in" />
+        )}
       </div>
       <div className="monitoring-player-info__item">
         Winner:
-        <img
-          key={player.isWinner}
-          src={player.isWinner ? Checkmark : Cancel}
-          alt="is-winner"
-          className="animation--fade-in"
-        />
+        {player.isWinner ? (
+          <IoCheckmark key={player.isWinner} className="checkmark-icon animation--fade-in" />
+        ) : (
+          <IoClose key={player.isWinner} className="cancel-icon animation--fade-in" />
+        )}
       </div>
       <div className="monitoring-player-info__item">
         Ready:
-        <img
-          key={player.isReady}
-          src={player.isReady ? Checkmark : Cancel}
-          alt="is-ready"
-          className="animation--fade-in"
-        />
+        {player.isReady ? (
+          <IoCheckmark key={player.isReady} className="checkmark-icon animation--fade-in" />
+        ) : (
+          <IoClose key={player.isReady} className="cancel-icon animation--fade-in" />
+        )}
       </div>
       {player.figure && (
         <div className="monitoring-player-info__item">
