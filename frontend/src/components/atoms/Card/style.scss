@@ -25,7 +25,19 @@
     line-height: 1.5;
   }
 
-  &:hover {
-    box-shadow: 0 0 15px 0;
+  &:first-child:hover {
+    box-shadow: 0 0 15px 0 $chinese-black;
+  }
+
+  &:nth-child(2):hover {
+    box-shadow: 0 0 15px 0 $fifteen-secondary-color--light;
+  }
+
+  &:nth-child(3):hover {
+    box-shadow: 0 0 15px 0 $dark-charcoal;
+  }
+
+  &:last-child:hover {
+    box-shadow: 0 0 15px 0 $royal-purple;
   }
 }
