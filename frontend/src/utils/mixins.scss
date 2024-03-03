@@ -26,18 +26,18 @@
       background-color: $whiteboard-primary-color;
 
       &:hover {
-        background-color: $whiteboard-light-grey;
+        background-color: $whiteboard-secondary-color;
       }
     }
 
     .menu__dropdown {
       .btn {
-        color: $blue-txt;
-        background-color: white;
-        border: 1px solid $grey-light-border;
+        color: $dodger-blue;
+        background-color: $snow;
+        border: 1px solid $platinum;
 
         &:hover {
-          background-color: $light-blue;
+          background-color: $whiteboard-btn-hover;
         }
       }
     }
@@ -53,23 +53,18 @@
     .btn,
     .home-link,
     .items__child {
-      color: white;
+      color: $snow;
       background-color: $fifteen-secondary-color;
 
       &:hover {
-        color: white;
-        background-color: $fifteen-hover-color;
+        background-color: $fifteen-secondary-color--light;
       }
     }
 
     .chat__content,
     .chat__input {
-      background-color: $fifteen-puzzle-color;
-      scrollbar-color: white $fifteen-puzzle-color;
-
-      &::placeholder {
-        color: white;
-      }
+      background-color: $fifteen-tertiary-color;
+      scrollbar-color: $snow $fifteen-tertiary-color;
     }
 
     .message--centered {
@@ -77,7 +72,7 @@
     }
 
     .message__user {
-      border-bottom: 1px solid $fifteen-hover-color;
+      border-bottom: 1px solid $fifteen-secondary-color--light;
     }
   }
 }
@@ -85,17 +80,16 @@
 @mixin tictactoe {
   @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@500&display=swap');
   .tictactoe {
-    background-color: $grey-dark;
+    background-color: $dark-charcoal;
     font-family: 'Quicksand', sans-serif;
 
     .btn,
     .home-link,
     .items__child {
-      color: white;
+      color: $snow;
       background-color: $tictactoe-primary-color;
 
       &:hover {
-        color: white;
         background-color: $tictactoe-secondary-color;
       }
     }
@@ -104,7 +98,7 @@
     .chat__content,
     .chat__input {
       background-color: $tictactoe-primary-color;
-      scrollbar-color: white $tictactoe-primary-color;
+      scrollbar-color: $snow $tictactoe-primary-color;
     }
 
     .message--centered {
@@ -120,7 +114,7 @@
         background-color: $tictactoe-secondary-color;
 
         &:hover {
-          background-color: #A0A0A0;
+          background-color: $quick-silver;
         }
       }
     }
@@ -130,26 +124,25 @@
 @mixin bingo {
   @import url('https://fonts.googleapis.com/css2?family=Ubuntu&display=swap');
   .bingo {
-    background-color: $black-bg;
+    background-color: $chinese-black;
     font-family: 'Ubuntu', sans-serif;
 
     .btn,
     .home-link,
     .items__child {
-      color: white;
+      color: $snow;
       background-color: $bingo-primary-color;
 
       &:hover {
-        color: white;
-        background-color: $bingo-secondary-color;
+        background-color: $deep-koamaru;
       }
     }
 
     .game-info,
     .chat__content,
     .chat__input {
-      background-color: $bingo-chat-primary-color;
-      scrollbar-color: $bingo-clicked-item $bingo-chat-primary-color;
+      background-color: $bingo-secondary-color;
+      scrollbar-color: $bingo-clicked-tile $bingo-secondary-color;
     }
 
     .game-info {
@@ -240,20 +233,20 @@
     padding: 3px;
     border-radius: 50%;
     background-color: red;
-    color: white;
+    color: $snow;
   }
 
   .checkmark-icon {
     padding: 3px;
     border-radius: 50%;
     background-color: limegreen;
-    color: white;
+    color: $snow;
   }
 
   .info-icon {
     width: 20px;
     height: 20px;
-    color: white;
+    color: $snow;
   }
 
   .chat-icon {

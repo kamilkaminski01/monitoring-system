@@ -8,7 +8,7 @@
   width: 25em;
 
   border-radius: 0.5em;
-  color: white;
+  color: $snow;
 
   .info__title {
     font-size: 2em;
@@ -16,7 +16,7 @@
     text-align: center;
     padding: 0.5em;
     width: 80%;
-    border-bottom: 1px solid white;
+    border-bottom: 1px solid $snow;
   }
 
   .info__content {

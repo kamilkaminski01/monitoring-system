@@ -7,7 +7,7 @@
     height: 3em;
     width: 3em;
     margin-right: 1px;
-    border: 1px solid $grey-light-border;
+    border: 1px solid $platinum;
     cursor: pointer;
 
     &.black {
@@ -31,7 +31,7 @@
     }
 
     &.active {
-      border: 5px solid white;
+      border: 5px solid $snow;
       border-radius: 12px;
     }
   }
@@ -73,7 +73,7 @@
         }
 
         .dropdown__players {
-          border: 1px solid $grey-light-border;
+          border: 1px solid $platinum;
           border-radius: 0.25em;
 
           .players__username {

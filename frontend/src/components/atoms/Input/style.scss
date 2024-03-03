@@ -1,6 +1,6 @@
 .input {
   &:focus {
-    border-color: #80bdff;
+    border-color: $dodger-blue;
     box-shadow: 0 0 0 .2rem rgba(0,123,255,.25);
     outline: 0;
   }
@@ -15,7 +15,7 @@
   margin: 0.25em 0;
   padding: 0.5em;
 
-  border: 1px solid #ced4da;
+  border: 1px solid $platinum;
   border-radius: 0.25em;
 
   outline: none;
@@ -25,7 +25,11 @@
   flex: 1;
   height: 2.5em;
   padding: 0.4em 0.75em;
-  color: white;
+  color: $snow;
   border: none;
   border-radius: 0.25em;
+
+  &::placeholder {
+    color: $snow;
+  }
 }

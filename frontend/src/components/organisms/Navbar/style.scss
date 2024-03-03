@@ -1,10 +1,10 @@
 nav {
   display: flex;
   justify-content: space-between;
-  padding: $navbar-padding;
+  padding: 1em;
 
-  background: $grey-dark;
-  color: white;
+  background: $dark-charcoal;
+  color: $snow;
 
   box-shadow: 0 15px 15px 0 #0000001a;
 
@@ -25,12 +25,12 @@ nav {
       cursor: pointer;
 
       &:hover {
-        background-color: $grey-light;
+        background-color: $sonic-silver;
       }
     }
 
     .active-link {
-      background-color: $grey-light;
+      background-color: $sonic-silver;
     }
   }
 

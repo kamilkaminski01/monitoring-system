@@ -5,7 +5,7 @@
   label {
     display: block;
     text-align: center;
-    color: $violet;
+    color: $royal-purple;
     width: 1.5em;
     height: 1.5em;
     font-size: 1.5em;
@@ -20,7 +20,7 @@
         transform: rotate(45deg) translateX(-5px);
         width: 0.75em;
         margin-left: 0.75em;
-        border-color: $violet;
+        border-color: $royal-purple;
         border-top-color: transparent;
         border-left-color: transparent;
         border-radius: 0;
@@ -31,7 +31,7 @@
       display: inline-block;
       width: inherit;
       height: inherit;
-      border: 3px solid #434343;
+      border: 3px solid $chinese-black;
       border-radius: 0.3em;
       transition: all 0.25s;
     }

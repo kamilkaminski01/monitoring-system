@@ -6,7 +6,7 @@
   .game__username {
     font-size: 1.2em;
     text-align: center;
-    color: white;
+    color: $snow;
   }
 
   .game__scoreboard {
@@ -15,7 +15,7 @@
     margin-bottom: 0.1em;
 
     font-size: 1.2em;
-    color: white;
+    color: $snow;
   }
 
   .tictactoe__game-grid {
@@ -32,7 +32,7 @@
 
       font-size: 3em;
       border-radius: 3px;
-      background-color: $tictactoe-board-color;
+      background-color: $tictactoe-tile-color;
 
       transition: background-color ease-in-out 0.1s;
       cursor: pointer;

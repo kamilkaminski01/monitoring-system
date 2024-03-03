@@ -1,33 +1,32 @@
-$black-bg: #121213;
-$grey-light: #777777;
-$grey-light-border: #e7e7e7;
-$grey-dark: #333333;
-$red-light-error: #f04e4e;
-$blue-txt: #1b9cfc;
-$light-blue: #EFF9FE;
-$violet: #6d5baf;
-
-$navbar-padding: 1em;
 $game-height: 100vh;
 
+$error: #f04e4e;
+$dodger-blue: #1b9cfc;
+$royal-purple: #6d5baf;
+
+$chinese-black: #121213;
+$gunmetal: #263238;
+$dark-charcoal: #333333;
+$deep-koamaru: #363263;
+$sonic-silver: #777777;
+$quick-silver: #A0A0A0;
+$platinum: #e7e7e7;
+$snow: #ffffff;
+
 $bingo-primary-color: #262350;
-$bingo-secondary-color: #363263;
-$bingo-chat-primary-color: #1b1b21;
+$bingo-secondary-color: #1b1b21;
+$bingo-clicked-tile: #3a3a3c;
 $bingo-success-row: #5baf5b;
-$bingo-clicked-item: #3a3a3c;
 
 $tictactoe-primary-color: #C0C0C0;
 $tictactoe-secondary-color: #808080;
-$tictactoe-board-color: #ccc;
-$tictactoe-hover-color: #bbb;
+$tictactoe-tile-color: #ccc;
 
 $fifteen-primary-color: #37474F;
 $fifteen-secondary-color: #1976D2;
-$fifteen-hover-color: #29B6F6;
-$fifteen-dark-color: #263238;
-$fifteen-puzzle-color: #607D8B;
-$fifteen-puzzle-text-color: #ECEFF1;
+$fifteen-secondary-color--light: #29B6F6;
+$fifteen-tertiary-color: #607D8B;
 
 $whiteboard-primary-color: #f8f9fa;
-$whiteboard-secondary-color: #C0C0C0;
-$whiteboard-light-grey: #E2E6EA;
+$whiteboard-secondary-color: #E2E6EA;
+$whiteboard-btn-hover: #EFF9FE;

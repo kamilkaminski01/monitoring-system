@@ -9,9 +9,9 @@
     width: 28em;
     height: 28em;
 
-    border: 1px solid $fifteen-hover-color;
+    border: 1px solid $fifteen-secondary-color--light;
     border-radius: 0.5em;
-    background-color: $fifteen-puzzle-color;
+    background-color: $fifteen-tertiary-color;
 
     .grid__tile {
       display: flex;
@@ -22,8 +22,8 @@
 
       font-size: 4em;
       font-weight: bold;
-      color: $fifteen-puzzle-text-color;
-      border: 1px solid $fifteen-hover-color;
+      color: $snow;
+      border: 1px solid $fifteen-secondary-color--light;
 
       cursor: pointer;
       user-select: none;
@@ -63,7 +63,7 @@
     padding: 0.75em;
 
     border-radius: 0.5em;
-    background-color: $fifteen-dark-color;
+    background-color: $gunmetal;
 
     .scoreboard__moves {
       color: $fifteen-secondary-color;

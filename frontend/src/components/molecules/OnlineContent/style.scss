@@ -9,7 +9,7 @@
     margin-bottom: 0.25em;
     font-size: 1.5em;
     font-weight: 400;
-    color: white;
+    color: $snow;
     text-transform: capitalize;
     overflow: hidden;
 
@@ -23,7 +23,7 @@
     flex-wrap: wrap;
 
     .items__child {
-      color: white;
+      color: $snow;
       width: fit-content;
 
       padding: 0.7em;
