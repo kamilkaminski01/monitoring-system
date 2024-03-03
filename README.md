@@ -1,5 +1,5 @@
 <div align="center">
-  <img alt="Logo" src="https://raw.githubusercontent.com/kamilkaminski01/monitoring-system/master/public/favicon-512x512.png" width="100" />
+  <img alt="Logo" src="https://raw.githubusercontent.com/kamilkaminski01/monitoring-system/master/frontend/public/favicon-512x512.png" width="100" />
 </div>
 
 <h1 align="center">Monitoring System</h1>
