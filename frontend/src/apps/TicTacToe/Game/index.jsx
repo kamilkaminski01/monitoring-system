@@ -13,11 +13,13 @@ import { swalError, swalSuccess, swalTimedCornerSuccess, swalWarning } from 'uti
 import { useSocketLeave } from 'hooks/useSocketLeave'
 import GameInfo from 'components/molecules/GameInfo'
 import GameLayout from 'components/atoms/GameLayout'
+import useDocumentTitle from 'hooks/useDocumentTitle'
 
 const TicTacToe = () => {
   const { isUsernameSet } = useContext(UsernameContext)
   const username = useUsername()
   const { roomName } = useParams()
+  useDocumentTitle(`${roomName} | Tic Tac Toe`)
   const detailsRoomEndpoint = ENDPOINTS.detailsTicTacToeRoom
   const websocket = `${WEBSOCKETS.tictactoe}/${roomName}/`
   const {

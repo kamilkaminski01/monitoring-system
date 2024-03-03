@@ -12,8 +12,12 @@ import { useFifteenData } from 'hooks/useFifteenData'
 import { generatePuzzleState } from 'utils/boards'
 import Button from 'components/atoms/Button'
 import GameLayout from 'components/atoms/GameLayout'
+import { useParams } from 'react-router-dom'
+import useDocumentTitle from 'hooks/useDocumentTitle'
 
 const Fifteen = () => {
+  const { userName } = useParams()
+  useDocumentTitle(`${userName} | Fifteen Puzzle`)
   const { isUsernameSet } = useContext(UsernameContext)
   const username = useUsername()
   const websocket = `${WEBSOCKETS.fifteen}/${username}/`

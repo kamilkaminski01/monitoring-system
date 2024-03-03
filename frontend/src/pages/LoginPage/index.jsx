@@ -3,8 +3,10 @@ import { PATHS } from 'utils/consts'
 import useAuth from 'hooks/useAuth'
 import './style.scss'
 import { Link } from 'react-router-dom'
+import useDocumentTitle from 'hooks/useDocumentTitle'
 
 const LoginPage = () => {
+  useDocumentTitle('Login | Monitoring System')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const { login, error } = useAuth()

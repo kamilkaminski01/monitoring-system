@@ -14,11 +14,13 @@ import { useBingoData } from 'hooks/useBingoData'
 import { useSocketLeave } from 'hooks/useSocketLeave'
 import GameInfo from 'components/molecules/GameInfo'
 import GameLayout from 'components/atoms/GameLayout'
+import useDocumentTitle from 'hooks/useDocumentTitle'
 
 const Bingo = () => {
   const { isUsernameSet } = useContext(UsernameContext)
   const username = useUsername()
   const { roomName } = useParams()
+  useDocumentTitle(`${roomName} | Bingo`)
   const detailsPlayerEndpoint = ENDPOINTS.detailsBingoPlayer
   const detailsRoomEndpoint = ENDPOINTS.detailsBingoRoom
   const websocket = `${WEBSOCKETS.bingo}/${roomName}/`

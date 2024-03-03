@@ -17,11 +17,13 @@ import GameLayout from 'components/atoms/GameLayout'
 import classNames from 'classnames'
 import Button from 'components/atoms/Button'
 import Spinner from 'components/atoms/Spinner'
+import useDocumentTitle from 'hooks/useDocumentTitle'
 
 const Whiteboard = () => {
   const { isUsernameSet } = useContext(UsernameContext)
   const { isLogged } = useContext(AuthContext)
   const { roomName } = useParams()
+  useDocumentTitle(`${roomName} | Whiteboard`)
   const username = useUsername()
   const websocket = `${WEBSOCKETS.whiteboard}/${roomName}/`
   const { players, setPlayers } = useWhiteboardData(ENDPOINTS.detailsWhiteboard, roomName)

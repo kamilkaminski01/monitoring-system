@@ -8,8 +8,10 @@ import { useSocketRoomsAndUsers } from 'hooks/useSocketRoomsAndUsers'
 import { ENDPOINTS, GAME_TYPE, WEBSOCKETS } from 'utils/consts'
 import { handleCreateGame } from 'utils/handleRooms'
 import OnlineContent from 'components/molecules/OnlineContent'
+import useDocumentTitle from 'hooks/useDocumentTitle'
 
 const FifteenMenu = () => {
+  useDocumentTitle('Fifteen Puzzle | Menu')
   const { username, setUsername } = useContext(UsernameContext)
   const [, users] = useSocketRoomsAndUsers(WEBSOCKETS.fifteenOnlineUsers)
 

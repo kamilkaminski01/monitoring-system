@@ -5,8 +5,11 @@ import Whiteboard from 'assets/images/whiteboard.svg'
 import Puzzle from 'assets/images/puzzle.svg'
 import TicTacToe from 'assets/images/tictactoe.svg'
 import Bingo from 'assets/images/bingo.svg'
+import useDocumentTitle from 'hooks/useDocumentTitle'
 
 const HomePage = () => {
+  useDocumentTitle('Monitoring System')
+
   return (
     <div className="home-page">
       <Card

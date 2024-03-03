@@ -10,8 +10,10 @@ import HomeLink from 'components/atoms/HomeLink'
 import OnlineContent from 'components/molecules/OnlineContent'
 import { useModals } from 'providers/modals/context'
 import PlayersLimitModal from './modals/PlayersLimitModal.jsx'
+import useDocumentTitle from 'hooks/useDocumentTitle'
 
 const BingoMenu = () => {
+  useDocumentTitle('Bingo | Menu')
   const { openModal } = useModals()
   const { username, setUsername } = useContext(UsernameContext)
   const [roomName, setRoomName] = useState('')

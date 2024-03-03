@@ -8,8 +8,10 @@ import Button from 'components/atoms/Button'
 import Input from 'components/atoms/Input'
 import HomeLink from 'components/atoms/HomeLink'
 import OnlineContent from 'components/molecules/OnlineContent'
+import useDocumentTitle from 'hooks/useDocumentTitle'
 
 const TicTacToeMenu = () => {
+  useDocumentTitle('Tic Tac Toe | Menu')
   const { username, setUsername } = useContext(UsernameContext)
   const [roomName, setRoomName] = useState('')
   const [tictactoeRooms] = useSocketRoomsAndUsers(WEBSOCKETS.tictactoeOnlineRooms)

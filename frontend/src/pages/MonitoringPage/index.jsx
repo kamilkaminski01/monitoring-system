@@ -2,8 +2,10 @@ import { ENDPOINTS, GAME_TYPE, PATHS, WEBSOCKETS } from 'utils/consts'
 import { useSocketRoomsAndUsers } from 'hooks/useSocketRoomsAndUsers'
 import './style.scss'
 import Panel from './components/Panel'
+import useDocumentTitle from 'hooks/useDocumentTitle'
 
 const MonitoringPage = () => {
+  useDocumentTitle('Monitoring System')
   const [bingoRooms] = useSocketRoomsAndUsers(WEBSOCKETS.bingoOnlineRooms)
   const [tictactoeRooms] = useSocketRoomsAndUsers(WEBSOCKETS.tictactoeOnlineRooms)
   const [, fifteenUsers] = useSocketRoomsAndUsers(WEBSOCKETS.fifteenOnlineUsers)

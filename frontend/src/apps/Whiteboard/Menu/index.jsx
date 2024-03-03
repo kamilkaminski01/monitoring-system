@@ -10,8 +10,10 @@ import HomeLink from 'components/atoms/HomeLink'
 import OnlineContent from 'components/molecules/OnlineContent'
 import { useSocketRoomsAndUsers } from 'hooks/useSocketRoomsAndUsers'
 import { AuthContext } from 'providers/auth/context'
+import useDocumentTitle from 'hooks/useDocumentTitle'
 
 const WhiteboardMenu = () => {
+  useDocumentTitle('Whiteboard | Menu')
   const { isLogged } = useContext(AuthContext)
   const { username, setUsername } = useContext(UsernameContext)
   const [roomName, setRoomName] = useState('')
