@@ -1,3 +1,7 @@
+<div align="center">
+  <img alt="Logo" src="https://raw.githubusercontent.com/kamilkaminski01/monitoring-system/master/public/favicon-512x512.png" width="100" />
+</div>
+
 <h1 align="center">Monitoring System</h1>
 
 This project contains multiplayer apps such as bingo, tic-tac-toe and a whiteboard.
