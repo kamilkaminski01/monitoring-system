@@ -54,6 +54,7 @@ export const PATHS = {
   home: '/',
   login: '/login',
   monitoring: '/monitoring',
+  about: '/about',
 
   whiteboard: '/whiteboard',
   whiteboardRoom: '/whiteboard/:roomName',

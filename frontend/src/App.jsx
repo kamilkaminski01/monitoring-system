@@ -17,6 +17,7 @@ import Fifteen from 'apps/Fifteen/Game'
 import FifteenMonitoring from 'apps/Fifteen/Monitoring'
 import WhiteboardMenu from 'apps/Whiteboard/Menu'
 import Whiteboard from 'apps/Whiteboard/Game'
+import AboutPage from 'pages/AboutPage'
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
         <Route path={PATHS.login} element={<LoginPage />} />
         <Route element={<SharedLayout />}>
           <Route path={PATHS.home} element={<HomePage />} />
+          <Route path={PATHS.about} element={<AboutPage />} />
         </Route>
         <Route path={PATHS.whiteboard} element={<WhiteboardMenu />} />
         <Route path={PATHS.whiteboardRoom} element={<Whiteboard />} />

@@ -1,0 +1,12 @@
+.floating-icons {
+  position: relative;
+  min-height: 32em;
+  min-width: 32em;
+
+  @include for-desktop {
+    min-height: 22em;
+    min-width: 22em;
+    width: 70%;
+    height: 70%;
+  }
+}
