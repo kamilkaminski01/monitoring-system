@@ -13,6 +13,9 @@ const Navbar = () => {
         Monitoring System
       </Link>
       <div className="nav__menu">
+        <NavLink to={PATHS.about} className={({ isActive }) => (isActive ? 'active-link' : '')}>
+          About
+        </NavLink>
         {isLogged ? (
           <>
             <NavLink

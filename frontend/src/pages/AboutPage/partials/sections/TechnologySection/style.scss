@@ -1,0 +1,23 @@
+.technology-section {
+  display: flex;
+  align-items: center;
+  max-width: 80em;
+
+  .technology-section__wrapper {
+    padding: 2em;
+
+    .technology-section__description {
+      color: $sonic-silver;
+      line-height: 1.5;
+    }
+  }
+
+  @include for-desktop {
+    flex-direction: column;
+    text-align: center;
+
+    .technology-section__wrapper {
+      padding-bottom: 0;
+    }
+  }
+}
