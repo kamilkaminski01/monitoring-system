@@ -4,6 +4,7 @@ import useAuth from 'hooks/useAuth'
 import './style.scss'
 import { Link } from 'react-router-dom'
 import useDocumentTitle from 'hooks/useDocumentTitle'
+import { GrRevert } from 'react-icons/gr'
 
 const LoginPage = () => {
   useDocumentTitle('Login | Monitoring System')
@@ -42,7 +43,9 @@ const LoginPage = () => {
       </form>
       {error && <p className="login-form--error">Incorrect email or password. Please try again.</p>}
       <div className="login-form__footer">
-        <Link to={PATHS.home}>Home</Link>
+        <Link to={PATHS.home} className="footer__home-link">
+          Home <GrRevert />
+        </Link>
       </div>
     </div>
   )

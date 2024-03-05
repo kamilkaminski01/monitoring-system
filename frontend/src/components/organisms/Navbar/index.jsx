@@ -3,6 +3,7 @@ import './style.scss'
 import { PATHS } from 'utils/consts'
 import { AuthContext } from 'providers/auth/context'
 import { useContext } from 'react'
+import Logo from 'assets/icons/logo.svg'
 
 const Navbar = () => {
   const { isLogged, logout } = useContext(AuthContext)
@@ -10,7 +11,7 @@ const Navbar = () => {
   return (
     <nav>
       <Link to={PATHS.home} className="nav__brand">
-        Monitoring System
+        <img className="nav__brand-logo" src={Logo} alt="logo" /> Monitoring System
       </Link>
       <div className="nav__menu">
         <NavLink to={PATHS.about} className={({ isActive }) => (isActive ? 'active-link' : '')}>

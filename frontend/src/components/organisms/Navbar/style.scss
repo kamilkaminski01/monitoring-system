@@ -9,7 +9,24 @@ nav {
   box-shadow: 0 15px 15px 0 #0000001a;
 
   .nav__brand {
+    display: flex;
+    align-items: center;
+    gap: 0.25em;
     font-size: 2em;
+
+    .nav__brand-logo {
+      width: 32.5px;
+      height: 32.5px;
+
+      @include for-phone {
+        width: 45px;
+        height: 45px;
+      }
+    }
+
+    @include for-phone {
+      flex-direction: column;
+    }
   }
 
   .nav__menu {

@@ -1,0 +1,14 @@
+.feature-section {
+  max-width: 80em;
+  text-align: center;
+
+  padding: 2em;
+
+  .feature-section__boxes {
+    display: flex;
+
+    @include for-tablet {
+      flex-direction: column;
+    }
+  }
+}
