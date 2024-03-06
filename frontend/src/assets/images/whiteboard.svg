@@ -1,7 +1,12 @@
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<!-- Uploaded to: SVG Repo, www.svgrepo.com, Transformed by: SVG Repo Mixer Tools -->
-<svg width="800px" height="800px" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" fill="#000000">
-<g id="SVGRepo_bgCarrier" stroke-width="0"/>
-<g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"/>
-<g id="SVGRepo_iconCarrier"> <defs> <style>.cls-1{fill:none;stroke:#4d4d4d;stroke-linecap:round;stroke-linejoin:round;stroke-width:2px;}</style> </defs> <title/> <g data-name="Layer 2" id="Layer_2"> <polyline class="cls-1" points="16 22 1 22 1 4 31 4 31 22 28 22"/> <path class="cls-1" d="M19,22V18H17.6A1.6,1.6,0,0,0,16,19.6v5.2A3.2,3.2,0,0,0,19.2,28h5.6A3.2,3.2,0,0,0,28,24.8V21.2A3.2,3.2,0,0,0,24.8,18H22V12.3a1.5,1.5,0,0,0-1.5-1.5h0A1.5,1.5,0,0,0,19,12.3V22"/> <path class="cls-1" d="M16,13c-2,0-2-2-4-2s-2,2-4,2-2-2-4-2"/> </g> </g>
-</svg>
+
+<!-- Uploaded to: SVG Repo, www.svgrepo.com, Transformed by: SVG Repo Mixer Tools -->
+<svg width="300px" height="300px" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" fill="#000000">
+
+<g id="SVGRepo_bgCarrier" stroke-width="0"/>
+
+<g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"/>
+
+<g id="SVGRepo_iconCarrier"> <defs> <style>.cls-1{fill:none;stroke:#4d4d4d;stroke-linecap:round;stroke-linejoin:round;stroke-width:2px;}</style> </defs> <title/> <g data-name="Layer 2" id="Layer_2"> <polyline class="cls-1" points="16 22 1 22 1 4 31 4 31 22 28 22"/> <path class="cls-1" d="M19,22V18H17.6A1.6,1.6,0,0,0,16,19.6v5.2A3.2,3.2,0,0,0,19.2,28h5.6A3.2,3.2,0,0,0,28,24.8V21.2A3.2,3.2,0,0,0,24.8,18H22V12.3a1.5,1.5,0,0,0-1.5-1.5h0A1.5,1.5,0,0,0,19,12.3V22"/> <path class="cls-1" d="M16,13c-2,0-2-2-4-2s-2,2-4,2-2-2-4-2"/> </g> </g>
+
+</svg>
