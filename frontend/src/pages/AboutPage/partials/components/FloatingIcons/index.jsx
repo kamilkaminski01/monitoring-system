@@ -18,9 +18,9 @@ const icons = [
   { name: 'react', left: '65%', top: '20%', animationDelay: '1s', icon: React },
   { name: 'sass', left: '30%', top: '40%', animationDelay: '0.2s', icon: Sass },
   { name: 'vite', left: '40%', top: '60%', animationDelay: '0.2s', icon: Vite },
-  { name: 'postgres', left: '55%', top: '40%', animationDelay: '1.3s', icon: Postgres },
+  { name: 'postgres', left: '55%', top: '40%', animationDelay: '1.5s', icon: Postgres },
   { name: 'redis', left: '20%', top: '70%', animationDelay: '0.4s', icon: Redis },
-  { name: 'docker', left: '70%', top: '55%', animationDelay: '1.3s', icon: Docker },
+  { name: 'docker', left: '70%', top: '55%', animationDelay: '0.5s', icon: Docker },
   { name: 'aws', left: '55%', top: '75%', animationDelay: '0.6s', icon: AWS }
 ]
 
