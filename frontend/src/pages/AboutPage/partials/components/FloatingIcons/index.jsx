@@ -14,13 +14,13 @@ import Vite from 'assets/icons/vite.svg'
 const icons = [
   { name: 'python', left: '15%', top: '15%', animationDelay: '0s', icon: Python },
   { name: 'django', left: '40%', top: '20%', animationDelay: '0.3s', icon: Django },
-  { name: 'javascript', left: '10%', top: '50%', animationDelay: '1.7s', icon: JavaScript },
-  { name: 'react', left: '65%', top: '20%', animationDelay: '1s', icon: React },
+  { name: 'javascript', left: '10%', top: '50%', animationDelay: '1.5s', icon: JavaScript },
+  { name: 'react', left: '65%', top: '20%', animationDelay: '0.7s', icon: React },
   { name: 'sass', left: '30%', top: '40%', animationDelay: '0.2s', icon: Sass },
-  { name: 'vite', left: '40%', top: '60%', animationDelay: '0.2s', icon: Vite },
-  { name: 'postgres', left: '55%', top: '40%', animationDelay: '1.5s', icon: Postgres },
+  { name: 'vite', left: '40%', top: '60%', animationDelay: '0.8s', icon: Vite },
+  { name: 'postgres', left: '55%', top: '40%', animationDelay: '1s', icon: Postgres },
   { name: 'redis', left: '20%', top: '70%', animationDelay: '0.4s', icon: Redis },
-  { name: 'docker', left: '70%', top: '55%', animationDelay: '0.5s', icon: Docker },
+  { name: 'docker', left: '70%', top: '55%', animationDelay: '0s', icon: Docker },
   { name: 'aws', left: '55%', top: '75%', animationDelay: '0.6s', icon: AWS }
 ]
 
