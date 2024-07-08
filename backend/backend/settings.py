@@ -125,16 +125,18 @@ USE_I18N = True
 
 USE_TZ = True
 
-STATIC_URL = "/staticfiles/"
-STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+STATIC_URL = "/static/"
+STATIC_ROOT = os.path.join(BASE_DIR, "static")
 STATICFILES_DIRS = ("./backend/static",)
 
 MEDIA_ROOT = os.path.join(BASE_DIR, "/media/")
 MEDIA_URL = "/media/"
 
-if env("SENTRY_DSN", None):
+SENTRY_DSN = env("SENTRY_DSN")
+
+if SENTRY_DSN:
     sentry_sdk.init(
-        dsn=env("SENTRY_DSN"),
+        dsn=SENTRY_DSN,
         integrations=[DjangoIntegration()],
         traces_sample_rate=0.01,
         send_default_pii=True,

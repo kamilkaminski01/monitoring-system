@@ -1,7 +1,5 @@
 # This docker-compose file is designed for development purposes only
 
-version: '3.8'
-
 services:
   web:
     build:

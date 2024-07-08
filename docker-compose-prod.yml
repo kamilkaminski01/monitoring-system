@@ -1,33 +1,32 @@
-# This docker-compose file is designed for production purposes
-
-version: '3'
-
 services:
   web:
     build:
-      context: ./backend
+      context: backend
       dockerfile: Dockerfile
     env_file:
       - .envs/.django
       - .envs/.postgres
     volumes:
-      - staticfiles:/backend/staticfiles
+      - static:/backend/static
     ports:
       - "8000:8000"
     depends_on:
-      - db
-      - redis
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_started
 
   frontend:
     build:
-      context: .
-      dockerfile: ./frontend/Dockerfile
+      context: frontend
+      dockerfile: Dockerfile
     volumes:
-      - staticfiles:/staticfiles
+      - static:/static
     ports:
-      - "8080:80"
+      - "80:80"
     depends_on:
-      - web
+      web:
+        condition: service_started
 
   db:
     image: postgres:15.3-alpine
@@ -37,6 +36,11 @@ services:
       - postgres_data:/var/lib/postgresql/data/
     ports:
       - "5432:5432"
+    healthcheck:
+      test: sh -c "pg_isready -U postgres"
+      interval: 3s
+      timeout: 3s
+      retries: 5
 
   redis:
     image: redis:7.0.2-alpine
@@ -45,4 +49,4 @@ services:
 
 volumes:
   postgres_data:
-  staticfiles:
+  static:
