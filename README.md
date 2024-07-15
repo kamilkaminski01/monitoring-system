@@ -12,25 +12,20 @@ and communicate with each other through a chat.
 
 ## Resources
 
-The code repository is hosted on
-[GitHub](https://github.com/kamilkaminski01/monitoring-system).
-
-The server side application is written in the `Django` framework.
-
-WebSockets are handled by the [Django Channels](https://channels.readthedocs.io/en/latest/) framework.
-
-Channel layers are handled by [Redis](https://redis.io/).
-
-User interface is written in the `React` framework.
-
-Containerized with `Docker` and deployed to [AWS EC2](https://aws.amazon.com/ec2/)
+- The code repository is hosted on
+[GitHub](https://github.com/kamilkaminski01/monitoring-system)
+- The server side application is written in the `Django` framework
+- WebSockets are handled by the [Django Channels](https://channels.readthedocs.io/en/latest/) framework
+- Channel layers are handled by [Redis](https://redis.io/)
+- User interface is written in the `React` framework with `TypeScript`
+- Containerized environment with `Docker`
 
 ## Running from sources
 
 ### Docker Compose setup
 
 ```bash
-git clone https://github.com/kamilkaminski01/monitoring-system
+git clone https://github.com/kamilkaminski01/monitoring-system.git
 cd monitoring-system/
 make build
 make run
@@ -46,6 +41,7 @@ build, run, and test the project. The most important commands include:
 - `build`: builds the project with Docker Compose.
 - `run`: runs the project with Docker Compose.
 - `flush`: flushes data from the database.
+- `pytest`: runs backend unit tests.
 - `check`: performs backend static code checks.
 - `frontcheck`: performs frontend static code checks.
 - `clear`: stops the currently running services and removes the volumes.
@@ -96,7 +92,7 @@ Add user model
 
 All backend code is formatted and verified by the `black`, `flake8`,
 `mypy` and `isort` tools. Their configurations can be found in the
-[.setup.cfg](backend/setup.cfg) file. Additionally, `pre-commit` [checks](.pre-commit-config.yaml)
+[setup.cfg](backend/setup.cfg) file. Additionally, `pre-commit` [checks](.pre-commit-config.yaml)
 are performed in order to verify whitespaces, credentials, etc.
 
 Custom functions and methods use **type hints** to improve IDE code
