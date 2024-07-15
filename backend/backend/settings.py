@@ -10,10 +10,10 @@ env.read_env()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = os.getenv("DJANGO_SECRET_KEY")
-DEBUG = env.bool("DEBUG")
+SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", "secret")
+DEBUG = env.bool("DEBUG", default=False)
 
-ALLOWED_HOSTS = ["." + host.strip() for host in env.list("ALLOWED_HOSTS")]
+ALLOWED_HOSTS = ["." + host.strip() for host in env.list("ALLOWED_HOSTS", default=[])]
 
 INSTALLED_APPS = [
     "channels",
@@ -43,7 +43,7 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
-CSRF_TRUSTED_ORIGINS = env.list("CSRF_TRUSTED_ORIGINS")
+CSRF_TRUSTED_ORIGINS = env.list("CSRF_TRUSTED_ORIGINS", default=[])
 
 if DEBUG:
     INSTALLED_APPS.insert(0, "corsheaders")
@@ -82,7 +82,7 @@ DATABASES = {
     }
 }
 
-USE_REDIS = env.bool("USE_REDIS")
+USE_REDIS = env.bool("USE_REDIS", default=True)
 
 if USE_REDIS:
     CHANNEL_LAYERS = {
@@ -92,7 +92,7 @@ if USE_REDIS:
                 "hosts": [
                     (
                         os.getenv("REDIS_HOST", "redis"),
-                        int(os.getenv("REDIS_PORT", "6379")),
+                        os.getenv("REDIS_PORT", 6379),
                     )
                 ],
                 "capacity": 1500,
@@ -132,7 +132,7 @@ STATICFILES_DIRS = ("./backend/static",)
 MEDIA_ROOT = os.path.join(BASE_DIR, "/media/")
 MEDIA_URL = "/media/"
 
-SENTRY_DSN = env("SENTRY_DSN")
+SENTRY_DSN = env("SENTRY_DSN", default=None)
 
 if SENTRY_DSN:
     sentry_sdk.init(
