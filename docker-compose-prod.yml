@@ -23,7 +23,7 @@ services:
     volumes:
       - static:/static
     ports:
-      - "80:80"
+      - "81:80"
     depends_on:
       web:
         condition: service_started
@@ -34,8 +34,6 @@ services:
       - .envs/.postgres
     volumes:
       - postgres_data:/var/lib/postgresql/data/
-    ports:
-      - "5432:5432"
     healthcheck:
       test: sh -c "pg_isready -U postgres"
       interval: 3s
