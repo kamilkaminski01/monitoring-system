@@ -30,4 +30,3 @@ class TestFifteenPuzzleConsumer(TransactionTestCase):
             "message": f"{self.fifteen_puzzle.username} just joined",
             "value": None,
         }
-        await communicator.disconnect()

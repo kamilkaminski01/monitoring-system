@@ -20,4 +20,3 @@ class TestWhiteboardOnlineRoomsConsumer(TransactionTestCase):
             "command": "online_rooms",
             "online_rooms": [{"room_name": "whiteboard", "room_id": 10}],
         }
-        await communicator.disconnect()

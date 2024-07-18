@@ -35,4 +35,3 @@ class TestTicTacToeConsumer(TransactionTestCase):
             "message": f"{self.tictactoe_player.username} just joined",
             "value": None,
         }
-        await communicator.disconnect()

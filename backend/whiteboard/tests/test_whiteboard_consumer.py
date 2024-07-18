@@ -33,4 +33,3 @@ class TestWhiteboardConsumer(TransactionTestCase):
             "message": f"{self.whiteboard_player.username} just joined",
             "value": None,
         }
-        await communicator.disconnect()

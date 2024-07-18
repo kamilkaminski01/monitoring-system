@@ -23,4 +23,3 @@ class TestBingoOnlineRoomsConsumer(TransactionTestCase):
             "command": "online_rooms",
             "online_rooms": [{"room_name": "test", "room_id": 16}],
         }
-        await communicator.disconnect()

@@ -25,4 +25,3 @@ class TestTicTacToeOnlineRoomsConsumer(TransactionTestCase):
             "command": "online_rooms",
             "online_rooms": [{"room_name": "test", "room_id": 15}],
         }
-        await communicator.disconnect()

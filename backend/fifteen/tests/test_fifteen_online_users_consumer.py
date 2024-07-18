@@ -20,4 +20,3 @@ class TestFifteenOnlineUsersConsumer(TransactionTestCase):
             "command": "online_users",
             "online_users": [{"username": "player"}],
         }
-        await communicator.disconnect()

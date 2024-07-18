@@ -33,4 +33,3 @@ class TestBingoConsumer(TransactionTestCase):
             "message": f"{self.bingo_player.username} just joined",
             "value": None,
         }
-        await communicator.disconnect()
