@@ -18,9 +18,7 @@ def onBuild() {
 
     stage('Build') {
         echo 'Building...'
-        sh """#!/bin/bash
-        docker-compose -f docker-compose.yml build
-        """
+        sh 'make build'
     }
 
     def SHOULD_DEPLOY = isDeployBranch()
@@ -36,21 +34,15 @@ def onBuild() {
     lock("docker_compose_run") {
         stage('Tests') {
             echo 'Testing...'
-            sh """#!/bin/bash
-            make test
-            """
+            sh 'make test'
         }
 
         stage('Clean code check') {
             echo 'Running static code checks...'
-            sh """#!/bin/bash
-            make check
-            """
+            sh 'make check'
         }
 
-        sh """#!/bin/bash
-        docker-compose -f docker-compose.yml stop
-        """
+        sh 'make down'
     }
 }
 
@@ -61,11 +53,7 @@ def onError() {
 
 // Run always at the end of the build
 def onFinal() {
-    echo "Clean up docker-compose"
-    sh """#!/bin/bash
-    docker-compose -f docker-compose.yml down -v
-    """
-    cleanWs()
+    echo "On final stage"
 }
 
 node {
