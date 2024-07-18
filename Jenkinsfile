@@ -34,7 +34,7 @@ def onBuild() {
     lock("docker_compose_run") {
         stage('Tests') {
             echo 'Testing...'
-            sh 'make test'
+            sh 'make pytest'
         }
 
         stage('Clean code check') {
