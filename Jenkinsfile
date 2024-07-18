@@ -61,8 +61,10 @@ def onFinal() {
 node {
     try {
         onBuild()
+        currentBuild.result = 'SUCCESS'
     } catch (exc) {
         onError()
+        currentBuild.result = 'FAILURE'
         throw exc
     } finally {
         onFinal()
