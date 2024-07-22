@@ -18,7 +18,9 @@ def onBuild() {
 
     stage('Build') {
         echo 'Building...'
+        updateGitlabCommitStatus name: 'Build', state: 'pending'
         sh 'make build'
+        updateGitlabCommitStatus name: 'Build', state: 'success'
     }
 
     def SHOULD_DEPLOY = isDeployBranch()
@@ -34,12 +36,16 @@ def onBuild() {
     lock("docker_compose_run") {
         stage('Tests') {
             echo 'Testing...'
+            updateGitlabCommitStatus name: 'Tests', state: 'pending'
             sh 'make pytest'
+            updateGitlabCommitStatus name: 'Tests', state: 'success'
         }
 
         stage('Clean code check') {
             echo 'Running static code checks...'
+            updateGitlabCommitStatus name: 'Clean code check', state: 'pending'
             sh 'make check'
+            updateGitlabCommitStatus name: 'Clean code check', state: 'success'
         }
 
         sh 'docker compose -f docker-compose.yml stop'
@@ -49,6 +55,7 @@ def onBuild() {
 // Run when build fail
 def onError() {
     echo 'Build failed'
+    updateGitlabCommitStatus name: 'Build', state: 'failed'
 }
 
 // Run always at the end of the build
