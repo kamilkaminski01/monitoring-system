@@ -10,6 +10,8 @@ def isDeployBranch() {
 }
 
 def onBuild() {
+    properties([gitLabConnection('gitlab')])
+
     echo 'Build for branch: ' + env.BRANCH_NAME
 
     stage('Checkout repository') {
