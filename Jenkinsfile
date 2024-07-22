@@ -1,8 +1,12 @@
+def getGitlabConnection() {
+    return 'gitlab'
+}
+
 def getDeployBranches() {
     return ['master']
 }
 
-// return True if current build should be pushed to Harbor and deployed
+// return True if current build should be pushed to a registry and deployed
 def isDeployBranch() {
     def DEPLOY_BRANCHES = getDeployBranches()
     echo 'Checking if branch: ' + env.BRANCH_NAME + ' is one of: ' + DEPLOY_BRANCHES
@@ -10,7 +14,8 @@ def isDeployBranch() {
 }
 
 def onBuild() {
-    properties([gitLabConnection('gitlab')])
+    def GITLAB_CONNECTION = getGitlabConnection()
+    properties([gitLabConnection(GITLAB_CONNECTION)])
 
     echo 'Build for branch: ' + env.BRANCH_NAME
 
