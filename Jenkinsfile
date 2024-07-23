@@ -37,8 +37,13 @@ def onBuild() {
     stage('Build') {
         echo 'Building...'
         updateGitlabCommitStatus name: 'Build', state: 'running'
-        sh 'make build'
-        updateGitlabCommitStatus name: 'Build', state: 'success'
+        try {
+            sh 'make build'
+            updateGitlabCommitStatus name: 'Build', state: 'success'
+        } catch (exc) {
+            onError('Build')
+            throw exc
+        }
     }
 
     def SHOULD_DEPLOY = isDeployBranch()
@@ -55,15 +60,25 @@ def onBuild() {
         stage('Tests') {
             echo 'Testing...'
             updateGitlabCommitStatus name: 'Tests', state: 'running'
-            sh 'make pytest'
-            updateGitlabCommitStatus name: 'Tests', state: 'success'
+            try {
+                sh 'make pytest'
+                updateGitlabCommitStatus name: 'Tests', state: 'success'
+            } catch (exc) {
+                onError('Tests')
+                throw exc
+            }
         }
 
         stage('Clean code check') {
             echo 'Running static code checks...'
             updateGitlabCommitStatus name: 'Clean code check', state: 'running'
-            sh 'make check'
-            updateGitlabCommitStatus name: 'Clean code check', state: 'success'
+            try {
+                sh 'make check'
+                updateGitlabCommitStatus name: 'Clean code check', state: 'success'
+            } catch (exc) {
+                onError('Clean code check')
+                throw exc
+            }
         }
 
         sh 'docker compose -f docker-compose.yml stop'
@@ -75,9 +90,14 @@ def onBuild() {
     stage('Docker build') {
         if (SHOULD_DEPLOY) {
             updateGitlabCommitStatus name: 'Docker build', state: 'running'
-            sh """docker build -t ${IMAGES_REPO}:backend backend"""
-            sh """docker build -t ${IMAGES_REPO}:frontend frontend"""
-            updateGitlabCommitStatus name: 'Docker build', state: 'success'
+            try {
+                sh """docker build -t ${IMAGES_REPO}:backend backend"""
+                sh """docker build -t ${IMAGES_REPO}:frontend frontend"""
+                updateGitlabCommitStatus name: 'Docker build', state: 'success'
+            } catch (exc) {
+                onError('Docker build')
+                throw exc
+            }
         } else {
             Utils.markStageSkippedForConditional(STAGE_NAME)
         }
@@ -86,20 +106,25 @@ def onBuild() {
     stage('Docker push') {
         if (SHOULD_DEPLOY) {
             updateGitlabCommitStatus name: 'Docker push', state: 'running'
-            withCredentials([
-                string(credentialsId: 'REGISTRY_PASSWORD', variable: 'REGISTRY_PASSWORD')
-            ]) {
-                withEnv([
-                    "REGISTRY_USER=${env.REGISTRY_USER}",
-                    "IMAGES_REPO=${IMAGES_REPO}"
+            try {
+                withCredentials([
+                    string(credentialsId: 'REGISTRY_PASSWORD', variable: 'REGISTRY_PASSWORD')
                 ]) {
-                    sh 'docker login -u $REGISTRY_USER -p $REGISTRY_PASSWORD'
-                    sh 'docker push $IMAGES_REPO:backend'
-                    sh 'docker push $IMAGES_REPO:frontend'
-                    sh 'docker logout'
+                    withEnv([
+                        "REGISTRY_USER=${env.REGISTRY_USER}",
+                        "IMAGES_REPO=${IMAGES_REPO}"
+                    ]) {
+                        sh 'docker login -u $REGISTRY_USER -p $REGISTRY_PASSWORD'
+                        sh 'docker push $IMAGES_REPO:backend'
+                        sh 'docker push $IMAGES_REPO:frontend'
+                        sh 'docker logout'
+                    }
                 }
+                updateGitlabCommitStatus name: 'Docker push', state: 'success'
+            } catch (exc) {
+                onError('Docker push')
+                throw exc
             }
-            updateGitlabCommitStatus name: 'Docker push', state: 'success'
         } else {
             Utils.markStageSkippedForConditional(STAGE_NAME)
         }
@@ -108,35 +133,43 @@ def onBuild() {
     stage('Deploy') {
         if (SHOULD_DEPLOY) {
             updateGitlabCommitStatus name: 'Deploy', state: 'running'
-            withCredentials([
-                string(credentialsId: 'REGISTRY_PASSWORD', variable: 'REGISTRY_PASSWORD'),
-                string(credentialsId: 'SSH_USER', variable: 'SSH_USER'),
-                string(credentialsId: 'SSH_HOST', variable: 'SSH_HOST')
-            ]) {
-                withEnv([
-                    "REGISTRY_USER=${REGISTRY_USER}",
-                    "IMAGES_REPO=${IMAGES_REPO}",
-                    "PROJECT=${PROJECT}"
+            try {
+                withCredentials([
+                    string(credentialsId: 'REGISTRY_PASSWORD', variable: 'REGISTRY_PASSWORD'),
+                    string(credentialsId: 'SSH_USER', variable: 'SSH_USER'),
+                    string(credentialsId: 'SSH_HOST', variable: 'SSH_HOST')
                 ]) {
-                    sh 'ssh $SSH_USER@$SSH_HOST'
-                    sh 'cd $PROJECT/'
-                    sh 'docker login -u $REGISTRY_USER -p $REGISTRY_PASSWORD'
-                    sh 'make down env=prod'
-                    sh 'docker images -q $IMAGES_REPO | xargs -r docker rmi'
-                    sh 'make run env=prod'
+                    withEnv([
+                        "REGISTRY_USER=${REGISTRY_USER}",
+                        "IMAGES_REPO=${IMAGES_REPO}",
+                        "PROJECT=${PROJECT}"
+                    ]) {
+                        sh '''#!/bin/bash
+                            ssh $SSH_USER@$SSH_HOST << EOF
+                            cd $PROJECT/
+                            docker login -u $REGISTRY_USER -p $REGISTRY_PASSWORD
+                            make down env=prod
+                            docker images -q $IMAGES_REPO | xargs -r docker rmi
+                            make run env=prod
+                            << EOF
+                        '''
+                    }
                 }
+                updateGitlabCommitStatus name: 'Deploy', state: 'success'
+            } catch (exc) {
+                onError('Deploy')
+                throw exc
             }
-            updateGitlabCommitStatus name: 'Deploy', state: 'success'
         } else {
             Utils.markStageSkippedForConditional(STAGE_NAME)
         }
     }
 }
 
-// Run when build fails
-def onError() {
-    echo 'Build failed'
-    updateGitlabCommitStatus name: 'Build', state: 'failed'
+// Run when stage in build fails
+def onError(stage) {
+    echo "Build failed on stage ${stage}"
+    updateGitlabCommitStatus name: "${stage}", state: 'failed'
 }
 
 // Run always at the end of the build
@@ -151,7 +184,6 @@ node {
         onBuild()
         currentBuild.result = 'SUCCESS'
     } catch (exc) {
-        onError()
         currentBuild.result = 'FAILURE'
         throw exc
     } finally {
