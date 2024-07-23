@@ -70,6 +70,7 @@ def onBuild() {
     }
 
     def IMAGES_REPO = getImagesRepository()
+    def PROJECT = getProject()
 
     stage('Docker build') {
         if (SHOULD_DEPLOY) {
@@ -82,29 +83,57 @@ def onBuild() {
         }
     }
 
-    environment {
-        REGISTRY_PASSWORD = credentials('REGISTRY_PASSWORD')
-    }
-
     stage('Docker push') {
         if (SHOULD_DEPLOY) {
             updateGitlabCommitStatus name: 'Docker push', state: 'running'
             withCredentials([
-                string(credentialsId: 'REGISTRY_PASSWORD', variable: 'REGISTRY_PASSWORD'),
+                string(credentialsId: 'REGISTRY_PASSWORD', variable: 'REGISTRY_PASSWORD')
             ]) {
-                sh """docker login -u ${env.REGISTRY_USER} -p ${REGISTRY_PASSWORD}"""
-                sh """docker push ${IMAGES_REPO}:backend"""
-                sh """docker push ${IMAGES_REPO}:frontend"""
-                sh 'docker logout'
+                withEnv([
+                    "REGISTRY_USER=${env.REGISTRY_USER}",
+                    "IMAGES_REPO=${IMAGES_REPO}"
+                ]) {
+                    sh 'docker login -u $REGISTRY_USER -p $REGISTRY_PASSWORD'
+                    sh 'docker push $IMAGES_REPO:backend'
+                    sh 'docker push $IMAGES_REPO:frontend'
+                    sh 'docker logout'
+                }
             }
             updateGitlabCommitStatus name: 'Docker push', state: 'success'
         } else {
             Utils.markStageSkippedForConditional(STAGE_NAME)
         }
     }
+
+    stage('Deploy') {
+        if (SHOULD_DEPLOY) {
+            updateGitlabCommitStatus name: 'Deploy', state: 'running'
+            withCredentials([
+                string(credentialsId: 'REGISTRY_PASSWORD', variable: 'REGISTRY_PASSWORD'),
+                string(credentialsId: 'SSH_USER', variable: 'SSH_USER'),
+                string(credentialsId: 'SSH_HOST', variable: 'SSH_HOST')
+            ]) {
+                withEnv([
+                    "REGISTRY_USER=${REGISTRY_USER}",
+                    "IMAGES_REPO=${IMAGES_REPO}",
+                    "PROJECT=${PROJECT}"
+                ]) {
+                    sh 'ssh $SSH_USER@$SSH_HOST'
+                    sh 'cd $PROJECT/'
+                    sh 'docker login -u $REGISTRY_USER -p $REGISTRY_PASSWORD'
+                    sh 'make down env=prod'
+                    sh 'docker images -q $IMAGES_REPO | xargs -r docker rmi'
+                    sh 'make run env=prod'
+                }
+            }
+            updateGitlabCommitStatus name: 'Deploy', state: 'success'
+        } else {
+            Utils.markStageSkippedForConditional(STAGE_NAME)
+        }
+    }
 }
 
-// Run when build fail
+// Run when build fails
 def onError() {
     echo 'Build failed'
     updateGitlabCommitStatus name: 'Build', state: 'failed'
