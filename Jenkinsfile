@@ -144,12 +144,14 @@ def onBuild() {
                         "IMAGES_REPO=${IMAGES_REPO}",
                         "PROJECT=${PROJECT}"
                     ]) {
-                        sh 'ssh $SSH_USER@$SSH_HOST "
+                        sh '''
+                            ssh $SSH_USER@$SSH_HOST "
                             cd $PROJECT/ &&
                             docker login -u $REGISTRY_USER -p $REGISTRY_PASSWORD &&
                             make down env=prod &&
                             docker images -q $IMAGES_REPO | xargs -r docker rmi &&
-                            make run env=prod"'
+                            make run env=prod"
+                        '''
                     }
                 }
                 updateGitlabCommitStatus name: 'Deploy', state: 'success'
