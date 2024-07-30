@@ -8,8 +8,6 @@ services:
       - .envs/.postgres
     volumes:
       - static:/backend/static
-    ports:
-      - "8000:8000"
     depends_on:
       db:
         condition: service_healthy
@@ -42,8 +40,6 @@ services:
 
   redis:
     image: redis:7.0.2-alpine
-    ports:
-      - "6379:6379"
 
 volumes:
   postgres_data:

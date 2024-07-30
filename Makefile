@@ -70,5 +70,4 @@ migrate:
 
 clear:
 	docker compose -f $(COMPOSE_FILE) down -v
-	docker system prune --force
-	docker volume prune --force
+	docker images -aq | xargs -r docker rmi

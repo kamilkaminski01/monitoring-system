@@ -1,3 +1,32 @@
+@font-face {
+  font-family: 'Alkatra';
+  font-style: normal;
+  font-display: block;
+  src: url("assets/fonts/Alkatra.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: 'Nunito';
+  font-style: normal;
+  font-display: block;
+  src: url("assets/fonts/Nunito.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: 'Quicksand';
+  font-style: normal;
+  font-display: block;
+  font-weight: 500;
+  src: url("assets/fonts/Quicksand.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: 'Ubuntu';
+  font-style: normal;
+  font-display: block;
+  src: url("assets/fonts/Ubuntu.woff2") format("woff2");
+}
+
 * {
   margin: 0;
   padding: 0;

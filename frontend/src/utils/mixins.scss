@@ -17,7 +17,6 @@
 }
 
 @mixin whiteboard {
-  @import url('https://fonts.googleapis.com/css2?family=Alkatra&display=swap');
   .whiteboard {
     font-family: 'Alkatra', sans-serif;
 
@@ -46,7 +45,6 @@
 }
 
 @mixin fifteen {
-  @import url('https://fonts.googleapis.com/css2?family=Nunito&display=swap');
   .fifteen {
     background-color: $fifteen-primary-color;
     font-family: 'Nunito', sans-serif;
@@ -79,7 +77,6 @@
 }
 
 @mixin tictactoe {
-  @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@500&display=swap');
   .tictactoe {
     background-color: $dark-charcoal;
     font-family: 'Quicksand', sans-serif;
@@ -123,7 +120,6 @@
 }
 
 @mixin bingo {
-  @import url('https://fonts.googleapis.com/css2?family=Ubuntu&display=swap');
   .bingo {
     background-color: $chinese-black;
     font-family: 'Ubuntu', sans-serif;
