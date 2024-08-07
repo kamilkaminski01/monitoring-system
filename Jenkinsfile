@@ -114,7 +114,7 @@ def onBuild() {
                         "REGISTRY_USER=${env.REGISTRY_USER}",
                         "IMAGES_REPO=${IMAGES_REPO}"
                     ]) {
-                        sh 'docker login -u $REGISTRY_USER -p $REGISTRY_PASSWORD'
+                        sh 'echo -n $REGISTRY_PASSWORD | docker login -u $REGISTRY_USER --password-stdin'
                         sh 'docker push $IMAGES_REPO:backend'
                         sh 'docker push $IMAGES_REPO:frontend'
                         sh 'docker logout'
