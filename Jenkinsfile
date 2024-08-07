@@ -36,12 +36,12 @@ def onBuild() {
 
     stage('Build') {
         echo 'Building...'
-        updateGitlabCommitStatus name: 'Build', state: 'running'
+        updateGitlabCommitStatus name: STAGE_NAME, state: 'running'
         try {
             sh 'make build'
-            updateGitlabCommitStatus name: 'Build', state: 'success'
+            updateGitlabCommitStatus name: STAGE_NAME, state: 'success'
         } catch (exc) {
-            onError('Build')
+            onError(STAGE_NAME)
             throw exc
         }
     }
@@ -59,24 +59,24 @@ def onBuild() {
     lock("docker_compose_run") {
         stage('Tests') {
             echo 'Testing...'
-            updateGitlabCommitStatus name: 'Tests', state: 'running'
+            updateGitlabCommitStatus name: STAGE_NAME, state: 'running'
             try {
                 sh 'make pytest'
-                updateGitlabCommitStatus name: 'Tests', state: 'success'
+                updateGitlabCommitStatus name: STAGE_NAME, state: 'success'
             } catch (exc) {
-                onError('Tests')
+                onError(STAGE_NAME)
                 throw exc
             }
         }
 
         stage('Clean code check') {
             echo 'Running static code checks...'
-            updateGitlabCommitStatus name: 'Clean code check', state: 'running'
+            updateGitlabCommitStatus name: STAGE_NAME, state: 'running'
             try {
                 sh 'make check'
-                updateGitlabCommitStatus name: 'Clean code check', state: 'success'
+                updateGitlabCommitStatus name: STAGE_NAME, state: 'success'
             } catch (exc) {
-                onError('Clean code check')
+                onError(STAGE_NAME)
                 throw exc
             }
         }
@@ -89,13 +89,13 @@ def onBuild() {
 
     stage('Docker build') {
         if (SHOULD_DEPLOY) {
-            updateGitlabCommitStatus name: 'Docker build', state: 'running'
+            updateGitlabCommitStatus name: STAGE_NAME, state: 'running'
             try {
                 sh """docker build -t ${IMAGES_REPO}:backend backend"""
                 sh """docker build -t ${IMAGES_REPO}:frontend frontend"""
-                updateGitlabCommitStatus name: 'Docker build', state: 'success'
+                updateGitlabCommitStatus name: STAGE_NAME, state: 'success'
             } catch (exc) {
-                onError('Docker build')
+                onError(STAGE_NAME)
                 throw exc
             }
         } else {
@@ -105,7 +105,7 @@ def onBuild() {
 
     stage('Docker push') {
         if (SHOULD_DEPLOY) {
-            updateGitlabCommitStatus name: 'Docker push', state: 'running'
+            updateGitlabCommitStatus name: STAGE_NAME, state: 'running'
             try {
                 withCredentials([
                     string(credentialsId: 'REGISTRY_PASSWORD', variable: 'REGISTRY_PASSWORD')
@@ -120,9 +120,9 @@ def onBuild() {
                         sh 'docker logout'
                     }
                 }
-                updateGitlabCommitStatus name: 'Docker push', state: 'success'
+                updateGitlabCommitStatus name: STAGE_NAME, state: 'success'
             } catch (exc) {
-                onError('Docker push')
+                onError(STAGE_NAME)
                 throw exc
             }
         } else {
@@ -132,7 +132,7 @@ def onBuild() {
 
     stage('Deploy') {
         if (SHOULD_DEPLOY) {
-            updateGitlabCommitStatus name: 'Deploy', state: 'running'
+            updateGitlabCommitStatus name: STAGE_NAME, state: 'running'
             try {
                 withCredentials([
                     string(credentialsId: 'REGISTRY_PASSWORD', variable: 'REGISTRY_PASSWORD'),
@@ -140,7 +140,7 @@ def onBuild() {
                     string(credentialsId: 'SSH_HOST', variable: 'SSH_HOST')
                 ]) {
                     withEnv([
-                        "REGISTRY_USER=${REGISTRY_USER}",
+                        "REGISTRY_USER=${env.REGISTRY_USER}",
                         "IMAGES_REPO=${IMAGES_REPO}",
                         "PROJECT=${PROJECT}"
                     ]) {
@@ -154,9 +154,9 @@ def onBuild() {
                         '''
                     }
                 }
-                updateGitlabCommitStatus name: 'Deploy', state: 'success'
+                updateGitlabCommitStatus name: STAGE_NAME, state: 'success'
             } catch (exc) {
-                onError('Deploy')
+                onError(STAGE_NAME)
                 throw exc
             }
         } else {
