@@ -8,10 +8,6 @@ def getDeployBranches() {
     return ['master']
 }
 
-def getProject() {
-    return 'monitoring-system'
-}
-
 // return True if current build should be pushed to a registry and deployed
 def isDeployBranch() {
     def DEPLOY_BRANCHES = getDeployBranches()
@@ -20,8 +16,7 @@ def isDeployBranch() {
 }
 
 def getImagesRepository() {
-    def PROJECT = getProject()
-    return env.REGISTRY_USER + '/' + PROJECT
+    return env.REGISTRY_USER + '/' + env.JOB_BASE_NAME
 }
 
 def onBuild() {
@@ -85,7 +80,6 @@ def onBuild() {
     }
 
     def IMAGES_REPO = getImagesRepository()
-    def PROJECT = getProject()
 
     stage('Docker build') {
         if (SHOULD_DEPLOY) {
@@ -142,7 +136,7 @@ def onBuild() {
                     withEnv([
                         "REGISTRY_USER=${env.REGISTRY_USER}",
                         "IMAGES_REPO=${IMAGES_REPO}",
-                        "PROJECT=${PROJECT}"
+                        "PROJECT=${env.JOB_BASE_NAME}"
                     ]) {
                         sh '''
                             ssh $SSH_USER@$SSH_HOST "
