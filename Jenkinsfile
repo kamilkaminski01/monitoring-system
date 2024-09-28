@@ -174,7 +174,7 @@ def onError(stage) {
 // Run always at the end of the build
 def onFinal() {
     echo "Cleaning up docker compose..."
-    sh 'make clear'
+    sh 'make down'
     cleanWs()
 }
 

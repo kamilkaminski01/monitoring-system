@@ -3,10 +3,12 @@ services:
     build:
       context: backend
       dockerfile: Dockerfile
+    restart: always
     env_file:
       - .envs/.django
       - .envs/.postgres
     volumes:
+      - ./logs/daphne:/backend/logs/daphne
       - static:/backend/static
     depends_on:
       db:
@@ -18,7 +20,9 @@ services:
     build:
       context: frontend
       dockerfile: Dockerfile
+    restart: always
     volumes:
+      - ./logs/nginx:/var/log/nginx
       - static:/static
     ports:
       - "81:80"
@@ -27,6 +31,7 @@ services:
         condition: service_started
 
   db:
+    restart: always
     image: postgres:15.3-alpine
     env_file:
       - .envs/.postgres
@@ -39,6 +44,7 @@ services:
       retries: 5
 
   redis:
+    restart: always
     image: redis:7.0.2-alpine
 
 volumes:
