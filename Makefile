@@ -30,31 +30,31 @@ flush:
 	docker compose -f $(COMPOSE_FILE) run --rm web python manage.py flush
 
 lint:
-	docker compose -f $(COMPOSE_FILE) run --rm -T web isort .
-	docker compose -f $(COMPOSE_FILE) run --rm -T web black .
-	docker compose -f $(COMPOSE_FILE) run --rm -T web flake8 .
-	docker compose -f $(COMPOSE_FILE) run --rm -T web mypy .
+	docker compose -f $(COMPOSE_FILE) run --rm --no-deps -T web isort .
+	docker compose -f $(COMPOSE_FILE) run --rm --no-deps -T web black .
+	docker compose -f $(COMPOSE_FILE) run --rm --no-deps -T web flake8 .
+	docker compose -f $(COMPOSE_FILE) run --rm --no-deps -T web mypy .
 
 check:
-	docker compose -f $(COMPOSE_FILE) run --rm web isort --check-only .
-	docker compose -f $(COMPOSE_FILE) run --rm web black --check .
-	docker compose -f $(COMPOSE_FILE) run --rm web flake8 .
-	docker compose -f $(COMPOSE_FILE) run --rm web mypy .
+	docker compose -f $(COMPOSE_FILE) run --rm --no-deps web isort --check-only .
+	docker compose -f $(COMPOSE_FILE) run --rm --no-deps web black --check .
+	docker compose -f $(COMPOSE_FILE) run --rm --no-deps web flake8 .
+	docker compose -f $(COMPOSE_FILE) run --rm --no-deps web mypy .
 
 frontcheck:
-	docker compose -f $(COMPOSE_FILE) run --rm -T frontend npm run check
+	docker compose -f $(COMPOSE_FILE) run --rm --no-deps -T frontend npm run check
 
 isort:
-	docker compose -f $(COMPOSE_FILE) run --rm -T web isort .
+	docker compose -f $(COMPOSE_FILE) run --rm --no-deps -T web isort .
 
 black:
-	docker compose -f $(COMPOSE_FILE) run --rm -T web black .
+	docker compose -f $(COMPOSE_FILE) run --rm --no-deps -T web black .
 
 flake8:
-	docker compose -f $(COMPOSE_FILE) run --rm -T web flake8 .
+	docker compose -f $(COMPOSE_FILE) run --rm --no-deps -T web flake8 .
 
 mypy:
-	docker compose -f $(COMPOSE_FILE) run --rm -T  web mypy .
+	docker compose -f $(COMPOSE_FILE) run --rm --no-deps -T  web mypy .
 
 pytest:
 	docker compose -f $(COMPOSE_FILE) run --rm web pytest

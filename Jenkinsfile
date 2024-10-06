@@ -146,7 +146,7 @@ def onBuild() {
                     ]) {
                         sh '''
                             ssh $SSH_USER@$SSH_HOST "
-                            cd $PROJECT/ &&
+                            cd /srv/$PROJECT/ &&
                             echo -n $REGISTRY_PASSWORD | docker login -u $REGISTRY_USER --password-stdin &&
                             make down env=prod &&
                             docker images -q $IMAGES_REPO | xargs -r docker rmi &&
