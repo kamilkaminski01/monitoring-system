@@ -11,8 +11,6 @@ services:
       - ./logs/daphne:/backend/logs/daphne
       - static:/backend/static
     depends_on:
-      db:
-        condition: service_healthy
       redis:
         condition: service_started
 
@@ -30,23 +28,9 @@ services:
       web:
         condition: service_started
 
-  db:
-    restart: always
-    image: postgres:15.3-alpine
-    env_file:
-      - .envs/.postgres
-    volumes:
-      - postgres_data:/var/lib/postgresql/data/
-    healthcheck:
-      test: sh -c "pg_isready -U postgres"
-      interval: 3s
-      timeout: 3s
-      retries: 5
-
   redis:
     restart: always
     image: redis:7.0.2-alpine
 
 volumes:
-  postgres_data:
   static:

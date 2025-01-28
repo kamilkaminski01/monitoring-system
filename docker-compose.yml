@@ -22,7 +22,7 @@ services:
 
   db:
     restart: always
-    image: postgres:15.3-alpine
+    image: postgres:16.4-alpine
     env_file:
       - .envs/.postgres
     volumes:
