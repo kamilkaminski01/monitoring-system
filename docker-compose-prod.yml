@@ -23,7 +23,7 @@ services:
       - ./logs/nginx:/var/log/nginx
       - static:/static
     ports:
-      - "81:80"
+      - "86:80"
     depends_on:
       web:
         condition: service_started
