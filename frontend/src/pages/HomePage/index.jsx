@@ -13,7 +13,7 @@ const HomePage = () => {
   return (
     <div className="home-page">
       <Card
-        title="Whiteboard"
+        title="Whiteboard TEST"
         img={Whiteboard}
         text="Drawing board app where users can create whiteboards and draw in real time."
         link={PATHS.whiteboard}
